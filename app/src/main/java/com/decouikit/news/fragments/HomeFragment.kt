@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.decouikit.news.R
+import com.decouikit.news.extensions.replaceFragment
 import com.google.android.material.tabs.TabLayout
 
 class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
 
     private lateinit var itemView: View
+    private lateinit var fragment: HomeFilterFragment
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         itemView = inflater.inflate(R.layout.fragment_home, container, false)
@@ -36,16 +38,36 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
         mTabLayout.addTab(mTabLayout.newTab().setText(R.string.tab_travel))
     }
 
-    override fun onTabReselected(p0: TabLayout.Tab?) {
+    override fun onTabReselected(tab: TabLayout.Tab?) {
 
     }
 
-    override fun onTabUnselected(p0: TabLayout.Tab?) {
+    override fun onTabUnselected(tab: TabLayout.Tab?) {
 
     }
 
-    override fun onTabSelected(p0: TabLayout.Tab?) {
-
+    override fun onTabSelected(tab: TabLayout.Tab?) {
+        when (tab?.position) {
+            0 -> {
+                fragment = HomeFilterFragment.newInstance(getString(R.string.tab_architecture))
+            }
+            1 -> {
+                fragment = HomeFilterFragment.newInstance(getString(R.string.tab_art))
+            }
+            2 -> {
+                fragment = HomeFilterFragment.newInstance(getString(R.string.tab_work))
+            }
+            3 -> {
+                fragment = HomeFilterFragment.newInstance(getString(R.string.tab_current))
+            }
+            4 -> {
+                fragment = HomeFilterFragment.newInstance(getString(R.string.tab_food))
+            }
+            5 -> {
+                fragment = HomeFilterFragment.newInstance(getString(R.string.tab_travel))
+            }
+        }
+        replaceFragment(fragment, R.id.frmHomePlaceholder)
     }
 
     companion object {

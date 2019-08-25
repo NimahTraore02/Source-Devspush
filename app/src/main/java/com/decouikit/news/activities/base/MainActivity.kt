@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.decouikit.news.R
+import com.decouikit.news.extensions.replaceFragment
 import com.decouikit.news.fragments.HomeFragment
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onResume() {
         super.onResume()
-        supportFragmentManager.beginTransaction().replace(R.id.navigation_container, HomeFragment.newInstance()).commit()
+        replaceFragment(HomeFragment.newInstance(),R.id.navigation_container)
         nav_view.setCheckedItem(R.id.nav_home)
     }
 
