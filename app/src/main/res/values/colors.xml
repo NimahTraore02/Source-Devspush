@@ -6,4 +6,5 @@
     <color name="colorNavigationIcon">#707070</color>
     <color name="colorNavigationSubtitleText">#5D5E70</color>
     <color name="colorMenuItem">#E3E4E6</color>
+    <color name="colorRed">#CB0000</color>
 </resources>
