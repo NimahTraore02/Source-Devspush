@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#1B1D29</color>
+    <color name="colorPrimary">#282C39</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="colorNavigationIcon">#ACB1B5</color>
+    <color name="colorNavigationIcon">#707070</color>
     <color name="colorNavigationSubtitleText">#5D5E70</color>
     <color name="colorMenuItem">#E3E4E6</color>
 </resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/homeTab"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@color/colorWhite"
+        app:tabPaddingStart="24dp"
+        app:tabPaddingEnd="24dp"
+        app:tabTextAppearance="@style/TabTextStyle"
+        app:tabTextColor="@color/colorPrimary"
+        app:tabIndicatorColor="@color/colorPrimary"
+        app:tabIndicatorHeight="1dp"
+        app:tabMode="scrollable"
+        android:elevation="@dimen/small_padding">
+    </com.google.android.material.tabs.TabLayout>
+
+    <FrameLayout
+        android:id="@+id/frmPlaceholder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>
