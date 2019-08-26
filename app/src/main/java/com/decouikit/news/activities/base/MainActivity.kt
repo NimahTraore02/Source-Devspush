@@ -1,6 +1,7 @@
 package com.decouikit.news.activities.base
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -13,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.decouikit.news.R
+import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.replaceFragment
 import com.decouikit.news.fragments.HomeFragment
 import com.google.android.material.navigation.NavigationView
@@ -35,6 +37,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+
+        Log.e("TEST", "getCategoryList:" + InMemory.getCategoryList().size.toString())
+        Log.e("TEST", "getUserList:" + InMemory.getUserList().size.toString())
 
         navView.setNavigationItemSelectedListener(this)
     }
