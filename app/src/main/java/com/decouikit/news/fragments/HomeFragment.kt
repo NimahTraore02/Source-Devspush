@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.decouikit.news.R
+import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.replaceFragment
 import com.google.android.material.tabs.TabLayout
 
@@ -29,13 +30,9 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
 
         val mTabLayout = itemView.findViewById<TabLayout>(R.id.homeTab)
         mTabLayout.addOnTabSelectedListener(this)
-
-        mTabLayout.addTab(mTabLayout.newTab().setText(R.string.tab_architecture))
-        mTabLayout.addTab(mTabLayout.newTab().setText(R.string.tab_art))
-        mTabLayout.addTab(mTabLayout.newTab().setText(R.string.tab_work))
-        mTabLayout.addTab(mTabLayout.newTab().setText(R.string.tab_current))
-        mTabLayout.addTab(mTabLayout.newTab().setText(R.string.tab_food))
-        mTabLayout.addTab(mTabLayout.newTab().setText(R.string.tab_travel))
+        InMemory.getCategoryList().forEach {
+            mTabLayout.addTab(mTabLayout.newTab().setText(it.name))
+        }
     }
 
     override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -46,27 +43,8 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
 
     }
 
-    override fun onTabSelected(tab: TabLayout.Tab?) {
-        when (tab?.position) {
-            0 -> {
-                fragment = FilterFragment.newInstance(getString(R.string.tab_architecture))
-            }
-            1 -> {
-                fragment = FilterFragment.newInstance(getString(R.string.tab_art))
-            }
-            2 -> {
-                fragment = FilterFragment.newInstance(getString(R.string.tab_work))
-            }
-            3 -> {
-                fragment = FilterFragment.newInstance(getString(R.string.tab_current))
-            }
-            4 -> {
-                fragment = FilterFragment.newInstance(getString(R.string.tab_food))
-            }
-            5 -> {
-                fragment = FilterFragment.newInstance(getString(R.string.tab_travel))
-            }
-        }
+    override fun onTabSelected(tab: TabLayout.Tab) {
+        fragment = FilterFragment.newInstance(InMemory.getCategoryList()[tab.position].name)
         replaceFragment(fragment, R.id.frmHomePlaceholder)
     }
 
