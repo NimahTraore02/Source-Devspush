@@ -2,10 +2,8 @@ package com.decouikit.news.activities.base
 
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -21,7 +19,6 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +43,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onResume() {
         super.onResume()
-        replaceFragment(HomeFragment.newInstance(),R.id.navigation_container)
+        replaceFragment(HomeFragment.newInstance(), R.id.navigation_container)
         nav_view.setCheckedItem(R.id.nav_home)
     }
 
@@ -81,7 +78,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_home -> {
-                supportFragmentManager.beginTransaction().replace(R.id.navigation_container, HomeFragment.newInstance()).commit()
+                replaceFragment(HomeFragment.newInstance(), R.id.navigation_container)
             }
             R.id.nav_category -> {
 
