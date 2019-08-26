@@ -14,8 +14,9 @@
         app:tabPaddingStart="@dimen/tab_padding"
         app:tabPaddingEnd="@dimen/tab_padding"
         app:tabTextAppearance="@style/TabTextStyle"
-        app:tabTextColor="@color/colorPrimary"
-        app:tabIndicatorColor="@color/colorPrimary"
+        app:tabSelectedTextColor="@color/colorTitleText"
+        app:tabTextColor="@color/colorSubTitleText"
+        app:tabIndicatorColor="@color/colorTitleText"
         app:tabIndicatorHeight="@dimen/tab_indicator_height"
         app:tabMode="scrollable"
         android:elevation="@dimen/small_padding">

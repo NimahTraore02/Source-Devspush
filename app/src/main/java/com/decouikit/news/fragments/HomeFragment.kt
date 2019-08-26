@@ -12,7 +12,7 @@ import com.google.android.material.tabs.TabLayout
 class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
 
     private lateinit var itemView: View
-    private lateinit var fragment: HomeFilterFragment
+    private lateinit var fragment: FilterFragment
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         itemView = inflater.inflate(R.layout.fragment_home, container, false)
@@ -49,22 +49,22 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
     override fun onTabSelected(tab: TabLayout.Tab?) {
         when (tab?.position) {
             0 -> {
-                fragment = HomeFilterFragment.newInstance(getString(R.string.tab_architecture))
+                fragment = FilterFragment.newInstance(getString(R.string.tab_architecture))
             }
             1 -> {
-                fragment = HomeFilterFragment.newInstance(getString(R.string.tab_art))
+                fragment = FilterFragment.newInstance(getString(R.string.tab_art))
             }
             2 -> {
-                fragment = HomeFilterFragment.newInstance(getString(R.string.tab_work))
+                fragment = FilterFragment.newInstance(getString(R.string.tab_work))
             }
             3 -> {
-                fragment = HomeFilterFragment.newInstance(getString(R.string.tab_current))
+                fragment = FilterFragment.newInstance(getString(R.string.tab_current))
             }
             4 -> {
-                fragment = HomeFilterFragment.newInstance(getString(R.string.tab_food))
+                fragment = FilterFragment.newInstance(getString(R.string.tab_food))
             }
             5 -> {
-                fragment = HomeFilterFragment.newInstance(getString(R.string.tab_travel))
+                fragment = FilterFragment.newInstance(getString(R.string.tab_travel))
             }
         }
         replaceFragment(fragment, R.id.frmHomePlaceholder)

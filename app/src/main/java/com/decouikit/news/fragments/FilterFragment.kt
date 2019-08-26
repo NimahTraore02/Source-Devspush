@@ -5,16 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager.widget.ViewPager
 import com.decouikit.news.R
 import com.decouikit.news.adapters.FeaturedNewsAdapter
-import com.decouikit.news.extensions.pxToDp
 import com.decouikit.news.utils.NewsConstants
-import kotlinx.android.synthetic.main.fragment_home_filter.*
-import kotlinx.android.synthetic.main.fragment_home_filter.view.*
+import kotlinx.android.synthetic.main.fragment_filter.view.*
 
-class HomeFilterFragment: Fragment() {
+class FilterFragment: Fragment() {
     private lateinit var itemView: View
     private lateinit var filter: String
 
@@ -23,34 +19,38 @@ class HomeFilterFragment: Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        filter = arguments?.getString(NewsConstants.HOME_FILTER, "").toString()
+        filter = arguments?.getString(NewsConstants.FILTER, "").toString()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        itemView = inflater.inflate(R.layout.fragment_home_filter, container, false)
+        itemView = inflater.inflate(R.layout.fragment_filter, container, false)
         return itemView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initFeaturedNews()
+    }
+
+    private fun initFeaturedNews() {
         featuredItems = ArrayList()
         featuredItems.add("Prvi")
         featuredItems.add("Drugi")
         featuredItems.add("Treci")
         featuredItems.add("Cetvrti")
-
-        featuredAdapter = FeaturedNewsAdapter(featuredItems, view.context)
+        featuredAdapter = FeaturedNewsAdapter(featuredItems, itemView.context)
 
         itemView.viewPager.adapter = featuredAdapter
         itemView.viewPager.offscreenPageLimit = 3
+        itemView.viewPager.setCurrentItem(1, true)//TODO selektovan prvi, promeniti nakon dobijanja pravih podataka
     }
 
     companion object {
-        fun newInstance(filter: String): HomeFilterFragment {
-            val fragment = HomeFilterFragment()
+        fun newInstance(filter: String): FilterFragment {
+            val fragment = FilterFragment()
             val args = Bundle()
-            args.putString(NewsConstants.HOME_FILTER, filter)
+            args.putString(NewsConstants.FILTER, filter)
             fragment.arguments = args
             return fragment
         }

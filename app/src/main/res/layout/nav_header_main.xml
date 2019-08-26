@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nav_header_subtitle"
-            android:textColor="@color/colorNavigationSubtitleText"/>
+            android:textColor="@color/colorSubTitleText"/>
     </LinearLayout>
 
 </LinearLayout>
