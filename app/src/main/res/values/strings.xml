@@ -12,13 +12,9 @@
     <string name="menu_settings">Settings</string>
     <string name="menu_send">Send</string>
     <string name="search">Search</string>
-    <string name="tab_architecture">Architecture</string>
-    <string name="tab_art">Arts And Culture</string>
-    <string name="tab_work">Business And Work</string>
-    <string name="tab_current">Current Events</string>
-    <string name="tab_food">Food And Drink</string>
-    <string name="tab_travel">Travel</string>
     <string name="featured_news">Featured news</string>
     <string name="recent_news">Recent news</string>
     <string name="view_all">View all</string>
+    <string name="post">1 post</string>
+    <string name="posts">%d posts</string>
 </resources>

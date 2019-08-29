@@ -3,18 +3,17 @@ package com.decouikit.news.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
 import com.decouikit.news.R
-import kotlinx.android.synthetic.main.adapter_recent_news_item.view.*
+import com.decouikit.news.network.dto.Category
+import kotlinx.android.synthetic.main.adapter_category_item.view.*
 
-class RecentNewsAdapter(private val items: ArrayList<String>)
-    : RecyclerView.Adapter<RecentNewsAdapter.ViewHolder>() {
+class CategoryAdapter(private val items: ArrayList<Category>): RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.adapter_recent_news_item, parent, false)
+                .inflate(R.layout.adapter_category_item, parent, false)
         )
     }
 
@@ -26,10 +25,16 @@ class RecentNewsAdapter(private val items: ArrayList<String>)
         holder.bind(items[position])
     }
 
+
     class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(text: String) {
-            view.tvItemTag.text = text
+        fun bind(item: Category) {
+            view.tvCategoryName.text = item.name
+            if(item.count == 1) {
+                view.tvCategoryPostsNumber.text = view.context.getString(R.string.post)
+            }else {
+                view.tvCategoryPostsNumber.text = view.context.getString(R.string.posts, item.count)
+            }
         }
     }
 }

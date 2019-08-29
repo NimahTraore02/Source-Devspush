@@ -14,6 +14,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.decouikit.news.R
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.replaceFragment
+import com.decouikit.news.fragments.CategoryFragment
 import com.decouikit.news.fragments.HomeFragment
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -81,7 +82,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 replaceFragment(HomeFragment.newInstance(), R.id.navigation_container)
             }
             R.id.nav_category -> {
-
+                replaceFragment(CategoryFragment.newInstance(), R.id.navigation_container)
             }
             R.id.nav_bookmark -> {
 

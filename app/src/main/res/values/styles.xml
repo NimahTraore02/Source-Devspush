@@ -27,8 +27,6 @@
         <item name="android:textSize">@dimen/text_size_18sp</item>
         <item name="android:textColor">@color/colorTitleText</item>
         <item name="android:fontFamily">@font/roboto</item>
-        <item name="android:layout_marginStart">@dimen/screen_padding</item>
-        <item name="android:layout_marginTop">@dimen/screen_padding</item>
     </style>
 
     <style name="ViewAllTextStyle">
@@ -37,7 +35,30 @@
         <item name="android:textSize">@dimen/text_size_14sp</item>
         <item name="android:textColor">@color/colorSubTitleText</item>
         <item name="android:fontFamily">@font/roboto</item>
-        <item name="android:layout_marginEnd">@dimen/screen_padding</item>
-        <item name="android:layout_marginTop">@dimen/screen_padding</item>
+    </style>
+
+    <style name="DateTextStyle" parent="ViewAllTextStyle">
+        <item name="android:drawableStart">@drawable/ic_watch_later</item>
+        <item name="android:drawablePadding">@dimen/small_padding</item>
+    </style>
+
+    <style name="ItemTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_14sp</item>
+        <item name="android:textColor">@color/colorTitleText</item>
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">3</item>
+    </style>
+
+    <style name="TagTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/rounded_red_bg</item>
+        <item name="android:padding">@dimen/small_padding</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">@dimen/text_size_14sp</item>
+        <item name="android:fontFamily">@font/roboto</item>
     </style>
 </resources>
