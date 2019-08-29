@@ -9,10 +9,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.decouikit.news.R
 import com.decouikit.news.adapters.FeaturedNewsAdapter
 import com.decouikit.news.adapters.RecentNewsAdapter
+import com.decouikit.news.extensions.replaceFragment
+import com.decouikit.news.extensions.replaceFragmentWithBackStack
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.fragment_filter.view.*
 
-class FilterFragment: Fragment() {
+class FilterFragment: Fragment(), View.OnClickListener {
+
     private lateinit var itemView: View
     private lateinit var filter: String
 
@@ -37,6 +40,7 @@ class FilterFragment: Fragment() {
 
         initFeaturedNews()
         initRecentNews()
+        initListeners()
     }
 
     private fun initFeaturedNews() {
@@ -67,6 +71,22 @@ class FilterFragment: Fragment() {
         itemView.rvRecentNews.layoutManager = GridLayoutManager(itemView.context, 2)
         itemView.rvRecentNews.adapter = recentAdapter
         itemView.rvRecentNews.setHasFixedSize(true)
+    }
+
+    private fun initListeners() {
+        itemView.tvFeaturedNewsViewAll.setOnClickListener(this)
+        itemView.tvRecentNewsViewAll.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View) {
+        when(v) {
+           itemView.tvFeaturedNewsViewAll -> {
+               replaceFragmentWithBackStack(ViewAllFragment.newInstance(getString(R.string.featured_news)), R.id.navigation_container)
+           }
+            itemView.tvRecentNewsViewAll -> {
+                replaceFragmentWithBackStack(ViewAllFragment.newInstance(getString(R.string.recent_news)), R.id.navigation_container)
+            }
+        }
     }
 
     companion object {

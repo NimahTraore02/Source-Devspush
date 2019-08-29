@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:orientation="vertical"
+        app:cardCornerRadius="@dimen/small_padding"
+        app:cardElevation="@dimen/small_padding"
+        app:cardUseCompatPadding="true"
+        android:layout_marginStart="@dimen/normal_padding"
+        android:layout_marginEnd="@dimen/normal_padding">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <ImageView
+                android:id="@+id/ivItemBg"
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+                android:id="@+id/tvItemTag"
+                style="@style/TagTextStyle"
+                android:text="Technology"
+                android:layout_marginStart="@dimen/normal_padding"
+                android:layout_marginTop="@dimen/normal_padding"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+                android:id="@+id/tvItemTitle"
+                style="@style/ItemTextStyle"
+                android:layout_width="0dp"
+                android:layout_margin="@dimen/screen_padding"
+                app:layout_constraintStart_toEndOf="@+id/ivItemBg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="World voyage delivers 'memories to last a lifetime' 2019 World voyage delivers 'memories to last a lifetime' 2019 World voyage delivers 'memories to last a lifetime' 2019"/>
+
+        <TextView
+                android:id="@+id/tvItemDate"
+                style="@style/DateTextStyle"
+                android:layout_width="0dp"
+                android:text="12 May 2019"
+                app:layout_constraintStart_toEndOf="@+id/ivItemBg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="@dimen/screen_padding"
+                android:layout_marginBottom="@dimen/normal_padding"/>
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="@dimen/normal_padding"
+                android:layout_marginEnd="@dimen/normal_padding"
+                android:background="@drawable/ic_bookmark"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
