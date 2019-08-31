@@ -36,6 +36,13 @@ class ViewAllFragment : Fragment() {
     }
 
     private fun initLayout() {
+        itemView.tvTitle.text = title
+        itemView.tvClearAll.visibility = if (title == getString(R.string.bookmarked_news)) {
+            View.VISIBLE
+        } else {
+             View.GONE
+        }
+
         items = arrayListOf()
         items.add("Sport")
         items.add("Architecture")

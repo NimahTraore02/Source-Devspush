@@ -14,17 +14,21 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.decouikit.news.R
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.replaceFragment
-import com.decouikit.news.fragments.CategoryFragment
-import com.decouikit.news.fragments.HomeFragment
+import com.decouikit.news.extensions.replaceFragmentWithBackStack
+import com.decouikit.news.fragments.*
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    private lateinit var toolbar: Toolbar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
+
+        toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.colorTitleText))
 
@@ -40,6 +44,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Log.e("TEST", "getUserList:" + InMemory.getUserList().size.toString())
 
         navView.setNavigationItemSelectedListener(this)
+    }
+
+    fun getToolbar(): Toolbar {
+        return toolbar
     }
 
     override fun onResume() {
@@ -85,13 +93,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 replaceFragment(CategoryFragment.newInstance(), R.id.navigation_container)
             }
             R.id.nav_bookmark -> {
-
+                replaceFragment(ViewAllFragment.newInstance(getString(R.string.bookmarked_news)), R.id.navigation_container)
             }
             R.id.nav_about -> {
-
+                replaceFragment(AboutFragment.newInstance(), R.id.navigation_container)
             }
             R.id.nav_settings -> {
-
+                replaceFragment(SettingsFragment.newInstance(), R.id.navigation_container)
             }
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)

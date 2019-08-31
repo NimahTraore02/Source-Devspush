@@ -18,4 +18,17 @@
     <string name="post">1 post</string>
     <string name="posts">%d posts</string>
     <string name="clear_all">Clear all</string>
+    <string name="bookmarked_news">Bookmarked news</string>
+    <string name="about_text_1">WordPress to Ionic 3 News App</string>
+    <string name="about_text_2">Amazing list of features</string>
+    <string name="about_text_3">No need for development skills</string>
+    <string name="about_text_4">Wordpress as Backend</string>
+    <string name="about_text_5">Amazing Documentation and Support</string>
+    <string name="about_text_6">Firebased Push Notifications</string>
+    <string name="about_text_7">AdMob Integration</string>
+    <string name="about_text_8">Light and Dark theme</string>
+    <string name="about_text_9">Design files (Sketch, Adobe Xd and Photoshop)</string>
+    <string name="about_text_10">Ionic 3, Sass and Angular 6</string>
+    <string name="about_text_11">Compatible with Android and iOS</string>
+    <string name="about_text_button">Purchase Now</string>
 </resources>

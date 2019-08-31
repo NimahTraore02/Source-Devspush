@@ -6,14 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.base.NavigationActivity">
+    tools:context=".activities.base.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
-        app:elevation="0dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -24,7 +23,8 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorWhite"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:theme="@style/ToolbarIconColor" />
+            app:theme="@style/ToolbarIconColor"
+                android:elevation="8dp" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout

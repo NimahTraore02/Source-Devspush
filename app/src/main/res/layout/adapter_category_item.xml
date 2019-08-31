@@ -6,7 +6,8 @@
         android:layout_height="173dp"
         app:cardCornerRadius="@dimen/small_padding"
         app:cardElevation="@dimen/small_padding"
-        android:layout_marginBottom="@dimen/screen_padding"
+        android:layout_marginTop="@dimen/normal_padding"
+        android:layout_marginBottom="@dimen/normal_padding"
         android:layout_marginStart="@dimen/normal_padding"
         android:layout_marginEnd="@dimen/normal_padding">
 
