@@ -8,11 +8,11 @@ import com.decouikit.news.activities.base.MainActivity
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
-import com.decouikit.news.network.CategoryService
-import com.decouikit.news.network.RetrofitClientInstance
-import com.decouikit.news.network.UserService
+import com.decouikit.news.network.*
 
 class SplashActivity : Activity() {
+
+    var requestCounter = 4
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,23 +20,60 @@ class SplashActivity : Activity() {
 
         val userService = RetrofitClientInstance.retrofitInstance?.create(UserService::class.java)
         val categoryService = RetrofitClientInstance.retrofitInstance?.create(CategoryService::class.java)
+        val tagService = RetrofitClientInstance.retrofitInstance?.create(TagService::class.java)
+        val mediaService = RetrofitClientInstance.retrofitInstance?.create(MediaService::class.java)
 
-        userService?.getUserList()?.enqueue(result = { it ->
+        mediaService?.getMediaList()?.enqueue(result = {
+            requestCounter--
             when (it) {
                 is Result.Success -> {
-                    InMemory.setUserList(it.response.body())
-                }
-            }
-            categoryService?.getCategoryList()?.enqueue(result = {
-                //we call the new enqueue
-                when (it) {
-                    is Result.Success -> {
-                        InMemory.setCategoryList(it.response.body())
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finish()
+                    if (it.response.body() != null) {
+                        InMemory.setMediaList(it.response.body())
                     }
                 }
-            })
+            }
         })
+
+        userService?.getUserList()?.enqueue(result = { it ->
+            requestCounter--
+            when (it) {
+                is Result.Success -> {
+                    if (it.response.body() != null) {
+                        InMemory.setUserList(it.response.body())
+                    }
+                }
+            }
+            openApp()
+        })
+        categoryService?.getCategoryList()?.enqueue(result = {
+            requestCounter--
+            when (it) {
+                is Result.Success -> {
+                    if (it.response.body() != null) {
+                        InMemory.setCategoryList(it.response.body())
+                    }
+                }
+            }
+            openApp()
+        })
+        tagService?.getTagList()?.enqueue(result = {
+            requestCounter--
+            when (it) {
+                is Result.Success -> {
+                    if (it.response.body() != null) {
+                        InMemory.setTagsList(it.response.body())
+                    }
+
+                }
+            }
+            openApp()
+        })
+    }
+
+    private fun openApp() {
+        if (requestCounter == 0) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
     }
 }
