@@ -12,7 +12,7 @@ import com.decouikit.news.network.*
 
 class SplashActivity : Activity() {
 
-    var requestCounter = 4
+    private var requestCounter = 4
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,8 +32,8 @@ class SplashActivity : Activity() {
                     }
                 }
             }
+            openApp()
         })
-
         userService?.getUserList()?.enqueue(result = { it ->
             requestCounter--
             when (it) {
