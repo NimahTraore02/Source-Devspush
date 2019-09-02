@@ -15,7 +15,7 @@ class Preference(context: Context) {
     }
 
     var colorTheme: Int
-        get() = prefs.getInt("THEME_KEY", R.style.AppThemeDark)
+        get() = prefs.getInt("THEME_KEY", R.style.AppTheme)
         set(value) = prefs.edit { it.putInt("THEME_KEY", value) }
 
     var aboutInformation: String

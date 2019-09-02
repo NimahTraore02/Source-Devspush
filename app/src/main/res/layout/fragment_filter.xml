@@ -16,7 +16,8 @@
                 android:layout_marginStart="@dimen/screen_padding"
                 android:layout_marginTop="@dimen/screen_padding"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/divider" />
 
         <TextView
                 android:id="@+id/tvFeaturedNewsViewAll"
@@ -25,7 +26,14 @@
                 android:layout_marginEnd="@dimen/screen_padding"
                 android:text="@string/view_all"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/divider"/>
+
+        <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tab_indicator_height"
+                app:layout_constraintBottom_toTopOf="@+id/viewPager" />
 
         <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewPager"
@@ -36,7 +44,7 @@
                 android:paddingStart="@dimen/screen_padding"
                 android:paddingEnd="@dimen/screen_padding"
                 android:layout_marginTop="@dimen/screen_padding"
-                app:layout_constraintTop_toBottomOf="@+id/tvFeaturedNewsViewAll" />
+                app:layout_constraintTop_toBottomOf="@+id/divider" />
 
         <TextView
                 style="@style/TitleTextStyle"
@@ -44,7 +52,8 @@
                 android:layout_marginStart="@dimen/screen_padding"
                 android:layout_marginTop="@dimen/screen_padding"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewPager" />
+                app:layout_constraintTop_toBottomOf="@+id/viewPager"
+                app:layout_constraintBottom_toTopOf="@+id/divider2"/>
 
         <TextView
                 android:id="@+id/tvRecentNewsViewAll"
@@ -53,9 +62,17 @@
                 android:layout_marginTop="@dimen/screen_padding"
                 android:layout_marginEnd="@dimen/screen_padding"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewPager" />
+                app:layout_constraintTop_toBottomOf="@+id/viewPager"
+                app:layout_constraintBottom_toTopOf="@+id/divider2" />
+
+        <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tab_indicator_height"
+                app:layout_constraintBottom_toTopOf="@+id/rlRecentNews" />
 
         <RelativeLayout
+                android:id="@+id/rlRecentNews"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/screen_padding"
