@@ -1,37 +1,34 @@
 package com.decouikit.news.activities.base
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.decouikit.news.R
-import com.decouikit.news.database.InMemory
+import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.replaceFragment
-import com.decouikit.news.extensions.replaceFragmentWithBackStack
 import com.decouikit.news.fragments.*
-import com.google.android.material.appbar.AppBarLayout
+import com.decouikit.news.utils.NewsConstants
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var toolbar: Toolbar
+    private var fragmentPosition: Int? = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(Preference(this).colorTheme)
         setContentView(R.layout.activity_main)
 
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.colorTitleText))
-
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
@@ -40,8 +37,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        Log.e("TEST", "getCategoryList:" + InMemory.getCategoryList().size.toString())
-        Log.e("TEST", "getUserList:" + InMemory.getUserList().size.toString())
+        fragmentPosition = intent.getIntExtra(NewsConstants.FRAGMENT_POSITION, -1)
 
         navView.setNavigationItemSelectedListener(this)
     }
@@ -52,8 +48,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onResume() {
         super.onResume()
-        replaceFragment(HomeFragment.newInstance(), R.id.navigation_container)
-        nav_view.setCheckedItem(R.id.nav_home)
+        if (fragmentPosition == 5) {
+            replaceFragment(SettingsFragment.newInstance(), R.id.navigation_container)
+            nav_view.setCheckedItem(R.id.nav_settings)
+        }else {
+            replaceFragment(HomeFragment.newInstance(), R.id.navigation_container)
+            nav_view.setCheckedItem(R.id.nav_home)
+        }
     }
 
     override fun onBackPressed() {

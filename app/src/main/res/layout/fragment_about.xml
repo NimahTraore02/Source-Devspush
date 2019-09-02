@@ -56,6 +56,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
+                    android:background="?attr/colorHeader"
                     android:padding="@dimen/normal_padding">
 
                 <TextView
@@ -72,14 +73,8 @@
         </androidx.cardview.widget.CardView>
 
         <Button
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/title_height"
-                android:background="@drawable/rounded_primary_bg"
+                style="@style/ButtonStyle"
                 android:text="@string/about_text_button"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_size_14sp"
-                android:fontFamily="@font/roboto"
-                android:textAllCaps="false"
                 android:layout_margin="@dimen/normal_padding"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

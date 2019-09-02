@@ -23,51 +23,49 @@ class SplashActivity : Activity() {
         val tagService = RetrofitClientInstance.retrofitInstance?.create(TagService::class.java)
         val mediaService = RetrofitClientInstance.retrofitInstance?.create(MediaService::class.java)
 
-        mediaService?.getMediaList()?.enqueue(result = {
-            requestCounter--
-            when (it) {
-                is Result.Success -> {
-                    if (it.response.body() != null) {
-                        InMemory.setMediaList(it.response.body())
-                    }
-                }
-            }
-        })
+//        mediaService?.getMediaList()?.enqueue(result = {
+//            when (it) {
+//                is Result.Success -> {
+//                    if (it.response.body() != null) {
+//                        InMemory.setMediaList(it.response.body())
+//                    }
+//                }
+//            }
+//        })
 
-        userService?.getUserList()?.enqueue(result = { it ->
-            requestCounter--
-            when (it) {
-                is Result.Success -> {
-                    if (it.response.body() != null) {
-                        InMemory.setUserList(it.response.body())
-                    }
-                }
-            }
-            openApp()
-        })
+//        userService?.getUserList()?.enqueue(result = { it ->
+//            requestCounter--
+//            when (it) {
+//                is Result.Success -> {
+//                    if (it.response.body() != null) {
+//                        InMemory.setUserList(it.response.body())
+//                    }
+//                }
+//            }
+//            openApp()
+//        })
         categoryService?.getCategoryList()?.enqueue(result = {
-            requestCounter--
             when (it) {
                 is Result.Success -> {
                     if (it.response.body() != null) {
                         InMemory.setCategoryList(it.response.body())
+                        requestCounter = 0
+                        openApp()
                     }
                 }
             }
-            openApp()
         })
-        tagService?.getTagList()?.enqueue(result = {
-            requestCounter--
-            when (it) {
-                is Result.Success -> {
-                    if (it.response.body() != null) {
-                        InMemory.setTagsList(it.response.body())
-                    }
-
-                }
-            }
-            openApp()
-        })
+//        tagService?.getTagList()?.enqueue(result = {
+//            requestCounter--
+//            when (it) {
+//                is Result.Success -> {
+//                    if (it.response.body() != null) {
+//                        InMemory.setTagsList(it.response.body())
+//                    }
+//
+//                }
+//            }
+//        })
     }
 
     private fun openApp() {

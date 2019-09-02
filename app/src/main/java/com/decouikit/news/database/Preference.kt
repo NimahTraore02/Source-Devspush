@@ -2,6 +2,7 @@ package com.decouikit.news.database
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.decouikit.news.R
 
 class Preference(context: Context) {
 
@@ -13,10 +14,9 @@ class Preference(context: Context) {
         editor.apply()
     }
 
-    //Color theme property default is AppTheme
-//    var colorTheme: Int
-//        get() = prefs.getInt("THEME_KEY", R.style.)
-//        set(value) = prefs.edit { it.putInt("THEME_KEY", value) }
+    var colorTheme: Int
+        get() = prefs.getInt("THEME_KEY", R.style.AppThemeDark)
+        set(value) = prefs.edit { it.putInt("THEME_KEY", value) }
 
     var aboutInformation: String
         get() = prefs.getString("ABOUT_INFORMATION", "") ?: ""

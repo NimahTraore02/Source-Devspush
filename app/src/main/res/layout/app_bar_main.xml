@@ -21,10 +21,10 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorWhite"
+            android:background="?attr/colorHeader"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:theme="@style/ToolbarIconColor"
-                android:elevation="8dp" />
+                app:titleTextColor="?attr/colorTitleText" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
