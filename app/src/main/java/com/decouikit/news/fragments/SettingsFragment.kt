@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.Toast
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.decouikit.news.R
 import com.decouikit.news.database.Preference
@@ -33,6 +36,8 @@ class SettingsFragment : Fragment(), View.OnClickListener {
     private fun initListeners() {
         itemView.btnLightMode.setOnClickListener(this)
         itemView.btnDarkMode.setOnClickListener(this)
+        itemView.cbNotifications.setOnClickListener(this)
+        itemView.cbEnableRtl.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
@@ -42,6 +47,25 @@ class SettingsFragment : Fragment(), View.OnClickListener {
             }
             itemView.btnDarkMode -> {
                 setTheme(R.style.AppThemeDark)
+            }
+        }
+        if (v is CheckBox) {
+            val isChecked: Boolean = v.isChecked
+            when(v) {
+                itemView.cbNotifications -> {
+                    if (isChecked) {
+                        Toast.makeText(v.context, "Notifications enabled", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(v.context, "Notifications disabled", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                itemView.cbEnableRtl -> {
+                    if (isChecked) {
+                        activity?.let { ActivityUtil.setLayoutDirection(it, ViewCompat.LAYOUT_DIRECTION_RTL) }
+                    } else {
+                        activity?.let { ActivityUtil.setLayoutDirection(it, ViewCompat.LAYOUT_DIRECTION_LOCALE) }
+                    }
+                }
             }
         }
     }

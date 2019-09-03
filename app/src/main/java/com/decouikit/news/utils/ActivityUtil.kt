@@ -1,9 +1,9 @@
 package com.decouikit.news.utils
 
 import android.content.Intent
-import android.provider.SyncStateContract
-import android.util.Log
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity
+import com.decouikit.news.R
 
 object ActivityUtil {
 
@@ -15,5 +15,9 @@ object ActivityUtil {
         activity?.finish()
         activity?.overridePendingTransition(0, 0)
         activity?.startActivity(intent)
+    }
+
+    fun setLayoutDirection(activity: FragmentActivity, layoutDirection: Int) {
+        ViewCompat.setLayoutDirection(activity.findViewById(R.id.parent), layoutDirection)
     }
 }
