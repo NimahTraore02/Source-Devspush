@@ -8,11 +8,13 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
+import androidx.core.view.ViewCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.decouikit.news.R
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.replaceFragment
 import com.decouikit.news.fragments.*
+import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.NewsConstants
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -21,18 +23,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private lateinit var toolbar: Toolbar
     private var fragmentPosition: Int? = -1
+    private val prefs: Preference by lazy {
+        Preference(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(Preference(this).colorTheme)
         setContentView(R.layout.activity_main)
 
+        if (prefs.isRtlEnabled) {
+            ActivityUtil.setLayoutDirection(this, ViewCompat.LAYOUT_DIRECTION_RTL)
+        } else {
+            ActivityUtil.setLayoutDirection(this, ViewCompat.LAYOUT_DIRECTION_LOCALE)
+        }
+
+
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
@@ -51,7 +67,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (fragmentPosition == 5) {
             replaceFragment(SettingsFragment.newInstance(), R.id.navigation_container)
             nav_view.setCheckedItem(R.id.nav_settings)
-        }else {
+        } else {
             replaceFragment(HomeFragment.newInstance(), R.id.navigation_container)
             nav_view.setCheckedItem(R.id.nav_home)
         }
@@ -94,7 +110,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 replaceFragment(CategoryFragment.newInstance(), R.id.navigation_container)
             }
             R.id.nav_bookmark -> {
-                replaceFragment(ViewAllFragment.newInstance(getString(R.string.bookmarked_news)), R.id.navigation_container)
+                replaceFragment(
+                    ViewAllFragment.newInstance(getString(R.string.bookmarked_news)),
+                    R.id.navigation_container
+                )
             }
             R.id.nav_about -> {
                 replaceFragment(AboutFragment.newInstance(), R.id.navigation_container)

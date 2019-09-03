@@ -30,7 +30,13 @@ class SettingsFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initLayout()
         initListeners()
+    }
+
+    private fun initLayout() {
+         itemView.cbNotifications.isChecked = prefs?.isPushNotificationEnabled!!
+        itemView.cbEnableRtl.isChecked = prefs?.isRtlEnabled!!
     }
 
     private fun initListeners() {
@@ -53,13 +59,10 @@ class SettingsFragment : Fragment(), View.OnClickListener {
             val isChecked: Boolean = v.isChecked
             when(v) {
                 itemView.cbNotifications -> {
-                    if (isChecked) {
-                        Toast.makeText(v.context, "Notifications enabled", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(v.context, "Notifications disabled", Toast.LENGTH_SHORT).show()
-                    }
+                    prefs?.isPushNotificationEnabled = isChecked
                 }
                 itemView.cbEnableRtl -> {
+                    prefs?.isRtlEnabled = isChecked
                     if (isChecked) {
                         activity?.let { ActivityUtil.setLayoutDirection(it, ViewCompat.LAYOUT_DIRECTION_RTL) }
                     } else {

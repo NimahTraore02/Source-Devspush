@@ -1,5 +1,6 @@
 package com.decouikit.news.utils
 
+import android.app.Activity
 import android.content.Intent
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity

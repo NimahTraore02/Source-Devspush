@@ -22,13 +22,11 @@ class Preference(context: Context) {
         get() = prefs.getString("ABOUT_INFORMATION", "") ?: ""
         set(value) = prefs.edit { it.putString("ABOUT_INFORMATION", value) }
 
-
     var isPushNotificationEnabled: Boolean
         get() = prefs.getBoolean("IS_PUSH_NOTIFICATION_ENABLED", false)
         set(value) = prefs.edit { it.putBoolean("IS_PUSH_NOTIFICATION_ENABLED", value) }
 
-    var isLightColorSelected: Boolean
-        get() = prefs.getBoolean("IS_LIGHT_COLOR_SELECTED", false)
-        set(value) = prefs.edit { it.putBoolean("IS_LIGHT_COLOR_SELECTED", value) }
-
+    var isRtlEnabled: Boolean
+        get() = prefs.getBoolean("RTL_ENABLED", false)
+        set(value) = prefs.edit { it.putBoolean("RTL_ENABLED", value) }
 }
