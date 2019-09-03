@@ -10,6 +10,7 @@ import com.decouikit.news.activities.base.MainActivity
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
+import com.decouikit.news.extensions.loadDeepLinkUrl
 import com.decouikit.news.network.*
 import com.google.android.gms.ads.MobileAds
 import org.jetbrains.anko.doAsync
@@ -105,6 +106,9 @@ class SplashActivity : Activity() {
                 }
             })
         }
+
+        // TODO RADOVAN UCITATI URL U ZA SINGLE POST
+        Log.e("TEST", "URL$intent.loadDeepLinkUrl()")
 
         with(Handler()) {
 

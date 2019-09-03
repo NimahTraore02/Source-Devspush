@@ -14,13 +14,11 @@ import com.decouikit.news.activities.NewsApplication
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.replaceFragment
 import com.decouikit.news.fragments.*
-import com.decouikit.news.utils.AdMob
 import com.decouikit.news.utils.NewsConstants
-import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
-import com.google.android.gms.ads.MobileAds
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -37,7 +35,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
+        val navView: NavigationView = findViewById(com.decouikit.news.R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
             this,
             drawerLayout,
@@ -50,9 +48,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         fragmentPosition = intent.getIntExtra(NewsConstants.FRAGMENT_POSITION, -1)
         navView.setNavigationItemSelectedListener(this)
-
-        AdMob(this, adView).requestInterstitialAd()
-        AdMob(this, adView).requestBannerAds()
     }
 
     fun getToolbar(): Toolbar {

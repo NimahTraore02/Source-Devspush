@@ -19,23 +19,34 @@
 
         <meta-data
                 android:name="com.google.android.gms.ads.APPLICATION_ID"
-                android:value="ca-app-pub-9107925753247780~3957871943"/>
-
-        <activity android:name=".activities.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-                android:name=".activities.base.MainActivity"
-                android:label="@string/navigation_title"
-                android:theme="@style/AppTheme" />
+                android:value="ca-app-pub-9107925753247780~3957871943" />
 
         <meta-data
                 android:name="preloaded_fonts"
                 android:resource="@array/preloaded_fonts" />
+
+        <activity android:name=".activities.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:host="deconews.decouikit.com" android:scheme="https" />
+            </intent-filter>
+        </activity>
+
+        <activity
+                android:name=".activities.base.MainActivity"
+                android:label="@string/navigation_title"
+                android:theme="@style/AppTheme" />
 
         <service android:name=".firebase.MyFirebaseMessagingService">
             <intent-filter>
