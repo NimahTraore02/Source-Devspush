@@ -10,9 +10,7 @@ import com.decouikit.news.activities.base.MainActivity
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
-import com.decouikit.news.extensions.loadDeepLinkUrl
 import com.decouikit.news.network.*
-import com.google.android.gms.ads.MobileAds
 import org.jetbrains.anko.doAsync
 
 class SplashActivity : Activity() {
@@ -28,90 +26,12 @@ class SplashActivity : Activity() {
         val tagService = RetrofitClientInstance.retrofitInstance?.create(TagService::class.java)
         val mediaService = RetrofitClientInstance.retrofitInstance?.create(MediaService::class.java)
         val postsService = RetrofitClientInstance.retrofitInstance?.create(PostsService::class.java)
-        val commentsService =
-            RetrofitClientInstance.retrofitInstance?.create(CommentsService::class.java)
-        doAsync {
-            mediaService?.getMediaList()?.enqueue(result = {
-                requestCounter--
-                when (it) {
-                    is Result.Success -> {
-                        if (it.response.body() != null) {
-                            InMemory.setMediaList(it.response.body())
-                        }
-                    }
-                }
-                openApp()
-            })
-        }
-        doAsync {
-            userService?.getUserList()?.enqueue(result = { it ->
-                requestCounter--
-                when (it) {
-                    is Result.Success -> {
-                        if (it.response.body() != null) {
-                            InMemory.setUserList(it.response.body())
-                        }
-                    }
-                }
-                openApp()
-            })
-        }
-        doAsync {
-            categoryService?.getCategoryList()?.enqueue(result = {
-                requestCounter--
-                when (it) {
-                    is Result.Success -> {
-                        if (it.response.body() != null) {
-                            InMemory.setCategoryList(it.response.body())
-                        }
-                    }
-                }
-                openApp()
-            })
-        }
-        doAsync {
-            tagService?.getTagList()?.enqueue(result = {
-                requestCounter--
-                when (it) {
-                    is Result.Success -> {
-                        if (it.response.body() != null) {
-                            InMemory.setTagsList(it.response.body())
-                        }
-                    }
-                }
-                openApp()
-            })
-        }
-
-        doAsync {
-            postsService?.getPostsList(1, 10)?.enqueue(result = {
-                when (it) {
-                    is Result.Success -> {
-                        if (it.response.body() != null) {
-                            Log.e("TEST", "POSTS:" + it.response.body().size)
-                        }
-                    }
-                }
-            })
-        }
-
-        doAsync {
-            postsService?.getPostsByCategory("4", 1, 10)?.enqueue(result = {
-                when (it) {
-                    is Result.Success -> {
-                        if (it.response.body() != null) {
-                            Log.e("TEST", "POSTS:" + it.response.body().size)
-                        }
-                    }
-                }
-            })
-        }
+        val commentsService = RetrofitClientInstance.retrofitInstance?.create(CommentsService::class.java)
 
         // TODO RADOVAN UCITATI URL U ZA SINGLE POST
         Log.e("TEST", "URL$intent.loadDeepLinkUrl()")
 
         with(Handler()) {
-
             doAsync {
                 mediaService?.getMediaList()?.enqueue(result = {
                     requestCounter--

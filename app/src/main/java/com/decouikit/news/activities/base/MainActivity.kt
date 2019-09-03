@@ -14,10 +14,13 @@ import com.decouikit.news.activities.NewsApplication
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.replaceFragment
 import com.decouikit.news.fragments.*
+import com.decouikit.news.utils.AdMob
 import com.decouikit.news.utils.NewsConstants
-import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest
+import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.app_bar_main.*
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -25,7 +28,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var toolbar: Toolbar
     private var fragmentPosition: Int? = -1
 
-    private lateinit var mInterstitialAd: InterstitialAd
+    private lateinit var mPublisherInterstitialAd: PublisherInterstitialAd
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +51,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         fragmentPosition = intent.getIntExtra(NewsConstants.FRAGMENT_POSITION, -1)
         navView.setNavigationItemSelectedListener(this)
+        AdMob(this, publisherAdView).requestBannerAds()
     }
 
     fun getToolbar(): Toolbar {
