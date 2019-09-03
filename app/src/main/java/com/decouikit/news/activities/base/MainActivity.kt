@@ -11,11 +11,16 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.decouikit.news.R
+import com.decouikit.news.activities.NewsApplication
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.replaceFragment
 import com.decouikit.news.fragments.*
+import com.decouikit.news.utils.AdMob
 import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.NewsConstants
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -26,6 +31,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val prefs: Preference by lazy {
         Preference(this)
     }
+
+    private lateinit var mInterstitialAd: InterstitialAd
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,8 +61,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         fragmentPosition = intent.getIntExtra(NewsConstants.FRAGMENT_POSITION, -1)
-
         navView.setNavigationItemSelectedListener(this)
+
+        AdMob(this, adView).requestInterstitialAd()
+        AdMob(this, adView).requestBannerAds()
     }
 
     fun getToolbar(): Toolbar {
@@ -64,6 +73,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onResume() {
         super.onResume()
+        NewsApplication.activityResumed()
         if (fragmentPosition == 5) {
             replaceFragment(SettingsFragment.newInstance(), R.id.navigation_container)
             nav_view.setCheckedItem(R.id.nav_settings)
@@ -71,6 +81,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             replaceFragment(HomeFragment.newInstance(), R.id.navigation_container)
             nav_view.setCheckedItem(R.id.nav_home)
         }
+    }
+
+    override fun onPause() {
+        NewsApplication.activityPaused()
+        super.onPause()
     }
 
     override fun onBackPressed() {
