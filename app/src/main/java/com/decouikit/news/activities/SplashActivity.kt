@@ -11,6 +11,7 @@ import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.network.*
+import com.google.android.gms.ads.MobileAds
 import org.jetbrains.anko.doAsync
 
 class SplashActivity : Activity() {
@@ -20,15 +21,14 @@ class SplashActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-
         val userService = RetrofitClientInstance.retrofitInstance?.create(UserService::class.java)
         val categoryService =
             RetrofitClientInstance.retrofitInstance?.create(CategoryService::class.java)
         val tagService = RetrofitClientInstance.retrofitInstance?.create(TagService::class.java)
         val mediaService = RetrofitClientInstance.retrofitInstance?.create(MediaService::class.java)
         val postsService = RetrofitClientInstance.retrofitInstance?.create(PostsService::class.java)
-        val commentsService = RetrofitClientInstance.retrofitInstance?.create(CommentsService::class.java)
-
+        val commentsService =
+            RetrofitClientInstance.retrofitInstance?.create(CommentsService::class.java)
         doAsync {
             mediaService?.getMediaList()?.enqueue(result = {
                 requestCounter--
