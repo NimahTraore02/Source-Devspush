@@ -44,7 +44,7 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
     }
 
     override fun onTabSelected(tab: TabLayout.Tab) {
-        fragment = FilterFragment.newInstance(InMemory.getCategoryList()[tab.position].name)
+        fragment = FilterFragment.newInstance(InMemory.getCategoryList()[tab.position].id, InMemory.getCategoryList()[tab.position].name)
         replaceFragment(fragment, R.id.frmHomePlaceholder)
     }
 

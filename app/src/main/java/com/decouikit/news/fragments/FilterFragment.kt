@@ -9,17 +9,20 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.decouikit.news.R
 import com.decouikit.news.adapters.FeaturedNewsAdapter
 import com.decouikit.news.adapters.RecentNewsAdapter
-import com.decouikit.news.extensions.replaceFragment
+import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.replaceFragmentWithBackStack
+import com.decouikit.news.network.dto.MediaItem
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.fragment_filter.view.*
 
-class FilterFragment: Fragment(), View.OnClickListener {
+class FilterFragment : Fragment(), View.OnClickListener {
 
     private lateinit var itemView: View
-    private lateinit var filter: String
+    private var categoryId: Int? = null
+    private lateinit var categoryName: String
+    private lateinit var allMediaList: List<MediaItem>
 
-    private lateinit var featuredItems: ArrayList<String>
+    private var featuredItems = arrayListOf<MediaItem>()
     private lateinit var featuredAdapter: FeaturedNewsAdapter
 
     private lateinit var recentItems: ArrayList<String>
@@ -27,10 +30,15 @@ class FilterFragment: Fragment(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        filter = arguments?.getString(NewsConstants.FILTER, "").toString()
+        categoryId = arguments?.getInt(NewsConstants.CATEGORY_ID)
+        categoryName = arguments?.getString(NewsConstants.CATEGORY_NAME, "").toString()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         itemView = inflater.inflate(R.layout.fragment_filter, container, false)
         return itemView
     }
@@ -38,22 +46,23 @@ class FilterFragment: Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        allMediaList = InMemory.getMediaList()
+
         initFeaturedNews()
         initRecentNews()
         initListeners()
     }
 
     private fun initFeaturedNews() {
-        featuredItems = arrayListOf()
-        featuredItems.add("Prvi")
-        featuredItems.add("Drugi")
-        featuredItems.add("Treci")
-        featuredItems.add("Cetvrti")
+
         featuredAdapter = FeaturedNewsAdapter(featuredItems, itemView.context)
 
         itemView.viewPager.adapter = featuredAdapter
         itemView.viewPager.offscreenPageLimit = 3
-        itemView.viewPager.setCurrentItem(1, true)//TODO selektovan prvi, promeniti nakon dobijanja pravih podataka
+        itemView.viewPager.setCurrentItem(
+            1,
+            true
+        )//TODO selektovan prvi, promeniti nakon dobijanja pravih podataka
     }
 
     private fun initRecentNews() {
@@ -79,21 +88,28 @@ class FilterFragment: Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        when(v) {
-           itemView.tvFeaturedNewsViewAll -> {
-               replaceFragmentWithBackStack(ViewAllFragment.newInstance(getString(R.string.featured_news)), R.id.navigation_container)
-           }
+        when (v) {
+            itemView.tvFeaturedNewsViewAll -> {
+                replaceFragmentWithBackStack(
+                    ViewAllFragment.newInstance(getString(R.string.featured_news)),
+                    R.id.navigation_container
+                )
+            }
             itemView.tvRecentNewsViewAll -> {
-                replaceFragmentWithBackStack(ViewAllFragment.newInstance(getString(R.string.recent_news)), R.id.navigation_container)
+                replaceFragmentWithBackStack(
+                    ViewAllFragment.newInstance(getString(R.string.recent_news)),
+                    R.id.navigation_container
+                )
             }
         }
     }
 
     companion object {
-        fun newInstance(filter: String): FilterFragment {
+        fun newInstance(categoryId: Int, categoryName: String): FilterFragment {
             val fragment = FilterFragment()
             val args = Bundle()
-            args.putString(NewsConstants.FILTER, filter)
+            args.putInt(NewsConstants.CATEGORY_ID, categoryId)
+            args.putString(NewsConstants.CATEGORY_NAME, categoryName)
             fragment.arguments = args
             return fragment
         }
