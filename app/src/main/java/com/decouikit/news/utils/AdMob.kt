@@ -4,15 +4,20 @@ import android.app.Activity
 import android.content.Context
 import android.text.TextUtils
 import android.view.View
+import com.decouikit.news.R
 import com.decouikit.news.activities.NewsApplication
 import com.google.android.gms.ads.*
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest
+import com.google.android.gms.ads.doubleclick.PublisherAdView
+import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd
+import kotlinx.android.synthetic.main.app_bar_main.*
 
-public class AdMob(private val mContext: Context, private var adView: AdView?) {
+public class AdMob(private val mContext: Context, private var adView: PublisherAdView?) {
 
-    private var mInterstitialAd: InterstitialAd? = null
+    private var mInterstitialAd: PublisherInterstitialAd? = null
 
-    private val adRequest: AdRequest
-        get() = AdRequest.Builder()
+    private val adRequest: PublisherAdRequest
+        get() = PublisherAdRequest.Builder()
             .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
             .build()
 
@@ -27,9 +32,9 @@ public class AdMob(private val mContext: Context, private var adView: AdView?) {
     }
 
     private fun initInterstitialAd() {
-        val interstitialId = "ca-app-pub-9107925753247780~3957871943"
+        val interstitialId = mContext.getString(R.string.application_ad_id)
         if (!TextUtils.isEmpty(interstitialId)) {
-            mInterstitialAd = InterstitialAd(mContext)
+            mInterstitialAd = PublisherInterstitialAd(mContext)
             mInterstitialAd?.adUnitId = interstitialId
             mInterstitialAd?.adListener = object : AdListener() {
                 override fun onAdLoaded() {
@@ -42,9 +47,10 @@ public class AdMob(private val mContext: Context, private var adView: AdView?) {
     }
 
     private fun initBannerAds() {
-        MobileAds.initialize(mContext, "ca-app-pub-9107925753247780~3957871943")
+        val interstitialId = mContext.getString(R.string.application_ad_id)
+        MobileAds.initialize(mContext, interstitialId)
         if (adView != null) {
-            val bannerId = "ca-app-pub-9107925753247780~3957871943"
+            val bannerId = mContext.getString(R.string.banner_id)
             adView?.visibility = if (!TextUtils.isEmpty(bannerId)) View.VISIBLE else View.GONE
         }
     }
@@ -52,9 +58,10 @@ public class AdMob(private val mContext: Context, private var adView: AdView?) {
     fun requestInterstitialAd() {
         (mContext as Activity).runOnUiThread(Runnable {
             if (mInterstitialAd != null) {
-                val interstitialId = "ca-app-pub-9107925753247780~3957871943"
+                val interstitialId = mContext.getString(R.string.interstitial_id)
                 if (!TextUtils.isEmpty(interstitialId) && NewsApplication.isActivityVisible()) {
-                    mInterstitialAd!!.loadAd(adRequest)
+                    mInterstitialAd?.adUnitId = mContext.getString(R.string.interstitial_id)
+                    mInterstitialAd?.loadAd(adRequest)
                 }
             }
         })
@@ -63,13 +70,12 @@ public class AdMob(private val mContext: Context, private var adView: AdView?) {
     fun requestBannerAds() {
         (mContext as Activity).runOnUiThread(Runnable {
             if (adView != null) {
-                val bannerId = "ca-app-pub-9107925753247780~3957871943"
+                val bannerId = mContext.getString(R.string.banner_id)
                 if (!TextUtils.isEmpty(bannerId)) {
-                    adView!!.loadAd(adRequest)
+                    adView?.loadAd(adRequest)
                 }
             }
         })
-
     }
 
     companion object {

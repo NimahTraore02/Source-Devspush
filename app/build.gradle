@@ -51,7 +51,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:17.2.0'
 
     //Ads
-    implementation 'com.google.android.gms:play-services-ads:18.1.1'
+    implementation 'com.google.android.gms:play-services-ads:18.2.0'
 
     //OneSignal
     implementation 'com.onesignal:OneSignal:3.11.3'
