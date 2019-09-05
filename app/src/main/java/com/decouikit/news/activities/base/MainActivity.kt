@@ -124,10 +124,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 replaceFragment(CategoryFragment.newInstance(), R.id.navigation_container)
             }
             R.id.nav_bookmark -> {
-                replaceFragment(
-                    ViewAllFragment.newInstance(getString(R.string.bookmarked_news)),
-                    R.id.navigation_container
-                )
+//                replaceFragment(
+//                    ViewAllFragment.newInstance(getString(R.string.bookmarked_news), arrayListOf()),
+//                    R.id.navigation_container
+//                )
             }
             R.id.nav_about -> {
                 replaceFragment(AboutFragment.newInstance(), R.id.navigation_container)

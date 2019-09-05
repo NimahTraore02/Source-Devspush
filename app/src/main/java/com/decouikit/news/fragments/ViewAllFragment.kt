@@ -8,20 +8,32 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.decouikit.news.R
 import com.decouikit.news.adapters.ViewAllAdapter
+import com.decouikit.news.database.InMemory
+import com.decouikit.news.extensions.Result
+import com.decouikit.news.extensions.enqueue
+import com.decouikit.news.network.PostsService
+import com.decouikit.news.network.RetrofitClientInstance
+import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.fragment_view_all.view.*
+import org.jetbrains.anko.doAsync
 
 class ViewAllFragment : Fragment() {
 
     private lateinit var itemView: View
-    private lateinit var title: String
 
-    private lateinit var items: ArrayList<String>
+    private var categoryId: Int? = 0
+    private lateinit var categoryName: String
+
+    private val allMediaList = InMemory.getMediaList()
+
     private lateinit var adapter: ViewAllAdapter
+    private val items = arrayListOf<PostItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        title = arguments?.getString(NewsConstants.VIEW_ALL_TITLE, "").toString()
+        categoryId = arguments?.getInt(NewsConstants.CATEGORY_ID)
+        categoryName = arguments?.getString(NewsConstants.CATEGORY_NAME, "").toString()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -33,35 +45,42 @@ class ViewAllFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initLayout()
+        val postsService = RetrofitClientInstance.retrofitInstance?.create(PostsService::class.java)
+        doAsync {
+            postsService?.getPostsByCategory(categoryId.toString(), 1, 10)?.enqueue(result = {
+                when (it) {
+                    is Result.Success -> {
+                        if (it.response.body() != null) {
+                            val posts = it.response.body() as ArrayList<PostItem>
+                            for (postItem in posts) {
+                                for (mediaItem in allMediaList) {
+                                    if (mediaItem.id == postItem.featured_media) {
+                                        postItem.categoryName = categoryName
+                                        postItem.source_url = mediaItem.source_url
+                                        items.add(postItem)
+                                        adapter.setData(items)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            })
+        }
     }
 
     private fun initLayout() {
-        itemView.tvTitle.text = title
-        itemView.tvClearAll.visibility = if (title == getString(R.string.bookmarked_news)) {
-            View.VISIBLE
-        } else {
-             View.GONE
-        }
-
-        items = arrayListOf()
-        items.add("Sport")
-        items.add("Architecture")
-        items.add("Design")
-        items.add("Food")
-        items.add("Drink")
-        items.add("Design")
-        items.add("Architecture")
-        adapter = ViewAllAdapter(items)
-
+        adapter = ViewAllAdapter(arrayListOf())
         itemView.rvItems.layoutManager = LinearLayoutManager(itemView.context)
         itemView.rvItems.adapter = adapter
     }
 
     companion object {
-        fun newInstance(title: String): ViewAllFragment {
+        fun newInstance(categoryId: Int, categoryName: String): ViewAllFragment {
             val fragment = ViewAllFragment()
             val args = Bundle()
-            args.putString(NewsConstants.VIEW_ALL_TITLE, title)
+            args.putInt(NewsConstants.CATEGORY_ID, categoryId)
+            args.putString(NewsConstants.CATEGORY_NAME, categoryName)
             fragment.arguments = args
             return fragment
         }

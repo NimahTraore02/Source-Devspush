@@ -19,7 +19,7 @@
         app:tabIndicatorColor="?attr/colorTitleText"
         app:tabIndicatorHeight="@dimen/tab_indicator_height"
         app:tabMode="scrollable"
-        android:elevation="@dimen/small_padding">
+        android:elevation="@dimen/normal_padding">
     </com.google.android.material.tabs.TabLayout>
 
     <FrameLayout

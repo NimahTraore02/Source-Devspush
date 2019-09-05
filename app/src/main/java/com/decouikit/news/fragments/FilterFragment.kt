@@ -10,22 +10,31 @@ import com.decouikit.news.R
 import com.decouikit.news.adapters.FeaturedNewsAdapter
 import com.decouikit.news.adapters.RecentNewsAdapter
 import com.decouikit.news.database.InMemory
+import com.decouikit.news.extensions.Result
+import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.extensions.replaceFragmentWithBackStack
+import com.decouikit.news.network.PostsService
+import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.MediaItem
+import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.fragment_filter.view.*
+import org.jetbrains.anko.doAsync
 
 class FilterFragment : Fragment(), View.OnClickListener {
 
     private lateinit var itemView: View
+
     private var categoryId: Int? = null
     private lateinit var categoryName: String
-    private lateinit var allMediaList: List<MediaItem>
 
-    private var featuredItems = arrayListOf<MediaItem>()
+    private lateinit var allMediaList: List<MediaItem>
+    private lateinit var allPostList: List<PostItem>
+
+    private var featuredPostItems = arrayListOf<PostItem>()
     private lateinit var featuredAdapter: FeaturedNewsAdapter
 
-    private lateinit var recentItems: ArrayList<String>
+    private var recentPostItems = arrayListOf<PostItem>()
     private lateinit var recentAdapter: RecentNewsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,36 +55,61 @@ class FilterFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        allMediaList = InMemory.getMediaList()
-
-        initFeaturedNews()
-        initRecentNews()
+        val postsService = RetrofitClientInstance.retrofitInstance?.create(PostsService::class.java)
+        doAsync {
+            postsService?.getPostsByCategory(categoryId.toString(), 1, 10)?.enqueue(result = {
+                when (it) {
+                    is Result.Success -> {
+                        if (it.response.body() != null) {
+                            allMediaList = InMemory.getMediaList()
+                            allPostList = it.response.body() as ArrayList<PostItem>
+                            initFeaturedNews()
+                            initRecentNews()
+                        }
+                    }
+                }
+            })
+        }
         initListeners()
     }
 
     private fun initFeaturedNews() {
-
-        featuredAdapter = FeaturedNewsAdapter(featuredItems, itemView.context)
+        var postCounter = 0
+        for (postItem in allPostList) {
+            postItem.categoryName = categoryName
+            for (mediaItem in allMediaList) {
+                if (mediaItem.id == postItem.featured_media) {
+                    postItem.source_url = mediaItem.source_url
+                }
+            }
+            featuredPostItems.add(postItem)
+            postCounter++
+            if (postCounter == 3) {
+                break
+            }
+        }
+        featuredAdapter = FeaturedNewsAdapter(featuredPostItems, itemView.context)
 
         itemView.viewPager.adapter = featuredAdapter
         itemView.viewPager.offscreenPageLimit = 3
         itemView.viewPager.setCurrentItem(
             1,
             true
-        )//TODO selektovan prvi, promeniti nakon dobijanja pravih podataka
+        )
     }
 
     private fun initRecentNews() {
-        recentItems = arrayListOf()
-        recentItems.add("Sport")
-        recentItems.add("Architecture")
-        recentItems.add("Design")
-        recentItems.add("Food")
-        recentItems.add("Drink")
-        recentItems.add("Design")
-        recentItems.add("Architecture")
+        for (postItem in allPostList.subList(3, allPostList.size)) {
+            postItem.categoryName = categoryName
+            for (mediaItem in allMediaList) {
+                if (mediaItem.id == postItem.featured_media) {
+                    postItem.source_url = mediaItem.source_url
+                }
+            }
+            recentPostItems.add(postItem)
+        }
 
-        recentAdapter = RecentNewsAdapter(recentItems)
+        recentAdapter = RecentNewsAdapter(recentPostItems)
 
         itemView.rvRecentNews.layoutManager = GridLayoutManager(itemView.context, 2)
         itemView.rvRecentNews.adapter = recentAdapter
@@ -90,16 +124,20 @@ class FilterFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v) {
             itemView.tvFeaturedNewsViewAll -> {
-                replaceFragmentWithBackStack(
-                    ViewAllFragment.newInstance(getString(R.string.featured_news)),
-                    R.id.navigation_container
-                )
+                categoryId?.let { ViewAllFragment.newInstance(it, categoryName) }?.let {
+                    replaceFragmentWithBackStack(
+                        it,
+                        R.id.navigation_container
+                    )
+                }
             }
             itemView.tvRecentNewsViewAll -> {
-                replaceFragmentWithBackStack(
-                    ViewAllFragment.newInstance(getString(R.string.recent_news)),
-                    R.id.navigation_container
-                )
+                categoryId?.let { ViewAllFragment.newInstance(it, categoryName) }?.let {
+                    replaceFragmentWithBackStack(
+                        it,
+                        R.id.navigation_container
+                    )
+                }
             }
         }
     }

@@ -15,13 +15,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <ImageView
-                android:id="@+id/ivItemBg"
-                android:background="@color/colorBlue"
+        <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent">
+
+            <ImageView
+                    android:id="@+id/ivItemBg"
+                    android:scaleType="fitXY"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/darker_gray_50transparency" />
+        </FrameLayout>
 
         <TextView
+                android:id="@+id/tvTag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/screen_padding"
@@ -64,6 +75,7 @@
                 android:id="@+id/tvItemDate"
                 style="@style/DateTextStyle"
                 android:text="12 May 2019"
+                android:drawableStart="@drawable/ic_watch_later_white"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold"
                 android:layout_marginStart="@dimen/screen_padding"
@@ -72,12 +84,15 @@
                 app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
+                android:visibility="gone"
+                android:id="@+id/tvItemComments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="15 comments"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold"
-                android:drawableStart="@drawable/ic_comment"
+                android:drawableStart="@drawable/ic_mode_comment_white"
+                android:gravity="center_vertical"
                 android:drawablePadding="@dimen/small_padding"
                 android:textSize="@dimen/text_size_14sp"
                 android:fontFamily="@font/roboto"

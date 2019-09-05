@@ -11,10 +11,13 @@ import com.decouikit.news.R
 import com.decouikit.news.activities.base.MainActivity
 import com.decouikit.news.adapters.CategoryAdapter
 import com.decouikit.news.database.InMemory
+import com.decouikit.news.extensions.replaceFragment
+import com.decouikit.news.extensions.replaceFragmentWithBackStack
+import com.decouikit.news.interfaces.OnCategoryItemClickListener
 import com.decouikit.news.network.dto.Category
 import kotlinx.android.synthetic.main.fragment_category.view.*
 
-class CategoryFragment : Fragment() {
+class CategoryFragment : Fragment(), OnCategoryItemClickListener {
 
     private lateinit var itemView: View
 
@@ -30,9 +33,13 @@ class CategoryFragment : Fragment() {
     }
 
     private fun initLayout() {
-        val adapter = CategoryAdapter(InMemory.getCategoryList() as ArrayList<Category>)
+        val adapter = CategoryAdapter(InMemory.getCategoryList() as ArrayList<Category>, this)
         itemView.rvCategory.layoutManager = GridLayoutManager(itemView.context, 2)
         itemView.rvCategory.adapter = adapter
+    }
+
+    override fun onCategoryItemClick(item: Category) {
+        replaceFragmentWithBackStack(ViewAllFragment.newInstance(item.id, item.name), R.id.navigation_container)
     }
 
     companion object {

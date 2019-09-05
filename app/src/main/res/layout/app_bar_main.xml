@@ -13,7 +13,6 @@
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -23,19 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorHeader"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
             app:theme="@style/ToolbarIconColor"
-                app:titleTextColor="?attr/colorTitleText" />
-
-        <com.google.android.gms.ads.doubleclick.PublisherAdView
-                android:id="@+id/publisherAdView"
-                android:layout_width="426dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                app:adSize="BANNER"
-                app:adUnitId="/6499/example/banner"/>
-
+            app:titleTextColor="?attr/colorTitleText"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
@@ -46,7 +34,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
-
     </FrameLayout>
 
+    <com.google.android.gms.ads.doubleclick.PublisherAdView
+            android:id="@+id/publisherAdView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            app:adSize="BANNER"
+            app:adUnitId="/6499/example/banner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
