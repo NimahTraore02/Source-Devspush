@@ -11,6 +11,7 @@ import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.network.*
+import com.google.android.gms.ads.MobileAds
 import org.jetbrains.anko.doAsync
 
 class SplashActivity : Activity() {

@@ -1,8 +1,10 @@
 package com.decouikit.news.activities.base
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -15,9 +17,11 @@ import com.decouikit.news.activities.NewsApplication
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.replaceFragment
 import com.decouikit.news.fragments.*
-import com.decouikit.news.utils.AdMob
 import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.NewsConstants
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest
 import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd
 import com.google.android.material.navigation.NavigationView
@@ -33,19 +37,26 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Preference(this)
     }
 
-    private lateinit var mPublisherInterstitialAd: PublisherInterstitialAd
+    private lateinit var mInterstitialAd: PublisherInterstitialAd
+
+    private val adRequest: PublisherAdRequest
+        get() = PublisherAdRequest.Builder()
+            .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+            .addTestDevice("D4660E67112CAF17CE018F3C95A8F64D")
+            .build()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(Preference(this).colorTheme)
         setContentView(R.layout.activity_main)
 
-        if (prefs.isRtlEnabled) {
-            ActivityUtil.setLayoutDirection(this, ViewCompat.LAYOUT_DIRECTION_RTL)
-        } else {
-            ActivityUtil.setLayoutDirection(this, ViewCompat.LAYOUT_DIRECTION_LOCALE)
-        }
-
+        ActivityUtil.setLayoutDirection(
+            this,
+            if (prefs.isRtlEnabled)
+                ViewCompat.LAYOUT_DIRECTION_RTL
+            else
+                ViewCompat.LAYOUT_DIRECTION_LOCALE
+        )
 
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -63,7 +74,29 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         fragmentPosition = intent.getIntExtra(NewsConstants.FRAGMENT_POSITION, -1)
         navView.setNavigationItemSelectedListener(this)
-        AdMob(this, publisherAdView).requestBannerAds()
+
+        MobileAds.initialize(this) {}
+        showInterstitialAds()
+        showBannerAds()
+    }
+
+    private fun showInterstitialAds() {
+        mInterstitialAd = PublisherInterstitialAd(this)
+        mInterstitialAd.adUnitId = getString(R.string.interstitial_id);
+        mInterstitialAd.loadAd(adRequest)
+        mInterstitialAd.adListener = object : AdListener() {
+            override fun onAdLoaded() {
+                if (mInterstitialAd.isLoaded) {
+                    mInterstitialAd.show()
+                }
+            }
+        }
+    }
+
+    private fun showBannerAds() {
+        val bannerId = getString(R.string.banner_id)
+        publisherAdView.visibility = if (!TextUtils.isEmpty(bannerId)) View.VISIBLE else View.GONE
+        publisherAdView.loadAd(adRequest)
     }
 
     fun getToolbar(): Toolbar {

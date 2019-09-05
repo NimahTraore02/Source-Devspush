@@ -3,11 +3,12 @@ package com.decouikit.news.activities
 import android.app.Application
 import android.content.Intent
 import com.decouikit.news.activities.base.MainActivity
+import com.google.android.gms.ads.MobileAds
 import com.onesignal.OSNotificationOpenResult
 import com.onesignal.OneSignal
 
-class NewsApplication : Application(), OneSignal.NotificationOpenedHandler {
 
+class NewsApplication : Application(), OneSignal.NotificationOpenedHandler {
 
     override fun onCreate() {
         super.onCreate()
@@ -17,6 +18,8 @@ class NewsApplication : Application(), OneSignal.NotificationOpenedHandler {
             .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
             .unsubscribeWhenNotificationsAreDisabled(true)
             .init()
+
+        MobileAds.initialize(this) {}
     }
 
     override fun notificationOpened(result: OSNotificationOpenResult) {
