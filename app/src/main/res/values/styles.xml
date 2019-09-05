@@ -54,6 +54,7 @@
         <item name="android:drawableStart">@drawable/ic_watch_later</item>
         <item name="android:drawablePadding">@dimen/small_padding</item>
         <item name="android:textAlignment">viewStart</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
     <style name="ItemTextStyle">

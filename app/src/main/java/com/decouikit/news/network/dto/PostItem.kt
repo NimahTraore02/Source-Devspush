@@ -23,5 +23,6 @@ data class PostItem(
     @SerializedName("featured_media") val featured_media: Int,
     @SerializedName("sticky") val sticky: Boolean,
     @SerializedName("format") val format: String,
-    @SerializedName("categories") val categories: List<Int>
+    @SerializedName("categories") val categories: List<Int>,
+    var source_url: String = "", var categoryName: String = "", var isBookmarked: Boolean = false
 )

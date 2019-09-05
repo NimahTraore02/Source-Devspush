@@ -13,7 +13,6 @@
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -23,9 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorHeader"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
             app:theme="@style/ToolbarIconColor"
-                app:titleTextColor="?attr/colorTitleText" />
+            app:titleTextColor="?attr/colorTitleText" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -36,9 +34,8 @@
             app:layout_constraintBottom_toTopOf="@+id/publisherAdView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBar">
-
-    </FrameLayout>
+            app:titleTextColor="?attr/colorTitleText"
+            app:layout_constraintTop_toBottomOf="@+id/appBar"/>
 
     <com.google.android.gms.ads.doubleclick.PublisherAdView
             android:id="@+id/publisherAdView"

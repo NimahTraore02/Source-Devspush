@@ -8,28 +8,46 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
         <TextView
                 android:id="@+id/tvTitle"
                 style="@style/TitleTextStyle"
                 android:layout_marginStart="@dimen/screen_padding"
                 android:layout_marginTop="@dimen/screen_padding"
-                android:layout_marginBottom="@dimen/normal_padding"
-                android:text="@string/recent_news"
-                app:layout_constraintBottom_toTopOf="@+id/rlItems"
+                android:text="@string/bookmarked_news"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/divider" />
+
+        <TextView
+                android:id="@+id/tvClearAll"
+                style="@style/ViewAllTextStyle"
+                android:layout_marginTop="@dimen/screen_padding"
+                android:layout_marginEnd="@dimen/screen_padding"
+                android:text="@string/clear_all"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/divider"/>
+        <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tab_indicator_height"
+                android:layout_marginTop="@dimen/screen_padding"
+                app:layout_constraintBottom_toTopOf="@+id/rlItems" />
 
         <RelativeLayout
                 android:id="@+id/rlItems"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/normal_padding"
                 app:layout_constraintBottom_toBottomOf="parent">
 
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvItems"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:nestedScrollingEnabled="false" />
+                    android:nestedScrollingEnabled="false"/>
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
