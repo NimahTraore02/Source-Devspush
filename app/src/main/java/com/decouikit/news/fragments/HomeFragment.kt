@@ -1,5 +1,6 @@
 package com.decouikit.news.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,12 +9,18 @@ import androidx.fragment.app.Fragment
 import com.decouikit.news.R
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.replaceFragment
+import com.decouikit.news.interfaces.HomeFragmentListener
 import com.google.android.material.tabs.TabLayout
 
 class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
 
     private lateinit var itemView: View
-    private lateinit var fragment: FilterFragment
+    private lateinit var callback: HomeFragmentListener
+
+    override fun onAttach(context: Context?) {
+        callback = context as HomeFragmentListener
+        super.onAttach(context)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         itemView = inflater.inflate(R.layout.fragment_home, container, false)
@@ -27,7 +34,6 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
     }
 
     private fun initTabs() {
-
         val mTabLayout = itemView.findViewById<TabLayout>(R.id.homeTab)
         mTabLayout.addOnTabSelectedListener(this)
         InMemory.getCategoryList().forEach {
@@ -44,8 +50,13 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
     }
 
     override fun onTabSelected(tab: TabLayout.Tab) {
-        fragment = FilterFragment.newInstance(InMemory.getCategoryList()[tab.position].id, InMemory.getCategoryList()[tab.position].name)
+        val fragment = FilterFragment.newInstance(InMemory.getCategoryList()[tab.position].id, InMemory.getCategoryList()[tab.position].name)
         replaceFragment(fragment, R.id.frmHomePlaceholder)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        callback.homeFragmentBehavior()
     }
 
     companion object {

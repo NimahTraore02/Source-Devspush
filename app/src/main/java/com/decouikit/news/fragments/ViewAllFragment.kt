@@ -1,5 +1,6 @@
 package com.decouikit.news.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import com.decouikit.news.adapters.ViewAllAdapter
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
+import com.decouikit.news.interfaces.ViewAllFragmentListener
 import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.PostItem
@@ -30,10 +32,18 @@ class ViewAllFragment : Fragment() {
     private lateinit var adapter: ViewAllAdapter
     private val items = arrayListOf<PostItem>()
 
+    private lateinit var callback: ViewAllFragmentListener
+
+    override fun onAttach(context: Context?) {
+        callback = context as ViewAllFragmentListener
+        super.onAttach(context)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         categoryId = arguments?.getInt(NewsConstants.CATEGORY_ID)
         categoryName = arguments?.getString(NewsConstants.CATEGORY_NAME, "").toString()
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -73,6 +83,11 @@ class ViewAllFragment : Fragment() {
         adapter = ViewAllAdapter(arrayListOf())
         itemView.rvItems.layoutManager = LinearLayoutManager(itemView.context)
         itemView.rvItems.adapter = adapter
+    }
+
+    override fun onResume() {
+        super.onResume()
+        callback.viewAllFragmentBehavior()
     }
 
     companion object {

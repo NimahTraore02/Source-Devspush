@@ -1,10 +1,11 @@
 package com.decouikit.news.utils
 
-import android.app.Activity
 import android.content.Intent
+import android.view.Menu
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity
 import com.decouikit.news.R
+import com.google.android.material.appbar.AppBarLayout
 
 object ActivityUtil {
 
@@ -20,5 +21,13 @@ object ActivityUtil {
 
     fun setLayoutDirection(activity: FragmentActivity, layoutDirection: Int) {
         ViewCompat.setLayoutDirection(activity.findViewById(R.id.parent), layoutDirection)
+    }
+
+    fun setAppBarElevation(appBar: AppBarLayout, elevation: Float) {
+        appBar.elevation = elevation
+    }
+
+    fun setSearchVisibility(menuItem: Menu, isVisible: Boolean) {
+        menuItem.findItem(R.id.action_search).isVisible = isVisible
     }
 }

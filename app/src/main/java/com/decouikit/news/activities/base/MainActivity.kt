@@ -17,6 +17,8 @@ import com.decouikit.news.activities.NewsApplication
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.replaceFragment
 import com.decouikit.news.fragments.*
+import com.decouikit.news.interfaces.ViewAllFragmentListener
+import com.decouikit.news.interfaces.HomeFragmentListener
 import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.NewsConstants
 import com.google.android.gms.ads.AdListener
@@ -29,10 +31,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+        ViewAllFragmentListener, HomeFragmentListener {
 
     private lateinit var toolbar: Toolbar
     private var fragmentPosition: Int? = -1
+    private lateinit var menuItem: Menu
     private val prefs: Preference by lazy {
         Preference(this)
     }
@@ -61,7 +65,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(com.decouikit.news.R.id.nav_view)
+        val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
             this,
             drawerLayout,
@@ -82,7 +86,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun showInterstitialAds() {
         mInterstitialAd = PublisherInterstitialAd(this)
-        mInterstitialAd.adUnitId = getString(R.string.interstitial_id);
+        mInterstitialAd.adUnitId = getString(R.string.interstitial_id)
         mInterstitialAd.loadAd(adRequest)
         mInterstitialAd.adListener = object : AdListener() {
             override fun onAdLoaded() {
@@ -99,20 +103,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         publisherAdView.loadAd(adRequest)
     }
 
-    fun getToolbar(): Toolbar {
-        return toolbar
-    }
-
     override fun onResume() {
         super.onResume()
-        NewsApplication.activityResumed()
         if (fragmentPosition == 5) {
+            ActivityUtil.setAppBarElevation(appBar, 8f)
             replaceFragment(SettingsFragment.newInstance(), R.id.navigation_container)
             nav_view.setCheckedItem(R.id.nav_settings)
         } else {
             replaceFragment(HomeFragment.newInstance(), R.id.navigation_container)
             nav_view.setCheckedItem(R.id.nav_home)
         }
+        NewsApplication.activityResumed()
     }
 
     override fun onPause() {
@@ -132,6 +133,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
+        menuItem = menu
         return true
     }
 
@@ -157,10 +159,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 replaceFragment(CategoryFragment.newInstance(), R.id.navigation_container)
             }
             R.id.nav_bookmark -> {
-//                replaceFragment(
-//                    ViewAllFragment.newInstance(getString(R.string.bookmarked_news), arrayListOf()),
-//                    R.id.navigation_container
-//                )
             }
             R.id.nav_about -> {
                 replaceFragment(AboutFragment.newInstance(), R.id.navigation_container)
@@ -169,8 +167,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 replaceFragment(SettingsFragment.newInstance(), R.id.navigation_container)
             }
         }
+        if (item.itemId != R.id.nav_home) {
+            ActivityUtil.setAppBarElevation(appBar, 8f)
+        }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun homeFragmentBehavior() {
+        ActivityUtil.setAppBarElevation(appBar, 0f)
+    }
+
+    override fun viewAllFragmentBehavior() {
+        ActivityUtil.setAppBarElevation(appBar, 8f)
     }
 }
