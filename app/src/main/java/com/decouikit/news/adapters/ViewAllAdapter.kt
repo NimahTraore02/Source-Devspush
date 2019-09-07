@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.decouikit.news.R
+import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.getCalendarDate
 import com.decouikit.news.extensions.getDateFromString
 import com.decouikit.news.extensions.load
@@ -54,11 +55,12 @@ class ViewAllAdapter(private var items: ArrayList<PostItem>)
             view.tvItemDate.text = Date().getDateFromString(item.date)?.getCalendarDate()
             view.tvItemTag.text = item.categoryName
 
-            //TODO sacuvati listu PostItema u preferencama i odatle proveravati pomocu Id da li je bookmarkovano, jer se ovako ne sacuva
-            if (item.isBookmarked) {
-                view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_bookmark_red))
-            } else {
-                view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_bookmark))
+            for (bookmarkItem in Preference(view.context).getBookmarkedNews()) {
+                if (item.id == bookmarkItem.id) {
+                    view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_bookmark_red))
+                }else {
+                    view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_bookmark))
+                }
             }
         }
 
@@ -68,12 +70,20 @@ class ViewAllAdapter(private var items: ArrayList<PostItem>)
                     Toast.makeText(v.context, "Otvori detalje",Toast.LENGTH_LONG).show()
                 }
                 view.ivBookmark -> {
-                    if (!item.isBookmarked) {
-                        item.isBookmarked = true
-                        view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_bookmark_red))
+                    val bookmarkedNews = Preference(v.context).getBookmarkedNews()
+                    if (bookmarkedNews.isNotEmpty()) {
+                        for (bookmarkItem in bookmarkedNews) {
+                            if (item.id != bookmarkItem.id) {
+                                Preference(v.context).getBookmarkedNews().add(item)
+                                view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(v.context, R.drawable.ic_bookmark_red))
+                            } else {
+                                Preference(v.context).getBookmarkedNews().remove(item)
+                                view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(v.context, R.drawable.ic_bookmark))
+                            }
+                        }
                     } else {
-                        item.isBookmarked = false
-                        view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_bookmark))
+                        Preference(v.context).getBookmarkedNews().add(item)
+                        view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(v.context, R.drawable.ic_bookmark_red))
                     }
                 }
             }

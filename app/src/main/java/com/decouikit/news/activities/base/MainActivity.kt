@@ -159,6 +159,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 replaceFragment(CategoryFragment.newInstance(), R.id.navigation_container)
             }
             R.id.nav_bookmark -> {
+                replaceFragment(BookmarkFragment.newInstance(), R.id.navigation_container)
             }
             R.id.nav_about -> {
                 replaceFragment(AboutFragment.newInstance(), R.id.navigation_container)

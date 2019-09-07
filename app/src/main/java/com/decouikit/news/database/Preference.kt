@@ -3,6 +3,9 @@ package com.decouikit.news.database
 import android.content.Context
 import android.content.SharedPreferences
 import com.decouikit.news.R
+import com.decouikit.news.network.dto.PostItem
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class Preference(context: Context) {
 
@@ -29,4 +32,17 @@ class Preference(context: Context) {
     var isRtlEnabled: Boolean
         get() = prefs.getBoolean("RTL_ENABLED", false)
         set(value) = prefs.edit { it.putBoolean("RTL_ENABLED", value) }
+
+    fun setBookmarkedNews(items: ArrayList<PostItem>) {
+        val gson = Gson()
+        val json = gson.toJson(items)
+        prefs.edit().putString("BOOKMARKED_NEWS", json).apply()
+    }
+
+    fun getBookmarkedNews(): ArrayList<PostItem> {
+        val gson = Gson()
+        val json = prefs.getString("BOOKMARKED_NEWS", arrayListOf<PostItem>().toString())
+        val type = object : TypeToken<List<PostItem>>() {}.type
+        return gson.fromJson(json, type)
+    }
 }
