@@ -17,7 +17,7 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
     private lateinit var itemView: View
     private lateinit var callback: HomeFragmentListener
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         callback = context as HomeFragmentListener
         super.onAttach(context)
     }

@@ -34,7 +34,7 @@ class ViewAllFragment : Fragment() {
 
     private lateinit var callback: ViewAllFragmentListener
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         callback = context as ViewAllFragmentListener
         super.onAttach(context)
     }

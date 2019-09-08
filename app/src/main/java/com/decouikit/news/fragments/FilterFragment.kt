@@ -152,6 +152,7 @@ class FilterFragment : Fragment(), View.OnClickListener, AddBookmarkListener {
                 } else {
                     Preference(itemView.context).removeBookmark(items[itemView.viewPager.currentItem])
                 }
+        //TODO dodati promenu bookmark ikonice
     }
 
     companion object {
