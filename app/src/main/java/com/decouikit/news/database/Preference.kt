@@ -42,7 +42,31 @@ class Preference(context: Context) {
     fun getBookmarkedNews(): ArrayList<PostItem> {
         val gson = Gson()
         val json = prefs.getString("BOOKMARKED_NEWS", arrayListOf<PostItem>().toString())
+        if (json.isNullOrEmpty()) {
+            return arrayListOf()
+        }
         val type = object : TypeToken<List<PostItem>>() {}.type
         return gson.fromJson(json, type)
+    }
+
+    fun addBookmark(item: PostItem) {
+        val result = getBookmarkedNews()
+            result.add(item)
+            setBookmarkedNews(result)
+    }
+
+    fun removeBookmark(item: PostItem) {
+        val result = getBookmarkedNews()
+        result.remove(item)
+        setBookmarkedNews(result)
+    }
+
+    fun getBookmarkByPostId(id: Int): PostItem? {
+        for(bookmarkedItem in getBookmarkedNews()) {
+            if (bookmarkedItem.id == id) {
+                return bookmarkedItem
+            }
+        }
+        return null
     }
 }

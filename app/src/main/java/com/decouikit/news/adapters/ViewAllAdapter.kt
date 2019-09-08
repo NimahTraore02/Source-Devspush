@@ -11,6 +11,7 @@ import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.getCalendarDate
 import com.decouikit.news.extensions.getDateFromString
 import com.decouikit.news.extensions.load
+import com.decouikit.news.extensions.setBookmarkIcon
 import com.decouikit.news.network.dto.PostItem
 import kotlinx.android.synthetic.main.adapter_view_all_item.view.*
 import java.util.*
@@ -70,21 +71,13 @@ class ViewAllAdapter(private var items: ArrayList<PostItem>)
                     Toast.makeText(v.context, "Otvori detalje",Toast.LENGTH_LONG).show()
                 }
                 view.ivBookmark -> {
-                    val bookmarkedNews = Preference(v.context).getBookmarkedNews()
-                    if (bookmarkedNews.isNotEmpty()) {
-                        for (bookmarkItem in bookmarkedNews) {
-                            if (item.id != bookmarkItem.id) {
-                                Preference(v.context).getBookmarkedNews().add(item)
-                                view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(v.context, R.drawable.ic_bookmark_red))
-                            } else {
-                                Preference(v.context).getBookmarkedNews().remove(item)
-                                view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(v.context, R.drawable.ic_bookmark))
-                            }
-                        }
+                    val postItem = Preference(v.context).getBookmarkByPostId(item.id)
+                    if(postItem == null) {
+                        Preference(v.context).addBookmark(item)
                     } else {
-                        Preference(v.context).getBookmarkedNews().add(item)
-                        view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(v.context, R.drawable.ic_bookmark_red))
+                        Preference(v.context).removeBookmark(item)
                     }
+                    view.ivBookmark.setBookmarkIcon(postItem == null)
                 }
             }
         }

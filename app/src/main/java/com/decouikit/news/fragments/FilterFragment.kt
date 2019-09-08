@@ -4,15 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.decouikit.news.R
 import com.decouikit.news.adapters.FeaturedNewsAdapter
 import com.decouikit.news.adapters.RecentNewsAdapter
 import com.decouikit.news.database.InMemory
+import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.extensions.replaceFragmentWithBackStack
+import com.decouikit.news.interfaces.AddBookmarkListener
 import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.MediaItem
@@ -21,7 +24,7 @@ import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.fragment_filter.view.*
 import org.jetbrains.anko.doAsync
 
-class FilterFragment : Fragment(), View.OnClickListener {
+class FilterFragment : Fragment(), View.OnClickListener, AddBookmarkListener {
 
     private lateinit var itemView: View
 
@@ -88,7 +91,7 @@ class FilterFragment : Fragment(), View.OnClickListener {
                 break
             }
         }
-        featuredAdapter = FeaturedNewsAdapter(featuredPostItems, itemView.context)
+        featuredAdapter = FeaturedNewsAdapter(featuredPostItems, itemView.context, this)
 
         itemView.viewPager.adapter = featuredAdapter
         itemView.viewPager.offscreenPageLimit = 3
@@ -140,6 +143,15 @@ class FilterFragment : Fragment(), View.OnClickListener {
                 }
             }
         }
+    }
+
+    override fun addBookmark(items: List<PostItem>) {
+        val postItem = Preference(itemView.context).getBookmarkByPostId(items[itemView.viewPager.currentItem].id)
+                if(postItem == null) {
+                    Preference(itemView.context).addBookmark(items[itemView.viewPager.currentItem])
+                } else {
+                    Preference(itemView.context).removeBookmark(items[itemView.viewPager.currentItem])
+                }
     }
 
     companion object {
