@@ -24,5 +24,5 @@ data class CommentItem(
     @SerializedName("author") val author: Int,
     @SerializedName("author_name") val authorName: String,
     @SerializedName("author_link") val authorLink: String,
-    @SerializedName("author_avatar_urls") val author_avatar_urls: List<Urls>
+    @SerializedName("author_avatar_urls") val author_avatar_urls: AvatarUrl
 )

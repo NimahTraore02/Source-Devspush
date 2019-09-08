@@ -1,8 +1,7 @@
 package com.decouikit.news.network
 
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.Retrofit
-
+import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClientInstance {
 
@@ -19,7 +18,4 @@ object RetrofitClientInstance {
             }
             return retrofit
         }
-
-
-
 }

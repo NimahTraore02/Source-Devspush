@@ -11,6 +11,7 @@ import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.network.*
+import com.decouikit.news.network.dto.CommentRequest
 import com.google.android.gms.ads.MobileAds
 import org.jetbrains.anko.doAsync
 
@@ -112,9 +113,7 @@ class SplashActivity : Activity() {
 
             postDelayed({
                 doAsync {
-                    commentsService?.getCommentListPostId("2626", 1, 10)?.enqueue(result = {
-                        Log.e("TEST", "getCommentListPostId:" + 2626)
-
+                    commentsService?.getCommentListPostId(2626, 1, 10)?.enqueue(result = {
                         when (it) {
                             is Result.Success -> {
                                 if (it.response.body() != null) {
@@ -128,6 +127,23 @@ class SplashActivity : Activity() {
                     })
                 }
             }, 3000)
+
+            postDelayed({
+                doAsync {
+                    commentsService?.saveComment(CommentRequest(2626, "This is content for news", "News", "author@gmail.com", ""))?.enqueue(result = {
+                        when (it) {
+                            is Result.Success -> {
+                                if (it.response.body() != null) {
+                                    Log.e("TEST", "saveComment:" + it.response.body())
+                                }
+                            }
+                            is Result.Failure -> {
+                                Log.e("TEST", "Failure")
+                            }
+                        }
+                    })
+                }
+            }, 1000)
         }
     }
 
