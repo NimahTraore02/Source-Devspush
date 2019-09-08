@@ -41,12 +41,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Preference(this)
     }
 
-    private lateinit var mInterstitialAd: PublisherInterstitialAd
-
     private val adRequest: PublisherAdRequest
         get() = PublisherAdRequest.Builder()
             .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-            .addTestDevice("D4660E67112CAF17CE018F3C95A8F64D")
+            .addTestDevice(getString(R.string.test_device_id))
             .build()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,22 +78,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navView.setNavigationItemSelectedListener(this)
 
         MobileAds.initialize(this) {}
-        showInterstitialAds()
         showBannerAds()
     }
 
-    private fun showInterstitialAds() {
-        mInterstitialAd = PublisherInterstitialAd(this)
-        mInterstitialAd.adUnitId = getString(R.string.interstitial_id)
-        mInterstitialAd.loadAd(adRequest)
-        mInterstitialAd.adListener = object : AdListener() {
-            override fun onAdLoaded() {
-                if (mInterstitialAd.isLoaded) {
-                    mInterstitialAd.show()
-                }
-            }
-        }
-    }
+    // TODO PREBACITI U SINGLE POST
+    //        showInterstitialAds()
+//    private lateinit var mInterstitialAd: PublisherInterstitialAd
+//
+//    private fun showInterstitialAds() {
+//        mInterstitialAd = PublisherInterstitialAd(this)
+//        mInterstitialAd.adUnitId = getString(R.string.interstitial_id)
+//        mInterstitialAd.loadAd(adRequest)
+//        mInterstitialAd.adListener = object : AdListener() {
+//            override fun onAdLoaded() {
+//                if (mInterstitialAd.isLoaded) {
+//                    mInterstitialAd.show()
+//                }
+//            }
+//        }
+//    }
 
     private fun showBannerAds() {
         val bannerId = getString(R.string.banner_id)
