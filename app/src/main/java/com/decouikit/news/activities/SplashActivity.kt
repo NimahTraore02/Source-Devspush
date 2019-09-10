@@ -1,21 +1,20 @@
 package com.decouikit.news.activities
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import com.decouikit.news.R
-import com.decouikit.news.activities.base.MainActivity
+import com.decouikit.news.activities.common.BaseActivity
+import com.decouikit.news.activities.common.NavigationActivity
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.network.*
 import com.decouikit.news.network.dto.CommentRequest
-import com.google.android.gms.ads.MobileAds
 import org.jetbrains.anko.doAsync
 
-class SplashActivity : Activity() {
+class SplashActivity : BaseActivity() {
 
     private var requestCounter = 4
 
@@ -149,7 +148,7 @@ class SplashActivity : Activity() {
 
     private fun openApp() {
         if (requestCounter == 0) {
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, NavigationActivity::class.java))
             finish()
         }
     }

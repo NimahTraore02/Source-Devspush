@@ -4,14 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.decouikit.news.R
-import com.decouikit.news.activities.base.MainActivity
 import com.decouikit.news.adapters.CategoryAdapter
 import com.decouikit.news.database.InMemory
-import com.decouikit.news.extensions.replaceFragment
 import com.decouikit.news.extensions.replaceFragmentWithBackStack
 import com.decouikit.news.interfaces.OnCategoryItemClickListener
 import com.decouikit.news.network.dto.Category

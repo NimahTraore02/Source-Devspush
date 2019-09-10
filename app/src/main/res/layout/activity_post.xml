@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:id="@+id/frmParent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="370dp">
+
+                <ImageView
+                    android:id="@+id/ivPostBg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/darker_gray_50transparency"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/back_arrow_left"
+                    android:layout_margin="@dimen/normal_padding"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="@dimen/small_padding"
+                app:cardElevation="@dimen/small_padding"
+                app:cardUseCompatPadding="true"
+                android:layout_marginStart="@dimen/normal_padding"
+                android:layout_marginEnd="@dimen/normal_padding"
+                android:layout_marginTop="340dp"
+                android:layout_marginBottom="@dimen/normal_padding">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/colorHeader">
+
+                    <TextView
+                        android:id="@+id/tvTag"
+                        style="@style/TagTextStyle"
+                        android:text="Technology"
+                        android:layout_marginStart="@dimen/screen_padding"
+                        android:layout_marginTop="@dimen/screen_padding"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/ivBookmark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginEnd="@dimen/screen_padding"
+                        android:layout_marginTop="@dimen/screen_padding"
+                        android:background="@drawable/ic_bookmark"/>
+
+
+                    <TextView
+                        android:id="@+id/tvItemTitle"
+                        style="@style/TitleTextStyle"
+                        android:textSize="@dimen/text_size_20sp"
+                        android:textStyle="bold"
+                        android:ellipsize="end"
+                        android:maxLines="3"
+                        android:paddingStart="@dimen/screen_padding"
+                        android:paddingEnd="@dimen/screen_padding"
+                        android:layout_margin="@dimen/screen_padding"
+                        app:layout_constraintTop_toBottomOf="@+id/tvTag"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:text="World voyage delivers 'memories to last a lifetime' 2019 World voyage delivers 'memories to last a lifetime' 2019 World voyage delivers 'memories to last a lifetime' 2019"/>
+
+                    <TextView
+                        android:id="@+id/tvDate"
+                        style="@style/DateTextStyle"
+                        android:layout_marginTop="@dimen/screen_padding"
+                        android:layout_marginStart="@dimen/screen_padding"
+                        android:layout_marginBottom="@dimen/screen_padding"
+                        app:layout_constraintTop_toBottomOf="@+id/tvItemTitle"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/tvComments"
+                        style="@style/CommentTextStyle"
+                        android:layout_marginTop="@dimen/screen_padding"
+                        android:layout_marginStart="@dimen/screen_padding"
+                        android:layout_marginBottom="@dimen/screen_padding"
+                        app:layout_constraintTop_toBottomOf="@+id/tvItemTitle"
+                        app:layout_constraintStart_toEndOf="@+id/tvDate"/>
+
+                    <WebView
+                        android:id="@+id/webView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/screen_padding"
+                        android:isScrollContainer="true"
+                        app:layout_constraintTop_toBottomOf="@+id/tvDate"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+        </FrameLayout>
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frmParent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                style="@style/TitleTextStyle"
+                android:text="@string/recent_news"
+                android:layout_marginStart="@dimen/screen_padding"
+                android:layout_marginTop="@dimen/screen_padding"/>
+
+
+            <RelativeLayout
+                android:id="@+id/rlRecentNews"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/screen_padding"
+                app:layout_constraintTop_toBottomOf="@+id/tvRecentNewsViewAll" >
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvRecentNews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"/>
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/btnOpenComments"
+                style="@style/ButtonStyle"
+                android:text="@string/view_all_comments"
+                android:layout_margin="@dimen/normal_padding"/>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

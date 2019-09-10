@@ -10,6 +10,7 @@ import com.decouikit.news.R
 import com.decouikit.news.extensions.getCalendarDate
 import com.decouikit.news.extensions.getDateFromString
 import com.decouikit.news.extensions.load
+import com.decouikit.news.extensions.openPostActivity
 import com.decouikit.news.interfaces.RemoveBookmarkListener
 import com.decouikit.news.network.dto.PostItem
 import kotlinx.android.synthetic.main.adapter_view_all_item.view.*
@@ -63,7 +64,7 @@ class BookmarkAdapter(private var items: ArrayList<PostItem>,
         override fun onClick(v: View) {
             when (v) {
                 view.itemParent -> {
-                    Toast.makeText(v.context, "Otvori detalje", Toast.LENGTH_LONG).show()
+                    v.openPostActivity(v.context, item)
                 }
                 view.ivBookmark -> {
                     mListener.removeBookmark(item)

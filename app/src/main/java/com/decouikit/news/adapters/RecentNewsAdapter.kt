@@ -9,6 +9,7 @@ import com.decouikit.news.R
 import com.decouikit.news.extensions.getCalendarDate
 import com.decouikit.news.extensions.getDateFromString
 import com.decouikit.news.extensions.load
+import com.decouikit.news.extensions.openPostActivity
 import com.decouikit.news.network.dto.PostItem
 import kotlinx.android.synthetic.main.adapter_recent_news_item.view.*
 import java.util.*
@@ -34,13 +35,24 @@ class RecentNewsAdapter(private val items: ArrayList<PostItem>)
         holder.bind(items[position])
     }
 
-    class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+
+        private lateinit var item: PostItem
+
+        init {
+            view.setOnClickListener(this)
+        }
 
         fun bind(item: PostItem) {
+            this.item = item
             view.tvItemTag.text = item.categoryName
             view.tvItemTitle.text = item.title.rendered
             view.tvItemDate.text = Date().getDateFromString(item.date)?.getCalendarDate()
             view.ivItemBg.load(item.source_url)
+        }
+
+        override fun onClick(v: View) {
+            v.openPostActivity(v.context, item)
         }
     }
 }

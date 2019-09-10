@@ -1,20 +1,17 @@
 package com.decouikit.news.adapters
 
 import android.content.Context
+import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.PagerAdapter
-import com.bumptech.glide.Glide
 import com.decouikit.news.R
 import com.decouikit.news.database.Preference
-import com.decouikit.news.extensions.getCalendarDate
-import com.decouikit.news.extensions.getDateFromString
-import com.decouikit.news.extensions.load
-import com.decouikit.news.extensions.setBookmarkIcon
-import com.decouikit.news.interfaces.AddBookmarkListener
-import com.decouikit.news.network.dto.MediaItem
+import com.decouikit.news.extensions.*
+import com.decouikit.news.interfaces.FeaturedNewsListener
 import com.decouikit.news.network.dto.PostItem
 import kotlinx.android.synthetic.main.adapter_featured_news_item.view.*
 import kotlinx.android.synthetic.main.adapter_featured_news_item.view.ivItemBg
@@ -24,7 +21,7 @@ import java.util.*
 
 class FeaturedNewsAdapter(private var postItems: List<PostItem>,
                           private var context: Context,
-                          private var listener: AddBookmarkListener)
+                          private var listener: FeaturedNewsListener)
     : PagerAdapter(), View.OnClickListener {
 
     private lateinit var view: View
@@ -64,23 +61,25 @@ class FeaturedNewsAdapter(private var postItems: List<PostItem>,
 
     private fun initListener(view: View) {
         view.ivBookmark.setOnClickListener(this)
+        view.featuredParent.setOnClickListener(this)
+    }
+
+    fun getBookmarkIcon(): ImageView {
+        return view.ivBookmark
     }
 
     fun setBookmarkIconColor(isBookmarked: Boolean) {
         view.ivBookmark.setBookmarkIcon(isBookmarked)
+        notifyDataSetChanged()
     }
 
     override fun onClick(v: View) {
         when(v) {
             v.ivBookmark -> {
-//                val postItem = Preference(v.context).getBookmarkByPostId(postItems[position].id)
-//                if(postItem == null) {
-//                    Preference(v.context).addBookmark(postItems[position])
-//                } else {
-//                    Preference(v.context).removeBookmark(postItems[position])
-//                }
-//                v.ivBookmark.setBookmarkIcon(postItem == null)
-                listener.addBookmark(postItems)
+                listener.boomarkFeaturedNews(postItems)
+            }
+            v.featuredParent -> {
+                listener.openPost(postItems)
             }
         }
     }

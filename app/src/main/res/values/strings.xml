@@ -36,4 +36,18 @@
         \n(enable)</string>
     <string name="light_mode">Light Mode</string>
     <string name="dark_mode">Dark Mode</string>
+    <string name="comment">1 comment</string>
+    <string name="comments">%d comments</string>
+    <string name="comments_title">Comments</string>
+    <string name="view_all_comments">View all comments (%d)</string>
+    <string name="write_comment">Write a Comment</string>
+    <string name="hint_name">Your Name</string>
+    <string name="hint_email">Your Email Address</string>
+    <string name="hint_comment">Your Comment</string>
+    <string name="generic_error">Something went wrong!</string>
+    <string name="name_validation">Please enter your name</string>
+    <string name="comment_validation">Please enter your comment</string>
+    <string name="email_validation_format">Invalid format of email address</string>
+    <string name="email_validation_empty">Please enter your email</string>
+    <string name="email_validation_short">Email is too short</string>
 </resources>

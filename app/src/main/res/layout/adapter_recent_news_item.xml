@@ -9,7 +9,7 @@
         android:layout_marginStart="@dimen/normal_padding"
         android:layout_marginEnd="@dimen/normal_padding"
         app:cardCornerRadius="@dimen/small_padding"
-        app:cardElevation="@dimen/normal_padding">
+        app:cardElevation="@dimen/small_padding">
 
     <LinearLayout
             android:layout_width="match_parent"

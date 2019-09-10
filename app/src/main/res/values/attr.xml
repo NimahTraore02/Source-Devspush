@@ -3,4 +3,5 @@
     <attr name="colorHeader" format="reference"/>
     <attr name="colorTitleText" format="reference"/>
     <attr name="colorButtonText" format="reference"/>
+    <attr name="colorButtonPressed" format="reference"/>
 </resources>

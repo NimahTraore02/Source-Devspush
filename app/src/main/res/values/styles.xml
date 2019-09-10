@@ -9,6 +9,7 @@
         <item name="android:windowBackground">@color/colorPrimaryDarkBg</item>
         <item name="colorTitleText">@color/colorWhite</item>
         <item name="colorButtonText">@color/colorPrimaryDark</item>
+        <item name="colorButtonPressed">@color/colorMenuItem</item>
     </style>
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
@@ -19,6 +20,7 @@
         <item name="android:windowBackground">@color/colorLightBg</item>
         <item name="colorTitleText">@color/colorPrimaryDark</item>
         <item name="colorButtonText">@color/colorWhite</item>
+        <item name="colorButtonPressed">@color/colorPrimaryDarkBg</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
@@ -26,6 +28,18 @@
 
     <style name="ToolbarIconColor" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:textColorSecondary">@color/colorSubTitleText</item>
+    </style>
+
+    <style name="ToolbarTitleStyle" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textSize">@dimen/text_size_14sp</item>
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="android:textColor">?attr/colorTitleText</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:text">@string/navigation_title</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="TabTextStyle">
@@ -55,6 +69,15 @@
         <item name="android:drawablePadding">@dimen/small_padding</item>
         <item name="android:textAlignment">viewStart</item>
         <item name="android:gravity">center_vertical</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CommentTextStyle" parent="ViewAllTextStyle">
+        <item name="android:drawableStart">@drawable/ic_comment</item>
+        <item name="android:drawablePadding">@dimen/small_padding</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="ItemTextStyle">
@@ -91,5 +114,18 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:buttonTint">@color/colorBlue</item>
+    </style>
+
+    <style name="EditTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/title_height</item>
+        <item name="android:background">@drawable/rounded_edit_text</item>
+        <item name="android:elevation">@dimen/small_padding</item>
+        <item name="android:textColor">@color/colorSubTitleText</item>
+        <item name="android:textColorHint">@color/colorSubTitleText</item>
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="android:paddingStart">@dimen/screen_padding</item>
+        <item name="android:paddingEnd">@dimen/screen_padding</item>
+        <item name="android:layout_margin">@dimen/normal_padding</item>
     </style>
 </resources>

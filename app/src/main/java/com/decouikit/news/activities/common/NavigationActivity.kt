@@ -1,4 +1,4 @@
-package com.decouikit.news.activities.base
+package com.decouikit.news.activities.common
 
 import android.os.Bundle
 import android.text.TextUtils
@@ -13,7 +13,7 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.decouikit.news.R
-import com.decouikit.news.activities.NewsApplication
+import com.decouikit.news.utils.NewsApplication
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.replaceFragment
 import com.decouikit.news.fragments.*
@@ -21,17 +21,15 @@ import com.decouikit.news.interfaces.ViewAllFragmentListener
 import com.decouikit.news.interfaces.HomeFragmentListener
 import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.NewsConstants
-import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest
-import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
         ViewAllFragmentListener, HomeFragmentListener {
 
     private lateinit var toolbar: Toolbar
@@ -62,6 +60,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false) //hide default app title in toolbar
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
@@ -135,6 +134,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         menuItem = menu
+        //set true for visible search button
         return false
     }
 

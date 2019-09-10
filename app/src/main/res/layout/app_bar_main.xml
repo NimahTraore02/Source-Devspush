@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.base.MainActivity">
+    tools:context=".activities.common.NavigationActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
@@ -25,8 +25,11 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorHeader"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:theme="@style/ToolbarIconColor"
-            app:titleTextColor="?attr/colorTitleText" />
+            app:theme="@style/ToolbarIconColor">
+
+            <TextView
+                style="@style/ToolbarTitleStyle"/>
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 

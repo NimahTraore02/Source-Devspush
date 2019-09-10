@@ -8,10 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.decouikit.news.R
 import com.decouikit.news.database.Preference
-import com.decouikit.news.extensions.getCalendarDate
-import com.decouikit.news.extensions.getDateFromString
-import com.decouikit.news.extensions.load
-import com.decouikit.news.extensions.setBookmarkIcon
+import com.decouikit.news.extensions.*
 import com.decouikit.news.network.dto.PostItem
 import kotlinx.android.synthetic.main.adapter_view_all_item.view.*
 import java.util.*
@@ -32,6 +29,11 @@ class ViewAllAdapter(private var items: ArrayList<PostItem>)
 
     fun setData(items: ArrayList<PostItem>) {
         this.items = items
+        notifyDataSetChanged()
+    }
+
+    fun removeItem(item: PostItem) {
+        items.remove(item)
         notifyDataSetChanged()
     }
 
@@ -67,17 +69,11 @@ class ViewAllAdapter(private var items: ArrayList<PostItem>)
 
         override fun onClick(v: View) {
             when(v) {
-                view.itemParent -> {
-                    Toast.makeText(v.context, "Otvori detalje",Toast.LENGTH_LONG).show()
+                v.itemParent -> {
+                    v.openPostActivity(itemView.context, item)
                 }
-                view.ivBookmark -> {
-                    val postItem = Preference(v.context).getBookmarkByPostId(item.id)
-                    if(postItem == null) {
-                        Preference(v.context).addBookmark(item)
-                    } else {
-                        Preference(v.context).removeBookmark(item)
-                    }
-                    view.ivBookmark.setBookmarkIcon(postItem == null)
+                v.ivBookmark -> {
+                    v.bookmark(v.context, item, v.ivBookmark)
                 }
             }
         }
