@@ -50,4 +50,8 @@
     <string name="email_validation_format">Invalid format of email address</string>
     <string name="email_validation_empty">Please enter your email</string>
     <string name="email_validation_short">Email is too short</string>
+    <string name="no_data">Uups, no data!</string>
+    <string name="no_comments_to_display">There are no comments to display</string>
+    <string name="no_bookmarks">Add something to bookmarks
+        \nby taping on bookmark icon</string>
 </resources>

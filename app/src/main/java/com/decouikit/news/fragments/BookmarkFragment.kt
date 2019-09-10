@@ -11,6 +11,7 @@ import com.decouikit.news.adapters.BookmarkAdapter
 import com.decouikit.news.database.Preference
 import com.decouikit.news.interfaces.RemoveBookmarkListener
 import com.decouikit.news.network.dto.PostItem
+import kotlinx.android.synthetic.main.fragment_bookmark.*
 import kotlinx.android.synthetic.main.fragment_bookmark.view.*
 
 class BookmarkFragment : Fragment(), View.OnClickListener, RemoveBookmarkListener {
@@ -33,9 +34,14 @@ class BookmarkFragment : Fragment(), View.OnClickListener, RemoveBookmarkListene
 
     private fun initLayout() {
         bookmarkedList = Preference(itemView.context).getBookmarkedNews()
-        adapter = BookmarkAdapter(bookmarkedList, this)
-        itemView.rvItems.layoutManager = LinearLayoutManager(itemView.context)
-        itemView.rvItems.adapter = adapter
+        if (bookmarkedList.isNullOrEmpty()) {
+            hideContent(true)
+        } else {
+            hideContent(false)
+            adapter = BookmarkAdapter(bookmarkedList, this)
+            itemView.rvItems.layoutManager = LinearLayoutManager(itemView.context)
+            itemView.rvItems.adapter = adapter
+        }
     }
 
     private fun initListeners() {
@@ -48,7 +54,18 @@ class BookmarkFragment : Fragment(), View.OnClickListener, RemoveBookmarkListene
                 bookmarkedList.removeAll { true }
                 Preference(itemView.context).setBookmarkedNews(arrayListOf())
                 adapter.notifyDataSetChanged()
+                hideContent(true)
             }
+        }
+    }
+
+    private fun hideContent(isListEmpty: Boolean) {
+        if(isListEmpty) {
+            bookmarkedContainer.visibility = View.GONE
+            emptyCommentContainer.visibility = View.VISIBLE
+        } else {
+            bookmarkedContainer.visibility = View.VISIBLE
+            emptyCommentContainer.visibility = View.GONE
         }
     }
 
@@ -56,6 +73,7 @@ class BookmarkFragment : Fragment(), View.OnClickListener, RemoveBookmarkListene
         bookmarkedList.remove(item)
         Preference(itemView.context).setBookmarkedNews(bookmarkedList)
         adapter.notifyDataSetChanged()
+        hideContent(true)
     }
 
     companion object {

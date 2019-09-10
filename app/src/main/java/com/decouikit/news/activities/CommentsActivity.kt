@@ -1,6 +1,5 @@
 package com.decouikit.news.activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,19 +29,12 @@ class CommentsActivity : BaseActivity(), View.OnClickListener {
         setContentView(R.layout.activity_all_comments)
 
         postId = intent.getIntExtra(NewsConstants.POST_ITEM_ID, -1)
-        initLayout()
         initListeners()
     }
 
     override fun onResume() {
         super.onResume()
         getComments()
-    }
-
-    private fun initLayout() {
-        adapter = CommentsAdapter(arrayListOf())
-        rvItems.layoutManager = LinearLayoutManager(this)
-        rvItems.adapter = adapter
     }
 
     private fun getComments() {
@@ -52,20 +44,45 @@ class CommentsActivity : BaseActivity(), View.OnClickListener {
                     is Result.Success -> {
                         if (it.response.body() != null) {
                             val comments = it.response.body() as List<CommentItem>
-                            adapter.setData(comments)
+                            initLayout()
+                            if (comments.isNullOrEmpty()) {
+                                hideContent(true)
+                            } else {
+                                hideContent(false)
+                                scrollView.visibility = View.VISIBLE
+                                emptyCommentContainer.visibility = View.GONE
+                                adapter.setData(comments)
+                            }
                         }
                     }
                     is Result.Failure -> {
-
+                        scrollView.visibility = View.GONE
+                        emptyCommentContainer.visibility = View.VISIBLE
                     }
                 }
             })
         }
     }
 
+    private fun initLayout() {
+        adapter = CommentsAdapter(arrayListOf())
+        rvItems.layoutManager = LinearLayoutManager(this)
+        rvItems.adapter = adapter
+    }
+
     private fun initListeners() {
         ivBack.setOnClickListener(this)
         btnWriteComment.setOnClickListener(this)
+    }
+
+    private fun hideContent(isListEmpty: Boolean) {
+        if(isListEmpty) {
+            scrollView.visibility = View.GONE
+            emptyCommentContainer.visibility = View.VISIBLE
+        } else {
+            scrollView.visibility = View.VISIBLE
+            emptyCommentContainer.visibility = View.GONE
+        }
     }
 
     override fun onClick(v: View) {
