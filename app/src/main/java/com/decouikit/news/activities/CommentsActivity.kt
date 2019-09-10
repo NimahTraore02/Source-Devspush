@@ -49,15 +49,12 @@ class CommentsActivity : BaseActivity(), View.OnClickListener {
                                 hideContent(true)
                             } else {
                                 hideContent(false)
-                                scrollView.visibility = View.VISIBLE
-                                emptyCommentContainer.visibility = View.GONE
                                 adapter.setData(comments)
                             }
                         }
                     }
                     is Result.Failure -> {
-                        scrollView.visibility = View.GONE
-                        emptyCommentContainer.visibility = View.VISIBLE
+                        hideContent(true)
                     }
                 }
             })
