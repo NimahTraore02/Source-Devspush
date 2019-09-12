@@ -1,6 +1,5 @@
 package com.decouikit.news.extensions
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -13,7 +12,6 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.decouikit.news.R
-import com.decouikit.news.activities.CommentsActivity
 import com.decouikit.news.activities.PostActivity
 import com.decouikit.news.database.Preference
 import com.decouikit.news.network.dto.PostItem

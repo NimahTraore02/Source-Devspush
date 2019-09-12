@@ -57,13 +57,10 @@ class ViewAllAdapter(private var items: ArrayList<PostItem>)
             view.tvItemTitle.text = item.title.rendered
             view.tvItemDate.text = Date().getDateFromString(item.date)?.getCalendarDate()
             view.tvItemTag.text = item.categoryName
-
-            for (bookmarkItem in Preference(view.context).getBookmarkedNews()) {
-                if (item.id == bookmarkItem.id) {
-                    view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_bookmark_red))
-                }else {
-                    view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_bookmark))
-                }
+            if (Preference(view.context).getBookmarkedNews().contains(item)){
+                view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_bookmark_red))
+            } else {
+                view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_bookmark))
             }
         }
 

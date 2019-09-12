@@ -73,7 +73,6 @@ class BookmarkFragment : Fragment(), View.OnClickListener, RemoveBookmarkListene
         bookmarkedList.remove(item)
         Preference(itemView.context).setBookmarkedNews(bookmarkedList)
         adapter.notifyDataSetChanged()
-        hideContent(true)
     }
 
     companion object {

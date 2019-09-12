@@ -35,13 +35,12 @@ class FeaturedNewsAdapter(private var postItems: List<PostItem>,
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val view = LayoutInflater
+        view = LayoutInflater
                 .from(context)
                 .inflate(R.layout.adapter_featured_news_item, container, false)
         initLayout(view, position)
         initListener(view)
         container.addView(view, 0)
-        this.view = view
         return view
     }
 
@@ -50,12 +49,10 @@ class FeaturedNewsAdapter(private var postItems: List<PostItem>,
         view.tvItemTitle.text = postItems[position].title.rendered
         view.tvItemDate.text = Date().getDateFromString(postItems[position].date)?.getCalendarDate()
         view.ivItemBg.load(postItems[position].source_url)
-        for (bookmarkItem in Preference(view.context).getBookmarkedNews()) {
-            if (postItems[position].id == bookmarkItem.id) {
+        if (Preference(view.context).getBookmarkedNews().contains(postItems[position])){
                 view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_bookmark_red))
-            }else {
+        } else {
                 view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_bookmark))
-            }
         }
     }
 
@@ -70,7 +67,6 @@ class FeaturedNewsAdapter(private var postItems: List<PostItem>,
 
     fun setBookmarkIconColor(isBookmarked: Boolean) {
         view.ivBookmark.setBookmarkIcon(isBookmarked)
-        notifyDataSetChanged()
     }
 
     override fun onClick(v: View) {

@@ -39,7 +39,6 @@ class AboutFragment : Fragment() {
         items.add(getString(R.string.about_text_8))
         items.add(getString(R.string.about_text_9))
         items.add(getString(R.string.about_text_10))
-        items.add(getString(R.string.about_text_11))
 
         itemView.rvAbout.layoutManager = LinearLayoutManager(itemView.context)
         itemView.rvAbout.adapter = AboutListAdapter(items)

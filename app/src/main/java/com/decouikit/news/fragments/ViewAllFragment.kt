@@ -33,6 +33,7 @@ class ViewAllFragment : Fragment() {
     private val items = arrayListOf<PostItem>()
 
     private lateinit var callback: ViewAllFragmentListener
+    val postsService = RetrofitClientInstance.retrofitInstance?.create(PostsService::class.java)
 
     override fun onAttach(context: Context) {
         callback = context as ViewAllFragmentListener
@@ -55,7 +56,10 @@ class ViewAllFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initLayout()
-        val postsService = RetrofitClientInstance.retrofitInstance?.create(PostsService::class.java)
+        getPosts()
+    }
+
+    private fun getPosts() {
         doAsync {
             postsService?.getPostsByCategory(categoryId.toString(), 1, 10)?.enqueue(result = {
                 when (it) {

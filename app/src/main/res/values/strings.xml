@@ -3,7 +3,7 @@
     <string name="navigation_title">Deco news</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_subtitle">WP + Ionic app</string>
+    <string name="nav_header_subtitle">WP + Android app</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="menu_home">Home</string>
     <string name="menu_category">Category</string>
@@ -19,7 +19,7 @@
     <string name="posts">%d posts</string>
     <string name="clear_all">Clear all</string>
     <string name="bookmarked_news">Bookmarked news</string>
-    <string name="about_text_1">WordPress to Ionic 3 News App</string>
+    <string name="about_text_1">WordPress to Android News App</string>
     <string name="about_text_2">Amazing list of features</string>
     <string name="about_text_3">No need for development skills</string>
     <string name="about_text_4">Wordpress as Backend</string>
@@ -28,14 +28,14 @@
     <string name="about_text_7">AdMob Integration</string>
     <string name="about_text_8">Light and Dark theme</string>
     <string name="about_text_9">Design files (Sketch, Adobe Xd and Photoshop)</string>
-    <string name="about_text_10">Ionic 3, Sass and Angular 6</string>
-    <string name="about_text_11">Compatible with Android and iOS</string>
+    <string name="about_text_10">Code in Kotlin</string>
     <string name="about_text_button">Purchase Now</string>
     <string name="enable_push_notification">Enable push notification</string>
     <string name="testing_rtl">Testing our application with Rtl
         \n(enable)</string>
     <string name="light_mode">Light Mode</string>
     <string name="dark_mode">Dark Mode</string>
+    <string name="zero_comments">0 comments</string>
     <string name="comment">1 comment</string>
     <string name="comments">%d comments</string>
     <string name="comments_title">Comments</string>

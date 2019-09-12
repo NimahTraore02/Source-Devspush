@@ -58,12 +58,10 @@ class PostActivity: BaseActivity(), View.OnClickListener {
     @SuppressLint("SetJavaScriptEnabled")
     private fun initLayout() {
         ivPostBg.load(postItem.source_url)
-        for (bookmarkItem in Preference(this).getBookmarkedNews()) {
-            if (postItem.id == bookmarkItem.id) {
-                ivBookmark.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_bookmark_red))
-            }else {
-                ivBookmark.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_bookmark))
-            }
+        if (Preference(this).getBookmarkedNews().contains(postItem)){
+            ivBookmark.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_bookmark_red))
+        } else {
+            ivBookmark.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_bookmark))
         }
         tvTag.text = postItem.categoryName
         tvItemTitle.text = postItem.title.rendered
