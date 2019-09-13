@@ -19,7 +19,12 @@ object InMemory {
     private var TAGS_MAP = mapOf<Int, Tag>()
 
     fun setCategoryList(categoryList: List<Category>) {
-        CATEGORY = categoryList
+        //CHECK EXCLUDE CATEGORY
+        categoryList.forEach{
+            if (!Config.isCategoryExcluded(it)) {
+                CATEGORY = CATEGORY.plus(it)
+            }
+        }
         if (CATEGORY.isNotEmpty()) {
             CATEGORY.forEach { CATEGORY_MAP.plus((Pair(it.id, it))) }
         }

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.decouikit.news.R
 import com.decouikit.news.adapters.FeaturedNewsAdapter
 import com.decouikit.news.adapters.RecentNewsAdapter
+import com.decouikit.news.database.Config
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.*
 import com.decouikit.news.interfaces.FeaturedNewsListener
@@ -56,7 +57,11 @@ class FilterFragment : Fragment(), View.OnClickListener, FeaturedNewsListener {
 
         val postsService = RetrofitClientInstance.retrofitInstance?.create(PostsService::class.java)
         doAsync {
-            postsService?.getPostsByCategory(categoryId.toString(), 1, 10)?.enqueue(result = {
+            postsService?.getPostsByCategory(
+                categoryId.toString(),
+                1,
+                Config.getNumberOfItemPerPage()
+            )?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
                         if (it.response.body() != null) {
@@ -83,14 +88,14 @@ class FilterFragment : Fragment(), View.OnClickListener, FeaturedNewsListener {
             }
             featuredPostItems.add(postItem)
             postCounter++
-            if (postCounter == 3) {
+            if (postCounter == Config.getNumberOfItemForSlider()) {
                 break
             }
         }
         featuredAdapter = FeaturedNewsAdapter(featuredPostItems, itemView.context, this)
 
         itemView.viewPager.adapter = featuredAdapter
-        itemView.viewPager.offscreenPageLimit = 3
+        itemView.viewPager.offscreenPageLimit = Config.getNumberOfItemForSlider()
         itemView.viewPager.setCurrentItem(
             1,
             true
@@ -98,7 +103,7 @@ class FilterFragment : Fragment(), View.OnClickListener, FeaturedNewsListener {
     }
 
     private fun initRecentNews() {
-        for (postItem in allPostList.subList(3, allPostList.size)) {
+        for (postItem in allPostList.subList(Config.getNumberOfItemForSlider(), allPostList.size)) {
             postItem.categoryName = categoryName
             for (mediaItem in allMediaList) {
                 if (mediaItem.id == postItem.featured_media) {
@@ -141,8 +146,12 @@ class FilterFragment : Fragment(), View.OnClickListener, FeaturedNewsListener {
         }
     }
 
-    override fun boomarkFeaturedNews(items: List<PostItem>) {
-        itemView.bookmark(itemView.context, items[itemView.viewPager.currentItem], featuredAdapter.getBookmarkIcon())
+    override fun bookmarkFeaturedNews(items: List<PostItem>) {
+        itemView.bookmark(
+            itemView.context,
+            items[itemView.viewPager.currentItem],
+            featuredAdapter.getBookmarkIcon()
+        )
     }
 
     override fun openPost(items: List<PostItem>) {

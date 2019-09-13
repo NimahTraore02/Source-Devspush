@@ -1,20 +1,15 @@
 package com.decouikit.news.activities
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.webkit.WebChromeClient
-import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
 import com.decouikit.news.adapters.ViewAllAdapter
+import com.decouikit.news.database.Config
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.*
@@ -25,14 +20,12 @@ import com.decouikit.news.network.dto.CommentItem
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.NewsConstants
 import com.decouikit.news.utils.UriChromeClient
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_post.*
 import org.jetbrains.anko.doAsync
 import java.util.*
-import kotlin.collections.ArrayList
 
 
-class PostActivity: BaseActivity(), View.OnClickListener {
+open class PostActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var postItem: PostItem
 
@@ -40,23 +33,35 @@ class PostActivity: BaseActivity(), View.OnClickListener {
     private var postItems = arrayListOf<PostItem>()
     private val allMediaList = InMemory.getMediaList()
 
-    private val commentsService = RetrofitClientInstance.retrofitInstance?.create(CommentsService::class.java)
+    private val commentsService =
+        RetrofitClientInstance.retrofitInstance?.create(CommentsService::class.java)
     private var page = 1
-    private var perPage = 10
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post)
-
-        postItem = gson.fromJson(intent.getStringExtra(NewsConstants.POST_ITEM), PostItem::class.java)
+        postItem = loadPostItem()
         initLayout()
         initListeners()
+        incrementAdsCounterAndShowAds()
+    }
+
+    private fun incrementAdsCounterAndShowAds() {
+        prefs.interstitialAdCounter = prefs.interstitialAdCounter + 1
+        if (prefs.interstitialAdCounter == Config.promptForInterstitialCounter()) {
+            prefs.interstitialAdCounter = 0
+            showInterstitialAds()
+        }
+    }
+
+    private fun loadPostItem(): PostItem {
+        return gson.fromJson(intent.getStringExtra(NewsConstants.POST_ITEM), PostItem::class.java)
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun initLayout() {
         ivPostBg.load(postItem.source_url)
-        if (Preference(this).getBookmarkedNews().contains(postItem)){
+        if (Preference(this).getBookmarkedNews().contains(postItem)) {
             ivBookmark.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_bookmark_red))
         } else {
             ivBookmark.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_bookmark))
@@ -64,18 +69,16 @@ class PostActivity: BaseActivity(), View.OnClickListener {
         tvTag.text = postItem.categoryName
         tvItemTitle.text = postItem.title.rendered
         tvDate.text = Date().getDateFromString(postItem.date)?.getCalendarDate()
-        tvComments.visibility = if (postItem.comment_status == NewsConstants.OPEN_COMMENT_STATUS) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
+        tvComments.visibility = postItem.getCommentVisible()
 
         webView.settings.javaScriptEnabled = true
         webView.webChromeClient = UriChromeClient(this)
-        webView.loadData("<style>img{display: inline;height: auto;max-width: 100%;} " +
-                "iframe{display: block;max-width:100%;margin-top:10px;margin-bottom:10px;}</style>"
-                + postItem.content.rendered,
-            "text/html", "UTF-8")
+        webView.loadData(
+            "<style>img{display: inline;height: auto;max-width: 100%;} " +
+                    "iframe{display: block;max-width:100%;margin-top:10px;margin-bottom:10px;}</style>"
+                    + postItem.content.rendered,
+            "text/html", "UTF-8"
+        )
 
         adapter = ViewAllAdapter(arrayListOf())
         rvRecentNews.layoutManager = LinearLayoutManager(this)
@@ -98,9 +101,14 @@ class PostActivity: BaseActivity(), View.OnClickListener {
 
     private fun getRelatedNews() {
         doAsync {
-            val postsService = RetrofitClientInstance.retrofitInstance?.create(PostsService::class.java)
+            val postsService =
+                RetrofitClientInstance.retrofitInstance?.create(PostsService::class.java)
             val categoryId = postItem.categories[0]
-            postsService?.getPostsByCategory(categoryId.toString(), page, perPage)?.enqueue(result = {
+            postsService?.getPostsByCategory(
+                categoryId.toString(),
+                page,
+                Config.getNumberOfItemPerPage()
+            )?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
                         if (it.response.body() != null) {
@@ -135,7 +143,8 @@ class PostActivity: BaseActivity(), View.OnClickListener {
                             } else {
                                 getString(R.string.comments, result.size)
                             }
-                            btnOpenComments.text = getString(R.string.view_all_comments, result.size)
+                            btnOpenComments.text =
+                                getString(R.string.view_all_comments, result.size)
                         }
                     }
                     is Result.Failure -> {
@@ -155,7 +164,7 @@ class PostActivity: BaseActivity(), View.OnClickListener {
                 v.bookmark(this, postItem, ivBookmark)
             }
             btnOpenComments -> {
-                v.openComments(this, CommentsActivity::class.java ,postItem.id)
+                v.openComments(this, CommentsActivity::class.java, postItem.id)
             }
             ivShare -> {
                 v.share(this, postItem.link)

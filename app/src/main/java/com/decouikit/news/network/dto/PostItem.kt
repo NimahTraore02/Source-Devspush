@@ -1,5 +1,7 @@
 package com.decouikit.news.network.dto
 
+import android.view.View
+import com.decouikit.news.utils.NewsConstants
 import com.google.gson.annotations.SerializedName
 
 data class PostItem(
@@ -25,4 +27,13 @@ data class PostItem(
     @SerializedName("format") val format: String,
     @SerializedName("categories") val categories: List<Int>,
     var source_url: String = "", var categoryName: String = "", var isBookmarked: Boolean = false
-)
+) {
+    fun getCommentVisible(): Int {
+        return if (comment_status == NewsConstants.OPEN_COMMENT_STATUS) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+    }
+
+}

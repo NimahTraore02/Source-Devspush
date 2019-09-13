@@ -2,7 +2,6 @@ package com.decouikit.news.database
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.decouikit.news.R
 import com.decouikit.news.network.dto.PostItem
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -18,19 +17,26 @@ class Preference(context: Context) {
     }
 
     var colorTheme: Int
-        get() = prefs.getInt("THEME_KEY", R.style.AppTheme)
+        get() = prefs.getInt("THEME_KEY", Config.getDefaultTheme())
         set(value) = prefs.edit { it.putInt("THEME_KEY", value) }
+
+    var interstitialAdCounter: Int
+        get() = prefs.getInt("INTERSTITIAL_AD_COUNTER", 0)
+        set(value) = prefs.edit { it.putInt("INTERSTITIAL_AD_COUNTER", value) }
 
     var aboutInformation: String
         get() = prefs.getString("ABOUT_INFORMATION", "") ?: ""
         set(value) = prefs.edit { it.putString("ABOUT_INFORMATION", value) }
 
     var isPushNotificationEnabled: Boolean
-        get() = prefs.getBoolean("IS_PUSH_NOTIFICATION_ENABLED", false)
+        get() = prefs.getBoolean(
+            "IS_PUSH_NOTIFICATION_ENABLED",
+            Config.getDefaultValueForPushNotification()
+        )
         set(value) = prefs.edit { it.putBoolean("IS_PUSH_NOTIFICATION_ENABLED", value) }
 
     var isRtlEnabled: Boolean
-        get() = prefs.getBoolean("RTL_ENABLED", false)
+        get() = prefs.getBoolean("RTL_ENABLED", Config.getDefaultValueForRTL())
         set(value) = prefs.edit { it.putBoolean("RTL_ENABLED", value) }
 
     fun setBookmarkedNews(items: ArrayList<PostItem>) {
@@ -51,8 +57,8 @@ class Preference(context: Context) {
 
     fun addBookmark(item: PostItem) {
         val result = getBookmarkedNews()
-            result.add(item)
-            setBookmarkedNews(result)
+        result.add(item)
+        setBookmarkedNews(result)
     }
 
     fun removeBookmark(item: PostItem) {
@@ -62,7 +68,7 @@ class Preference(context: Context) {
     }
 
     fun getBookmarkByPostId(id: Int): PostItem? {
-        for(bookmarkedItem in getBookmarkedNews()) {
+        for (bookmarkedItem in getBookmarkedNews()) {
             if (bookmarkedItem.id == id) {
                 return bookmarkedItem
             }

@@ -22,7 +22,11 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
         super.onAttach(context)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         itemView = inflater.inflate(R.layout.fragment_home, container, false)
         return itemView
     }
@@ -50,7 +54,11 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
     }
 
     override fun onTabSelected(tab: TabLayout.Tab) {
-        val fragment = FilterFragment.newInstance(InMemory.getCategoryList()[tab.position].id, InMemory.getCategoryList()[tab.position].name)
+        val fragment = FilterFragment
+            .newInstance(
+                InMemory.getCategoryList()[tab.position].id,
+                InMemory.getCategoryList()[tab.position].name
+            )
         replaceFragment(fragment, R.id.frmHomePlaceholder)
     }
 

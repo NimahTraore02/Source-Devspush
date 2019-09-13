@@ -11,6 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
 import com.decouikit.news.adapters.CommentsAdapter
+import com.decouikit.news.database.Config
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.extensions.openComments
@@ -25,8 +26,9 @@ class CommentsActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayou
 
     private lateinit var adapter: CommentsAdapter
     private var postId: Int = -1
-    private val commentsService = RetrofitClientInstance.retrofitInstance?.create(CommentsService::class.java)
-    private var page = 0
+    private val commentsService =
+        RetrofitClientInstance.retrofitInstance?.create(CommentsService::class.java)
+    private var page = 1
     private val perPage = 10
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,7 +93,7 @@ class CommentsActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayou
     }
 
     private fun hideContent(isListEmpty: Boolean) {
-        if(isListEmpty) {
+        if (isListEmpty) {
             scrollView.visibility = View.GONE
             emptyCommentContainer.visibility = View.VISIBLE
         } else {
@@ -101,7 +103,7 @@ class CommentsActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayou
     }
 
     override fun onClick(v: View) {
-        when(v) {
+        when (v) {
             ivBack -> {
                 onBackPressed()
             }
