@@ -11,8 +11,9 @@ import com.decouikit.news.adapters.FeaturedNewsAdapter
 import com.decouikit.news.adapters.RecentNewsAdapter
 import com.decouikit.news.database.Config
 import com.decouikit.news.database.InMemory
-import com.decouikit.news.extensions.*
-import com.decouikit.news.interfaces.FeaturedNewsListener
+import com.decouikit.news.extensions.Result
+import com.decouikit.news.extensions.enqueue
+import com.decouikit.news.extensions.replaceFragmentWithBackStack
 import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.MediaItem
@@ -21,7 +22,7 @@ import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.fragment_filter.view.*
 import org.jetbrains.anko.doAsync
 
-class FilterFragment : Fragment(), View.OnClickListener, FeaturedNewsListener {
+class FilterFragment : Fragment(), View.OnClickListener {
 
     private lateinit var itemView: View
 
@@ -92,7 +93,7 @@ class FilterFragment : Fragment(), View.OnClickListener, FeaturedNewsListener {
                 break
             }
         }
-        featuredAdapter = FeaturedNewsAdapter(featuredPostItems, itemView.context, this)
+        featuredAdapter = FeaturedNewsAdapter(featuredPostItems, itemView.context)
 
         itemView.viewPager.adapter = featuredAdapter
         itemView.viewPager.offscreenPageLimit = Config.getNumberOfItemForSlider()
@@ -144,18 +145,6 @@ class FilterFragment : Fragment(), View.OnClickListener, FeaturedNewsListener {
                 }
             }
         }
-    }
-
-    override fun bookmarkFeaturedNews(items: List<PostItem>) {
-        itemView.bookmark(
-            itemView.context,
-            items[itemView.viewPager.currentItem],
-            featuredAdapter.getBookmarkIcon()
-        )
-    }
-
-    override fun openPost(items: List<PostItem>) {
-        itemView.openPostActivity(itemView.context, items[itemView.viewPager.currentItem])
     }
 
     companion object {

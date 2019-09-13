@@ -4,24 +4,19 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.PagerAdapter
 import com.decouikit.news.R
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.*
-import com.decouikit.news.interfaces.FeaturedNewsListener
 import com.decouikit.news.network.dto.PostItem
 import kotlinx.android.synthetic.main.adapter_featured_news_item.view.*
-import kotlinx.android.synthetic.main.adapter_featured_news_item.view.ivItemBg
-import kotlinx.android.synthetic.main.adapter_featured_news_item.view.tvItemDate
-import kotlinx.android.synthetic.main.adapter_featured_news_item.view.tvItemTitle
 import java.util.*
 
-class FeaturedNewsAdapter(private var postItems: List<PostItem>,
-                          private var context: Context,
-                          private var listener: FeaturedNewsListener)
-    : PagerAdapter(), View.OnClickListener {
+class FeaturedNewsAdapter(
+    private var postItems: List<PostItem>,
+    private var context: Context
+) : PagerAdapter() {
 
     private lateinit var view: View
 
@@ -35,10 +30,10 @@ class FeaturedNewsAdapter(private var postItems: List<PostItem>,
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         view = LayoutInflater
-                .from(context)
-                .inflate(R.layout.adapter_featured_news_item, container, false)
+            .from(context)
+            .inflate(R.layout.adapter_featured_news_item, container, false)
         initLayout(view, position)
-        initListener(view)
+        initListener(view, position)
         container.addView(view, 0)
         return view
     }
@@ -48,33 +43,35 @@ class FeaturedNewsAdapter(private var postItems: List<PostItem>,
         view.tvItemTitle.text = postItems[position].title.rendered
         view.tvItemDate.text = Date().getDateFromString(postItems[position].date)?.getCalendarDate()
         view.ivItemBg.load(postItems[position].source_url)
-        if (Preference(view.context).getBookmarkedNews().contains(postItems[position])){
-                view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_bookmark_red))
+        if (Preference(view.context).getBookmarkedNews().contains(postItems[position])) {
+            view.ivBookmark.setImageDrawable(
+                ContextCompat.getDrawable(
+                    view.context,
+                    R.drawable.ic_bookmark_red
+                )
+            )
         } else {
-                view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_bookmark))
+            view.ivBookmark.setImageDrawable(
+                ContextCompat.getDrawable(
+                    view.context,
+                    R.drawable.ic_bookmark
+                )
+            )
         }
     }
 
-    private fun initListener(view: View) {
-        view.ivBookmark.setOnClickListener(this)
-        view.featuredParent.setOnClickListener(this)
-    }
-
-    fun getBookmarkIcon(): ImageView {
-        return view.ivBookmark
-    }
-
-    fun setBookmarkIconColor(isBookmarked: Boolean) {
-        view.ivBookmark.setBookmarkIcon(isBookmarked)
-    }
-
-    override fun onClick(v: View) {
-        when(v) {
-            v.ivBookmark -> {
-                listener.bookmarkFeaturedNews(postItems)
-            }
-            v.featuredParent -> {
-                listener.openPost(postItems)
+    private fun initListener(view: View, position: Int) {
+        view.featuredParent.setOnClickListener {
+            view.openPostActivity(view.context, postItems[position])
+        }
+        view.ivBookmark.setOnClickListener {
+            it?.context?.let {
+                view.bookmark(
+                    view.context,
+                    postItems[position],
+                    view.ivBookmark
+                )
+                notifyDataSetChanged()
             }
         }
     }
