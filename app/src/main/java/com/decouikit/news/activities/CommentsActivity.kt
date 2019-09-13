@@ -28,7 +28,7 @@ class CommentsActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayou
     private var postId: Int = -1
     private val commentsService =
         RetrofitClientInstance.retrofitInstance?.create(CommentsService::class.java)
-    private var page = 1
+    private var page = 0
     private val perPage = 10
 
     override fun onCreate(savedInstanceState: Bundle?) {
