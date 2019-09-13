@@ -2,6 +2,7 @@ package com.decouikit.news.database
 
 import android.content.Context
 import com.decouikit.news.R
+import com.decouikit.news.network.dto.Category
 
 class Config {
     companion object {
@@ -38,10 +39,15 @@ class Config {
         }
 
         //If you want to exclude some category from list add that category in this array
-        fun getListOfExcludedCategories(): ArrayList<String> {
+        private fun getListOfExcludedCategories(): ArrayList<String> {
             val items = arrayListOf<String>()
 //            items.add("Category name")
+//            items.add("Architecture")
             return items;
+        }
+
+        fun isCategoryExcluded(category: Category): Boolean {
+            return getListOfExcludedCategories().contains(category.name)
         }
     }
 }

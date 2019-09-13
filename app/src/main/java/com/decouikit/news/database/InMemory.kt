@@ -20,7 +20,11 @@ object InMemory {
 
     fun setCategoryList(categoryList: List<Category>) {
         //CHECK EXCLUDE CATEGORY
-        CATEGORY = categoryList
+        categoryList.forEach{
+            if (!Config.isCategoryExcluded(it)) {
+                CATEGORY = CATEGORY.plus(it)
+            }
+        }
         if (CATEGORY.isNotEmpty()) {
             CATEGORY.forEach { CATEGORY_MAP.plus((Pair(it.id, it))) }
         }
