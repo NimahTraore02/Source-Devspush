@@ -22,7 +22,7 @@
                 android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
-                android:background="@color/colorBlue"
+                android:background="@color/colorPrimaryDark"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
@@ -66,7 +66,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginBottom="@dimen/normal_padding"
                 android:layout_marginEnd="@dimen/normal_padding"
-                android:background="@drawable/ic_bookmark"/>
+                android:padding="@dimen/small_padding"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -70,9 +70,9 @@
                     <TextView
                         android:id="@+id/tvTag"
                         style="@style/TagTextStyle"
-                        android:text="Technology"
                         android:layout_marginStart="@dimen/screen_padding"
                         android:layout_marginTop="@dimen/screen_padding"
+                        android:text="Technology"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -80,46 +80,56 @@
                         android:id="@+id/ivBookmark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/screen_padding"
+                        android:layout_marginEnd="@dimen/screen_padding"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginEnd="@dimen/screen_padding"
-                        android:layout_marginTop="@dimen/screen_padding"
-                        android:background="@drawable/ic_bookmark"/>
+                        android:padding="@dimen/small_padding"/>
 
+                    <ImageView
+                        android:id="@+id/ivShare"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/screen_padding"
+                        android:layout_marginEnd="@dimen/normal_padding"
+                        android:src="@drawable/ic_share"
+                        app:layout_constraintEnd_toStartOf="@+id/ivBookmark"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:padding="@dimen/small_padding"/>
 
                     <TextView
                         android:id="@+id/tvItemTitle"
                         style="@style/TitleTextStyle"
-                        android:textSize="@dimen/text_size_20sp"
-                        android:textStyle="bold"
+                        android:layout_margin="@dimen/screen_padding"
                         android:ellipsize="end"
                         android:maxLines="3"
                         android:paddingStart="@dimen/screen_padding"
                         android:paddingEnd="@dimen/screen_padding"
-                        android:layout_margin="@dimen/screen_padding"
-                        app:layout_constraintTop_toBottomOf="@+id/tvTag"
-                        app:layout_constraintStart_toStartOf="parent"
+                        android:text="World voyage delivers 'memories to last a lifetime' 2019 World voyage delivers 'memories to last a lifetime' 2019 World voyage delivers 'memories to last a lifetime' 2019"
+                        android:textSize="@dimen/text_size_20sp"
+                        android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:text="World voyage delivers 'memories to last a lifetime' 2019 World voyage delivers 'memories to last a lifetime' 2019 World voyage delivers 'memories to last a lifetime' 2019"/>
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvTag" />
 
                     <TextView
                         android:id="@+id/tvDate"
                         style="@style/DateTextStyle"
-                        android:layout_marginTop="@dimen/screen_padding"
                         android:layout_marginStart="@dimen/screen_padding"
+                        android:layout_marginTop="@dimen/screen_padding"
                         android:layout_marginBottom="@dimen/screen_padding"
-                        app:layout_constraintTop_toBottomOf="@+id/tvItemTitle"
-                        app:layout_constraintStart_toStartOf="parent"/>
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvItemTitle" />
 
                     <TextView
                         android:id="@+id/tvComments"
                         style="@style/CommentTextStyle"
-                        android:text="@string/zero_comments"
-                        android:layout_marginTop="@dimen/screen_padding"
                         android:layout_marginStart="@dimen/screen_padding"
+                        android:layout_marginTop="@dimen/screen_padding"
                         android:layout_marginBottom="@dimen/screen_padding"
-                        app:layout_constraintTop_toBottomOf="@+id/tvItemTitle"
-                        app:layout_constraintStart_toEndOf="@+id/tvDate"/>
+                        android:text="@string/zero_comments"
+                        app:layout_constraintStart_toEndOf="@+id/tvDate"
+                        app:layout_constraintTop_toBottomOf="@+id/tvItemTitle" />
 
                     <WebView
                         android:id="@+id/webView"
@@ -127,10 +137,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/screen_padding"
                         android:isScrollContainer="true"
-                        app:layout_constraintTop_toBottomOf="@+id/tvDate"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintTop_toBottomOf="@+id/tvDate" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
         </FrameLayout>

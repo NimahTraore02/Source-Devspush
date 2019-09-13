@@ -37,6 +37,11 @@ class ViewAllAdapter(private var items: ArrayList<PostItem>)
         notifyDataSetChanged()
     }
 
+    fun removeAllItems() {
+        items.removeAll { true }
+        notifyDataSetChanged()
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
     }

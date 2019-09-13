@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.adapter_recent_news_item.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class RecentNewsAdapter(private val items: ArrayList<PostItem>)
+class RecentNewsAdapter(private var items: ArrayList<PostItem>)
     : RecyclerView.Adapter<RecentNewsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,7 +29,10 @@ class RecentNewsAdapter(private val items: ArrayList<PostItem>)
         return items.size
     }
 
-    //TODO napraviti setItems zbog loadanja novih itema
+    fun setData(items: ArrayList<PostItem>) {
+        this.items = items
+        notifyDataSetChanged()
+    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])

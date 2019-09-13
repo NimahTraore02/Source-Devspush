@@ -1,12 +1,18 @@
 package com.decouikit.news.fragments
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.decouikit.news.R
 import com.decouikit.news.adapters.ViewAllAdapter
 import com.decouikit.news.database.InMemory
@@ -16,24 +22,23 @@ import com.decouikit.news.interfaces.ViewAllFragmentListener
 import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.PostItem
+import com.decouikit.news.utils.EndlessRecyclerOnScrollListener
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.fragment_view_all.view.*
 import org.jetbrains.anko.doAsync
 
-class ViewAllFragment : Fragment() {
+class ViewAllFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var itemView: View
-
     private var categoryId: Int? = 0
     private lateinit var categoryName: String
-
     private val allMediaList = InMemory.getMediaList()
-
     private lateinit var adapter: ViewAllAdapter
     private val items = arrayListOf<PostItem>()
-
     private lateinit var callback: ViewAllFragmentListener
     val postsService = RetrofitClientInstance.retrofitInstance?.create(PostsService::class.java)
+    private var page = 0
+    private val perPage = 10
 
     override fun onAttach(context: Context) {
         callback = context as ViewAllFragmentListener
@@ -56,12 +61,40 @@ class ViewAllFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initLayout()
+        initListeners()
+        getPosts()
+    }
+
+    private fun initLayout() {
+        adapter = ViewAllAdapter(arrayListOf())
+        itemView.rvItems.layoutManager = LinearLayoutManager(itemView.context)
+        itemView.rvItems.adapter = adapter
+    }
+
+    private fun initListeners() {
+        itemView.swipeRefresh.setOnRefreshListener(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        callback.viewAllFragmentBehavior()
+        loadData()
+    }
+
+    override fun onRefresh() {
+        adapter.removeAllItems()
+        page = 0
+        loadData()
+    }
+
+    private fun loadData() {
+        itemView.swipeRefresh.isRefreshing = true
         getPosts()
     }
 
     private fun getPosts() {
         doAsync {
-            postsService?.getPostsByCategory(categoryId.toString(), 1, 10)?.enqueue(result = {
+            postsService?.getPostsByCategory(categoryId.toString(), ++page, perPage)?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
                         if (it.response.body() != null) {
@@ -77,21 +110,11 @@ class ViewAllFragment : Fragment() {
                                 }
                             }
                         }
+                        itemView.swipeRefresh.isRefreshing = false
                     }
                 }
             })
         }
-    }
-
-    private fun initLayout() {
-        adapter = ViewAllAdapter(arrayListOf())
-        itemView.rvItems.layoutManager = LinearLayoutManager(itemView.context)
-        itemView.rvItems.adapter = adapter
-    }
-
-    override fun onResume() {
-        super.onResume()
-        callback.viewAllFragmentBehavior()
     }
 
     companion object {

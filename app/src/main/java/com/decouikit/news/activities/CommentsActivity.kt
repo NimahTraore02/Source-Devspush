@@ -1,8 +1,13 @@
 package com.decouikit.news.activities
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
+import android.widget.AbsListView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
 import com.decouikit.news.adapters.CommentsAdapter
@@ -16,12 +21,12 @@ import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.activity_all_comments.*
 import org.jetbrains.anko.doAsync
 
-class CommentsActivity : BaseActivity(), View.OnClickListener {
+class CommentsActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var adapter: CommentsAdapter
     private var postId: Int = -1
     private val commentsService = RetrofitClientInstance.retrofitInstance?.create(CommentsService::class.java)
-    private var page = 1
+    private var page = 0
     private val perPage = 10
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,16 +39,21 @@ class CommentsActivity : BaseActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
+        loadData()
+    }
+
+    private fun loadData() {
+        swipeRefresh.isRefreshing = true
         getComments()
     }
 
     private fun getComments() {
         doAsync {
-            commentsService?.getCommentListPostId(postId, page, perPage)?.enqueue(result = {
+            commentsService?.getCommentListPostId(postId, ++page, perPage)?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
                         if (it.response.body() != null) {
-                            val comments = it.response.body() as List<CommentItem>
+                            val comments = it.response.body() as ArrayList<CommentItem>
                             initLayout()
                             if (comments.isNullOrEmpty()) {
                                 hideContent(true)
@@ -57,6 +67,7 @@ class CommentsActivity : BaseActivity(), View.OnClickListener {
                         hideContent(true)
                     }
                 }
+                swipeRefresh.isRefreshing = false
             })
         }
     }
@@ -70,6 +81,13 @@ class CommentsActivity : BaseActivity(), View.OnClickListener {
     private fun initListeners() {
         ivBack.setOnClickListener(this)
         btnWriteComment.setOnClickListener(this)
+        swipeRefresh.setOnRefreshListener(this)
+    }
+
+    override fun onRefresh() {
+        adapter.removeAllItems()
+        page = 0
+        loadData()
     }
 
     private fun hideContent(isListEmpty: Boolean) {

@@ -87,6 +87,7 @@ class PostActivity: BaseActivity(), View.OnClickListener {
     private fun initListeners() {
         ivBack.setOnClickListener(this)
         ivBookmark.setOnClickListener(this)
+        ivShare.setOnClickListener(this)
         btnOpenComments.setOnClickListener(this)
     }
 
@@ -155,6 +156,9 @@ class PostActivity: BaseActivity(), View.OnClickListener {
             }
             btnOpenComments -> {
                 v.openComments(this, CommentsActivity::class.java ,postItem.id)
+            }
+            ivShare -> {
+                v.share(this, postItem.link)
             }
         }
     }

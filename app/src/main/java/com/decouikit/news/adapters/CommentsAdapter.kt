@@ -12,8 +12,9 @@ import com.decouikit.news.extensions.setHtml
 import com.decouikit.news.network.dto.CommentItem
 import kotlinx.android.synthetic.main.adapter_comment_item.view.*
 import java.util.*
+import kotlin.collections.ArrayList
 
-class CommentsAdapter(private var items: List<CommentItem>) :
+class CommentsAdapter(private var items: ArrayList<CommentItem>) :
     RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,8 +32,13 @@ class CommentsAdapter(private var items: List<CommentItem>) :
         holder.bind(items[position])
     }
 
-    fun setData(items: List<CommentItem>) {
+    fun setData(items: ArrayList<CommentItem>) {
         this.items = items
+        notifyDataSetChanged()
+    }
+
+    fun removeAllItems() {
+        items.removeAll { true }
         notifyDataSetChanged()
     }
 

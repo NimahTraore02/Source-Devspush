@@ -71,6 +71,13 @@ fun View.openComments(context: Context, cls: Class<*>, postId: Int) {
     context.startActivity(intent)
 }
 
+fun View.share(context: Context, shareLink: String) {
+    val intent = Intent(Intent.ACTION_SEND)
+    intent.type = NewsConstants.TEXT_PLAIN
+    intent.putExtra(Intent.EXTRA_TEXT, shareLink)
+    context.startActivity(Intent.createChooser(intent, context.getString(R.string.share_via)))
+}
+
 fun TextView.setHtml(textView: TextView, content: String) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         textView.text = Html.fromHtml(content, Html.FROM_HTML_MODE_COMPACT)
