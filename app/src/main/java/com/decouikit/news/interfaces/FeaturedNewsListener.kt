@@ -3,7 +3,7 @@ package com.decouikit.news.interfaces
 import com.decouikit.news.network.dto.PostItem
 
 interface FeaturedNewsListener {
-    fun boomarkFeaturedNews(items: List<PostItem>)
+    fun bookmarkFeaturedNews(items: List<PostItem>)
 
     fun openPost(items: List<PostItem>)
 }

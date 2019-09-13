@@ -1,7 +1,6 @@
 package com.decouikit.news.adapters
 
 import android.content.Context
-import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,7 +71,7 @@ class FeaturedNewsAdapter(private var postItems: List<PostItem>,
     override fun onClick(v: View) {
         when(v) {
             v.ivBookmark -> {
-                listener.boomarkFeaturedNews(postItems)
+                listener.bookmarkFeaturedNews(postItems)
             }
             v.featuredParent -> {
                 listener.openPost(postItems)

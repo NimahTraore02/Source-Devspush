@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
 import com.decouikit.news.adapters.CommentsAdapter
+import com.decouikit.news.database.Config
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.extensions.openComments
@@ -20,9 +21,9 @@ class CommentsActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var adapter: CommentsAdapter
     private var postId: Int = -1
-    private val commentsService = RetrofitClientInstance.retrofitInstance?.create(CommentsService::class.java)
+    private val commentsService =
+        RetrofitClientInstance.retrofitInstance?.create(CommentsService::class.java)
     private var page = 1
-    private val perPage = 10
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +40,7 @@ class CommentsActivity : BaseActivity(), View.OnClickListener {
 
     private fun getComments() {
         doAsync {
-            commentsService?.getCommentListPostId(postId, page, perPage)?.enqueue(result = {
+            commentsService?.getCommentListPostId(postId, page, Config.getNumberOfItemPerPage())?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
                         if (it.response.body() != null) {
@@ -73,7 +74,7 @@ class CommentsActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun hideContent(isListEmpty: Boolean) {
-        if(isListEmpty) {
+        if (isListEmpty) {
             scrollView.visibility = View.GONE
             emptyCommentContainer.visibility = View.VISIBLE
         } else {
@@ -83,7 +84,7 @@ class CommentsActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        when(v) {
+        when (v) {
             ivBack -> {
                 onBackPressed()
             }

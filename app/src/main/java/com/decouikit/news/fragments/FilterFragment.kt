@@ -141,7 +141,7 @@ class FilterFragment : Fragment(), View.OnClickListener, FeaturedNewsListener {
         }
     }
 
-    override fun boomarkFeaturedNews(items: List<PostItem>) {
+    override fun bookmarkFeaturedNews(items: List<PostItem>) {
         itemView.bookmark(itemView.context, items[itemView.viewPager.currentItem], featuredAdapter.getBookmarkIcon())
     }
 

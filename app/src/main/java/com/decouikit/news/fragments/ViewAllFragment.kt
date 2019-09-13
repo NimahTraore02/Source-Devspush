@@ -33,7 +33,8 @@ class ViewAllFragment : Fragment() {
     private val items = arrayListOf<PostItem>()
 
     private lateinit var callback: ViewAllFragmentListener
-    val postsService = RetrofitClientInstance.retrofitInstance?.create(PostsService::class.java)
+    private val postsService =
+        RetrofitClientInstance.retrofitInstance?.create(PostsService::class.java)
 
     override fun onAttach(context: Context) {
         callback = context as ViewAllFragmentListener
@@ -47,14 +48,17 @@ class ViewAllFragment : Fragment() {
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         itemView = inflater.inflate(R.layout.fragment_view_all, container, false)
         return itemView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initLayout()
         getPosts()
     }

@@ -106,7 +106,7 @@ open class PostActivity : BaseActivity(), View.OnClickListener {
             postsService?.getPostsByCategory(
                 categoryId.toString(),
                 page,
-                Config.getNumberOfPostPerPage()
+                Config.getNumberOfItemPerPage()
             )?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {

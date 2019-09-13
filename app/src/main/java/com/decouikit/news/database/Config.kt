@@ -21,7 +21,7 @@ class Config {
             return 10
         }
 
-        fun getNumberOfPostPerPage(): Int {
+        fun getNumberOfItemPerPage(): Int {
             return 10
         }
 

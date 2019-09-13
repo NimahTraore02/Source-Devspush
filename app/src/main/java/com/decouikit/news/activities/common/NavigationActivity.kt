@@ -1,10 +1,8 @@
 package com.decouikit.news.activities.common
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
@@ -16,7 +14,7 @@ import com.decouikit.news.fragments.*
 import com.decouikit.news.interfaces.HomeFragmentListener
 import com.decouikit.news.interfaces.ViewAllFragmentListener
 import com.decouikit.news.utils.ActivityUtil
-import com.decouikit.news.utils.NewsApplication
+import com.decouikit.news.activities.NewsApplication
 import com.decouikit.news.utils.NewsConstants
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*

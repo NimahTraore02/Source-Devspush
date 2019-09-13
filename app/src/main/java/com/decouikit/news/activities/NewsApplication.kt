@@ -1,4 +1,4 @@
-package com.decouikit.news.utils
+package com.decouikit.news.activities
 
 import android.app.Application
 import android.content.Intent
