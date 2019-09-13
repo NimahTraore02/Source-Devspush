@@ -73,13 +73,13 @@ open class PostActivity : BaseActivity(), View.OnClickListener {
 
         webView.settings.javaScriptEnabled = true
         webView.webChromeClient = UriChromeClient(this)
-        webView.loadData(
-            "<style>img{display: inline;height: auto;max-width: 100%;} " +
-                    "iframe{display: block;max-width:100%;margin-top:10px;margin-bottom:10px;}</style>"
-                    + postItem.content.rendered,
-            "text/html", "UTF-8"
-        )
 
+
+        webView.loadData(
+            String.format("%s%s", NewsConstants.HTML_STYLE, postItem.content.rendered),
+            NewsConstants.TEXT_HTML,
+            NewsConstants.UTF_8
+        )
         adapter = ViewAllAdapter(arrayListOf())
         rvRecentNews.layoutManager = LinearLayoutManager(this)
         rvRecentNews.adapter = adapter

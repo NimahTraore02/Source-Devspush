@@ -17,8 +17,7 @@ abstract class EndlessRecyclerOnScrollListener(val adapter: RecyclerView.Adapter
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
 
-        if(dy > 0) //check for scroll down
-        {
+        if(dy > 0) {
             val abstractTotalCount = adapter.itemCount
             val totalItemCount =  recyclerView.layoutManager!!.itemCount
             val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
@@ -32,10 +31,8 @@ abstract class EndlessRecyclerOnScrollListener(val adapter: RecyclerView.Adapter
 
             if (!mLoading && lastVisibleItemPosition == totalItemCount-1) {
                 onLoadMore()
-
                 mLoading = true
             }
-
         }
     }
 
