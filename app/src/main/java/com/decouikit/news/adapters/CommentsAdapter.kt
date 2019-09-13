@@ -33,7 +33,7 @@ class CommentsAdapter(private var items: ArrayList<CommentItem>) :
     }
 
     fun setData(items: ArrayList<CommentItem>) {
-        this.items = items
+        this.items.addAll(items)
         notifyDataSetChanged()
     }
 

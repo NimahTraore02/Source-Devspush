@@ -1,28 +1,30 @@
 package com.decouikit.news.activities
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
-import android.widget.AbsListView
-import androidx.core.content.ContextCompat
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
 import com.decouikit.news.adapters.CommentsAdapter
-import com.decouikit.news.database.Config
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.extensions.openComments
 import com.decouikit.news.network.CommentsService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.CommentItem
+import com.decouikit.news.utils.EndlessRecyclerOnScrollListener
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.activity_all_comments.*
 import org.jetbrains.anko.doAsync
 
-class CommentsActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+
+
+
+class CommentsActivity : BaseActivity(), View.OnClickListener,
+    SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var adapter: CommentsAdapter
     private var postId: Int = -1
@@ -30,18 +32,25 @@ class CommentsActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayou
         RetrofitClientInstance.retrofitInstance?.create(CommentsService::class.java)
     private var page = 0
     private val perPage = 10
+    private lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_all_comments)
 
         postId = intent.getIntExtra(NewsConstants.POST_ITEM_ID, -1)
+        initLayout()
         initListeners()
     }
 
     override fun onResume() {
         super.onResume()
-        loadData()
+        rvItems.addOnScrollListener(object : EndlessRecyclerOnScrollListener() {
+            override fun onLoadMore() {
+                loadData()
+            }
+        })
+        refreshContent()
     }
 
     private fun loadData() {
@@ -54,10 +63,9 @@ class CommentsActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayou
             commentsService?.getCommentListPostId(postId, ++page, perPage)?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
-                        if (it.response.body() != null) {
+                        if (!it.response.body().isNullOrEmpty()) {
                             val comments = it.response.body() as ArrayList<CommentItem>
-                            initLayout()
-                            if (comments.isNullOrEmpty()) {
+                            if (comments.isNullOrEmpty() && adapter.itemCount == 0) {
                                 hideContent(true)
                             } else {
                                 hideContent(false)
@@ -76,7 +84,8 @@ class CommentsActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayou
 
     private fun initLayout() {
         adapter = CommentsAdapter(arrayListOf())
-        rvItems.layoutManager = LinearLayoutManager(this)
+        linearLayoutManager = LinearLayoutManager(this)
+        rvItems.layoutManager = linearLayoutManager
         rvItems.adapter = adapter
     }
 
@@ -87,19 +96,25 @@ class CommentsActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayou
     }
 
     override fun onRefresh() {
-        adapter.removeAllItems()
-        page = 0
-        loadData()
+        refreshContent()
     }
 
     private fun hideContent(isListEmpty: Boolean) {
         if (isListEmpty) {
-            scrollView.visibility = View.GONE
+            rvItems.visibility = View.GONE
+            tvTitle.visibility = View.GONE
             emptyCommentContainer.visibility = View.VISIBLE
         } else {
-            scrollView.visibility = View.VISIBLE
+            rvItems.visibility = View.VISIBLE
+            tvTitle.visibility = View.VISIBLE
             emptyCommentContainer.visibility = View.GONE
         }
+    }
+
+    private fun refreshContent() {
+        adapter.removeAllItems()
+        page = 0
+        loadData()
     }
 
     override fun onClick(v: View) {
