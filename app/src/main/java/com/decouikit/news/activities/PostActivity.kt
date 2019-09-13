@@ -35,9 +35,7 @@ import kotlin.collections.ArrayList
 class PostActivity: BaseActivity(), View.OnClickListener {
 
     private lateinit var postItem: PostItem
-    val gson by lazy {
-        Gson()
-    }
+
     private lateinit var adapter: ViewAllAdapter
     private var postItems = arrayListOf<PostItem>()
     private val allMediaList = InMemory.getMediaList()

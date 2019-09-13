@@ -8,12 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.decouikit.news.R
 import com.decouikit.news.adapters.AboutListAdapter
+import com.decouikit.news.database.Config
 import kotlinx.android.synthetic.main.fragment_about.view.*
 
 class AboutFragment : Fragment() {
 
     private lateinit var itemView: View
-    private var items = ArrayList<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,16 +30,7 @@ class AboutFragment : Fragment() {
     }
 
     private fun initLayout() {
-        items.add(getString(R.string.about_text_2))
-        items.add(getString(R.string.about_text_3))
-        items.add(getString(R.string.about_text_4))
-        items.add(getString(R.string.about_text_5))
-        items.add(getString(R.string.about_text_6))
-        items.add(getString(R.string.about_text_7))
-        items.add(getString(R.string.about_text_8))
-        items.add(getString(R.string.about_text_9))
-        items.add(getString(R.string.about_text_10))
-
+        val items = Config.getAboutList(context)
         itemView.rvAbout.layoutManager = LinearLayoutManager(itemView.context)
         itemView.rvAbout.adapter = AboutListAdapter(items)
     }
