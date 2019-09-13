@@ -88,14 +88,14 @@ class FilterFragment : Fragment(), View.OnClickListener, FeaturedNewsListener {
             }
             featuredPostItems.add(postItem)
             postCounter++
-            if (postCounter == 3) {
+            if (postCounter == Config.getNumberOfItemForSlider()) {
                 break
             }
         }
         featuredAdapter = FeaturedNewsAdapter(featuredPostItems, itemView.context, this)
 
         itemView.viewPager.adapter = featuredAdapter
-        itemView.viewPager.offscreenPageLimit = 3
+        itemView.viewPager.offscreenPageLimit = Config.getNumberOfItemForSlider()
         itemView.viewPager.setCurrentItem(
             1,
             true
@@ -103,7 +103,7 @@ class FilterFragment : Fragment(), View.OnClickListener, FeaturedNewsListener {
     }
 
     private fun initRecentNews() {
-        for (postItem in allPostList.subList(3, allPostList.size)) {
+        for (postItem in allPostList.subList(Config.getNumberOfItemForSlider(), allPostList.size)) {
             postItem.categoryName = categoryName
             for (mediaItem in allMediaList) {
                 if (mediaItem.id == postItem.featured_media) {

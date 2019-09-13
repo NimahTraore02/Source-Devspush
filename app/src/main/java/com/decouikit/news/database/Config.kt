@@ -25,6 +25,10 @@ class Config {
             return 10
         }
 
+        fun getNumberOfItemForSlider(): Int {
+            return 3
+        }
+
         fun getDefaultValueForPushNotification(): Boolean {
             return true
         }
