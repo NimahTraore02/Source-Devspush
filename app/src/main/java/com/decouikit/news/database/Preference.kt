@@ -66,6 +66,14 @@ class Preference(context: Context) {
         result.remove(item)
         setBookmarkedNews(result)
     }
+    fun saveBookmark(postItem: PostItem) {
+        val item = getBookmarkByPostId(postItem.id)
+        if(item == null) {
+            addBookmark(postItem)
+        } else {
+            removeBookmark(postItem)
+        }
+    }
 
     fun getBookmarkByPostId(id: Int): PostItem? {
         for (bookmarkedItem in getBookmarkedNews()) {
