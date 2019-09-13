@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.decouikit.news.R
 import com.decouikit.news.adapters.ViewAllAdapter
+import com.decouikit.news.database.Config
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
@@ -65,7 +66,7 @@ class ViewAllFragment : Fragment() {
 
     private fun getPosts() {
         doAsync {
-            postsService?.getPostsByCategory(categoryId.toString(), 1, 10)?.enqueue(result = {
+            postsService?.getPostsByCategory(categoryId.toString(), 1, Config.getNumberOfItemPerPage())?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
                         if (it.response.body() != null) {

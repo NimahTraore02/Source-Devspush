@@ -9,5 +9,5 @@
     <color name="colorSubTitleText">#7F7E96</color>
     <color name="colorRed">#CB0000</color>
     <color name="colorBlue">#3980FF</color>
-    <color name="darker_gray_50transparency">#40000000</color>
+    <color name="darkerGrayFiftyTransparency">#40000000</color>
 </resources>
