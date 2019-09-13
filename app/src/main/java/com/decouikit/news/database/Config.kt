@@ -18,5 +18,30 @@ class Config {
             context?.getString(R.string.about_text_10)?.let { items.add(it) }
             return items
         }
+
+        fun getDefaultTheme(): Int {
+            return R.style.AppTheme
+        }
+
+        //Show interstitial after 10 opens single post
+        // if you don't want interstitial ads just put value -1
+        fun promptForInterstitialCounter(): Int {
+            return 10
+        }
+
+        fun getDefaultValueForPushNotification(): Boolean {
+            return true
+        }
+
+        fun getDefaultValueForRTL(): Boolean {
+            return false
+        }
+
+        //If you want to exclude some category from list add that category in this array
+        fun getListOfExcludedCategories(): ArrayList<String> {
+            val items = arrayListOf<String>()
+//            items.add("Category name")
+            return items;
+        }
     }
 }
