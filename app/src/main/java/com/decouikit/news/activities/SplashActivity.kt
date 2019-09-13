@@ -8,6 +8,7 @@ import com.decouikit.news.activities.common.BaseActivity
 import com.decouikit.news.activities.common.NavigationActivity
 import com.decouikit.news.interfaces.SyncListener
 import com.decouikit.news.network.sync.SyncApi
+import com.google.android.gms.ads.MobileAds
 
 class SplashActivity : BaseActivity(), SyncListener {
     override fun finish(success: Boolean) {
@@ -21,6 +22,7 @@ class SplashActivity : BaseActivity(), SyncListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+        MobileAds.initialize(this)
         SyncApi.sync(this)
     }
 }

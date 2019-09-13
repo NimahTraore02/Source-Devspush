@@ -7,57 +7,32 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.decouikit.news.R
-import com.decouikit.news.utils.NewsApplication
-import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.replaceFragment
 import com.decouikit.news.fragments.*
-import com.decouikit.news.interfaces.ViewAllFragmentListener
 import com.decouikit.news.interfaces.HomeFragmentListener
+import com.decouikit.news.interfaces.ViewAllFragmentListener
 import com.decouikit.news.utils.ActivityUtil
+import com.decouikit.news.utils.NewsApplication
 import com.decouikit.news.utils.NewsConstants
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.doubleclick.PublisherAdRequest
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
 
-class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-        ViewAllFragmentListener, HomeFragmentListener {
+class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener,
+    ViewAllFragmentListener, HomeFragmentListener {
 
     private lateinit var toolbar: Toolbar
     private var fragmentPosition: Int? = -1
     private lateinit var menuItem: Menu
-    private val prefs: Preference by lazy {
-        Preference(this)
-    }
-
-    private val adRequest: PublisherAdRequest
-        get() = PublisherAdRequest.Builder()
-            .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-            .addTestDevice(getString(R.string.test_device_id))
-            .build()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme(Preference(this).colorTheme)
         setContentView(R.layout.activity_main)
-
-        ActivityUtil.setLayoutDirection(
-            this,
-            if (prefs.isRtlEnabled)
-                ViewCompat.LAYOUT_DIRECTION_RTL
-            else
-                ViewCompat.LAYOUT_DIRECTION_LOCALE
-        )
-
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false) //hide default app title in toolbar
@@ -75,32 +50,8 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
         fragmentPosition = intent.getIntExtra(NewsConstants.FRAGMENT_POSITION, -1)
         navView.setNavigationItemSelectedListener(this)
-
-        MobileAds.initialize(this) {}
+        ActivityUtil.setLayoutDirection(this, getLayoutDirection())
         showBannerAds()
-    }
-
-    // TODO PREBACITI U SINGLE POST
-    //        showInterstitialAds()
-//    private lateinit var mInterstitialAd: PublisherInterstitialAd
-//
-//    private fun showInterstitialAds() {
-//        mInterstitialAd = PublisherInterstitialAd(this)
-//        mInterstitialAd.adUnitId = getString(R.string.interstitial_id)
-//        mInterstitialAd.loadAd(adRequest)
-//        mInterstitialAd.adListener = object : AdListener() {
-//            override fun onAdLoaded() {
-//                if (mInterstitialAd.isLoaded) {
-//                    mInterstitialAd.show()
-//                }
-//            }
-//        }
-//    }
-
-    private fun showBannerAds() {
-        val bannerId = getString(R.string.banner_id)
-        publisherAdView.visibility = if (!TextUtils.isEmpty(bannerId)) View.VISIBLE else View.GONE
-        publisherAdView.loadAd(adRequest)
     }
 
     override fun onResume() {

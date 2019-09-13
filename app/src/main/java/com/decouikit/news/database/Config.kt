@@ -21,6 +21,10 @@ class Config {
             return 10
         }
 
+        fun getNumberOfPostPerPage(): Int {
+            return 10
+        }
+
         fun getDefaultValueForPushNotification(): Boolean {
             return true
         }

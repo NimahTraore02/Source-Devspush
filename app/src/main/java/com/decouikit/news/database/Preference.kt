@@ -20,6 +20,10 @@ class Preference(context: Context) {
         get() = prefs.getInt("THEME_KEY", Config.getDefaultTheme())
         set(value) = prefs.edit { it.putInt("THEME_KEY", value) }
 
+    var interstitialAdCounter: Int
+        get() = prefs.getInt("INTERSTITIAL_AD_COUNTER", 0)
+        set(value) = prefs.edit { it.putInt("INTERSTITIAL_AD_COUNTER", value) }
+
     var aboutInformation: String
         get() = prefs.getString("ABOUT_INFORMATION", "") ?: ""
         set(value) = prefs.edit { it.putString("ABOUT_INFORMATION", value) }
