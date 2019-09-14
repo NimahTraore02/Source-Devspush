@@ -14,6 +14,7 @@ import com.decouikit.news.extensions.validationOfEmail
 import com.decouikit.news.network.CommentsService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.CommentRequest
+import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.activity_post_comment.*
 import org.jetbrains.anko.doAsync
@@ -26,6 +27,7 @@ class PostCommentActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post_comment)
+        ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.postCommentParent)
 
         postId = intent.getIntExtra(NewsConstants.POST_ITEM_ID, -1)
         initListeners()

@@ -1,21 +1,15 @@
 package com.decouikit.news.fragments
 
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AbsListView
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.decouikit.news.R
 import com.decouikit.news.adapters.ViewAllAdapter
-import com.decouikit.news.database.Config
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
@@ -37,7 +31,7 @@ class ViewAllFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private lateinit var adapter: ViewAllAdapter
     private val items = arrayListOf<PostItem>()
     private lateinit var callback: ViewAllFragmentListener
-    val postsService = RetrofitClientInstance.retrofitInstance?.create(PostsService::class.java)
+    private val postService = RetrofitClientInstance.retrofitInstance?.create(PostsService::class.java)
     private var page = 0
     private val perPage = 10
 
@@ -66,7 +60,6 @@ class ViewAllFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         super.onViewCreated(view, savedInstanceState)
         initLayout()
         initListeners()
-        getPosts()
     }
 
     private fun initLayout() {
@@ -81,15 +74,25 @@ class ViewAllFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onResume() {
         super.onResume()
+        itemView.rvItems.addOnScrollListener(object : EndlessRecyclerOnScrollListener() {
+            override fun onLoadMore() {
+                loadData()
+            }
+        })
         callback.viewAllFragmentBehavior()
-        loadData()
+        refreshContent()
     }
 
     override fun onRefresh() {
+        refreshContent()
+    }
+
+    private fun refreshContent() {
         adapter.removeAllItems()
         page = 0
         loadData()
     }
+
 
     private fun loadData() {
         itemView.swipeRefresh.isRefreshing = true
@@ -98,21 +101,22 @@ class ViewAllFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun getPosts() {
         doAsync {
-            postsService?.getPostsByCategory(categoryId.toString(), ++page, perPage)?.enqueue(result = {
+            postService?.getPostsByCategory(categoryId.toString(), ++page, perPage)?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
-                        if (it.response.body() != null) {
+                        if (!it.response.body().isNullOrEmpty()) {
                             val posts = it.response.body() as ArrayList<PostItem>
                             for (postItem in posts) {
                                 for (mediaItem in allMediaList) {
                                     if (mediaItem.id == postItem.featured_media) {
+                                        //need for loop for getting image urls, post name is fixed from intent
                                         postItem.categoryName = categoryName
                                         postItem.source_url = mediaItem.source_url
                                         items.add(postItem)
-                                        adapter.setData(items)
                                     }
                                 }
                             }
+                            adapter.setData(items)
                         }
                         itemView.swipeRefresh.isRefreshing = false
                     }

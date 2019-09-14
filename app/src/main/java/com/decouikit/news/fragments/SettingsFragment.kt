@@ -63,9 +63,9 @@ class SettingsFragment : Fragment(), View.OnClickListener {
                 itemView.cbEnableRtl -> {
                     prefs?.isRtlEnabled = isChecked
                     if (isChecked) {
-                        activity?.let { ActivityUtil.setLayoutDirection(it, ViewCompat.LAYOUT_DIRECTION_RTL) }
+                        activity?.let { ActivityUtil.setLayoutDirection(it, ViewCompat.LAYOUT_DIRECTION_RTL, R.id.parent) }
                     } else {
-                        activity?.let { ActivityUtil.setLayoutDirection(it, ViewCompat.LAYOUT_DIRECTION_LOCALE) }
+                        activity?.let { ActivityUtil.setLayoutDirection(it, ViewCompat.LAYOUT_DIRECTION_LOCALE, R.id.parent) }
                     }
                 }
             }

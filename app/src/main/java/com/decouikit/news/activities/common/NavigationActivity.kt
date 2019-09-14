@@ -48,7 +48,7 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
 
         fragmentPosition = intent.getIntExtra(NewsConstants.FRAGMENT_POSITION, -1)
         navView.setNavigationItemSelectedListener(this)
-        ActivityUtil.setLayoutDirection(this, getLayoutDirection())
+        ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.parent)
         showBannerAds()
     }
 
@@ -58,6 +58,7 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
             ActivityUtil.setAppBarElevation(appBar, 8f)
             replaceFragment(SettingsFragment.newInstance(), R.id.navigation_container)
             nav_view.setCheckedItem(R.id.nav_settings)
+            fragmentPosition = -1
         } else {
             replaceFragment(HomeFragment.newInstance(), R.id.navigation_container)
             nav_view.setCheckedItem(R.id.nav_home)

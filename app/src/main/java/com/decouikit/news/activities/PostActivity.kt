@@ -18,6 +18,7 @@ import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.CommentItem
 import com.decouikit.news.network.dto.PostItem
+import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.NewsConstants
 import com.decouikit.news.utils.UriChromeClient
 import kotlinx.android.synthetic.main.activity_post.*
@@ -40,6 +41,7 @@ open class PostActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post)
+        ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.postParent)
         postItem = loadPostItem()
         initLayout()
         initListeners()

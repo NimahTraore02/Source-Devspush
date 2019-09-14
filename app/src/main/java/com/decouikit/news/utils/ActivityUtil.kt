@@ -1,5 +1,6 @@
 package com.decouikit.news.utils
 
+import android.app.Activity
 import android.content.Intent
 import android.view.Menu
 import androidx.core.view.ViewCompat
@@ -19,8 +20,8 @@ object ActivityUtil {
         activity?.startActivity(intent)
     }
 
-    fun setLayoutDirection(activity: FragmentActivity, layoutDirection: Int) {
-        ViewCompat.setLayoutDirection(activity.findViewById(R.id.parent), layoutDirection)
+    fun setLayoutDirection(activity: FragmentActivity, layoutDirection: Int, parent: Int) {
+        ViewCompat.setLayoutDirection(activity.findViewById(parent), layoutDirection)
     }
 
     fun setAppBarElevation(appBar: AppBarLayout, elevation: Float) {

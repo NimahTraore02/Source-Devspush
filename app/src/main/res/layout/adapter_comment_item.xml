@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/normal_padding"
     android:layout_marginEnd="@dimen/normal_padding"
-    android:layout_marginBottom="@dimen/normal_padding"
+    app:cardUseCompatPadding="true"
     android:orientation="vertical"
     app:cardCornerRadius="@dimen/small_padding"
     app:cardElevation="@dimen/small_padding">

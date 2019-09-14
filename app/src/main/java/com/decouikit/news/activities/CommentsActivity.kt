@@ -2,9 +2,7 @@ package com.decouikit.news.activities
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
@@ -15,13 +13,11 @@ import com.decouikit.news.extensions.openComments
 import com.decouikit.news.network.CommentsService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.CommentItem
+import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.EndlessRecyclerOnScrollListener
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.activity_all_comments.*
 import org.jetbrains.anko.doAsync
-
-
-
 
 class CommentsActivity : BaseActivity(), View.OnClickListener,
     SwipeRefreshLayout.OnRefreshListener {
@@ -37,6 +33,7 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_all_comments)
+        ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.commentsParent)
 
         postId = intent.getIntExtra(NewsConstants.POST_ITEM_ID, -1)
         initLayout()
@@ -63,14 +60,12 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
             commentsService?.getCommentListPostId(postId, ++page, perPage)?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
-                        if (!it.response.body().isNullOrEmpty()) {
+                        if (it.response.body().isNullOrEmpty() && adapter.itemCount == 0) {
+                            hideContent(true)
+                        } else {
                             val comments = it.response.body() as ArrayList<CommentItem>
-                            if (comments.isNullOrEmpty() && adapter.itemCount == 0) {
-                                hideContent(true)
-                            } else {
-                                hideContent(false)
-                                adapter.setData(comments)
-                            }
+                            hideContent(false)
+                            adapter.setData(comments)
                         }
                     }
                     is Result.Failure -> {
