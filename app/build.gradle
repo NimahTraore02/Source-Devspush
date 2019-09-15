@@ -59,6 +59,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.1.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
 
+    //animation
+    implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
+
     //testing
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'

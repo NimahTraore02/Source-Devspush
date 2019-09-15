@@ -17,6 +17,12 @@ import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.EndlessRecyclerOnScrollListener
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.activity_all_comments.*
+import kotlinx.android.synthetic.main.activity_all_comments.ivBack
+import kotlinx.android.synthetic.main.activity_all_comments.mShimmerViewContainer
+import kotlinx.android.synthetic.main.activity_all_comments.rvItems
+import kotlinx.android.synthetic.main.activity_all_comments.swipeRefresh
+import kotlinx.android.synthetic.main.activity_all_comments.tvTitle
+import kotlinx.android.synthetic.main.activity_view_all.*
 import org.jetbrains.anko.doAsync
 
 class CommentsActivity : BaseActivity(), View.OnClickListener,
@@ -44,6 +50,7 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
         super.onResume()
         rvItems.addOnScrollListener(object : EndlessRecyclerOnScrollListener() {
             override fun onLoadMore() {
+                swipeRefresh.isRefreshing = true
                 loadData()
             }
         })
@@ -51,7 +58,6 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun loadData() {
-        swipeRefresh.isRefreshing = true
         getComments()
     }
 
@@ -72,6 +78,8 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
                         hideContent(true)
                     }
                 }
+                mShimmerViewContainer.stopShimmerAnimation()
+                mShimmerViewContainer.visibility = View.GONE
                 swipeRefresh.isRefreshing = false
             })
         }
@@ -91,6 +99,7 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
     }
 
     override fun onRefresh() {
+        swipeRefresh.isRefreshing = true
         refreshContent()
     }
 
@@ -107,9 +116,18 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun refreshContent() {
+        hideAllOnRefresh()
+        mShimmerViewContainer.visibility = View.VISIBLE
+        mShimmerViewContainer.startShimmerAnimation()
         adapter.removeAllItems()
         page = 0
         loadData()
+    }
+
+    private fun hideAllOnRefresh() {
+        rvItems.visibility = View.GONE
+        tvTitle.visibility = View.GONE
+        emptyCommentContainer.visibility = View.GONE
     }
 
     override fun onClick(v: View) {

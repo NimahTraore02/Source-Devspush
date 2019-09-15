@@ -13,6 +13,7 @@ import com.decouikit.news.database.Config
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.*
+import com.decouikit.news.interfaces.OpenPostListener
 import com.decouikit.news.network.CommentsService
 import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
@@ -25,8 +26,7 @@ import kotlinx.android.synthetic.main.activity_post.*
 import org.jetbrains.anko.doAsync
 import java.util.*
 
-
-open class PostActivity : BaseActivity(), View.OnClickListener {
+open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener {
 
     private lateinit var postItem: PostItem
 
@@ -82,7 +82,7 @@ open class PostActivity : BaseActivity(), View.OnClickListener {
             NewsConstants.TEXT_HTML,
             NewsConstants.UTF_8
         )
-        adapter = ViewAllAdapter(arrayListOf())
+        adapter = ViewAllAdapter(arrayListOf(), this)
         rvRecentNews.layoutManager = LinearLayoutManager(this)
         rvRecentNews.adapter = adapter
 
@@ -172,5 +172,10 @@ open class PostActivity : BaseActivity(), View.OnClickListener {
                 v.share(this, postItem.link)
             }
         }
+    }
+
+    override fun openPost(view: View, item: PostItem) {
+        view.openPostActivity(view.context, item)
+        finish()
     }
 }

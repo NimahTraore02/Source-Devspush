@@ -13,28 +13,26 @@ import com.decouikit.news.database.Config
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
-import com.decouikit.news.extensions.replaceFragmentWithBackStack
+import com.decouikit.news.extensions.viewAll
 import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.MediaItem
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.NewsConstants
+import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.fragment_filter.view.*
 import org.jetbrains.anko.doAsync
 
 class FilterFragment : Fragment(), View.OnClickListener {
 
     private lateinit var itemView: View
-
     private var categoryId: Int? = null
     private lateinit var categoryName: String
-
+    private val postsService = RetrofitClientInstance.retrofitInstance?.create(PostsService::class.java)
     private lateinit var allMediaList: List<MediaItem>
     private lateinit var allPostList: List<PostItem>
-
     private var featuredPostItems = arrayListOf<PostItem>()
     private lateinit var featuredAdapter: FeaturedNewsAdapter
-
     private var recentPostItems = arrayListOf<PostItem>()
     private lateinit var recentAdapter: RecentNewsAdapter
 
@@ -56,7 +54,12 @@ class FilterFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val postsService = RetrofitClientInstance.retrofitInstance?.create(PostsService::class.java)
+        mShimmerFeaturedNewsContainer.startShimmerAnimation()
+        initLayout()
+        initListeners()
+    }
+
+    private fun initLayout() {
         doAsync {
             postsService?.getPostsByCategory(
                 categoryId.toString(),
@@ -75,7 +78,6 @@ class FilterFragment : Fragment(), View.OnClickListener {
                 }
             })
         }
-        initListeners()
     }
 
     private fun initFeaturedNews() {
@@ -101,6 +103,9 @@ class FilterFragment : Fragment(), View.OnClickListener {
             1,
             true
         )
+
+        mShimmerFeaturedNewsContainer.stopShimmerAnimation()
+        mShimmerFeaturedNewsContainer.visibility = View.GONE
     }
 
     private fun initRecentNews() {
@@ -129,20 +134,10 @@ class FilterFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v) {
             itemView.tvFeaturedNewsViewAll -> {
-                categoryId?.let { ViewAllFragment.newInstance(it, categoryName) }?.let {
-                    replaceFragmentWithBackStack(
-                        it,
-                        R.id.navigation_container
-                    )
-                }
+                v.viewAll(v.context, categoryId, categoryName)
             }
             itemView.tvRecentNewsViewAll -> {
-                categoryId?.let { ViewAllFragment.newInstance(it, categoryName) }?.let {
-                    replaceFragmentWithBackStack(
-                        it,
-                        R.id.navigation_container
-                    )
-                }
+                v.viewAll(v.context, categoryId, categoryName)
             }
         }
     }

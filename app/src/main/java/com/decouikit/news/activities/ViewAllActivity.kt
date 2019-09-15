@@ -1,93 +1,90 @@
-package com.decouikit.news.fragments
+package com.decouikit.news.activities
 
-import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.decouikit.news.R
+import com.decouikit.news.activities.common.BaseActivity
 import com.decouikit.news.adapters.ViewAllAdapter
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
-import com.decouikit.news.interfaces.ViewAllFragmentListener
+import com.decouikit.news.extensions.openPostActivity
+import com.decouikit.news.interfaces.OpenPostListener
 import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.EndlessRecyclerOnScrollListener
 import com.decouikit.news.utils.NewsConstants
-import kotlinx.android.synthetic.main.fragment_view_all.view.*
+import kotlinx.android.synthetic.main.activity_view_all.*
 import org.jetbrains.anko.doAsync
 
-class ViewAllFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, OpenPostListener {
 
-    private lateinit var itemView: View
     private var categoryId: Int? = 0
-    private lateinit var categoryName: String
+    private var categoryName: String? = ""
     private val allMediaList = InMemory.getMediaList()
     private lateinit var adapter: ViewAllAdapter
     private val items = arrayListOf<PostItem>()
-    private lateinit var callback: ViewAllFragmentListener
     private val postService = RetrofitClientInstance.retrofitInstance?.create(PostsService::class.java)
     private var page = 0
     private val perPage = 10
 
-    override fun onAttach(context: Context) {
-        callback = context as ViewAllFragmentListener
-        super.onAttach(context)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        categoryId = arguments?.getInt(NewsConstants.CATEGORY_ID)
-        categoryName = arguments?.getString(NewsConstants.CATEGORY_NAME, "").toString()
+        setContentView(R.layout.activity_view_all)
 
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        itemView = inflater.inflate(R.layout.fragment_view_all, container, false)
-        return itemView
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        categoryId = intent.getIntExtra(NewsConstants.CATEGORY_ID, -1)
+        categoryName = intent.getStringExtra(NewsConstants.CATEGORY_NAME)
         initLayout()
         initListeners()
     }
 
+
     private fun initLayout() {
-        adapter = ViewAllAdapter(arrayListOf())
-        itemView.rvItems.layoutManager = LinearLayoutManager(itemView.context)
-        itemView.rvItems.adapter = adapter
+        adapter = ViewAllAdapter(arrayListOf(), this)
+        rvItems.layoutManager = LinearLayoutManager(this)
+        rvItems.adapter = adapter
     }
 
     private fun initListeners() {
-        itemView.swipeRefresh.setOnRefreshListener(this)
+        ivBack.setOnClickListener(this)
+        swipeRefresh.setOnRefreshListener(this)
     }
 
     override fun onResume() {
         super.onResume()
-        itemView.rvItems.addOnScrollListener(object : EndlessRecyclerOnScrollListener() {
+        rvItems.addOnScrollListener(object : EndlessRecyclerOnScrollListener() {
             override fun onLoadMore() {
+                swipeRefresh.isRefreshing = true
                 loadData()
             }
         })
-        callback.viewAllFragmentBehavior()
         refreshContent()
     }
 
+    override fun onClick(v: View) {
+        when (v) {
+            ivBack -> {
+                onBackPressed()
+            }
+        }
+    }
+
+    override fun openPost(view: View, item: PostItem) {
+        view.openPostActivity(view.context, item)
+    }
+
     override fun onRefresh() {
+        swipeRefresh.isRefreshing = true
         refreshContent()
     }
 
     private fun refreshContent() {
+        mShimmerViewContainer.visibility = View.VISIBLE
+        mShimmerViewContainer.startShimmerAnimation()
+        items.removeAll { true }
         adapter.removeAllItems()
         page = 0
         loadData()
@@ -95,7 +92,6 @@ class ViewAllFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
 
     private fun loadData() {
-        itemView.swipeRefresh.isRefreshing = true
         getPosts()
     }
 
@@ -109,8 +105,8 @@ class ViewAllFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                             for (postItem in posts) {
                                 for (mediaItem in allMediaList) {
                                     if (mediaItem.id == postItem.featured_media) {
-                                        //need for loop for getting image urls, post name is fixed from intent
-                                        postItem.categoryName = categoryName
+                                        //loop for getting image urls, post name is fixed from intent
+                                        postItem.categoryName = categoryName.toString()
                                         postItem.source_url = mediaItem.source_url
                                         items.add(postItem)
                                     }
@@ -118,21 +114,12 @@ class ViewAllFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                             }
                             adapter.setData(items)
                         }
-                        itemView.swipeRefresh.isRefreshing = false
+                        mShimmerViewContainer.stopShimmerAnimation()
+                        mShimmerViewContainer.visibility = View.GONE
+                        swipeRefresh.isRefreshing = false
                     }
                 }
             })
-        }
-    }
-
-    companion object {
-        fun newInstance(categoryId: Int, categoryName: String): ViewAllFragment {
-            val fragment = ViewAllFragment()
-            val args = Bundle()
-            args.putInt(NewsConstants.CATEGORY_ID, categoryId)
-            args.putString(NewsConstants.CATEGORY_NAME, categoryName)
-            fragment.arguments = args
-            return fragment
         }
     }
 }

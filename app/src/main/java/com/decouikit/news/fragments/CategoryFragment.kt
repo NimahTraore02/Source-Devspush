@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.decouikit.news.R
 import com.decouikit.news.adapters.CategoryAdapter
 import com.decouikit.news.database.InMemory
-import com.decouikit.news.extensions.replaceFragmentWithBackStack
+import com.decouikit.news.extensions.viewAll
 import com.decouikit.news.interfaces.OnCategoryItemClickListener
 import com.decouikit.news.network.dto.Category
 import kotlinx.android.synthetic.main.fragment_category.view.*
@@ -36,7 +36,7 @@ class CategoryFragment : Fragment(), OnCategoryItemClickListener {
     }
 
     override fun onCategoryItemClick(item: Category) {
-        replaceFragmentWithBackStack(ViewAllFragment.newInstance(item.id, item.name), R.id.navigation_container)
+        itemView.viewAll(itemView.context, item.id, item.name)
     }
 
     companion object {

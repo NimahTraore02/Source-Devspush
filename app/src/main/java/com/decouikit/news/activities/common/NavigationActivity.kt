@@ -9,20 +9,18 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.decouikit.news.R
+import com.decouikit.news.activities.NewsApplication
 import com.decouikit.news.extensions.replaceFragment
 import com.decouikit.news.fragments.*
 import com.decouikit.news.interfaces.HomeFragmentListener
-import com.decouikit.news.interfaces.ViewAllFragmentListener
 import com.decouikit.news.utils.ActivityUtil
-import com.decouikit.news.activities.NewsApplication
 import com.decouikit.news.utils.NewsConstants
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
 
-class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener,
-    ViewAllFragmentListener, HomeFragmentListener {
+class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeFragmentListener {
 
     private lateinit var toolbar: Toolbar
     private var fragmentPosition: Int? = -1
@@ -129,9 +127,5 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
 
     override fun homeFragmentBehavior() {
         ActivityUtil.setAppBarElevation(appBar, 0f)
-    }
-
-    override fun viewAllFragmentBehavior() {
-        ActivityUtil.setAppBarElevation(appBar, 8f)
     }
 }

@@ -37,6 +37,11 @@ class Config {
             return false
         }
 
+        fun getFacebookUrl(): String {
+            return ""
+        }
+
+
         //If you want to exclude some category from list add that category in this array
         private fun getListOfExcludedCategories(): ArrayList<String> {
             val items = arrayListOf<String>()

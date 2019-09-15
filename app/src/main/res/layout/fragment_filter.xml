@@ -35,6 +35,23 @@
                 android:layout_height="@dimen/tab_indicator_height"
                 app:layout_constraintBottom_toTopOf="@+id/viewPager" />
 
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/mShimmerFeaturedNewsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/featured_news_height"
+            android:layout_marginTop="@dimen/screen_padding"
+            app:layout_constraintTop_toBottomOf="@+id/divider" >
+
+            <!-- Adding 7 rows of placeholders -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <include layout="@layout/featured_news_shimmer_placeholder" />
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
         <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"

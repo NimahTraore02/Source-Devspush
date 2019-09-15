@@ -52,6 +52,8 @@
             android:name=".activities.CommentsActivity"/>
         <activity
             android:name=".activities.PostCommentActivity"/>
+        <activity
+            android:name=".activities.ViewAllActivity"/>
 
         <service android:name=".firebase.MyFirebaseMessagingService">
             <intent-filter>

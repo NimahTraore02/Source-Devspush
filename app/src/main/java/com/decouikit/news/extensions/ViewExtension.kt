@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.decouikit.news.R
 import com.decouikit.news.activities.PostActivity
+import com.decouikit.news.activities.ViewAllActivity
 import com.decouikit.news.database.Preference
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.NewsConstants
@@ -57,6 +58,13 @@ fun View.bookmark(context: Context, postItem: PostItem, imageView: ImageView) {
         Preference(context).removeBookmark(postItem)
     }
     imageView.setBookmarkIcon(item == null)
+}
+
+fun View.viewAll(context: Context, categoryId: Int?, categoryName: String) {
+    val intent = Intent(context, ViewAllActivity::class.java)
+    intent.putExtra(NewsConstants.CATEGORY_ID, categoryId)
+    intent.putExtra(NewsConstants.CATEGORY_NAME, categoryName)
+    context.startActivity(intent)
 }
 
 fun View.openPostActivity(context: Context, item: PostItem) {
