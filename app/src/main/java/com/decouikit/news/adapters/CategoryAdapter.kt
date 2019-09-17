@@ -45,7 +45,7 @@ class CategoryAdapter(
             view.tvCategoryName.text = item.name
             view.tvCategoryPostsNumber.text =
                 itemView.context.resources
-                    .getQuantityString(R.plurals.numberOfPosts, item.count, item.count);
+                    .getQuantityString(R.plurals.numberOfPosts, item.count, item.count)
         }
 
         override fun onClick(v: View?) {

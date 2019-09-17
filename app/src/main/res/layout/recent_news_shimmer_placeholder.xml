@@ -47,8 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/big_margin"
             android:background="?attr/colorHeader"
-            android:layout_margin="@dimen/screen_padding"
-            android:text="World voyage delivers 'memories to last a lifetime' 2019 World voyage delivers 'memories to last a lifetime' 2019 World voyage delivers 'memories to last a lifetime' 2019"/>
+            android:layout_margin="@dimen/screen_padding" />
 
         <View
             android:id="@+id/tvItemDate"

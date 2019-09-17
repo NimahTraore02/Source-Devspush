@@ -30,7 +30,6 @@
         <TextView
                 android:id="@+id/tvItemTag"
                 style="@style/TagTextStyle"
-                android:text="Technology"
                 android:textSize="@dimen/text_size_10sp"
                 android:layout_marginStart="@dimen/normal_padding"
                 android:layout_marginTop="@dimen/normal_padding"
@@ -44,14 +43,12 @@
                 android:layout_margin="@dimen/screen_padding"
                 app:layout_constraintStart_toEndOf="@+id/ivItemBg"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:text="World voyage delivers 'memories to last a lifetime' 2019 World voyage delivers 'memories to last a lifetime' 2019 World voyage delivers 'memories to last a lifetime' 2019"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
                 android:id="@+id/tvItemDate"
                 style="@style/DateTextStyle"
                 android:layout_width="0dp"
-                android:text="12 May 2019"
                 app:layout_constraintStart_toEndOf="@+id/ivItemBg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

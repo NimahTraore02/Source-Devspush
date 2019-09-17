@@ -2,6 +2,7 @@ package com.decouikit.news.extensions
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Matrix
 import android.net.Uri
 import android.os.Build
 import android.text.Html
@@ -18,10 +19,6 @@ import com.decouikit.news.activities.ViewAllActivity
 import com.decouikit.news.database.Preference
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.NewsConstants
-import android.R.attr.pivotY
-import android.R.attr.pivotX
-import android.R.attr.angle
-import android.graphics.Matrix
 
 
 fun View.pxToDp(px: Int): Int {

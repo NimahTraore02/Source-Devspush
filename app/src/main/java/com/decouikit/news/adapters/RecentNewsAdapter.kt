@@ -3,7 +3,6 @@ package com.decouikit.news.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
 import com.decouikit.news.R
 import com.decouikit.news.extensions.getCalendarDate
@@ -13,7 +12,6 @@ import com.decouikit.news.extensions.openPostActivity
 import com.decouikit.news.network.dto.PostItem
 import kotlinx.android.synthetic.main.adapter_recent_news_item.view.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 class RecentNewsAdapter(private var items: ArrayList<PostItem>)
     : RecyclerView.Adapter<RecentNewsAdapter.ViewHolder>() {

@@ -18,12 +18,6 @@ import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.EndlessRecyclerOnScrollListener
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.activity_all_comments.*
-import kotlinx.android.synthetic.main.activity_all_comments.ivBack
-import kotlinx.android.synthetic.main.activity_all_comments.mShimmerViewContainer
-import kotlinx.android.synthetic.main.activity_all_comments.rvItems
-import kotlinx.android.synthetic.main.activity_all_comments.swipeRefresh
-import kotlinx.android.synthetic.main.activity_all_comments.tvTitle
-import kotlinx.android.synthetic.main.activity_view_all.*
 import org.jetbrains.anko.doAsync
 
 class CommentsActivity : BaseActivity(), View.OnClickListener,

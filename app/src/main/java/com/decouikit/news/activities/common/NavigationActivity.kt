@@ -12,6 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.decouikit.news.R
 import com.decouikit.news.activities.NewsApplication
 import com.decouikit.news.database.Config
+import com.decouikit.news.extensions.openExternalApp
 import com.decouikit.news.extensions.replaceFragment
 import com.decouikit.news.fragments.*
 import com.decouikit.news.interfaces.HomeFragmentListener
@@ -20,9 +21,6 @@ import com.decouikit.news.utils.NewsConstants
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import android.content.Intent
-import android.net.Uri
-import com.decouikit.news.extensions.openExternalApp
 
 
 class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeFragmentListener,

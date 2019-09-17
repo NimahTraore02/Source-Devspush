@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import com.decouikit.news.R
 import com.decouikit.news.database.Preference
-import com.decouikit.news.utils.ActivityUtil
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest
@@ -20,7 +19,7 @@ open class BaseActivity : AppCompatActivity() {
     protected lateinit var mInterstitialAd: PublisherInterstitialAd
     protected val prefs: Preference by lazy { Preference(this) }
 
-    protected val adRequest: PublisherAdRequest
+    private val adRequest: PublisherAdRequest
         get() = PublisherAdRequest.Builder()
             .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
             .addTestDevice(getString(R.string.test_device_id))

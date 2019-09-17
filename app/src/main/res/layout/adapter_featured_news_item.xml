@@ -40,7 +40,6 @@
                 android:layout_marginTop="@dimen/screen_padding"
                 android:background="@drawable/rounded_red_bg"
                 android:padding="@dimen/small_padding"
-                android:text="Technology"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_size_14sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -70,13 +69,11 @@
                 android:paddingStart="@dimen/screen_padding"
                 android:paddingEnd="@dimen/screen_padding"
                 android:ellipsize="end"
-                android:maxLines="3"
-                android:text="World voyage delivers 'memories to last a lifetime' 2019 World voyage delivers 'memories to last a lifetime' 2019 World voyage delivers 'memories to last a lifetime' 2019"/>
+                android:maxLines="3"/>
 
         <TextView
                 android:id="@+id/tvItemDate"
                 style="@style/DateTextStyle"
-                android:text="12 May 2019"
                 android:drawableStart="@drawable/ic_clock_white"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold"

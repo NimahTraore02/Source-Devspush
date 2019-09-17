@@ -104,7 +104,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingStart="@dimen/normal_padding"
-                android:paddingEnd="@dimen/normal_padding">
+                android:paddingEnd="@dimen/normal_padding"
+                android:baselineAligned="false">
                 <include layout="@layout/recent_news_shimmer_placeholder"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"

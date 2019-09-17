@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    android:id="@+id/coordinatorParent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.coordinatorlayout.widget.CoordinatorLayout android:id="@+id/coordinatorParent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -104,7 +104,6 @@
                         style="@style/TagTextStyle"
                         android:layout_marginStart="@dimen/screen_padding"
                         android:layout_marginTop="@dimen/screen_padding"
-                        android:text="Technology"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -137,7 +136,6 @@
                         android:maxLines="3"
                         android:paddingStart="@dimen/screen_padding"
                         android:paddingEnd="@dimen/screen_padding"
-                        android:text="World voyage delivers 'memories to last a lifetime' 2019 World voyage delivers 'memories to last a lifetime' 2019 World voyage delivers 'memories to last a lifetime' 2019"
                         android:textSize="@dimen/text_size_20sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"

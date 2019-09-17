@@ -16,7 +16,7 @@ inline fun <reified T> Call<T>.enqueue(crossinline result: (Result<T>) -> Unit) 
     })
 }
 
-public open class Result<T> {
+open class Result<T> {
     data class Success<T>(val call: Call<T>, val response: Response<T>) : Result<T>()
     data class Failure<T>(val call: Call<T>, val error: Throwable) : Result<T>()
 }

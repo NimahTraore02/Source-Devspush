@@ -3,7 +3,6 @@ package com.decouikit.news.database
 import android.content.Context
 import com.decouikit.news.R
 import com.decouikit.news.network.dto.Category
-import com.decouikit.news.utils.NewsConstants
 
 class Config {
     companion object {
@@ -59,7 +58,7 @@ class Config {
             val items = arrayListOf<String>()
 //            items.add("Category name")
 //            items.add("Architecture")
-            return items;
+            return items
         }
 
         fun isCategoryExcluded(category: Category): Boolean {

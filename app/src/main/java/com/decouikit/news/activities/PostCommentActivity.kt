@@ -1,9 +1,7 @@
 package com.decouikit.news.activities
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity

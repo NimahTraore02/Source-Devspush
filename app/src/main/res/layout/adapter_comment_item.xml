@@ -29,7 +29,6 @@
             style="@style/TitleTextStyle"
             android:textSize="@dimen/text_size_14sp"
             android:layout_marginStart="@dimen/normal_padding"
-            android:text="George Dean"
             app:layout_constraintStart_toEndOf="@+id/ivAvatar"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,7 +36,6 @@
             android:id="@+id/tvCommentDate"
             style="@style/ViewAllTextStyle"
             android:layout_marginStart="@dimen/normal_padding"
-            android:text="12 May 2019"
             app:layout_constraintStart_toEndOf="@+id/tvName"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,7 +48,6 @@
             android:layout_marginTop="@dimen/normal_padding"
             app:layout_constraintStart_toEndOf="@+id/ivAvatar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvName"
-            android:text="Chatting with the barrista at my favourite Crouch End café this morning stirred a thought. Nigel Slater's dumbing-down of cookery means he rarely uses any of the interesting ingredients in my local deli. The left needs to unite and stop letting the neo-fascists talk down to us."/>
+            app:layout_constraintTop_toBottomOf="@+id/tvName"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

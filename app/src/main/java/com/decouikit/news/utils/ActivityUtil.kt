@@ -1,6 +1,5 @@
 package com.decouikit.news.utils
 
-import android.app.Activity
 import android.content.Intent
 import android.view.Menu
 import androidx.core.view.ViewCompat
