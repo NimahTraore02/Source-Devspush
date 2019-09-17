@@ -12,9 +12,10 @@ import com.decouikit.news.extensions.*
 import com.decouikit.news.network.dto.PostItem
 import kotlinx.android.synthetic.main.adapter_featured_news_item.view.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class FeaturedNewsAdapter(
-    private var postItems: List<PostItem>,
+    private var postItems: ArrayList<PostItem>,
     private var context: Context
 ) : PagerAdapter() {
 
@@ -36,6 +37,11 @@ class FeaturedNewsAdapter(
         initListener(view, position)
         container.addView(view, 0)
         return view
+    }
+
+    fun setData(postItems: ArrayList<PostItem>) {
+        this.postItems.addAll(postItems)
+        notifyDataSetChanged()
     }
 
     private fun initLayout(view: View, position: Int) {
@@ -74,6 +80,11 @@ class FeaturedNewsAdapter(
                 notifyDataSetChanged()
             }
         }
+    }
+
+    fun removeAllItems() {
+        this.postItems.removeAll { true }
+        notifyDataSetChanged()
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {

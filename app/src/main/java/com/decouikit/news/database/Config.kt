@@ -3,6 +3,7 @@ package com.decouikit.news.database
 import android.content.Context
 import com.decouikit.news.R
 import com.decouikit.news.network.dto.Category
+import com.decouikit.news.utils.NewsConstants
 
 class Config {
     companion object {
@@ -38,10 +39,21 @@ class Config {
         }
 
         fun getFacebookUrl(): String {
-            return ""
+            return "https://www.facebook.com"
         }
 
+        fun getTwitterUrl(): String {
+            return "https://twitter.com"
+        }
 
+        fun getYoutubeUrl(): String {
+            return "https://www.youtube.com/"
+        }
+
+        fun getInstagramUrl(): String {
+            return "https://www.instagram.com"
+        }
+        
         //If you want to exclude some category from list add that category in this array
         private fun getListOfExcludedCategories(): ArrayList<String> {
             val items = arrayListOf<String>()

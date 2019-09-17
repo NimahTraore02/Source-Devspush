@@ -24,6 +24,42 @@
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer"
         app:itemTextColor="@drawable/navigation_item_color"
-        app:itemIconTint="@drawable/navigation_item_color"/>
+        app:itemIconTint="@drawable/navigation_item_color">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal"
+            android:layout_marginStart="@dimen/screen_padding"
+            android:layout_marginBottom="@dimen/big_margin">
+
+            <ImageView
+                android:id="@+id/ivInstagram"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/normal_padding"
+                android:src="@drawable/ic_instagram"/>
+            <ImageView
+                android:id="@+id/ivFacebook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/normal_padding"
+                android:src="@drawable/ic_facebook"/>
+            <ImageView
+                android:id="@+id/ivTwitter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/normal_padding"
+                android:src="@drawable/ic_twitter"/>
+            <ImageView
+                android:id="@+id/ivYoutube"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/normal_padding"
+                android:src="@drawable/ic_youtube"/>
+        </LinearLayout>
+    </com.google.android.material.navigation.NavigationView>
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

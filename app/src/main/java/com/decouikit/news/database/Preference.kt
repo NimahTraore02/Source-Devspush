@@ -83,4 +83,8 @@ class Preference(context: Context) {
         }
         return null
     }
+
+    var tabPosition: Int
+        get() = prefs.getInt("TAB_POSITION", 0)
+        set(value) = prefs.edit { it.putInt("TAB_POSITION", value) }
 }

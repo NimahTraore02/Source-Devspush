@@ -23,6 +23,7 @@
                 android:id="@+id/tvCategoryName"
                 style="@style/TitleTextStyle"
                 android:layout_width="match_parent"
+                android:textAlignment="center"
                 android:gravity="center"
                 android:textSize="@dimen/text_size_16sp"
                 android:text="Category"/>

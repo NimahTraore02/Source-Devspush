@@ -8,6 +8,7 @@ import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
 import com.decouikit.news.adapters.ViewAllAdapter
 import com.decouikit.news.database.InMemory
+import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.extensions.openPostActivity
@@ -15,6 +16,7 @@ import com.decouikit.news.interfaces.OpenPostListener
 import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.PostItem
+import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.EndlessRecyclerOnScrollListener
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.activity_view_all.*
@@ -35,6 +37,7 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_all)
 
+        ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.viewAllParent)
         categoryId = intent.getIntExtra(NewsConstants.CATEGORY_ID, -1)
         categoryName = intent.getStringExtra(NewsConstants.CATEGORY_NAME)
         initLayout()
@@ -43,6 +46,9 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
 
 
     private fun initLayout() {
+        if(Preference(this).isRtlEnabled) {
+            ivBack.rotation = 180f
+        }
         adapter = ViewAllAdapter(arrayListOf(), this)
         rvItems.layoutManager = LinearLayoutManager(this)
         rvItems.adapter = adapter

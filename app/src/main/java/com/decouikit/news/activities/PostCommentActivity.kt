@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
+import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.extensions.validationCommon
@@ -28,6 +29,9 @@ class PostCommentActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post_comment)
         ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.postCommentParent)
+        if(Preference(this).isRtlEnabled) {
+            ivBack.rotation = 180f
+        }
 
         postId = intent.getIntExtra(NewsConstants.POST_ITEM_ID, -1)
         initListeners()

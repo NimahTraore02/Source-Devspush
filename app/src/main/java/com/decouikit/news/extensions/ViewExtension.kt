@@ -2,6 +2,7 @@ package com.decouikit.news.extensions
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.text.Html
 import android.view.View
@@ -17,6 +18,11 @@ import com.decouikit.news.activities.ViewAllActivity
 import com.decouikit.news.database.Preference
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.NewsConstants
+import android.R.attr.pivotY
+import android.R.attr.pivotX
+import android.R.attr.angle
+import android.graphics.Matrix
+
 
 fun View.pxToDp(px: Int): Int {
     return (px / resources.displayMetrics.density).toInt()
@@ -77,6 +83,18 @@ fun View.openComments(context: Context, cls: Class<*>, postId: Int) {
     val intent = Intent(context, cls)
     intent.putExtra(NewsConstants.POST_ITEM_ID, postId)
     context.startActivity(intent)
+}
+
+
+fun View.openExternalApp(url: String) {
+    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+}
+
+fun ImageView.rotate(angle: Float, imageView: ImageView) {
+    val matrix = Matrix()
+    imageView.scaleType = ImageView.ScaleType.MATRIX   //required
+    matrix.postRotate(angle, pivotX, pivotY)
+    imageView.imageMatrix = matrix
 }
 
 fun View.share(context: Context, shareLink: String) {

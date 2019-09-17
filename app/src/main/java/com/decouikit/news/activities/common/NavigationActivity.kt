@@ -3,6 +3,7 @@ package com.decouikit.news.activities.common
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
@@ -10,6 +11,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.decouikit.news.R
 import com.decouikit.news.activities.NewsApplication
+import com.decouikit.news.database.Config
 import com.decouikit.news.extensions.replaceFragment
 import com.decouikit.news.fragments.*
 import com.decouikit.news.interfaces.HomeFragmentListener
@@ -18,9 +20,13 @@ import com.decouikit.news.utils.NewsConstants
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import android.content.Intent
+import android.net.Uri
+import com.decouikit.news.extensions.openExternalApp
 
 
-class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeFragmentListener {
+class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeFragmentListener,
+    View.OnClickListener {
 
     private lateinit var toolbar: Toolbar
     private var fragmentPosition: Int? = -1
@@ -43,11 +49,39 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+        setSocialNetworksIconVisibility()
 
         fragmentPosition = intent.getIntExtra(NewsConstants.FRAGMENT_POSITION, -1)
         navView.setNavigationItemSelectedListener(this)
         ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.parent)
         showBannerAds()
+    }
+
+    private fun setSocialNetworksIconVisibility() {
+        if (Config.getInstagramUrl().isNotEmpty()) {
+            ivInstagram.setOnClickListener(this)
+            ivInstagram.visibility = View.VISIBLE
+        } else {
+            ivInstagram.visibility = View.GONE
+        }
+        if (Config.getFacebookUrl().isNotEmpty()) {
+            ivFacebook.setOnClickListener(this)
+            ivFacebook.visibility = View.VISIBLE
+        } else {
+            ivFacebook.visibility = View.GONE
+        }
+        if (Config.getTwitterUrl().isNotEmpty()) {
+            ivTwitter.setOnClickListener(this)
+            ivTwitter.visibility = View.VISIBLE
+        } else {
+            ivTwitter.visibility = View.GONE
+        }
+        if (Config.getYoutubeUrl().isNotEmpty()) {
+            ivYoutube.setOnClickListener(this)
+            ivYoutube.visibility = View.VISIBLE
+        } else {
+            ivYoutube.visibility = View.GONE
+        }
     }
 
     override fun onResume() {
@@ -127,5 +161,22 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
 
     override fun homeFragmentBehavior() {
         ActivityUtil.setAppBarElevation(appBar, 0f)
+    }
+
+    override fun onClick(v: View) {
+        when(v) {
+            ivInstagram -> {
+                v.openExternalApp(Config.getInstagramUrl())
+            }
+            ivFacebook -> {
+                v.openExternalApp(Config.getFacebookUrl())
+            }
+            ivTwitter -> {
+                v.openExternalApp(Config.getTwitterUrl())
+            }
+            ivYoutube -> {
+                v.openExternalApp(Config.getYoutubeUrl())
+            }
+        }
     }
 }

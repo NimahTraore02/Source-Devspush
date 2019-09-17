@@ -7,6 +7,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
 import com.decouikit.news.adapters.CommentsAdapter
+import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.extensions.openComments
@@ -86,6 +87,9 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun initLayout() {
+        if(Preference(this).isRtlEnabled) {
+            ivBack.rotation = 180f
+        }
         adapter = CommentsAdapter(arrayListOf())
         linearLayoutManager = LinearLayoutManager(this)
         rvItems.layoutManager = linearLayoutManager

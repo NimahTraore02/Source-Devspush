@@ -25,6 +25,9 @@ import com.decouikit.news.utils.UriChromeClient
 import kotlinx.android.synthetic.main.activity_post.*
 import org.jetbrains.anko.doAsync
 import java.util.*
+import com.google.android.material.appbar.AppBarLayout
+
+
 
 open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener {
 
@@ -41,7 +44,7 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post)
-        ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.postParent)
+        ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.coordinatorParent)
         postItem = loadPostItem()
         initLayout()
         initListeners()
@@ -62,6 +65,9 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun initLayout() {
+        if(Preference(this).isRtlEnabled) {
+            ivBack.rotation = 180f
+        }
         ivPostBg.load(postItem.source_url)
         if (Preference(this).getBookmarkedNews().contains(postItem)) {
             ivBookmark.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_bookmark_red))
@@ -92,8 +98,18 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
     private fun initListeners() {
         ivBack.setOnClickListener(this)
         ivBookmark.setOnClickListener(this)
+        tvComments.setOnClickListener(this)
         ivShare.setOnClickListener(this)
         btnOpenComments.setOnClickListener(this)
+
+        appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            if (Math.abs(verticalOffset) - appBarLayout.totalScrollRange == 0) {
+                // Collapsed
+                tvToolbarTitle.visibility = View.VISIBLE
+            } else {
+                tvToolbarTitle.visibility = View.GONE
+            }
+        })
     }
 
     override fun onResume() {
@@ -164,6 +180,9 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
             }
             ivBookmark -> {
                 v.bookmark(this, postItem, ivBookmark)
+            }
+            tvComments -> {
+                v.openComments(this, CommentsActivity::class.java, postItem.id)
             }
             btnOpenComments -> {
                 v.openComments(this, CommentsActivity::class.java, postItem.id)
