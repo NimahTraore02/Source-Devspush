@@ -43,11 +43,9 @@ class CategoryAdapter(
         fun bind(item: Category) {
             this.item = item
             view.tvCategoryName.text = item.name
-            if (item.count == 1) {
-                view.tvCategoryPostsNumber.text = view.context.getString(R.string.post)
-            } else {
-                view.tvCategoryPostsNumber.text = view.context.getString(R.string.posts, item.count)
-            }
+            view.tvCategoryPostsNumber.text =
+                itemView.context.resources
+                    .getQuantityString(R.plurals.numberOfPosts, item.count, item.count);
         }
 
         override fun onClick(v: View?) {

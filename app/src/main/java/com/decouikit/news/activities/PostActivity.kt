@@ -22,11 +22,11 @@ import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.NewsConstants
 import com.decouikit.news.utils.UriChromeClient
+import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_post.*
 import org.jetbrains.anko.doAsync
 import java.util.*
-import com.google.android.material.appbar.AppBarLayout
-
+import kotlin.math.abs
 
 
 open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener {
@@ -65,7 +65,7 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun initLayout() {
-        if(Preference(this).isRtlEnabled) {
+        if (Preference(this).isRtlEnabled) {
             ivBack.rotation = 180f
         }
         ivPostBg.load(postItem.source_url)
@@ -103,12 +103,12 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
         btnOpenComments.setOnClickListener(this)
 
         appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            if (Math.abs(verticalOffset) - appBarLayout.totalScrollRange == 0) {
-                // Collapsed
-                tvToolbarTitle.visibility = View.VISIBLE
-            } else {
-                tvToolbarTitle.visibility = View.GONE
-            }
+            tvToolbarTitle.visibility =
+                if (abs(verticalOffset) - appBarLayout.totalScrollRange == 0) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
         })
     }
 
@@ -156,11 +156,9 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
                     is Result.Success -> {
                         if (it.response.body() != null) {
                             val result = it.response.body() as List<CommentItem>
-                            tvComments.text = if (result.size == 1) {
-                                getString(R.string.comment)
-                            } else {
-                                getString(R.string.comments, result.size)
-                            }
+                            tvComments.text = resources.getQuantityString(
+                                R.plurals.numberOfComments, result.size, result.size
+                            )
                             btnOpenComments.text =
                                 getString(R.string.view_all_comments, result.size)
                         }

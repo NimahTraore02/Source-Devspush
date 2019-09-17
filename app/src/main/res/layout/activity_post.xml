@@ -159,7 +159,6 @@
                         android:layout_marginStart="@dimen/screen_padding"
                         android:layout_marginTop="@dimen/screen_padding"
                         android:layout_marginBottom="@dimen/screen_padding"
-                        android:text="@string/zero_comments"
                         app:layout_constraintStart_toEndOf="@+id/tvDate"
                         app:layout_constraintTop_toBottomOf="@+id/tvItemTitle" />
 

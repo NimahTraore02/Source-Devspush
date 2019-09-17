@@ -15,19 +15,21 @@
     <string name="featured_news">Featured news</string>
     <string name="recent_news">Recent news</string>
     <string name="view_all">View all</string>
-    <string name="post">1 post</string>
-    <string name="posts">%d posts</string>
+    <plurals name="numberOfPosts">
+        <item quantity="one">%d post</item>
+        <item quantity="other">%d posts</item>
+    </plurals>
     <string name="clear_all">Clear all</string>
     <string name="bookmarked_news">Bookmarked news</string>
     <string name="about_text_1">WordPress to Android News App</string>
     <string name="about_text_2">Amazing list of features</string>
     <string name="about_text_3">No need for development skills</string>
-    <string name="about_text_4">Wordpress as Backend</string>
+    <string name="about_text_4">Word press as Backend</string>
     <string name="about_text_5">Amazing Documentation and Support</string>
-    <string name="about_text_6">Firebased Push Notifications</string>
+    <string name="about_text_6">Firebase Push Notifications</string>
     <string name="about_text_7">AdMob Integration</string>
     <string name="about_text_8">Light and Dark theme</string>
-    <string name="about_text_9">Design files (Sketch, Adobe Xd and Photoshop)</string>
+    <string name="about_text_9">Design files (Sketch, Adobe Xd and Photo shop)</string>
     <string name="about_text_10">Code in Kotlin</string>
     <string name="about_text_button">Purchase Now</string>
     <string name="enable_push_notification">Enable push notification</string>
@@ -35,9 +37,10 @@
         \n(enable)</string>
     <string name="light_mode">Light Mode</string>
     <string name="dark_mode">Dark Mode</string>
-    <string name="zero_comments">0 comments</string>
-    <string name="comment">1 comment</string>
-    <string name="comments">%d comments</string>
+    <plurals name="numberOfComments">
+        <item quantity="one">%d comment</item>
+        <item quantity="other">%d comments</item>
+    </plurals>
     <string name="comments_title">Comments</string>
     <string name="view_all_comments">View all comments (%d)</string>
     <string name="write_comment">Write a Comment</string>
