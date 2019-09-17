@@ -50,7 +50,7 @@
                     android:id="@+id/tvToolbarTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="?attr/colorTitleText"
                     android:textSize="@dimen/text_size_18sp"
                     android:gravity="center"
                     android:text="@string/navigation_title"
