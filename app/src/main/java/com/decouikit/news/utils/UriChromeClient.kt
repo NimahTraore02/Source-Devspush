@@ -3,11 +3,13 @@ package com.decouikit.news.utils
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.view.View
+import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.widget.FrameLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.decouikit.news.activities.PostActivity
 
-class UriChromeClient(private val activity: PostActivity) : WebChromeClient() {
+class UriChromeClient(private val activity: PostActivity, val listener: FullscreenInterface) : WebChromeClient() {
 
     private var mCustomView: View? = null
     private var mCustomViewCallback: CustomViewCallback? = null
@@ -21,6 +23,7 @@ class UriChromeClient(private val activity: PostActivity) : WebChromeClient() {
 
 
     override fun onHideCustomView() {
+        listener.hideFullscreen()
         (activity.window.decorView as FrameLayout).removeView(this.mCustomView)
         this.mCustomView = null
         activity.window.decorView.systemUiVisibility = this.mOriginalSystemUiVisibility
@@ -32,6 +35,7 @@ class UriChromeClient(private val activity: PostActivity) : WebChromeClient() {
         paramView: View,
         paramCustomViewCallback: CustomViewCallback
     ) {
+        listener.showFullscreen()
         if (this.mCustomView != null) {
             onHideCustomView()
             return
@@ -39,10 +43,15 @@ class UriChromeClient(private val activity: PostActivity) : WebChromeClient() {
         this.mCustomView = paramView
         this.mOriginalSystemUiVisibility = activity.window.decorView.systemUiVisibility
         this.mCustomViewCallback = paramCustomViewCallback
-        (activity.window.decorView as FrameLayout).addView(
+        (activity.window.decorView as ViewGroup).addView(
             this.mCustomView,
-            FrameLayout.LayoutParams(-1, -1)
+            FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         )
         activity.window.decorView.systemUiVisibility = 3846
+    }
+
+    interface FullscreenInterface {
+        fun showFullscreen()
+        fun hideFullscreen()
     }
 }

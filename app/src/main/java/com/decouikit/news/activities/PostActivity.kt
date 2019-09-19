@@ -29,7 +29,24 @@ import java.util.*
 import kotlin.math.abs
 
 
-open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener {
+open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
+    UriChromeClient.FullscreenInterface {
+    override fun showFullscreen() {
+        rlRecentNews.visibility = View.GONE
+        appbar.visibility = View.GONE
+        btnOpenComments.visibility = View.GONE
+        recentTitle.visibility = View.GONE
+
+        cardParent.visibility = View.GONE
+    }
+
+    override fun hideFullscreen() {
+        rlRecentNews.visibility = View.VISIBLE
+        appbar.visibility = View.VISIBLE
+        btnOpenComments.visibility = View.VISIBLE
+        recentTitle.visibility = View.VISIBLE
+        cardParent.visibility = View.VISIBLE
+    }
 
     private lateinit var postItem: PostItem
 
@@ -80,7 +97,7 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
         tvComments.visibility = postItem.getCommentVisible()
 
         webView.settings.javaScriptEnabled = true
-        webView.webChromeClient = UriChromeClient(this)
+        webView.webChromeClient = UriChromeClient(this, this)
 
         val style = if (Preference(this).isThemeLight()) {
             NewsConstants.HTML_STYLE
