@@ -39,6 +39,9 @@ class Preference(context: Context) {
         get() = prefs.getBoolean("RTL_ENABLED", Config.getDefaultValueForRTL())
         set(value) = prefs.edit { it.putBoolean("RTL_ENABLED", value) }
 
+    fun isThemeLight(): Boolean {
+        return colorTheme == Config.getDefaultTheme()
+    }
     fun setBookmarkedNews(items: ArrayList<PostItem>) {
         val gson = Gson()
         val json = gson.toJson(items)
