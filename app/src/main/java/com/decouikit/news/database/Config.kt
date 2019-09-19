@@ -2,6 +2,8 @@ package com.decouikit.news.database
 
 import android.content.Context
 import com.decouikit.news.R
+import com.decouikit.news.activities.common.BottomNavigationActivity
+import com.decouikit.news.activities.common.NavigationActivity
 import com.decouikit.news.network.dto.Category
 
 class Config {
@@ -15,6 +17,13 @@ class Config {
             return R.style.AppTheme
         }
 
+        fun bottomNavigationStyle(): Class<*> {
+            return BottomNavigationActivity::class.java
+        }
+
+        fun drawerNavigationStyle(): Class<*> {
+            return NavigationActivity::class.java
+        }
         //Show interstitial after 10 opens single post
         // if you don't want interstitial ads just put value -1
         fun promptForInterstitialCounter(): Int {

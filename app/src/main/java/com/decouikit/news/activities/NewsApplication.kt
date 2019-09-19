@@ -2,7 +2,7 @@ package com.decouikit.news.activities
 
 import android.app.Application
 import android.content.Intent
-import com.decouikit.news.activities.common.NavigationActivity
+import com.decouikit.news.database.Config
 import com.google.android.gms.ads.MobileAds
 import com.onesignal.OSNotificationOpenResult
 import com.onesignal.OneSignal
@@ -23,7 +23,7 @@ class NewsApplication : Application(), OneSignal.NotificationOpenedHandler {
     }
 
     override fun notificationOpened(result: OSNotificationOpenResult) {
-        val intent = Intent(this, NavigationActivity::class.java)
+        val intent = Intent(this, Config.bottomNavigationStyle())
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         if (result.notification.payload.launchURL != null) {
             intent.putExtra(Intent.EXTRA_TEXT, result.notification.payload.launchURL)

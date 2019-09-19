@@ -5,10 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.animation.AnimationUtils
-import androidx.appcompat.app.AppCompatActivity
 import com.decouikit.news.R
-import com.decouikit.news.activities.common.BaseActivity
-import com.decouikit.news.activities.common.NavigationActivity
+import com.decouikit.news.database.Config
 import com.decouikit.news.interfaces.SyncListener
 import com.decouikit.news.network.sync.SyncApi
 import com.google.android.gms.ads.MobileAds
@@ -19,7 +17,7 @@ class SplashActivity : Activity(), SyncListener {
         // TODO RADOVAN UCITATI URL U ZA SINGLE POST
         Log.e("TEST", "URL$intent.loadDeepLinkUrl()")
         // Open navigation or Single post
-        startActivity(Intent(this, NavigationActivity::class.java))
+        startActivity(Intent(this, Config.bottomNavigationStyle()))
         finish()
     }
 

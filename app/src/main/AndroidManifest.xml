@@ -43,8 +43,9 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".activities.common.NavigationActivity"
-                android:theme="@style/AppTheme" />
+                android:name=".activities.common.NavigationActivity"/>
+        <activity
+            android:name=".activities.common.BottomNavigationActivity"/>
         <activity
             android:name=".activities.PostActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"/>
