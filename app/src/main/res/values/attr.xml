@@ -4,4 +4,5 @@
     <attr name="colorTitleText" format="reference"/>
     <attr name="colorButtonText" format="reference"/>
     <attr name="colorButtonPressed" format="reference"/>
+    <attr name="postBg" format="reference"/>
 </resources>
