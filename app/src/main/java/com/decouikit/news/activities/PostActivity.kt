@@ -82,9 +82,14 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
         webView.settings.javaScriptEnabled = true
         webView.webChromeClient = UriChromeClient(this)
 
+        val style = if (Preference(this).isThemeLight()) {
+            NewsConstants.HTML_STYLE
+        } else {
+            NewsConstants.HTML_STYLE_DARK
+        }
 
         webView.loadData(
-            String.format("%s%s", NewsConstants.HTML_STYLE, postItem.content.rendered),
+            String.format("%s%s", style, postItem.content.rendered),
             NewsConstants.TEXT_HTML,
             NewsConstants.UTF_8
         )
