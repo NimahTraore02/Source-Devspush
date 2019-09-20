@@ -8,6 +8,7 @@ import android.widget.CheckBox
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.decouikit.news.R
+import com.decouikit.news.database.Config
 import com.decouikit.news.database.Preference
 import com.decouikit.news.utils.ActivityUtil
 import kotlinx.android.synthetic.main.fragment_settings.view.*
@@ -48,10 +49,10 @@ class SettingsFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View) {
         when(v) {
             itemView.btnLightMode -> {
-                setTheme(R.style.AppTheme)
+                setTheme(Config.getLightTheme())
             }
             itemView.btnDarkMode -> {
-                setTheme(R.style.AppThemeDark)
+                setTheme(Config.getDarkTheme())
             }
         }
         if (v is CheckBox) {
