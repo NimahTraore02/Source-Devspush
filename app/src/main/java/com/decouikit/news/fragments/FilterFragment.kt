@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -18,6 +19,7 @@ import com.decouikit.news.extensions.viewAll
 import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.PostItem
+import com.decouikit.news.utils.EndlessRecyclerOnScrollListener
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.fragment_filter.view.*
@@ -37,6 +39,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     private lateinit var featuredAdapter: FeaturedNewsAdapter
 
     private lateinit var recentAdapter: RecentNewsAdapter
+    private var recentPostItems = arrayListOf<PostItem>()
 
     private var page = 0
 
@@ -63,12 +66,12 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     }
     override fun onResume() {
         super.onResume()
-//        itemView.rvRecentNews.addOnScrollListener(object : EndlessRecyclerOnScrollListener() {
-//            override fun onLoadMore() {
-//                swipeRefresh.isRefreshing = true
-//                loadMoreRecentData()
-//            }
-//        })
+        itemView.nestedParent.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener
+        { _, _, _, _, _ ->
+
+            swipeRefresh.isRefreshing = true
+            loadMoreRecentData()
+        })
         refreshContent()
     }
 
@@ -131,7 +134,6 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     }
 
     private fun initRecentNews() {
-        val recentPostItems = arrayListOf<PostItem>()
         for (postItem in allPostList.subList(Config.getNumberOfItemForSlider(), allPostList.size)) {
             postItem.categoryName = categoryName
             for (mediaItem in allMediaList) {
@@ -144,29 +146,30 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
         recentAdapter.setData(recentPostItems)
     }
 
-//    private fun loadMoreRecentData() {
-//        doAsync {
-//            postsService?.getPostsByCategory(categoryId.toString(), ++page, Config.getNumberOfItemPerPage())?.enqueue(result = {
-//                when (it) {
-//                    is Result.Success -> {
-//                        if (it.response.body() != null) {
-//                            val allPostList = it.response.body() as ArrayList<PostItem>
-//                            for (postItem in allPostList) {
-//                                postItem.categoryName = categoryName
-//                                for (mediaItem in allMediaList) {
-//                                    if (mediaItem.id == postItem.featured_media) {
-//                                        postItem.source_url = mediaItem.source_url
-//                                    }
-//                                }
-//                                recentPostItems.add(postItem)
-//                            }
-//                        }
-//                    }
-//                }
-//                itemView.swipeRefresh.isRefreshing = false
-//            })
-//        }
-//    }
+    private fun loadMoreRecentData() {
+        doAsync {
+            postsService?.getPostsByCategory(categoryId.toString(), ++page, Config.getNumberOfItemPerPage())?.enqueue(result = {
+                when (it) {
+                    is Result.Success -> {
+                        if (it.response.body() != null) {
+                            val allPostList = it.response.body() as ArrayList<PostItem>
+                            for (postItem in allPostList) {
+                                postItem.categoryName = categoryName
+                                for (mediaItem in allMediaList) {
+                                    if (mediaItem.id == postItem.featured_media) {
+                                        postItem.source_url = mediaItem.source_url
+                                    }
+                                }
+                                recentPostItems.add(postItem)
+                            }
+                            recentAdapter.setData(recentPostItems)
+                        }
+                    }
+                }
+                itemView.swipeRefresh.isRefreshing = false
+            })
+        }
+    }
 
     override fun onRefresh() {
         itemView.swipeRefresh.isRefreshing = true
@@ -179,6 +182,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
         page = 0
         featuredAdapter.removeAllItems()
         recentAdapter.removeAllItems()
+        recentPostItems.removeAll { true }
         initData()
     }
 
