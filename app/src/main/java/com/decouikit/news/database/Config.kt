@@ -14,7 +14,20 @@ class Config {
         }
 
         fun getDefaultTheme(): Int {
+            //Set default theme light or dark
+            return getLightTheme()
+        }
+
+        fun getLightTheme():Int {
             return R.style.AppTheme
+        }
+
+        fun getDarkTheme():Int {
+            return R.style.AppThemeDark
+        }
+
+        fun getDefaultNavigationStyle(): Class<*> {
+            return bottomNavigationStyle()
         }
 
         fun bottomNavigationStyle(): Class<*> {

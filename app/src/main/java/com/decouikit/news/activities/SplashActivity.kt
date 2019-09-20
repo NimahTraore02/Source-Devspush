@@ -17,7 +17,7 @@ class SplashActivity : Activity(), SyncListener {
         // TODO RADOVAN UCITATI URL U ZA SINGLE POST
         Log.e("TEST", "URL$intent.loadDeepLinkUrl()")
         // Open navigation or Single post
-        startActivity(Intent(this, Config.bottomNavigationStyle()))
+        startActivity(Intent(this, Config.getDefaultNavigationStyle()))
         finish()
     }
 
