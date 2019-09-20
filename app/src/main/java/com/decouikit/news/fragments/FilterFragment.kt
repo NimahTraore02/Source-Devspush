@@ -19,7 +19,6 @@ import com.decouikit.news.extensions.viewAll
 import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.PostItem
-import com.decouikit.news.utils.EndlessRecyclerOnScrollListener
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.fragment_filter.view.*
@@ -31,7 +30,8 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     private var categoryId: Int? = null
     private lateinit var categoryName: String
 
-    private val postsService = RetrofitClientInstance.retrofitInstance?.create(PostsService::class.java)
+    private val postsService =
+        RetrofitClientInstance.retrofitInstance?.create(PostsService::class.java)
     private var allMediaList = InMemory.getMediaList()
 
     private lateinit var allPostList: List<PostItem>
@@ -40,6 +40,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
 
     private lateinit var recentAdapter: RecentNewsAdapter
     private var recentPostItems = arrayListOf<PostItem>()
+    private lateinit var recentManager: GridLayoutManager
 
     private var page = 0
 
@@ -64,14 +65,28 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
         initLayout()
         initListeners()
     }
+
     override fun onResume() {
         super.onResume()
-        itemView.nestedParent.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener
-        { _, _, _, _, _ ->
+        itemView.nestedParent.setOnScrollChangeListener(
+            NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
+                if (v?.getChildAt(v.childCount - 1) != null) {
+                    if ((scrollY >= (v.getChildAt(v.childCount - 1).measuredHeight - v.measuredHeight)) &&
+                        scrollY > oldScrollY
+                    ) {
 
-            swipeRefresh.isRefreshing = true
-            loadMoreRecentData()
-        })
+                        val visibleItemCount = recentManager.childCount
+                        val totalItemCount = recentManager.itemCount
+                        val pastVisibleItems = recentManager.findFirstVisibleItemPosition()
+
+                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                            swipeRefresh.isRefreshing = true
+                            loadMoreRecentData()
+
+                        }
+                    }
+                }
+            })
         refreshContent()
     }
 
@@ -79,7 +94,8 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
         featuredAdapter = FeaturedNewsAdapter(arrayListOf(), itemView.context)
 
         recentAdapter = RecentNewsAdapter(arrayListOf())
-        itemView.rvRecentNews.layoutManager = GridLayoutManager(itemView.context, 2)
+        recentManager = GridLayoutManager(itemView.context, 2)
+        itemView.rvRecentNews.layoutManager = recentManager
         itemView.rvRecentNews.adapter = recentAdapter
         itemView.rvRecentNews.setHasFixedSize(true)
     }
@@ -92,7 +108,11 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
 
     private fun initData() {
         doAsync {
-            postsService?.getPostsByCategory(categoryId.toString(), ++page, Config.getNumberOfItemPerPage())?.enqueue(result = {
+            postsService?.getPostsByCategory(
+                categoryId.toString(),
+                ++page,
+                Config.getNumberOfItemPerPage()
+            )?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
                         if (it.response.body() != null) {
@@ -148,7 +168,11 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
 
     private fun loadMoreRecentData() {
         doAsync {
-            postsService?.getPostsByCategory(categoryId.toString(), ++page, Config.getNumberOfItemPerPage())?.enqueue(result = {
+            postsService?.getPostsByCategory(
+                categoryId.toString(),
+                ++page,
+                Config.getNumberOfItemPerPage()
+            )?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
                         if (it.response.body() != null) {
