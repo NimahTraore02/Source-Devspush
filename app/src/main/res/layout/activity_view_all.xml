@@ -40,7 +40,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/zero_density"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,8 +49,8 @@
         <TextView
             android:id="@+id/tvTitle"
             style="@style/TitleTextStyle"
-            android:layout_marginStart="@dimen/screen_padding"
-            android:layout_marginTop="@dimen/screen_padding"
+            android:layout_marginStart="@dimen/large_padding"
+            android:layout_marginTop="@dimen/large_padding"
             android:layout_marginBottom="@dimen/normal_padding"
             android:text="@string/recent_news"
             app:layout_constraintTop_toTopOf="parent"
@@ -60,7 +60,7 @@
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/mShimmerViewContainer"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/zero_density"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -80,7 +80,7 @@
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefresh"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/zero_density"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

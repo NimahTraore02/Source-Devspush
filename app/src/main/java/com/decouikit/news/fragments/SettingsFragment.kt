@@ -68,6 +68,7 @@ class SettingsFragment : Fragment(), View.OnClickListener {
                     } else {
                         activity?.let { ActivityUtil.setLayoutDirection(it, ViewCompat.LAYOUT_DIRECTION_LOCALE, R.id.parent) }
                     }
+                    ActivityUtil.reload(activity, 5)
                 }
             }
         }

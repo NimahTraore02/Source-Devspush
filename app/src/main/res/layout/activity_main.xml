@@ -31,8 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:orientation="horizontal"
-            android:layout_marginStart="@dimen/screen_padding"
-            android:layout_marginBottom="@dimen/big_margin">
+            android:layout_marginStart="@dimen/large_padding"
+            android:layout_marginBottom="@dimen/extra_larger_margin">
 
             <ImageView
                 android:id="@+id/ivInstagram"

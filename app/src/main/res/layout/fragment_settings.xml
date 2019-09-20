@@ -5,8 +5,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingStart="@dimen/screen_padding"
-        android:paddingEnd="@dimen/screen_padding">
+        android:paddingStart="@dimen/large_padding"
+        android:paddingEnd="@dimen/large_padding">
 
     <TextView
             style="@style/TitleTextStyle"
@@ -26,7 +26,7 @@
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="@dimen/tab_indicator_height"
-            android:layout_marginTop="@dimen/screen_padding"
+            android:layout_marginTop="@dimen/large_padding"
             android:background="@color/colorMenuItem"
             app:layout_constraintTop_toBottomOf="@+id/cbNotifications" />
 
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/tab_indicator_height"
             android:background="@color/colorMenuItem"
-            android:layout_marginTop="@dimen/screen_padding"
+            android:layout_marginTop="@dimen/large_padding"
             app:layout_constraintTop_toBottomOf="@+id/tvEnableRtl" />
 
     <LinearLayout
@@ -66,7 +66,7 @@
                 style="@style/ButtonStyle"
                 android:layout_weight="0.5"
                 android:text="@string/light_mode"
-                android:layout_marginEnd="@dimen/screen_padding"/>
+                android:layout_marginEnd="@dimen/large_padding"/>
 
         <Button
                 android:id="@+id/btnDarkMode"

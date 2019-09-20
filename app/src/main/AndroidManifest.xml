@@ -43,18 +43,23 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".activities.common.NavigationActivity"/>
+                android:name=".activities.common.NavigationActivity"
+            android:configChanges="orientation|screenSize"/>
         <activity
-            android:name=".activities.common.BottomNavigationActivity"/>
+            android:name=".activities.common.BottomNavigationActivity"
+            android:configChanges="orientation|screenSize"/>
         <activity
             android:name=".activities.PostActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity
-            android:name=".activities.CommentsActivity"/>
+            android:name=".activities.CommentsActivity"
+            android:configChanges="orientation|screenSize"/>
         <activity
-            android:name=".activities.PostCommentActivity"/>
+            android:name=".activities.PostCommentActivity"
+            android:configChanges="orientation|screenSize"/>
         <activity
-            android:name=".activities.ViewAllActivity"/>
+            android:name=".activities.ViewAllActivity"
+            android:configChanges="orientation|screenSize"/>
 
         <service android:name=".firebase.MyFirebaseMessagingService"
                 tools:ignore="ExportedService">

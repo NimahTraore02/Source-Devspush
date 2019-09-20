@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/featured_news_height"
         app:cardCornerRadius="@dimen/normal_padding"
-        app:cardElevation="0dp"
+        app:cardElevation="@dimen/zero_density"
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,8 +36,8 @@
                 android:id="@+id/tvTag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/screen_padding"
-                android:layout_marginTop="@dimen/screen_padding"
+                android:layout_marginStart="@dimen/large_padding"
+                android:layout_marginTop="@dimen/large_padding"
                 android:background="@drawable/rounded_red_bg"
                 android:padding="@dimen/small_padding"
                 android:textColor="@color/colorWhite"
@@ -52,8 +52,8 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginEnd="@dimen/screen_padding"
-                android:layout_marginTop="@dimen/screen_padding"
+                android:layout_marginEnd="@dimen/large_padding"
+                android:layout_marginTop="@dimen/large_padding"
                 android:padding="@dimen/small_padding"/>
 
 
@@ -62,12 +62,12 @@
                 style="@style/TitleTextStyle"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold"
-                android:layout_margin="@dimen/screen_padding"
+                android:layout_margin="@dimen/large_padding"
                 app:layout_constraintBottom_toTopOf="@+id/tvItemDate"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:paddingStart="@dimen/screen_padding"
-                android:paddingEnd="@dimen/screen_padding"
+                android:paddingStart="@dimen/large_padding"
+                android:paddingEnd="@dimen/large_padding"
                 android:ellipsize="end"
                 android:maxLines="3"/>
 
@@ -77,8 +77,8 @@
                 android:drawableStart="@drawable/ic_clock_white"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold"
-                android:layout_marginStart="@dimen/screen_padding"
-                android:layout_marginBottom="@dimen/screen_padding"
+                android:layout_marginStart="@dimen/large_padding"
+                android:layout_marginBottom="@dimen/large_padding"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
 
@@ -86,9 +86,9 @@
             android:id="@+id/tvComments"
             style="@style/CommentTextStyle"
             android:drawableStart="@drawable/ic_comment_white"
-            android:layout_marginTop="@dimen/screen_padding"
-            android:layout_marginStart="@dimen/screen_padding"
-            android:layout_marginBottom="@dimen/screen_padding"
+            android:layout_marginTop="@dimen/large_padding"
+            android:layout_marginStart="@dimen/large_padding"
+            android:layout_marginBottom="@dimen/large_padding"
             app:layout_constraintTop_toBottomOf="@+id/tvItemTitle"
             app:layout_constraintStart_toEndOf="@+id/tvItemDate"
             android:visibility="gone"/>

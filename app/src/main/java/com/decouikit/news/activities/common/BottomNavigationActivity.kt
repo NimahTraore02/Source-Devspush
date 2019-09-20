@@ -1,7 +1,6 @@
 package com.decouikit.news.activities.common
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.MenuItem
 import com.decouikit.news.R
 import com.decouikit.news.activities.NewsApplication
@@ -21,6 +20,7 @@ class BottomNavigationActivity : BaseActivity(), BottomNavigationView.OnNavigati
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bottom_navigation)
+        ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.parent)
 
         fragmentPosition = intent.getIntExtra(NewsConstants.FRAGMENT_POSITION, -1)
         navigation?.setOnNavigationItemSelectedListener(this)

@@ -4,8 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/postBg"
-        xmlns:tools="http://schemas.android.com/tools">
+        android:background="?attr/postBg">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -20,21 +19,21 @@
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorHeader"
-            app:expandedTitleMarginEnd="64dp"
-            app:expandedTitleMarginStart="48dp"
+            app:expandedTitleMarginEnd="@dimen/ultra_large_margin"
+            app:expandedTitleMarginStart="@dimen/extra_larger_margin"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
                 android:id="@+id/ivPostBg"
                 android:layout_width="match_parent"
-                android:layout_height="370dp"
+                android:layout_height="@dimen/post_bg_height"
                 android:fitsSystemWindows="true"
                 android:scaleType="fitXY"
                 app:layout_collapseMode="parallax" />
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="370dp"
+                android:layout_height="@dimen/post_bg_height"
                 android:background="@color/darkerGrayFiftyTransparency"
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="parallax" />
@@ -73,7 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="-40dp"
+        android:layout_marginTop="@dimen/negative_post_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -103,8 +102,8 @@
                     <TextView
                         android:id="@+id/tvTag"
                         style="@style/TagTextStyle"
-                        android:layout_marginStart="@dimen/screen_padding"
-                        android:layout_marginTop="@dimen/screen_padding"
+                        android:layout_marginStart="@dimen/large_padding"
+                        android:layout_marginTop="@dimen/large_padding"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -112,8 +111,8 @@
                         android:id="@+id/ivBookmark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/screen_padding"
-                        android:layout_marginEnd="@dimen/screen_padding"
+                        android:layout_marginTop="@dimen/large_padding"
+                        android:layout_marginEnd="@dimen/large_padding"
                         android:padding="@dimen/small_padding"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -122,7 +121,7 @@
                         android:id="@+id/ivShare"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/screen_padding"
+                        android:layout_marginTop="@dimen/large_padding"
                         android:layout_marginEnd="@dimen/normal_padding"
                         android:padding="@dimen/small_padding"
                         android:src="@drawable/ic_share"
@@ -132,11 +131,11 @@
                     <TextView
                         android:id="@+id/tvItemTitle"
                         style="@style/TitleTextStyle"
-                        android:layout_margin="@dimen/screen_padding"
+                        android:layout_margin="@dimen/large_padding"
                         android:ellipsize="end"
                         android:maxLines="3"
-                        android:paddingStart="@dimen/screen_padding"
-                        android:paddingEnd="@dimen/screen_padding"
+                        android:paddingStart="@dimen/large_padding"
+                        android:paddingEnd="@dimen/large_padding"
                         android:textSize="@dimen/text_size_20sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -146,18 +145,18 @@
                     <TextView
                         android:id="@+id/tvDate"
                         style="@style/DateTextStyle"
-                        android:layout_marginStart="@dimen/screen_padding"
-                        android:layout_marginTop="@dimen/screen_padding"
-                        android:layout_marginBottom="@dimen/screen_padding"
+                        android:layout_marginStart="@dimen/large_padding"
+                        android:layout_marginTop="@dimen/large_padding"
+                        android:layout_marginBottom="@dimen/large_padding"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvItemTitle" />
 
                     <TextView
                         android:id="@+id/tvComments"
                         style="@style/CommentTextStyle"
-                        android:layout_marginStart="@dimen/screen_padding"
-                        android:layout_marginTop="@dimen/screen_padding"
-                        android:layout_marginBottom="@dimen/screen_padding"
+                        android:layout_marginStart="@dimen/large_padding"
+                        android:layout_marginTop="@dimen/large_padding"
+                        android:layout_marginBottom="@dimen/large_padding"
                         app:layout_constraintStart_toEndOf="@+id/tvDate"
                         app:layout_constraintTop_toBottomOf="@+id/tvItemTitle" />
 
@@ -165,7 +164,7 @@
                         android:id="@+id/webView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/screen_padding"
+                        android:layout_marginTop="@dimen/large_padding"
                         android:isScrollContainer="true"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -186,8 +185,8 @@
                 <TextView
                     android:id="@+id/recentTitle"
                     style="@style/TitleTextStyle"
-                    android:layout_marginStart="@dimen/screen_padding"
-                    android:layout_marginTop="@dimen/screen_padding"
+                    android:layout_marginStart="@dimen/large_padding"
+                    android:layout_marginTop="@dimen/large_padding"
                     android:text="@string/recent_news" />
 
 
@@ -195,7 +194,7 @@
                     android:id="@+id/rlRecentNews"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/screen_padding"
+                    android:layout_marginTop="@dimen/large_padding"
                     app:layout_constraintTop_toBottomOf="@+id/tvRecentNewsViewAll">
 
                     <androidx.recyclerview.widget.RecyclerView

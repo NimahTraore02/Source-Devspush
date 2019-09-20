@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="@dimen/view_all_item_height"
         android:orientation="vertical"
         app:cardCornerRadius="@dimen/small_padding"
         app:cardElevation="@dimen/small_padding"
@@ -19,7 +19,7 @@
 
         <ImageView
                 android:id="@+id/ivItemBg"
-                android:layout_width="120dp"
+                android:layout_width="@dimen/view_all_image_height"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
                 android:background="@color/colorPrimaryDark"
@@ -39,8 +39,8 @@
         <TextView
                 android:id="@+id/tvItemTitle"
                 style="@style/ItemTextStyle"
-                android:layout_width="0dp"
-                android:layout_margin="@dimen/screen_padding"
+                android:layout_width="@dimen/zero_density"
+                android:layout_margin="@dimen/large_padding"
                 app:layout_constraintStart_toEndOf="@+id/ivItemBg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -48,11 +48,11 @@
         <TextView
                 android:id="@+id/tvItemDate"
                 style="@style/DateTextStyle"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/zero_density"
                 app:layout_constraintStart_toEndOf="@+id/ivItemBg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginStart="@dimen/screen_padding"
+                android:layout_marginStart="@dimen/large_padding"
                 android:layout_marginBottom="@dimen/normal_padding"/>
 
         <ImageView

@@ -23,7 +23,7 @@ class NewsApplication : Application(), OneSignal.NotificationOpenedHandler {
     }
 
     override fun notificationOpened(result: OSNotificationOpenResult) {
-        val intent = Intent(this, Config.bottomNavigationStyle())
+        val intent = Intent(this, Config.getDefaultNavigationStyle())
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         if (result.notification.payload.launchURL != null) {
             intent.putExtra(Intent.EXTRA_TEXT, result.notification.payload.launchURL)

@@ -21,8 +21,8 @@
             <TextView
                 android:id="@+id/tvTitle"
                 style="@style/TitleTextStyle"
-                android:layout_marginStart="@dimen/screen_padding"
-                android:layout_marginTop="@dimen/screen_padding"
+                android:layout_marginStart="@dimen/large_padding"
+                android:layout_marginTop="@dimen/large_padding"
                 android:text="@string/bookmarked_news"
                 app:layout_constraintBottom_toTopOf="@+id/divider"
                 app:layout_constraintStart_toStartOf="parent"
@@ -31,8 +31,8 @@
             <TextView
                 android:id="@+id/tvClearAll"
                 style="@style/ViewAllTextStyle"
-                android:layout_marginTop="@dimen/screen_padding"
-                android:layout_marginEnd="@dimen/screen_padding"
+                android:layout_marginTop="@dimen/large_padding"
+                android:layout_marginEnd="@dimen/large_padding"
                 android:text="@string/clear_all"
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/divider"
@@ -43,7 +43,7 @@
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/tab_indicator_height"
-                android:layout_marginTop="@dimen/screen_padding"
+                android:layout_marginTop="@dimen/large_padding"
                 app:layout_constraintBottom_toTopOf="@+id/rlItems" />
 
             <RelativeLayout
@@ -91,7 +91,7 @@
                 style="@style/TitleTextStyle"
                 android:text="@string/no_data"
                 android:textSize="@dimen/text_size_20sp"
-                android:layout_marginTop="@dimen/screen_padding"/>
+                android:layout_marginTop="@dimen/large_padding"/>
 
             <TextView
                 style="@style/ViewAllTextStyle"

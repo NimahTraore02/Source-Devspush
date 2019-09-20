@@ -42,7 +42,7 @@
         <TextView
             android:id="@+id/tvCommentText"
             style="@style/ViewAllTextStyle"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/zero_density"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/normal_padding"
             android:layout_marginTop="@dimen/normal_padding"

@@ -134,8 +134,8 @@
         <item name="android:textColor">@color/colorSubTitleText</item>
         <item name="android:textColorHint">@color/colorSubTitleText</item>
         <item name="android:fontFamily">@font/roboto</item>
-        <item name="android:paddingStart">@dimen/screen_padding</item>
-        <item name="android:paddingEnd">@dimen/screen_padding</item>
+        <item name="android:paddingStart">@dimen/large_padding</item>
+        <item name="android:paddingEnd">@dimen/large_padding</item>
         <item name="android:layout_margin">@dimen/normal_padding</item>
         <item name="android:textAlignment">viewStart</item>
     </style>

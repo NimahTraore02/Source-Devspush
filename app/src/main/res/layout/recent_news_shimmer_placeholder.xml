@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="230dp"
+    android:layout_height="@dimen/recent_item_height"
     android:orientation="vertical"
-    android:layout_marginBottom="@dimen/screen_padding"
+    android:layout_marginBottom="@dimen/large_padding"
     android:layout_marginStart="@dimen/normal_padding"
     android:layout_marginEnd="@dimen/normal_padding"
     app:cardCornerRadius="@dimen/small_padding"
@@ -19,7 +19,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="110dp">
+            android:layout_height="@dimen/recent_item_image_height">
 
             <ImageView
                 android:id="@+id/ivItemBg"
@@ -32,12 +32,12 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <View
-                android:layout_width="60dp"
-                android:layout_height="@dimen/screen_padding"
+                android:layout_width="@dimen/shimmer_tag_size"
+                android:layout_height="@dimen/large_padding"
                 android:background="?attr/colorHeader"
-                android:layout_marginStart="@dimen/screen_padding"
-                android:layout_marginTop="@dimen/screen_padding"
-                android:layout_marginBottom="@dimen/screen_padding"
+                android:layout_marginStart="@dimen/large_padding"
+                android:layout_marginTop="@dimen/large_padding"
+                android:layout_marginBottom="@dimen/large_padding"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -45,16 +45,16 @@
         <View
             android:id="@+id/tvItemTitle"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/big_margin"
+            android:layout_height="@dimen/shimmer_title_height"
             android:background="?attr/colorHeader"
-            android:layout_margin="@dimen/screen_padding" />
+            android:layout_margin="@dimen/large_padding" />
 
         <View
             android:id="@+id/tvItemDate"
-            android:layout_width="120dp"
-            android:layout_height="@dimen/screen_padding"
+            android:layout_width="@dimen/shimmer_text_width"
+            android:layout_height="@dimen/large_padding"
             android:background="?attr/colorHeader"
-            android:layout_marginBottom="@dimen/screen_padding"
-            android:layout_marginStart="@dimen/screen_padding"/>
+            android:layout_marginBottom="@dimen/large_padding"
+            android:layout_marginStart="@dimen/large_padding"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

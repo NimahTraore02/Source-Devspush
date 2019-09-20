@@ -21,7 +21,7 @@
             android:textColor="?attr/colorTitleText"
             android:text="@string/about_text_2"
             android:textAlignment="viewStart"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/zero_density"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/checkmark"
             app:layout_constraintTop_toTopOf="parent"

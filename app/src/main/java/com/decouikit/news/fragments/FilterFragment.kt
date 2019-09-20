@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.fragment_filter.view.*
 import org.jetbrains.anko.doAsync
 
-class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, NestedScrollView.OnScrollChangeListener {
 
     private lateinit var itemView: View
     private var categoryId: Int? = null
@@ -68,25 +68,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
 
     override fun onResume() {
         super.onResume()
-        itemView.nestedParent.setOnScrollChangeListener(
-            NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
-                if (v?.getChildAt(v.childCount - 1) != null) {
-                    if ((scrollY >= (v.getChildAt(v.childCount - 1).measuredHeight - v.measuredHeight)) &&
-                        scrollY > oldScrollY
-                    ) {
-
-                        val visibleItemCount = recentManager.childCount
-                        val totalItemCount = recentManager.itemCount
-                        val pastVisibleItems = recentManager.findFirstVisibleItemPosition()
-
-                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
-                            swipeRefresh.isRefreshing = true
-                            loadMoreRecentData()
-
-                        }
-                    }
-                }
-            })
+        itemView.nestedParent.setOnScrollChangeListener(this)
         refreshContent()
     }
 
@@ -233,6 +215,31 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
             }
             itemView.tvRecentNewsViewAll -> {
                 v.viewAll(v.context, categoryId, categoryName)
+            }
+        }
+    }
+
+    override fun onScrollChange(
+        v: NestedScrollView?,
+        scrollX: Int,
+        scrollY: Int,
+        oldScrollX: Int,
+        oldScrollY: Int
+    ) {
+        if (v?.getChildAt(v.childCount - 1) != null) {
+            if ((scrollY >= (v.getChildAt(v.childCount - 1).measuredHeight - v.measuredHeight)) &&
+                scrollY > oldScrollY
+            ) {
+
+                val visibleItemCount = recentManager.childCount
+                val totalItemCount = recentManager.itemCount
+                val pastVisibleItems = recentManager.findFirstVisibleItemPosition()
+
+                if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                    swipeRefresh.isRefreshing = true
+                    loadMoreRecentData()
+
+                }
             }
         }
     }
