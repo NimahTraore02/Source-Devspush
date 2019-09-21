@@ -1,25 +1,23 @@
 package com.decouikit.news.activities
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.animation.AnimationUtils
 import com.decouikit.news.R
-import com.decouikit.news.database.Config
+import com.decouikit.news.extensions.loadDeepLinkUrl
+import com.decouikit.news.extensions.openMainPage
+import com.decouikit.news.extensions.openSinglePage
+import com.decouikit.news.interfaces.PostListener
 import com.decouikit.news.interfaces.SyncListener
+import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.sync.SyncApi
+import com.decouikit.news.network.sync.SyncPost
 import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_splash.*
 
+
 class SplashActivity : Activity(), SyncListener {
-    override fun finish(success: Boolean) {
-        // TODO RADOVAN UCITATI URL U ZA SINGLE POST
-        Log.e("TEST", "URL$intent.loadDeepLinkUrl()")
-        // Open navigation or Single post
-        startActivity(Intent(this, Config.getDefaultNavigationStyle()))
-        finish()
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,10 +27,21 @@ class SplashActivity : Activity(), SyncListener {
         SyncApi.sync(this)
     }
 
+    override fun finish(success: Boolean) {
+        SyncPost.getPostById(intent.loadDeepLinkUrl(), object : PostListener {
+            override fun onSuccess(post: PostItem) {
+                openSinglePage(post)
+            }
+
+            override fun onError(error: Throwable?) {
+                openMainPage()
+            }
+        })
+    }
+
     private fun animation() {
         ivLogo.alpha = 1.0f
         val anim = AnimationUtils.loadAnimation(this, R.anim.logo_anim)
         ivLogo.startAnimation(anim)
     }
 }
-

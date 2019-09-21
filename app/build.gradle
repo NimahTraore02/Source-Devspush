@@ -53,7 +53,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:18.2.0'
 
     //OneSignal
-    implementation 'com.onesignal:OneSignal:3.11.3'
+    implementation 'com.onesignal:OneSignal:3.11.4'
 
     // retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.1.0'
