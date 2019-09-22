@@ -19,6 +19,7 @@ import com.decouikit.news.activities.ViewAllActivity
 import com.decouikit.news.database.Preference
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.NewsConstants
+import com.google.gson.Gson
 
 
 fun View.pxToDp(px: Int): Int {
@@ -45,17 +46,16 @@ fun ImageView.load(imageUrl: String, isRounded: Boolean = false) {
 }
 
 fun ImageView.setBookmarkIcon(isBookmarked: Boolean) {
-    if(isBookmarked) {
+    if (isBookmarked) {
         this.setImageDrawable(ContextCompat.getDrawable(this.context, R.drawable.ic_bookmark_red))
-    }
-    else {
+    } else {
         this.setImageDrawable(ContextCompat.getDrawable(this.context, R.drawable.ic_bookmark))
     }
 }
 
 fun View.bookmark(context: Context, postItem: PostItem, imageView: ImageView) {
     val item = Preference(context).getBookmarkByPostId(postItem.id)
-    if(item == null) {
+    if (item == null) {
         Preference(context).addBookmark(postItem)
     } else {
         Preference(context).removeBookmark(postItem)
@@ -72,7 +72,7 @@ fun View.viewAll(context: Context, categoryId: Int?, categoryName: String) {
 
 fun View.openPostActivity(context: Context, item: PostItem) {
     val intent = Intent(context, PostActivity::class.java)
-    intent.putExtra(NewsConstants.POST_ITEM, com.google.gson.Gson().toJson(item))
+    intent.putExtra(NewsConstants.POST_ITEM, Gson().toJson(item))
     context.startActivity(intent)
 }
 
@@ -81,7 +81,6 @@ fun View.openComments(context: Context, cls: Class<*>, postId: Int) {
     intent.putExtra(NewsConstants.POST_ITEM_ID, postId)
     context.startActivity(intent)
 }
-
 
 fun View.openExternalApp(url: String) {
     context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
