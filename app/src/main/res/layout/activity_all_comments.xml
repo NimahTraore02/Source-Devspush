@@ -27,7 +27,8 @@
                 android:background="@drawable/back_arrow_left"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/image_desc_back_button" />
 
             <TextView
                 style="@style/ToolbarTitleStyle"
@@ -136,7 +137,8 @@
                 android:id="@+id/ivBg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/news_icon" />
+                android:background="@drawable/news_icon"
+                android:contentDescription="@string/image_desc_background" />
 
             <TextView
                 style="@style/TitleTextStyle"

@@ -25,7 +25,8 @@
                 android:background="@color/colorPrimaryDark"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:contentDescription="@string/image_desc_background" />
 
         <TextView
                 android:id="@+id/tvItemTag"
@@ -63,7 +64,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginBottom="@dimen/normal_padding"
                 android:layout_marginEnd="@dimen/normal_padding"
-                android:padding="@dimen/small_padding"/>
+                android:padding="@dimen/small_padding"
+                android:contentDescription="@string/image_desc_icon" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

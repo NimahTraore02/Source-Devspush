@@ -85,7 +85,8 @@
                 android:id="@+id/ivBg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/news_icon"/>
+                android:background="@drawable/news_icon"
+                android:contentDescription="@string/image_desc_background" />
 
             <TextView
                 style="@style/TitleTextStyle"
