@@ -39,25 +39,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/normal_padding"
-                android:src="@drawable/ic_instagram"/>
+                android:src="@drawable/ic_instagram"
+                android:contentDescription="@string/image_desc_menu_icon" />
             <ImageView
                 android:id="@+id/ivFacebook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/normal_padding"
-                android:src="@drawable/ic_facebook"/>
+                android:src="@drawable/ic_facebook"
+                android:contentDescription="@string/image_desc_menu_icon"/>
             <ImageView
                 android:id="@+id/ivTwitter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/normal_padding"
-                android:src="@drawable/ic_twitter"/>
+                android:src="@drawable/ic_twitter"
+                android:contentDescription="@string/image_desc_menu_icon"/>
             <ImageView
                 android:id="@+id/ivYoutube"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/normal_padding"
-                android:src="@drawable/ic_youtube"/>
+                android:src="@drawable/ic_youtube"
+                android:contentDescription="@string/image_desc_menu_icon"/>
         </LinearLayout>
     </com.google.android.material.navigation.NavigationView>
 

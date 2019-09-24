@@ -22,7 +22,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/ic_account_circle_24dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/image_desc_icon" />
 
         <TextView
             android:id="@+id/tvName"

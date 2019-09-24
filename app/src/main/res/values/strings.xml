@@ -58,4 +58,8 @@
     <string name="no_bookmarks">Add something to bookmarks
         \nby taping on bookmark icon</string>
     <string name="share_via">Share via</string>
+    <string name="image_desc_menu_icon">Menu icon</string>
+    <string name="image_desc_icon">Icon</string>
+    <string name="image_desc_back_button">Back button</string>
+    <string name="image_desc_background">Background</string>
 </resources>

@@ -24,12 +24,14 @@
                     android:id="@+id/ivItemBg"
                     android:scaleType="fitXY"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/image_desc_background" />
 
             <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/darkerGrayFiftyTransparency" />
+                    android:background="@color/darkerGrayFiftyTransparency"
+                    android:contentDescription="@string/image_desc_background" />
         </FrameLayout>
 
         <TextView
@@ -54,7 +56,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginEnd="@dimen/large_padding"
                 android:layout_marginTop="@dimen/large_padding"
-                android:padding="@dimen/small_padding"/>
+                android:padding="@dimen/small_padding"
+                android:contentDescription="@string/image_desc_icon" />
 
 
         <TextView
