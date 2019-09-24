@@ -15,9 +15,7 @@ import com.decouikit.news.network.sync.SyncPost
 import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_splash.*
 
-
 class SplashActivity : Activity(), SyncListener {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

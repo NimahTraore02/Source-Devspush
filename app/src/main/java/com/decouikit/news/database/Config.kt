@@ -27,7 +27,7 @@ class Config {
         }
 
         fun getDefaultNavigationStyle(): Class<*> {
-            return bottomNavigationStyle()
+            return drawerNavigationStyle()
         }
 
         fun bottomNavigationStyle(): Class<*> {

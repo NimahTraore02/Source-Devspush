@@ -10,7 +10,9 @@ import androidx.fragment.app.Fragment
 import com.decouikit.news.R
 import com.decouikit.news.database.Config
 import com.decouikit.news.database.Preference
+import com.decouikit.news.notification.OneSignalNotificationOpenHandler
 import com.decouikit.news.utils.ActivityUtil
+import com.onesignal.OneSignal
 import kotlinx.android.synthetic.main.fragment_settings.view.*
 
 class SettingsFragment : Fragment(), View.OnClickListener {
@@ -60,6 +62,15 @@ class SettingsFragment : Fragment(), View.OnClickListener {
             when(v) {
                 itemView.cbNotifications -> {
                     prefs?.isPushNotificationEnabled = isChecked
+                    if (Preference(context = requireContext()).isPushNotificationEnabled) {
+                        OneSignal.startInit(context)
+                            .setNotificationOpenedHandler(OneSignalNotificationOpenHandler(requireContext()))
+                            .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
+                            .unsubscribeWhenNotificationsAreDisabled(true)
+                            .init()
+                    } else {
+                        OneSignal.setSubscription(false)
+                    }
                 }
                 itemView.cbEnableRtl -> {
                     prefs?.isRtlEnabled = isChecked

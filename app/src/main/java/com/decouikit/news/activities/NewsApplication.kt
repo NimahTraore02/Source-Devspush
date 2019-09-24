@@ -2,36 +2,31 @@ package com.decouikit.news.activities
 
 import android.app.Application
 import android.content.Intent
+import android.util.Log
 import com.decouikit.news.database.Config
+import com.decouikit.news.database.Preference
+import com.decouikit.news.notification.OneSignalNotificationOpenHandler
 import com.google.android.gms.ads.MobileAds
 import com.onesignal.OSNotificationOpenResult
 import com.onesignal.OneSignal
 
 
-class NewsApplication : Application(), OneSignal.NotificationOpenedHandler {
+class NewsApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
         // OneSignal Initialization
-        OneSignal.startInit(this)
-            .setNotificationOpenedHandler(this)
-            .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
-            .unsubscribeWhenNotificationsAreDisabled(true)
-            .init()
-
+        if (Preference(context = this).isPushNotificationEnabled) {
+            OneSignal.startInit(this)
+                .setNotificationOpenedHandler(OneSignalNotificationOpenHandler(this))
+                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
+                .unsubscribeWhenNotificationsAreDisabled(true)
+                .init()
+        } else {
+            OneSignal.setSubscription(false)
+        }
         MobileAds.initialize(this) {}
     }
-
-    override fun notificationOpened(result: OSNotificationOpenResult) {
-        val intent = Intent(this, Config.getDefaultNavigationStyle())
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        if (result.notification.payload.launchURL != null) {
-            intent.putExtra(Intent.EXTRA_TEXT, result.notification.payload.launchURL)
-            intent.type = "text/plain"
-        }
-        startActivity(intent)
-    }
-
 
     companion object {
         private var activityVisible: Boolean = false
