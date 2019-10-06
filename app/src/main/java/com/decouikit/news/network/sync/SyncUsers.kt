@@ -7,6 +7,7 @@ import com.decouikit.news.interfaces.Sync
 import com.decouikit.news.interfaces.SyncListener
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.UserService
+import com.decouikit.news.network.dto.User
 import org.jetbrains.anko.doAsync
 
 object SyncUsers : Sync {
@@ -17,7 +18,7 @@ object SyncUsers : Sync {
                 when (it) {
                     is Result.Success -> {
                         if (it.response.body() != null) {
-                            InMemory.setUserList(it.response.body())
+                            InMemory.setUserList(it.response.body() as List<User>)
                         }
                         listener?.finish(true)
                     }

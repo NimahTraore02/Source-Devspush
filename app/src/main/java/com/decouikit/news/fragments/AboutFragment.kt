@@ -1,5 +1,7 @@
 package com.decouikit.news.fragments
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +35,11 @@ class AboutFragment : Fragment() {
         val items = Config.getAboutList(context)
         itemView.rvAbout.layoutManager = LinearLayoutManager(itemView.context)
         itemView.rvAbout.adapter = AboutListAdapter(items)
+        itemView.btnPurchase.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(Config.getPurchaseLink())
+            startActivity(intent)
+        }
     }
 
     companion object {

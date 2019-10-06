@@ -9,10 +9,10 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.decouikit.news"
+        applicationId "com.decouikit.news.android"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 1
+        versionCode 3
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
@@ -56,8 +56,8 @@ dependencies {
     implementation 'com.onesignal:OneSignal:3.11.4'
 
     // retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.1.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
 
     //animation
     implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'

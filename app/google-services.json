@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:471435303437:android:4b0c196953678651",
         "android_client_info": {
-          "package_name": "com.decouikit.news"
+          "package_name": "com.decouikit.news.android"
         }
       },
       "oauth_client": [

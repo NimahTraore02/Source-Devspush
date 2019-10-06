@@ -74,6 +74,10 @@ class Config {
         fun getInstagramUrl(): String {
             return "https://www.instagram.com"
         }
+
+        fun getPurchaseLink(): String {
+            return "https://devspush.com/category/android"
+        }
         
         //If you want to exclude some category from list add that category in this array
         private fun getListOfExcludedCategories(): ArrayList<String> {

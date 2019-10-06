@@ -8,6 +8,7 @@ import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.PostItem
 import org.jetbrains.anko.doAsync
+import java.lang.Exception
 
 object SyncPost {
     fun getPostById(postId: String, listener: PostListener?) {
@@ -20,18 +21,22 @@ object SyncPost {
             service?.getPostsById(postId)?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
-                        val postItem: PostItem? =  it.response.body() as PostItem
-                        for (category in InMemory.getCategoryList()) {
-                            if (postItem?.categories?.contains(category.id) == true) {
-                                postItem.categoryName = category.name
+                        try {
+                            val postItem: PostItem =  it.response.body() as PostItem
+                            for (category in InMemory.getCategoryList()) {
+                                if (postItem.categories.contains(category.id)) {
+                                    postItem.categoryName = category.name
+                                }
                             }
-                        }
-                        for (mediaItem in InMemory.getMediaList()) {
-                            if (mediaItem.id == postItem?.featured_media) {
-                                postItem.source_url = mediaItem.source_url
+                            for (mediaItem in InMemory.getMediaList()) {
+                                if (mediaItem.id == postItem.featured_media) {
+                                    postItem.source_url = mediaItem.source_url
+                                }
                             }
+                            listener?.onSuccess(postItem)
+                        } catch (e: Exception) {
+                            listener?.onError(e)
                         }
-                        listener?.onSuccess(it.response.body())
                     }
                     is Result.Failure -> {
                         listener?.onError(it.error)

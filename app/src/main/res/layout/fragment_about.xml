@@ -75,6 +75,7 @@
         </androidx.cardview.widget.CardView>
 
         <Button
+                android:id="@+id/btnPurchase"
                 style="@style/ButtonStyle"
                 android:text="@string/about_text_button"
                 android:layout_margin="@dimen/normal_padding"

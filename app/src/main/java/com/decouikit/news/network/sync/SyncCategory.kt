@@ -7,6 +7,7 @@ import com.decouikit.news.interfaces.Sync
 import com.decouikit.news.interfaces.SyncListener
 import com.decouikit.news.network.CategoryService
 import com.decouikit.news.network.RetrofitClientInstance
+import com.decouikit.news.network.dto.Category
 import org.jetbrains.anko.doAsync
 
 object SyncCategory : Sync {
@@ -18,7 +19,7 @@ object SyncCategory : Sync {
                 when (it) {
                     is Result.Success -> {
                         if (it.response.body() != null) {
-                            InMemory.setCategoryList(it.response.body())
+                            InMemory.setCategoryList(it.response.body() as List<Category>)
                         }
                         listener?.finish(true)
                     }

@@ -1,15 +1,10 @@
 package com.decouikit.news.activities
 
 import android.app.Application
-import android.content.Intent
-import android.util.Log
-import com.decouikit.news.database.Config
 import com.decouikit.news.database.Preference
 import com.decouikit.news.notification.OneSignalNotificationOpenHandler
 import com.google.android.gms.ads.MobileAds
-import com.onesignal.OSNotificationOpenResult
 import com.onesignal.OneSignal
-
 
 class NewsApplication : Application() {
 

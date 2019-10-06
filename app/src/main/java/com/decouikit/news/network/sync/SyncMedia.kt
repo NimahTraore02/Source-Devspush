@@ -7,6 +7,7 @@ import com.decouikit.news.interfaces.Sync
 import com.decouikit.news.interfaces.SyncListener
 import com.decouikit.news.network.MediaService
 import com.decouikit.news.network.RetrofitClientInstance
+import com.decouikit.news.network.dto.MediaItem
 import org.jetbrains.anko.doAsync
 
 object SyncMedia : Sync {
@@ -17,7 +18,7 @@ object SyncMedia : Sync {
                 when (it) {
                     is Result.Success -> {
                         if (it.response.body() != null) {
-                            InMemory.setMediaList(it.response.body())
+                            InMemory.setMediaList(it.response.body() as List<MediaItem>)
                         }
                         listener?.finish(true)
                     }
