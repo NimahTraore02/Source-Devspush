@@ -60,7 +60,7 @@ class ViewAllAdapter(private var items: ArrayList<PostItem>,
         fun bind(item: PostItem) {
             this.item = item
             view.ivItemBg.load(item.source_url)
-            view.tvItemTitle.text = item.title.rendered
+            view.tvItemTitle.setHtml(item.title.rendered)
             view.tvItemDate.text = Date().getDateFromString(item.date)?.getCalendarDate()
             view.tvItemTag.text = item.categoryName
             if (Preference(view.context).getBookmarkedNews().contains(item)){

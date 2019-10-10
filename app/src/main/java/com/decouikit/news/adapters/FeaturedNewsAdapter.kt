@@ -46,7 +46,7 @@ class FeaturedNewsAdapter(
 
     private fun initLayout(view: View, position: Int) {
         view.tvTag.text = postItems[position].categoryName
-        view.tvItemTitle.text = postItems[position].title.rendered
+        view.tvItemTitle.setHtml( postItems[position].title.rendered)
         view.tvItemDate.text = Date().getDateFromString(postItems[position].date)?.getCalendarDate()
         view.ivItemBg.load(postItems[position].source_url)
         if (Preference(view.context).getBookmarkedNews().contains(postItems[position])) {

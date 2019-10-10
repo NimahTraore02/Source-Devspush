@@ -6,10 +6,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.decouikit.news.R
-import com.decouikit.news.extensions.getCalendarDate
-import com.decouikit.news.extensions.getDateFromString
-import com.decouikit.news.extensions.load
-import com.decouikit.news.extensions.openPostActivity
+import com.decouikit.news.extensions.*
 import com.decouikit.news.interfaces.RemoveBookmarkListener
 import com.decouikit.news.network.dto.PostItem
 import kotlinx.android.synthetic.main.adapter_view_all_item.view.*
@@ -54,7 +51,7 @@ class BookmarkAdapter(private var items: ArrayList<PostItem>,
         fun bind(item: PostItem) {
             this.item = item
             view.ivItemBg.load(item.source_url)
-            view.tvItemTitle.text = item.title.rendered
+            view.tvItemTitle.setHtml(item.title.rendered)
             view.tvItemDate.text = Date().getDateFromString(item.date)?.getCalendarDate()
             view.tvItemTag.text = item.categoryName
             view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_bookmark_red))

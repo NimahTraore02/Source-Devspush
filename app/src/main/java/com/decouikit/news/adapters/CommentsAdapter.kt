@@ -48,7 +48,7 @@ class CommentsAdapter(private var items: ArrayList<CommentItem>) :
             view.ivAvatar.load(item.author_avatar_urls.url48, true)
             view.tvName.text = item.authorName
             view.tvCommentDate.text = Date().getDateFromString(item.date)?.getCalendarDate()
-            view.tvCommentText.setHtml(view.tvCommentText, item.content.rendered)
+            view.tvCommentText.setHtml(item.content.rendered)
         }
     }
 }

@@ -94,7 +94,7 @@ class Config {
         }
 
         fun isExcludeCategoryEnabled(): Boolean {
-            return false
+            return true
         }
 
         fun isCategoryIncluded(category: Category): Boolean {

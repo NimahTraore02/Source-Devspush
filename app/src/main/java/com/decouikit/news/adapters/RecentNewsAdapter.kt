@@ -1,14 +1,12 @@
 package com.decouikit.news.adapters
 
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.decouikit.news.R
-import com.decouikit.news.extensions.getCalendarDate
-import com.decouikit.news.extensions.getDateFromString
-import com.decouikit.news.extensions.load
-import com.decouikit.news.extensions.openPostActivity
+import com.decouikit.news.extensions.*
 import com.decouikit.news.network.dto.PostItem
 import kotlinx.android.synthetic.main.adapter_recent_news_item.view.*
 import java.util.*
@@ -52,7 +50,7 @@ class RecentNewsAdapter(private var items: ArrayList<PostItem>)
         fun bind(item: PostItem) {
             this.item = item
             view.tvItemTag.text = item.categoryName
-            view.tvItemTitle.text = item.title.rendered
+            view.tvItemTitle.setHtml(item.title.rendered)
             view.tvItemDate.text = Date().getDateFromString(item.date)?.getCalendarDate()
             view.ivItemBg.load(item.source_url)
         }

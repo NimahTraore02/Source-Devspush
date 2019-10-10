@@ -103,12 +103,8 @@ fun View.share(context: Context, shareLink: String) {
     context.startActivity(Intent.createChooser(intent, context.getString(R.string.share_via)))
 }
 
-fun TextView.setHtml(textView: TextView, content: String) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        textView.text = Html.fromHtml(content, Html.FROM_HTML_MODE_COMPACT)
-    } else {
-        textView.text = Html.fromHtml(content)
-    }
+fun TextView.setHtml(content: String) {
+    this.text = content.fromHtmlToString();
 }
 
 fun View.validationCommon(editText: EditText, error: Int): Boolean {

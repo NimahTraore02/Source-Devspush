@@ -76,7 +76,7 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
             ivBookmark.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_bookmark))
         }
         tvTag.text = postItem.categoryName
-        tvItemTitle.text = postItem.title.rendered
+        tvItemTitle.setHtml(postItem.title.rendered)
         tvDate.text = Date().getDateFromString(postItem.date)?.getCalendarDate()
         tvComments.visibility = postItem.getCommentVisible()
 
