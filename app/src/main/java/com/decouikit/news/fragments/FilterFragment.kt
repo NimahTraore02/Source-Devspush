@@ -136,7 +136,12 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     }
 
     private fun initRecentNews() {
-        for (postItem in allPostList.subList(Config.getNumberOfItemForSlider(), allPostList.size)) {
+        var start = Config.getNumberOfItemForSlider();
+        var end = allPostList.size
+        if (start > end) {
+            start = end;
+        }
+        for (postItem in allPostList.subList(start, end)) {
             postItem.categoryName = categoryName
             for (mediaItem in allMediaList) {
                 if (mediaItem.id == postItem.featured_media) {

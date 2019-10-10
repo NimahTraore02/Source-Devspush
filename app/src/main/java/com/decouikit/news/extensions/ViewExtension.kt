@@ -31,7 +31,10 @@ fun View.dpToPx(dp: Int): Int {
 }
 
 
-fun ImageView.load(imageUrl: String, isRounded: Boolean = false) {
+fun ImageView.load(imageUrl: String?, isRounded: Boolean = false) {
+    if (imageUrl == null) {
+        return
+    }
     if (isRounded) {
         Glide.with(context)
             .load(imageUrl)

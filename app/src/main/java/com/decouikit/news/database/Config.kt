@@ -10,7 +10,8 @@ class Config {
     companion object {
 
         fun getBaseUrl(): String {
-            return "https://deconews.decouikit.com/wp-json/wp/v2/"
+            return "https://bvtimes.com/wp-json/wp/v2/"
+//            return "https://deconews.decouikit.com/wp-json/wp/v2/"
         }
 
         fun getDefaultTheme(): Int {
@@ -85,6 +86,19 @@ class Config {
 //            items.add("Category name")
 //            items.add("Architecture")
             return items
+        }
+
+        private fun getListOfIncludedCategories(): ArrayList<String> {
+            val items = arrayListOf<String>()
+            return items
+        }
+
+        fun isExcludeCategoryEnabled(): Boolean {
+            return false
+        }
+
+        fun isCategoryIncluded(category: Category): Boolean {
+            return getListOfIncludedCategories().contains(category.name)
         }
 
         fun isCategoryExcluded(category: Category): Boolean {
