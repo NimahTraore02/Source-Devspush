@@ -1,9 +1,7 @@
 package com.decouikit.news.extensions
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.view.View
 import com.decouikit.news.activities.PostActivity
 import com.decouikit.news.database.Config
 import com.decouikit.news.network.dto.PostItem

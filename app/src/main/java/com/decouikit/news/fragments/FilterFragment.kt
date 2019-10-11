@@ -136,10 +136,10 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     }
 
     private fun initRecentNews() {
-        var start = Config.getNumberOfItemForSlider();
-        var end = allPostList.size
+        var start = Config.getNumberOfItemForSlider()
+        val end = allPostList.size
         if (start > end) {
-            start = end;
+            start = end
         }
         for (postItem in allPostList.subList(start, end)) {
             postItem.categoryName = categoryName

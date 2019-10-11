@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.widget.FrameLayout
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.decouikit.news.activities.PostActivity
 
 class UriChromeClient(private val activity: PostActivity, val listener: FullscreenInterface) : WebChromeClient() {

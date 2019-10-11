@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Matrix
 import android.net.Uri
-import android.os.Build
-import android.text.Html
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -104,7 +102,7 @@ fun View.share(context: Context, shareLink: String) {
 }
 
 fun TextView.setHtml(content: String) {
-    this.text = content.fromHtmlToString();
+    this.text = content.fromHtmlToString()
 }
 
 fun View.validationCommon(editText: EditText, error: Int): Boolean {
