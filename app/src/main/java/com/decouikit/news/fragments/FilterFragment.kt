@@ -133,13 +133,14 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
             1,
             true
         )
+        setEmptyState(featuredAdapter.count == 0)
     }
 
     private fun initRecentNews() {
-        var start = Config.getNumberOfItemForSlider();
+        var start = Config.getNumberOfItemForSlider()
         var end = allPostList.size
         if (start > end) {
-            start = end;
+            start = end
         }
         for (postItem in allPostList.subList(start, end)) {
             postItem.categoryName = categoryName
@@ -151,6 +152,8 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
             recentPostItems.add(postItem)
         }
         recentAdapter.setData(recentPostItems)
+
+        hideRecentNews(recentAdapter.itemCount == 0)
     }
 
     private fun loadMoreRecentData() {
@@ -246,6 +249,24 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
 
                 }
             }
+        }
+    }
+
+    private fun setEmptyState(isVisible: Boolean) {
+        if (isVisible) {
+            itemView.nestedParent.visibility = View.GONE
+            itemView.emptyStateContainer.visibility = View.VISIBLE
+        } else {
+            itemView.nestedParent.visibility = View.VISIBLE
+            itemView.emptyStateContainer.visibility = View.GONE
+        }
+    }
+
+    private fun hideRecentNews(isEmpty: Boolean) {
+        if (isEmpty) {
+            itemView.tvRecentNewsTitle.visibility = View.GONE
+            itemView.tvRecentNewsViewAll.visibility = View.GONE
+            itemView.rlRecentNews.visibility = View.GONE
         }
     }
 

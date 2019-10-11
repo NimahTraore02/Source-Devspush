@@ -1,6 +1,7 @@
 package com.decouikit.news.activities
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -88,6 +89,7 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
     }
 
     private fun refreshContent() {
+        hideAllOnRefresh()
         mShimmerViewContainer.visibility = View.VISIBLE
         mShimmerViewContainer.startShimmerAnimation()
         items.removeAll { true }
@@ -106,7 +108,9 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
             postService?.getPostsByCategory(categoryId.toString(), ++page, perPage)?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
-                        if (!it.response.body().isNullOrEmpty()) {
+                        if (it.response.body().isNullOrEmpty() && adapter.itemCount == 0) {
+                            hideContent(true)
+                        } else {
                             val posts = it.response.body() as ArrayList<PostItem>
                             for (postItem in posts) {
                                 for (mediaItem in allMediaList) {
@@ -118,14 +122,41 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
                                     }
                                 }
                             }
-                            adapter.setData(items)
+                            if (items.isEmpty()) {
+                                hideContent(true)
+                            }else {
+                                hideContent(false)
+                                adapter.setData(items)
+                            }
                         }
-                        mShimmerViewContainer.stopShimmerAnimation()
-                        mShimmerViewContainer.visibility = View.GONE
-                        swipeRefresh.isRefreshing = false
+                    }
+                    is Result.Failure -> {
+                        hideContent(true)
                     }
                 }
+                mShimmerViewContainer.stopShimmerAnimation()
+                mShimmerViewContainer.visibility = View.GONE
+                swipeRefresh.isRefreshing = false
             })
         }
+    }
+
+
+    private fun hideContent(isListEmpty: Boolean) {
+        if (isListEmpty) {
+            tvTitle.visibility = View.GONE
+            rvItems.visibility = View.GONE
+            emptyPostsContainer.visibility = View.VISIBLE
+        } else {
+            tvTitle.visibility = View.VISIBLE
+            rvItems.visibility = View.VISIBLE
+            emptyPostsContainer.visibility = View.GONE
+        }
+    }
+
+    private fun hideAllOnRefresh() {
+        tvTitle.visibility = View.GONE
+        rvItems.visibility = View.GONE
+        emptyPostsContainer.visibility = View.GONE
     }
 }
