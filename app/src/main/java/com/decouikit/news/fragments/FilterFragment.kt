@@ -138,7 +138,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
 
     private fun initRecentNews() {
         var start = Config.getNumberOfItemForSlider()
-        var end = allPostList.size
+        val end = allPostList.size
         if (start > end) {
             start = end
         }
