@@ -43,4 +43,27 @@
     <dimen name="text_size_18sp">18sp</dimen>
     <dimen name="text_size_20sp">20sp</dimen>
     <dimen name="text_size_36sp">36sp</dimen>
+
+
+    <dimen name="elevation_small">4dp</dimen>
+    <dimen name="elevation_normal">8dp</dimen>
+    <dimen name="elevation_large">12dp</dimen>
+    <dimen name="elevation_extra_large">16dp</dimen>
+    <dimen name="elevation_ultra_large">32dp</dimen>
+
+    <dimen name="card_radius_small">4dp</dimen>
+    <dimen name="card_radius_normal">8dp</dimen>
+    <dimen name="card_radius_large">12dp</dimen>
+    <dimen name="card_radius_extra_large">16dp</dimen>
+    <dimen name="card_radius_ultra_large">32dp</dimen>
+
+    <dimen name="card_width_tiny">36dp</dimen>
+    <dimen name="card_width_small">50dp</dimen>
+    <dimen name="card_width_normal">100dp</dimen>
+    <dimen name="card_width_regular">140dp</dimen>
+    <dimen name="card_width_large">180dp</dimen>
+    <dimen name="card_width_extra_large">220dp</dimen>
+
+    <dimen name="card_width_ultra_large">260dp</dimen>
+    <dimen name="card_width_extra_large_half">110dp</dimen>
 </resources>

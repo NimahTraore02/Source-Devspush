@@ -63,4 +63,16 @@
     <string name="image_desc_icon">Icon</string>
     <string name="image_desc_back_button">Back button</string>
     <string name="image_desc_background">Background</string>
+
+    <string name="wizard_finish">Finish</string>
+    <string name="wizard_skip">Skip</string>
+    <string name="wizard_get_started">Started</string>
+    <string name="wizard_page_one_title">Modern Design</string>
+    <string name="wizard_page_one_subtitle">All screens and components are compatible with Photoshop &amp; Sketch</string>
+    <string name="wizard_page_two_title">Clean code</string>
+    <string name="wizard_page_two_subtitle">Choose your technology, you get Ionic 3 or Native Android code</string>
+    <string name="wizard_page_three_title">Unleash Creativity</string>
+    <string name="wizard_page_three_subtitle">With Deco UI Kit you can build any app you imagine for Android &amp; iPhone.</string>
+
+
 </resources>

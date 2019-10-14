@@ -1,0 +1,57 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/backgroundImage"
+            android:scaleType="fitXY"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="@dimen/card_width_extra_large"
+                android:layout_height="@dimen/card_width_extra_large"
+                android:layout_marginTop="64dp"
+                android:layout_marginBottom="64dp"
+                android:scaleType="centerCrop"/>
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/large_margin"
+                android:layout_marginStart="@dimen/large_margin"
+                android:layout_marginTop="@dimen/extra_large_margin"
+                android:gravity="center"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_size_20sp"/>
+
+            <TextView
+                android:id="@+id/tvSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/large_margin"
+                android:layout_marginStart="@dimen/large_margin"
+                android:layout_marginTop="@dimen/extra_larger_margin"
+                android:gravity="center"
+                android:paddingBottom="@dimen/ultra_large_padding"
+                android:paddingEnd="@dimen/ultra_large_padding"
+                android:paddingStart="@dimen/ultra_large_padding"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_size_20sp" />
+        </LinearLayout>
+    </FrameLayout>
+</RelativeLayout>

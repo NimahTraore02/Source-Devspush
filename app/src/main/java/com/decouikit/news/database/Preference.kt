@@ -39,6 +39,10 @@ class Preference(context: Context) {
         get() = prefs.getBoolean("RTL_ENABLED", Config.getDefaultValueForRTL())
         set(value) = prefs.edit { it.putBoolean("RTL_ENABLED", value) }
 
+    var isIntroPageShown: Boolean
+        get() = prefs.getBoolean("INTRO_PAGE", false)
+        set(value) = prefs.edit { it.putBoolean("INTRO_PAGE", value) }
+
     fun isThemeLight(): Boolean {
         return colorTheme == Config.getDefaultTheme()
     }

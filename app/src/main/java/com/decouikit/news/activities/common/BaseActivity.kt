@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import com.decouikit.news.R
 import com.decouikit.news.database.Preference
+import com.decouikit.news.utils.RateMe
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest
@@ -61,8 +62,10 @@ open class BaseActivity : AppCompatActivity() {
                 }
             }
         }
-
     }
 
-
+    override fun onResume() {
+        super.onResume()
+        RateMe.rateApp(this)
+    }
 }

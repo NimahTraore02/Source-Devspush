@@ -4,7 +4,10 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.animation.AnimationUtils
 import com.decouikit.news.R
+import com.decouikit.news.database.Config
+import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.loadDeepLinkUrl
+import com.decouikit.news.extensions.openIntroPage
 import com.decouikit.news.extensions.openMainPage
 import com.decouikit.news.extensions.openSinglePage
 import com.decouikit.news.interfaces.PostListener
@@ -14,6 +17,7 @@ import com.decouikit.news.network.sync.SyncApi
 import com.decouikit.news.network.sync.SyncPost
 import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_splash.*
+
 
 class SplashActivity : Activity(), SyncListener {
 
@@ -30,9 +34,12 @@ class SplashActivity : Activity(), SyncListener {
             override fun onSuccess(post: PostItem) {
                 openSinglePage(post)
             }
-
             override fun onError(error: Throwable?) {
-                openMainPage()
+                if (!Preference(applicationContext).isIntroPageShown && Config.isIntroPageEnabled()) {
+                    openIntroPage()
+                } else {
+                    openMainPage()
+                }
             }
         })
     }

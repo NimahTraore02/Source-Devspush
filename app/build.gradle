@@ -62,6 +62,12 @@ dependencies {
     //animation
     implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
 
+    // Rate Me
+    implementation 'com.github.hotchemi:android-rate:1.0.1'
+
+    //EventBus
+    implementation 'org.greenrobot:eventbus:3.1.1'
+
     //testing
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'

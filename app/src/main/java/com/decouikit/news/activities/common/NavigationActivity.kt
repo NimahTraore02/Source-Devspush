@@ -18,13 +18,14 @@ import com.decouikit.news.fragments.*
 import com.decouikit.news.interfaces.HomeFragmentListener
 import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.NewsConstants
+import com.decouikit.news.utils.RateMe
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
 
-class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeFragmentListener,
-    View.OnClickListener {
+class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener,
+    HomeFragmentListener, View.OnClickListener {
 
     private lateinit var toolbar: Toolbar
     private var fragmentPosition: Int? = -1
@@ -53,6 +54,7 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
         navView.setNavigationItemSelectedListener(this)
         ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.parent)
         showBannerAds()
+
     }
 
     private fun setSocialNetworksIconVisibility() {
@@ -162,19 +164,11 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
     }
 
     override fun onClick(v: View) {
-        when(v) {
-            ivInstagram -> {
-                v.openExternalApp(Config.getInstagramUrl())
-            }
-            ivFacebook -> {
-                v.openExternalApp(Config.getFacebookUrl())
-            }
-            ivTwitter -> {
-                v.openExternalApp(Config.getTwitterUrl())
-            }
-            ivYoutube -> {
-                v.openExternalApp(Config.getYoutubeUrl())
-            }
+        when (v) {
+            ivInstagram -> v.openExternalApp(Config.getInstagramUrl())
+            ivFacebook -> v.openExternalApp(Config.getFacebookUrl())
+            ivTwitter -> v.openExternalApp(Config.getTwitterUrl())
+            ivYoutube -> v.openExternalApp(Config.getYoutubeUrl())
         }
     }
 }

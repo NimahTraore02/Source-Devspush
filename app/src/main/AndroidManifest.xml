@@ -49,6 +49,9 @@
             android:name=".activities.common.BottomNavigationActivity"
             android:configChanges="orientation|screenSize"/>
         <activity
+                android:name=".activities.WizardActivity"
+                android:configChanges="orientation|screenSize"/>
+        <activity
             android:name=".activities.PostActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity
@@ -60,14 +63,22 @@
         <activity
             android:name=".activities.ViewAllActivity"
             android:configChanges="orientation|screenSize"/>
-
-        <service android:name=".firebase.MyFirebaseMessagingService"
-                tools:ignore="ExportedService">
+        <service
+            android:name=".firebase.MyFirebaseMessagingService"
+            tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
+        <!-- The below code is for android OS version below N -->
+        <receiver
+            android:name=".receiver.NetworkChangeReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

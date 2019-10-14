@@ -21,12 +21,13 @@ object InMemory {
     fun setCategoryList(categoryList: List<Category>) {
         //CHECK INCLUDE CATEGORY
         categoryList.forEach{
+
             if (Config.isExcludeCategoryEnabled()) {
-                if (!Config.isCategoryExcluded(it)) {
-                    CATEGORY = CATEGORY.plus(it)
+                if (!Config.isCategoryExcluded(it) && it.count > 0) {
+                        CATEGORY = CATEGORY.plus(it)
                 }
             } else {
-                if (Config.isCategoryIncluded(it)) {
+                if (Config.isCategoryIncluded(it) && it.count > 0) {
                     CATEGORY = CATEGORY.plus(it)
                 }
             }
