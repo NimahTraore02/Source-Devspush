@@ -1,5 +1,6 @@
 package com.decouikit.news.network.sync
 
+import android.content.Context
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
@@ -11,9 +12,9 @@ import com.decouikit.news.network.dto.Category
 import org.jetbrains.anko.doAsync
 
 object SyncCategory : Sync {
-    override fun sync(listener: SyncListener?) {
+    override fun sync(context: Context, listener: SyncListener?) {
         val categoryService =
-            RetrofitClientInstance.retrofitInstance?.create(CategoryService::class.java)
+            RetrofitClientInstance.getRetrofitInstance(context)?.create(CategoryService::class.java)
         doAsync {
             categoryService?.getCategoryList()?.enqueue(result = {
                 when (it) {

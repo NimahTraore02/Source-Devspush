@@ -20,6 +20,7 @@ import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.NewsConstants
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.fragment_filter.view.*
 import org.jetbrains.anko.doAsync
@@ -30,8 +31,8 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     private var categoryId: Int? = null
     private lateinit var categoryName: String
 
-    private val postsService =
-        RetrofitClientInstance.retrofitInstance?.create(PostsService::class.java)
+    private val postsService by lazy { RetrofitClientInstance.getRetrofitInstance(requireContext())?.create(PostsService::class.java) }
+
     private var allMediaList = InMemory.getMediaList()
 
     private lateinit var allPostList: List<PostItem>

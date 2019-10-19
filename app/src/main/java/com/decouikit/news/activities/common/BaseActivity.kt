@@ -1,11 +1,14 @@
 package com.decouikit.news.activities.common
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import com.decouikit.news.R
 import com.decouikit.news.database.Preference
+import com.decouikit.news.utils.ChangeLanguageUtil
 import com.decouikit.news.utils.RateMe
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
@@ -62,6 +65,13 @@ open class BaseActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(
+            ChangeLanguageUtil.wrap(newBase, Preference(newBase).languageCode)
+        )
     }
 
     override fun onResume() {

@@ -1,5 +1,7 @@
 package com.decouikit.news.interfaces
 
+import android.content.Context
+
 interface Sync {
-    fun sync(listener: SyncListener?)
+    fun sync(context: Context, listener: SyncListener?)
 }

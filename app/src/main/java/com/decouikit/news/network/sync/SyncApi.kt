@@ -1,5 +1,6 @@
 package com.decouikit.news.network.sync
 
+import android.content.Context
 import com.decouikit.news.interfaces.SyncListener
 
 object SyncApi : SyncListener {
@@ -8,10 +9,10 @@ object SyncApi : SyncListener {
     private var listener: SyncListener? = null
     private val services = arrayListOf(SyncMedia, SyncUsers, SyncCategory, SyncTags)
 
-    fun sync(listener: SyncListener?) {
+    fun sync(context: Context, listener: SyncListener?) {
         this.listener = listener
         syncApiCounter = services.size
-        services.forEach { it.sync(this) }
+        services.forEach { it.sync(context,this) }
     }
 
     override fun finish(success: Boolean) {

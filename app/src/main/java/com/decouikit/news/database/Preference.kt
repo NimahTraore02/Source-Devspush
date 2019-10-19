@@ -39,6 +39,10 @@ class Preference(context: Context) {
         get() = prefs.getBoolean("RTL_ENABLED", Config.getDefaultValueForRTL())
         set(value) = prefs.edit { it.putBoolean("RTL_ENABLED", value) }
 
+    var languageCode: String
+        get() = prefs.getString("LANGUAGE_CODE", Config.getDefaultValueForLanguage())?:Config.getDefaultValueForLanguage()
+        set(value) = prefs.edit { it.putString("LANGUAGE_CODE", value) }
+
     var isIntroPageShown: Boolean
         get() = prefs.getBoolean("INTRO_PAGE", false)
         set(value) = prefs.edit { it.putBoolean("INTRO_PAGE", value) }

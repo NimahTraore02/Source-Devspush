@@ -26,14 +26,15 @@ class SplashActivity : Activity(), SyncListener {
         setContentView(R.layout.activity_splash)
         animation()
         MobileAds.initialize(this)
-        SyncApi.sync(this)
+        SyncApi.sync(this, this)
     }
 
     override fun finish(success: Boolean) {
-        SyncPost.getPostById(intent.loadDeepLinkUrl(), object : PostListener {
+        SyncPost.getPostById(this, intent.loadDeepLinkUrl(), object : PostListener {
             override fun onSuccess(post: PostItem) {
                 openSinglePage(post)
             }
+
             override fun onError(error: Throwable?) {
                 if (!Preference(applicationContext).isIntroPageShown && Config.isIntroPageEnabled()) {
                     openIntroPage()

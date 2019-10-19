@@ -9,8 +9,27 @@ import com.decouikit.news.network.dto.WizardItemModel
 
 object Config {
 
-    fun getBaseUrl(): String {
-        return "https://deconews.decouikit.com/wp-json/wp/v2/"
+    fun listOfLanguages(): List<Language> {
+        val languages = mutableListOf<Language>()
+        languages.add(
+            Language(
+                baseUrl = "https://www.ebmnews.com/wp-json/wp/v2/",
+                language = "English",
+                languageCode = "en"
+            )
+        )
+        languages.add(
+            Language(
+                baseUrl = "https://hindi.ebmnews.com/wp-json/wp/v2/",
+                language = "Hindi",
+                languageCode = "hi"
+            )
+        )
+        return languages
+    }
+
+    fun getDefaultValueForLanguage(): String {
+        return "en"
     }
 
     fun getDefaultTheme(): Int {
@@ -145,5 +164,49 @@ object Config {
         )
 
         return arrayListOf(pageOne, pageTwo, pageThree)
+    }
+
+    fun getLanguageByName(lang: String): Language? {
+        var language: Language? = null
+        for (l in listOfLanguages()) {
+            if (l.language == lang) {
+                language = l
+            }
+        }
+        return language
+    }
+
+
+    fun getBaseUrl(context: Context): Language? {
+        val code = Preference(context).languageCode
+        val languages = listOfLanguages()
+        for (lang in languages) {
+            if (lang.languageCode == code) {
+                return lang
+            }
+        }
+        if (languages.isNotEmpty()) {
+            return languages[0]
+        }
+        return null
+    }
+
+    fun getLanguageIndexByCode(code: String): Int {
+        var result = -1
+        val languages = listOfLanguages()
+        languages.forEachIndexed { index, language ->
+            if (language.languageCode == code) {
+                result = index
+            }
+        }
+        return result
+    }
+
+    fun listLanguageNames(): List<String> {
+        val languages = mutableListOf<String>()
+        for (lang in listOfLanguages()) {
+            languages.add(lang.language)
+        }
+        return languages
     }
 }

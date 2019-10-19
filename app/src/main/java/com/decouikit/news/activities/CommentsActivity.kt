@@ -25,8 +25,9 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
 
     private lateinit var adapter: CommentsAdapter
     private var postId: Int = -1
-    private val commentsService =
-        RetrofitClientInstance.retrofitInstance?.create(CommentsService::class.java)
+    private val commentsService by lazy {
+        RetrofitClientInstance.getRetrofitInstance(this)?.create(CommentsService::class.java)
+    }
     private var page = 0
     private val perPage = 10
     private lateinit var linearLayoutManager: LinearLayoutManager

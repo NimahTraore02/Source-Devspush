@@ -1,6 +1,7 @@
 package com.decouikit.news.activities
 
 import android.app.Application
+import com.decouikit.news.database.Config
 import com.decouikit.news.database.Preference
 import com.decouikit.news.notification.OneSignalNotificationOpenHandler
 import com.google.android.gms.ads.MobileAds
@@ -20,15 +21,12 @@ class NewsApplication : Application() {
         } else {
             OneSignal.setSubscription(false)
         }
+
         MobileAds.initialize(this) {}
     }
 
     companion object {
         private var activityVisible: Boolean = false
-
-        fun isActivityVisible(): Boolean {
-            return activityVisible
-        }
 
         fun activityResumed() {
             activityVisible = true

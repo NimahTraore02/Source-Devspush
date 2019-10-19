@@ -1,5 +1,6 @@
 package com.decouikit.news.network.sync
 
+import android.content.Context
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
@@ -11,8 +12,8 @@ import com.decouikit.news.network.dto.Tag
 import org.jetbrains.anko.doAsync
 
 object SyncTags : Sync {
-    override fun sync(listener: SyncListener?) {
-        val tagService = RetrofitClientInstance.retrofitInstance?.create(TagService::class.java)
+    override fun sync(context: Context, listener: SyncListener?) {
+        val tagService = RetrofitClientInstance.getRetrofitInstance(context)?.create(TagService::class.java)
         doAsync {
             tagService?.getTagList()?.enqueue(result = {
                 when (it) {

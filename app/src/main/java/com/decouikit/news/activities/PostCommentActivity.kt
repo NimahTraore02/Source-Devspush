@@ -21,13 +21,15 @@ import org.jetbrains.anko.doAsync
 class PostCommentActivity : BaseActivity(), View.OnClickListener {
 
     private var postId: Int = -1
-    private val commentsService = RetrofitClientInstance.retrofitInstance?.create(CommentsService::class.java)
+    private val commentsService by lazy {
+        RetrofitClientInstance.getRetrofitInstance(this)?.create(CommentsService::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post_comment)
         ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.postCommentParent)
-        if(Preference(this).isRtlEnabled) {
+        if (Preference(this).isRtlEnabled) {
             ivBack.rotation = 180f
         }
 
@@ -41,7 +43,7 @@ class PostCommentActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        when(v) {
+        when (v) {
             ivBack -> {
                 onBackPressed()
             }
@@ -55,11 +57,15 @@ class PostCommentActivity : BaseActivity(), View.OnClickListener {
 
     private fun postComment() {
         doAsync {
-            commentsService?.saveComment(CommentRequest(postId,
-                etComment.text.toString(),
-                etName.text.toString(),
-                etEmail.text.toString(),
-                ""))?.enqueue(result = {
+            commentsService?.saveComment(
+                CommentRequest(
+                    postId,
+                    etComment.text.toString(),
+                    etName.text.toString(),
+                    etEmail.text.toString(),
+                    ""
+                )
+            )?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
                         if (it.response.body() != null) {
@@ -67,7 +73,11 @@ class PostCommentActivity : BaseActivity(), View.OnClickListener {
                         }
                     }
                     is Result.Failure -> {
-                        Toast.makeText(this@PostCommentActivity, R.string.generic_error, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@PostCommentActivity,
+                            R.string.generic_error,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             })

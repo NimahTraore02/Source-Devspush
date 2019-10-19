@@ -1,7 +1,6 @@
 package com.decouikit.news.activities
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -23,14 +22,17 @@ import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.activity_view_all.*
 import org.jetbrains.anko.doAsync
 
-class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, OpenPostListener {
+class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener,
+    OpenPostListener {
 
     private var categoryId: Int? = 0
     private var categoryName: String? = ""
     private val allMediaList = InMemory.getMediaList()
     private lateinit var adapter: ViewAllAdapter
     private val items = arrayListOf<PostItem>()
-    private val postService = RetrofitClientInstance.retrofitInstance?.create(PostsService::class.java)
+    private val postService by lazy {
+        RetrofitClientInstance.getRetrofitInstance(this)?.create(PostsService::class.java)
+    }
     private var page = 0
     private val perPage = 10
 
@@ -47,7 +49,7 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
 
 
     private fun initLayout() {
-        if(Preference(this).isRtlEnabled) {
+        if (Preference(this).isRtlEnabled) {
             ivBack.rotation = 180f
         }
         adapter = ViewAllAdapter(arrayListOf(), this)
@@ -105,39 +107,40 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
 
     private fun getPosts() {
         doAsync {
-            postService?.getPostsByCategory(categoryId.toString(), ++page, perPage)?.enqueue(result = {
-                when (it) {
-                    is Result.Success -> {
-                        if (it.response.body().isNullOrEmpty() && adapter.itemCount == 0) {
-                            hideContent(true)
-                        } else {
-                            val posts = it.response.body() as ArrayList<PostItem>
-                            for (postItem in posts) {
-                                for (mediaItem in allMediaList) {
-                                    if (mediaItem.id == postItem.featured_media) {
-                                        //loop for getting image urls, post name is fixed from intent
-                                        postItem.categoryName = categoryName.toString()
-                                        postItem.source_url = mediaItem.source_url
-                                        items.add(postItem)
+            postService?.getPostsByCategory(categoryId.toString(), ++page, perPage)
+                ?.enqueue(result = {
+                    when (it) {
+                        is Result.Success -> {
+                            if (it.response.body().isNullOrEmpty() && adapter.itemCount == 0) {
+                                hideContent(true)
+                            } else {
+                                val posts = it.response.body() as ArrayList<PostItem>
+                                for (postItem in posts) {
+                                    for (mediaItem in allMediaList) {
+                                        if (mediaItem.id == postItem.featured_media) {
+                                            //loop for getting image urls, post name is fixed from intent
+                                            postItem.categoryName = categoryName.toString()
+                                            postItem.source_url = mediaItem.source_url
+                                            items.add(postItem)
+                                        }
                                     }
                                 }
-                            }
-                            if (items.isEmpty()) {
-                                hideContent(true)
-                            }else {
-                                hideContent(false)
-                                adapter.setData(items)
+                                if (items.isEmpty()) {
+                                    hideContent(true)
+                                } else {
+                                    hideContent(false)
+                                    adapter.setData(items)
+                                }
                             }
                         }
+                        is Result.Failure -> {
+                            hideContent(true)
+                        }
                     }
-                    is Result.Failure -> {
-                        hideContent(true)
-                    }
-                }
-                mShimmerViewContainer.stopShimmerAnimation()
-                mShimmerViewContainer.visibility = View.GONE
-                swipeRefresh.isRefreshing = false
-            })
+                    mShimmerViewContainer.stopShimmerAnimation()
+                    mShimmerViewContainer.visibility = View.GONE
+                    swipeRefresh.isRefreshing = false
+                })
         }
     }
 

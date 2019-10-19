@@ -38,8 +38,10 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
     private var postItems = arrayListOf<PostItem>()
     private val allMediaList = InMemory.getMediaList()
 
-    private val commentsService =
-        RetrofitClientInstance.retrofitInstance?.create(CommentsService::class.java)
+    private val commentsService by lazy {
+        RetrofitClientInstance.getRetrofitInstance(this)?.create(CommentsService::class.java)
+    }
+
     private var page = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -126,7 +128,7 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
     private fun getRelatedNews() {
         doAsync {
             val postsService =
-                RetrofitClientInstance.retrofitInstance?.create(PostsService::class.java)
+                RetrofitClientInstance.getRetrofitInstance(context = applicationContext)?.create(PostsService::class.java)
             val categoryId = postItem.categories[0]
             postsService?.getPostsByCategory(
                 categoryId.toString(),
