@@ -7,10 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.decouikit.news.R
+import com.decouikit.news.adapters.ViewPagerAdapter
 import com.decouikit.news.database.InMemory
-import com.decouikit.news.extensions.replaceFragment
 import com.decouikit.news.interfaces.HomeFragmentListener
 import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
 
@@ -38,11 +39,19 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
     }
 
     private fun initTabs() {
+        val adapter = fragmentManager?.let { ViewPagerAdapter(it) }
+
         val mTabLayout = itemView.findViewById<TabLayout>(R.id.homeTab)
-        mTabLayout.addOnTabSelectedListener(this)
         InMemory.getCategoryList().forEach {
             mTabLayout.addTab(mTabLayout.newTab().setText(it.name))
+            adapter?.addFragment(FilterFragment.newInstance(it.id, it.name))
         }
+
+        itemView.viewPager.adapter = adapter
+
+        itemView.viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(mTabLayout))
+        mTabLayout.addOnTabSelectedListener(this)
+
     }
 
     override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -54,12 +63,7 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
     }
 
     override fun onTabSelected(tab: TabLayout.Tab) {
-        val fragment = FilterFragment
-            .newInstance(
-                InMemory.getCategoryList()[tab.position].id,
-                InMemory.getCategoryList()[tab.position].name
-            )
-        replaceFragment(fragment, R.id.frmHomePlaceholder)
+        itemView.viewPager.currentItem = tab.position
     }
 
     override fun onResume() {
