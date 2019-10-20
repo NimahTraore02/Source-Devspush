@@ -81,6 +81,7 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
         tvItemTitle.setHtml(postItem.title.rendered)
         tvDate.text = Date().getDateFromString(postItem.date)?.getCalendarDate()
         tvComments.visibility = postItem.getCommentVisible()
+        btnOpenComments.visibility = postItem.getCommentVisible()
 
         webView.settings.javaScriptEnabled = true
         webView.webChromeClient = UriChromeClient(this, this)
