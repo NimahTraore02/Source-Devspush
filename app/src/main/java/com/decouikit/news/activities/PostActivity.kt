@@ -195,7 +195,7 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
                 v.openComments(this, CommentsActivity::class.java, postItem.id)
             }
             ivShare -> {
-                v.share(this, postItem.link)
+                v.share(this, postItem)
             }
         }
     }

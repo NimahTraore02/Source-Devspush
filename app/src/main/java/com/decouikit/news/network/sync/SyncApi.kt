@@ -12,7 +12,7 @@ object SyncApi : SyncListener {
     fun sync(context: Context, listener: SyncListener?) {
         this.listener = listener
         syncApiCounter = services.size
-        services.forEach { it.sync(context,this) }
+        services.forEach { it.sync(context, this) }
     }
 
     override fun finish(success: Boolean) {

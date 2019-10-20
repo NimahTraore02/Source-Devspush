@@ -94,10 +94,11 @@ fun ImageView.rotate(angle: Float, imageView: ImageView) {
     imageView.imageMatrix = matrix
 }
 
-fun View.share(context: Context, shareLink: String) {
+fun View.share(context: Context, item: PostItem) {
     val intent = Intent(Intent.ACTION_SEND)
     intent.type = NewsConstants.TEXT_PLAIN
-    intent.putExtra(Intent.EXTRA_TEXT, shareLink)
+    intent.putExtra(Intent.EXTRA_TEXT, item.link)
+    intent.putExtra(Intent.EXTRA_SUBJECT, item.title.rendered)
     context.startActivity(Intent.createChooser(intent, context.getString(R.string.share_via)))
 }
 

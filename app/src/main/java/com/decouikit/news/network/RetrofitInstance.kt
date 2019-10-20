@@ -1,8 +1,8 @@
 package com.decouikit.news.network
 
 import android.content.Context
+import com.decouikit.news.BuildConfig
 import com.decouikit.news.database.Config
-import com.decouikit.news.database.InMemory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -21,11 +21,18 @@ object RetrofitClientInstance {
 
             val lang = Config.getBaseUrl(context)
             if (lang != null) {
-                retrofit = Retrofit.Builder()
-                    .baseUrl(lang.baseUrl)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .client(httpClient.build())
-                    .build()
+                if (BuildConfig.DEBUG) {
+                    retrofit = Retrofit.Builder()
+                        .baseUrl(lang.baseUrl)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .client(httpClient.build())
+                        .build()
+                } else {
+                    retrofit = Retrofit.Builder()
+                        .baseUrl(lang.baseUrl)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build()
+                }
             }
         }
         return retrofit
