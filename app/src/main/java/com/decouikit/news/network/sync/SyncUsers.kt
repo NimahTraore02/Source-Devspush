@@ -19,7 +19,7 @@ object SyncUsers : Sync {
             userService?.getUserList()?.enqueue(result = { it ->
                 when (it) {
                     is Result.Success -> {
-                        if (it.response.body() != null) {
+                        if (!it.response.body().isNullOrEmpty()) {
                             InMemory.setUserList(it.response.body() as List<User>)
                         }
                         listener?.finish(true)

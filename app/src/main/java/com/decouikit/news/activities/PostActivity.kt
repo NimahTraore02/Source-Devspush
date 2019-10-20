@@ -137,7 +137,7 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
             )?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
-                        if (it.response.body() != null) {
+                        if (!it.response.body().isNullOrEmpty()) {
                             val items = it.response.body() as ArrayList<PostItem>
                             for (item in items) {
                                 for (mediaItem in allMediaList) {
@@ -162,7 +162,7 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
             commentsService?.getCommentListPostId(postItem.id)?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
-                        if (it.response.body() != null) {
+                        if (!it.response.body().isNullOrEmpty()) {
                             val result = it.response.body() as List<CommentItem>
                             tvComments.text = resources.getQuantityString(
                                 R.plurals.numberOfComments, result.size, result.size

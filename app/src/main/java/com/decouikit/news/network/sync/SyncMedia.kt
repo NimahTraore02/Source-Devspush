@@ -18,7 +18,7 @@ object SyncMedia : Sync {
             mediaService?.getMediaList()?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
-                        if (it.response.body() != null) {
+                        if (!it.response.body().isNullOrEmpty()) {
                             InMemory.setMediaList(it.response.body() as List<MediaItem>)
                         }
                         listener?.finish(true)

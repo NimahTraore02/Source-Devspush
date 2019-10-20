@@ -12,8 +12,11 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.decouikit.news.R
 import com.decouikit.news.database.Config
+import com.decouikit.news.database.InMemory
 import com.decouikit.news.database.Preference
+import com.decouikit.news.interfaces.SyncListener
 import com.decouikit.news.network.RetrofitClientInstance
+import com.decouikit.news.network.sync.SyncApi
 import com.decouikit.news.notification.OneSignalNotificationOpenHandler
 import com.decouikit.news.utils.ActivityUtil
 import com.onesignal.OneSignal
@@ -23,7 +26,7 @@ import kotlinx.android.synthetic.main.fragment_settings.view.*
 class SettingsFragment : Fragment(), View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private lateinit var itemView: View
-    private val prefs: Preference? by lazy {
+    private val prefs: Preference by lazy {
         Preference(requireContext())
     }
 
@@ -44,9 +47,8 @@ class SettingsFragment : Fragment(), View.OnClickListener, AdapterView.OnItemSel
     }
 
     private fun initLayout() {
-        itemView.cbNotifications.isChecked =
-            prefs?.isPushNotificationEnabled ?: Config.getDefaultValueForPushNotification()
-        itemView.cbEnableRtl.isChecked = prefs?.isRtlEnabled ?: Config.getDefaultValueForRTL()
+        itemView.cbNotifications.isChecked = prefs.isPushNotificationEnabled
+        itemView.cbEnableRtl.isChecked = prefs.isRtlEnabled
         initSpinner()
     }
 
@@ -70,17 +72,17 @@ class SettingsFragment : Fragment(), View.OnClickListener, AdapterView.OnItemSel
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, p3: Long) {
         val lang = Config.getLanguageByName(parent?.getItemAtPosition(position) as String)
-        val code = Preference(requireContext()).languageCode
+        val code = prefs.languageCode
         if (lang?.languageCode != code) {
-            Preference(requireContext()).languageCode =
-                lang?.languageCode ?: Config.getDefaultValueForLanguage()
             RetrofitClientInstance.clear()
-            ActivityUtil.reload(activity, 5)
+            InMemory.clear()
+            prefs.languageCode = lang?.languageCode ?: Config.getDefaultValueForLanguage()
+            SyncApi.sync(requireContext(), object : SyncListener {
+                override fun finish(success: Boolean) {
+                    ActivityUtil.reload(activity, 5)
+                }
+            })
         }
-    }
-
-    private fun isEnglishSelected(): Boolean {
-        return Preference(requireContext()).languageCode == "en"
     }
 
     private fun initListeners() {
@@ -98,53 +100,50 @@ class SettingsFragment : Fragment(), View.OnClickListener, AdapterView.OnItemSel
             itemView.btnDarkMode -> {
                 setTheme(Config.getDarkTheme())
             }
-        }
-        if (v is CheckBox) {
-            val isChecked: Boolean = v.isChecked
-            when (v) {
-                itemView.cbNotifications -> {
-                    prefs?.isPushNotificationEnabled = isChecked
-                    if (Preference(context = requireContext()).isPushNotificationEnabled) {
-                        OneSignal.startInit(context)
-                            .setNotificationOpenedHandler(
-                                OneSignalNotificationOpenHandler(
-                                    requireContext()
-                                )
+            itemView.cbNotifications -> {
+                val isChecked: Boolean = (v as CheckBox).isChecked
+                prefs.isPushNotificationEnabled = isChecked
+                if (isChecked) {
+                    OneSignal.startInit(context)
+                        .setNotificationOpenedHandler(
+                            OneSignalNotificationOpenHandler(
+                                requireContext()
                             )
-                            .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
-                            .unsubscribeWhenNotificationsAreDisabled(true)
-                            .init()
-                    } else {
-                        OneSignal.setSubscription(false)
+                        )
+                        .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
+                        .unsubscribeWhenNotificationsAreDisabled(true)
+                        .init()
+                } else {
+                    OneSignal.setSubscription(false)
+                }
+            }
+            itemView.cbEnableRtl -> {
+                val isChecked: Boolean = (v as CheckBox).isChecked
+                prefs.isRtlEnabled = isChecked
+                if (isChecked) {
+                    activity?.let {
+                        ActivityUtil.setLayoutDirection(
+                            it,
+                            ViewCompat.LAYOUT_DIRECTION_RTL,
+                            R.id.parent
+                        )
+                    }
+                } else {
+                    activity?.let {
+                        ActivityUtil.setLayoutDirection(
+                            it,
+                            ViewCompat.LAYOUT_DIRECTION_LOCALE,
+                            R.id.parent
+                        )
                     }
                 }
-                itemView.cbEnableRtl -> {
-                    prefs?.isRtlEnabled = isChecked
-                    if (isChecked) {
-                        activity?.let {
-                            ActivityUtil.setLayoutDirection(
-                                it,
-                                ViewCompat.LAYOUT_DIRECTION_RTL,
-                                R.id.parent
-                            )
-                        }
-                    } else {
-                        activity?.let {
-                            ActivityUtil.setLayoutDirection(
-                                it,
-                                ViewCompat.LAYOUT_DIRECTION_LOCALE,
-                                R.id.parent
-                            )
-                        }
-                    }
-                    ActivityUtil.reload(activity, 5)
-                }
+                ActivityUtil.reload(activity, 5)
             }
         }
     }
 
     private fun setTheme(theme: Int) {
-        prefs?.colorTheme = theme
+        prefs.colorTheme = theme
         ActivityUtil.reload(activity, 5)
     }
 

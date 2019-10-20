@@ -98,7 +98,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
             )?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
-                        if (it.response.body() != null) {
+                        if (!it.response.body().isNullOrEmpty()) {
                             allPostList = it.response.body() as ArrayList<PostItem>
                             initFeaturedNews()
                             initRecentNews()
@@ -166,7 +166,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
             )?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
-                        if (it.response.body() != null) {
+                        if (!it.response.body().isNullOrEmpty()) {
                             val allPostList = it.response.body() as ArrayList<PostItem>
                             for (postItem in allPostList) {
                                 postItem.categoryName = categoryName

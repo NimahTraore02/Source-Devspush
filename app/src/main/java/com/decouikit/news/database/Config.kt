@@ -194,6 +194,7 @@ object Config {
     fun getLanguageIndexByCode(code: String): Int {
         var result = -1
         val languages = listOfLanguages()
+//        languages.filter {  it.languageCode == code }
         languages.forEachIndexed { index, language ->
             if (language.languageCode == code) {
                 result = index

@@ -6,29 +6,39 @@ import com.decouikit.news.network.dto.Tag
 import com.decouikit.news.network.dto.User
 
 object InMemory {
-    private var CATEGORY: List<Category> = arrayListOf()
-    private var CATEGORY_MAP = mapOf<Int, Category>()
+    private var CATEGORY: MutableList<Category> = mutableListOf()
+    private var CATEGORY_MAP = mutableMapOf<Int, Category>()
 
-    private var MEDIA: List<MediaItem> = arrayListOf()
-    private var MEDIA_MAP = mapOf<Int, MediaItem>()
+    private var MEDIA: MutableList<MediaItem> = mutableListOf()
+    private var MEDIA_MAP = mutableMapOf<Int, MediaItem>()
 
-    private var USER: List<User> = arrayListOf()
-    private var USER_MAP = mapOf<Int, User>()
+    private var USER: MutableList<User> = mutableListOf()
+    private var USER_MAP = mutableMapOf<Int, User>()
 
-    private var TAGS: List<Tag> = arrayListOf()
-    private var TAGS_MAP = mapOf<Int, Tag>()
+    private var TAGS: MutableList<Tag> = mutableListOf()
+    private var TAGS_MAP = mutableMapOf<Int, Tag>()
+
+    fun clear() {
+        CATEGORY.clear()
+        MEDIA.clear()
+        USER.clear()
+        TAGS.clear()
+        CATEGORY_MAP.clear()
+        MEDIA_MAP.clear()
+        USER_MAP.clear()
+        TAGS_MAP.clear()
+    }
 
     fun setCategoryList(categoryList: List<Category>) {
         //CHECK INCLUDE CATEGORY
-        categoryList.forEach{
-
+        categoryList.forEach {
             if (Config.isExcludeCategoryEnabled()) {
                 if (!Config.isCategoryExcluded(it) && it.count > 0) {
-                        CATEGORY = CATEGORY.plus(it)
+                    CATEGORY.add(it)
                 }
             } else {
                 if (Config.isCategoryIncluded(it) && it.count > 0) {
-                    CATEGORY = CATEGORY.plus(it)
+                    CATEGORY.add(it)
                 }
             }
         }
@@ -40,7 +50,7 @@ object InMemory {
     fun getCategoryList(): List<Category> = CATEGORY
 
     fun setTagsList(tagsList: List<Tag>) {
-        TAGS = tagsList
+        TAGS.addAll(tagsList)
         if (TAGS.isNotEmpty()) {
             TAGS.forEach { TAGS_MAP.plus((Pair(it.id, it))) }
         }
@@ -49,7 +59,7 @@ object InMemory {
     fun getTagsList(): List<Tag> = TAGS
 
     fun setUserList(userList: List<User>) {
-        USER = userList
+        USER.addAll(userList)
         if (USER.isNotEmpty()) {
             USER.forEach { USER_MAP.plus((Pair(it.id, it))) }
         }
@@ -58,7 +68,7 @@ object InMemory {
     fun getUserList(): List<User> = USER
 
     fun setMediaList(mediaList: List<MediaItem>) {
-        MEDIA = mediaList
+        MEDIA.addAll(mediaList)
         if (MEDIA.isNotEmpty()) {
             MEDIA.forEach { MEDIA_MAP.plus((Pair(it.id, it))) }
         }

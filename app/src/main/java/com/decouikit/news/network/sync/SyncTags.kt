@@ -18,7 +18,7 @@ object SyncTags : Sync {
             tagService?.getTagList()?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
-                        if (it.response.body() != null) {
+                        if (!it.response.body().isNullOrEmpty()) {
                             InMemory.setTagsList(it.response.body() as List<Tag>)
                         }
                         listener?.finish(true)

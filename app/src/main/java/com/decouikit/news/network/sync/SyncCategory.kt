@@ -19,7 +19,7 @@ object SyncCategory : Sync {
             categoryService?.getCategoryList()?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
-                        if (it.response.body() != null) {
+                        if (!it.response.body().isNullOrEmpty()) {
                             InMemory.setCategoryList(it.response.body() as List<Category>)
                         }
                         listener?.finish(true)
