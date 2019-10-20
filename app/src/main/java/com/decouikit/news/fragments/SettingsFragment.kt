@@ -1,12 +1,10 @@
 package com.decouikit.news.fragments
 
+import android.app.Dialog
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -14,18 +12,25 @@ import com.decouikit.news.R
 import com.decouikit.news.database.Config
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.database.Preference
+import com.decouikit.news.extensions.initPopupDialog
+import com.decouikit.news.interfaces.ChooseLanguageDialogListener
 import com.decouikit.news.interfaces.SyncListener
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.sync.SyncApi
 import com.decouikit.news.notification.OneSignalNotificationOpenHandler
 import com.decouikit.news.utils.ActivityUtil
+import com.decouikit.news.utils.ChooseLanguageDialog
 import com.onesignal.OneSignal
-import kotlinx.android.synthetic.main.fragment_settings.*
 import kotlinx.android.synthetic.main.fragment_settings.view.*
 
-class SettingsFragment : Fragment(), View.OnClickListener, AdapterView.OnItemSelectedListener {
+class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogListener {
+
 
     private lateinit var itemView: View
+    private lateinit var progressDialog: Dialog
+
+    private var selectedIndex = 0
+
     private val prefs: Preference by lazy {
         Preference(requireContext())
     }
@@ -49,47 +54,16 @@ class SettingsFragment : Fragment(), View.OnClickListener, AdapterView.OnItemSel
     private fun initLayout() {
         itemView.cbNotifications.isChecked = prefs.isPushNotificationEnabled
         itemView.cbEnableRtl.isChecked = prefs.isRtlEnabled
-        initSpinner()
-    }
 
-    private fun initSpinner() {
-        val adapter = ArrayAdapter<String>(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            Config.listLanguageNames()
-        )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        languageSpinner.adapter = adapter
-        languageSpinner.setSelection(Config.getLanguageIndexByCode(Preference(requireContext()).languageCode))
-        Handler().postDelayed({
-            languageSpinner.onItemSelectedListener = this
-        }, 500)
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-
-    }
-
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, p3: Long) {
-        val lang = Config.getLanguageByName(parent?.getItemAtPosition(position) as String)
-        val code = prefs.languageCode
-        if (lang?.languageCode != code) {
-            RetrofitClientInstance.clear()
-            InMemory.clear()
-            prefs.languageCode = lang?.languageCode ?: Config.getDefaultValueForLanguage()
-            SyncApi.sync(requireContext(), object : SyncListener {
-                override fun finish(success: Boolean) {
-                    ActivityUtil.reload(activity, 5)
-                }
-            })
-        }
+        selectedIndex = Config.getLanguageIndexByCode(prefs.languageCode)
+        itemView.tvLanguage.text = Config.listLanguageNames()[selectedIndex]
     }
 
     private fun initListeners() {
         itemView.btnLightMode.setOnClickListener(this)
         itemView.btnDarkMode.setOnClickListener(this)
         itemView.cbNotifications.setOnClickListener(this)
-//        itemView.cbEnableLang.setOnClickListener(this)
+        itemView.tvLanguage.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
@@ -139,6 +113,30 @@ class SettingsFragment : Fragment(), View.OnClickListener, AdapterView.OnItemSel
                 }
                 ActivityUtil.reload(activity, 5)
             }
+            itemView.tvLanguage -> {
+                ChooseLanguageDialog(itemView.context,
+                    getString(R.string.choose_lang),
+                    Config.listLanguageNames().toTypedArray(), selectedIndex, this)
+            }
+        }
+    }
+    override fun onLanguageItemChecked(selectedIndex: Int) {
+        progressDialog = Dialog(itemView.context)
+        progressDialog.initPopupDialog()
+        progressDialog.show()
+        val lang = Config.listOfLanguages()[selectedIndex]
+        val code = prefs.languageCode
+        if (lang.languageCode != code) {
+            itemView.tvLanguage.text = lang.language
+            RetrofitClientInstance.clear()
+            InMemory.clear()
+            prefs.languageCode = lang.languageCode
+            SyncApi.sync(requireContext(), object : SyncListener {
+                override fun finish(success: Boolean) {
+                    ActivityUtil.reload(activity, 5)
+                    progressDialog.dismiss()
+                }
+            })
         }
     }
 
