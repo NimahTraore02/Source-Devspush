@@ -7,6 +7,7 @@ import com.decouikit.news.activities.common.NavigationActivity
 import com.decouikit.news.network.dto.Category
 import com.decouikit.news.network.dto.WizardItemModel
 
+
 object Config {
 
     fun listOfLanguages(): List<Language> {
@@ -23,6 +24,13 @@ object Config {
                 baseUrl = "https://hindi.ebmnews.com/wp-json/wp/v2/",
                 language = "Hindi",
                 languageCode = "hi"
+            )
+        )
+        languages.add(
+            Language(
+                baseUrl = "https://malayalam.ebmnews.com//wp-json/wp/v2/",
+                language = "Malayalam",
+                languageCode = "ml"
             )
         )
         return languages
@@ -176,7 +184,6 @@ object Config {
         return language
     }
 
-
     fun getBaseUrl(context: Context): Language? {
         val code = Preference(context).languageCode
         val languages = listOfLanguages()
@@ -194,7 +201,6 @@ object Config {
     fun getLanguageIndexByCode(code: String): Int {
         var result = -1
         val languages = listOfLanguages()
-//        languages.filter {  it.languageCode == code }
         languages.forEachIndexed { index, language ->
             if (language.languageCode == code) {
                 result = index
