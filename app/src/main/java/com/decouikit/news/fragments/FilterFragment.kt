@@ -89,7 +89,15 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
         itemView.swipeRefresh.setOnRefreshListener(this)
     }
 
+    private fun initDataSticky() {
+//        Config.isFeaturesPostsGetFromSticky()
+//        postsService.getPostsByCategoryWithSticky() sticky = true -> rezultat prikazi u slajder
+//        postsService.getPostsByCategoryWithSticky() sticky = false -> rezultat prikazi u recent + load more
+//        U Slucaju da je 0 postova sakriti slider
+    }
+
     private fun initData() {
+
         doAsync {
             postsService?.getPostsByCategory(
                 categoryId.toString(),
