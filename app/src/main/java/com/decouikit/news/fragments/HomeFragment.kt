@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.decouikit.news.R
 import com.decouikit.news.adapters.ViewPagerAdapter
+import com.decouikit.news.database.Config
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.interfaces.HomeFragmentListener
 import com.google.android.material.tabs.TabLayout
@@ -44,7 +45,11 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
         val mTabLayout = itemView.findViewById<TabLayout>(R.id.homeTab)
         InMemory.getCategoryList().forEach {
             mTabLayout.addTab(mTabLayout.newTab().setText(it.name))
-            adapter?.addFragment(FilterFragment.newInstance(it.id, it.name))
+            if(Config.isFeaturesPostsGetFromSticky()) {
+                adapter?.addFragment(FilterStickyFragment.newInstance(it.id, it.name))
+            } else {
+                adapter?.addFragment(FilterFragment.newInstance(it.id, it.name))
+            }
         }
 
         itemView.viewPager.adapter = adapter
