@@ -12,24 +12,30 @@ import com.decouikit.news.network.dto.MediaItem
 import org.jetbrains.anko.doAsync
 
 object SyncMedia : Sync {
+    private val mediaList = mutableListOf<MediaItem>()
+    var pageNumber = 1
     override fun sync(context: Context, listener: SyncListener?) {
-        val mediaService = RetrofitClientInstance.getRetrofitInstance(context)?.create(MediaService::class.java)
+        val mediaService =
+            RetrofitClientInstance.getRetrofitInstance(context)?.create(MediaService::class.java)
         doAsync {
-            mediaService?.getMediaList()?.enqueue(result = {
+            mediaService?.getMediaList(page = pageNumber)?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
                         if (!it.response.body().isNullOrEmpty()) {
-                            InMemory.setMediaList(it.response.body() as List<MediaItem>)
+                            mediaList.addAll(it.response.body() as List<MediaItem>)
+                            pageNumber++
+                            sync(context, listener)
+                            return@enqueue
                         }
+                        InMemory.setMediaList(mediaList)
                         listener?.finish(true)
                     }
                     is Result.Failure -> {
+                        InMemory.setMediaList(mediaList)
                         listener?.finish(false)
                     }
                 }
             })
         }
     }
-
-
 }

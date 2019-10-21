@@ -12,19 +12,27 @@ import com.decouikit.news.network.dto.Category
 import org.jetbrains.anko.doAsync
 
 object SyncCategory : Sync {
+
+    private val categories = mutableListOf<Category>()
+    var pageNumber = 1
     override fun sync(context: Context, listener: SyncListener?) {
         val categoryService =
             RetrofitClientInstance.getRetrofitInstance(context)?.create(CategoryService::class.java)
         doAsync {
-            categoryService?.getCategoryList()?.enqueue(result = {
+            categoryService?.getCategoryList(page = pageNumber)?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
                         if (!it.response.body().isNullOrEmpty()) {
-                            InMemory.setCategoryList(it.response.body() as List<Category>)
+                            categories.addAll(it.response.body() as List<Category>)
+                            pageNumber++
+                            sync(context, listener)
+                            return@enqueue
                         }
+                        InMemory.setCategoryList(categories)
                         listener?.finish(true)
                     }
                     is Result.Failure -> {
+                        InMemory.setCategoryList(categories)
                         listener?.finish(false)
                     }
                 }
