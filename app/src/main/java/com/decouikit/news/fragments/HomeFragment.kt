@@ -11,6 +11,7 @@ import com.decouikit.news.adapters.ViewPagerAdapter
 import com.decouikit.news.database.Config
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.interfaces.HomeFragmentListener
+import com.decouikit.news.network.dto.Category
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
@@ -35,7 +36,6 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initTabs()
     }
 
@@ -45,18 +45,15 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
         val mTabLayout = itemView.findViewById<TabLayout>(R.id.homeTab)
         InMemory.getCategoryList().forEach {
             mTabLayout.addTab(mTabLayout.newTab().setText(it.name))
-            if(Config.isFeaturesPostsGetFromSticky()) {
-                adapter?.addFragment(FilterStickyFragment.newInstance(it.id, it.name))
-            } else {
-                adapter?.addFragment(FilterFragment.newInstance(it.id, it.name))
-            }
+            adapter?.addFragment(getFilterFragment(it))
         }
-
         itemView.viewPager.adapter = adapter
-
-        itemView.viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(mTabLayout))
+        itemView.viewPager.addOnPageChangeListener(
+            TabLayout.TabLayoutOnPageChangeListener(
+                mTabLayout
+            )
+        )
         mTabLayout.addOnTabSelectedListener(this)
-
     }
 
     override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -74,6 +71,14 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
     override fun onResume() {
         super.onResume()
         callback.homeFragmentBehavior()
+    }
+
+    private fun getFilterFragment(category: Category): Fragment {
+        return if (Config.isFeaturesPostsGetFromSticky()) {
+            FilterStickyFragment.newInstance(category.id, category.name)
+        } else {
+            FilterFragment.newInstance(category.id, category.name)
+        }
     }
 
     companion object {
