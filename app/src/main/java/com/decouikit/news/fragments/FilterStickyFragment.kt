@@ -1,6 +1,7 @@
 package com.decouikit.news.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -158,21 +159,22 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
                                 1,
                                 true
                             )
-
-                            if (featuresSync && recentSync) {
-                                setEmptyState(featuredAdapter.count == 0 && recentAdapter.itemCount == 0)
-                            }
+                            checkEmptyState()
                         } else {
                             hideFeaturedNews(true)
+                            checkEmptyState()
                         }
                     }
                     is Result.Failure -> {
                         hideFeaturedNews(true)
+                        checkEmptyState()
                     }
                 }
             })
         }
     }
+
+
 
 
     private fun getRecentNews() {
@@ -199,17 +201,22 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
                             }
                         }
                         recentAdapter.setData(recentPostItems)
-
                         hideRecentNews(recentAdapter.itemCount == 0)
+                        checkEmptyState()
                     }
                 }
                 is Result.Failure -> {
                     hideRecentNews(true)
+                    checkEmptyState()
                 }
             }
         })
         swipeRefresh.isRefreshing = false
         setShimmerAnimationVisibility(false)
+        checkEmptyState()
+    }
+
+    private fun checkEmptyState() {
         if (featuresSync && recentSync) {
             setEmptyState(featuredAdapter.count == 0 && recentAdapter.itemCount == 0)
         }
