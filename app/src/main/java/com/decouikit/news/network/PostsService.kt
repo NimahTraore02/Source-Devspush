@@ -8,11 +8,28 @@ import retrofit2.http.Query
 
 interface PostsService {
     @GET("posts?")
-    fun getPostsList(@Query("page") page: Int = 1, @Query("per_page") per_page: Int = 30): Call<List<PostItem>>
+    fun getPostsList(
+        @Query("page") page: Int = 1,
+        @Query("per_page") per_page: Int = 30
+    ): Call<List<PostItem>>
 
     @GET("posts/")
-    fun getPostsByCategory(@Query("categories") categories: String, @Query("page") page: Int = 1, @Query("per_page") per_page: Int = 30): Call<List<PostItem>>
+    fun getPostsByCategory(
+        @Query("categories") categories: String,
+        @Query("page") page: Int = 1,
+        @Query("per_page") per_page: Int = 30
+    ): Call<List<PostItem>>
+
+    @GET("posts/")
+    fun getPostsByCategoryWithSticky(
+        @Query("categories") categories: String,
+        @Query("page") page: Int = 1,
+        @Query("per_page") per_page: Int = 30,
+        @Query("sticky") sticky: Boolean = false
+    ): Call<List<PostItem>>
 
     @GET("posts/{id}")
-    fun getPostsById(@Path("id") id: String): Call<PostItem>
+    fun getPostsById(
+        @Path("id") id: String
+    ): Call<PostItem>
 }

@@ -14,23 +14,9 @@ object Config {
         val languages = mutableListOf<Language>()
         languages.add(
             Language(
-                baseUrl = "https://ebmnews.com/wp-json/wp/v2/",
+                baseUrl = "https://deconews.decouikit.com/wp-json/wp/v2/",
                 language = "English",
                 languageCode = "en"
-            )
-        )
-        languages.add(
-            Language(
-                baseUrl = "https://hindi.ebmnews.com/wp-json/wp/v2/",
-                language = "Hindi",
-                languageCode = "hi"
-            )
-        )
-        languages.add(
-            Language(
-                baseUrl = "https://malayalam.ebmnews.com//wp-json/wp/v2/",
-                language = "Malayalam",
-                languageCode = "ml"
             )
         )
         return languages
@@ -79,6 +65,10 @@ object Config {
         return 3
     }
 
+    fun isFeaturesPostsGetFromSticky(): Boolean{
+        return true
+    }
+
     fun getDefaultValueForPushNotification(): Boolean {
         return true
     }
@@ -114,27 +104,16 @@ object Config {
     //If you want to exclude some category from list add that category in this array
     private fun getListOfExcludedCategories(): ArrayList<String> {
         val items = arrayListOf<String>()
-//            items.add("Category name")
-//            items.add("Architecture")
         return items
     }
 
     fun getListOfIncludedCategories(): ArrayList<String> {
         val items = arrayListOf<String>()
-        items.add("National")
-        items.add("World")
-        items.add("Sports")
-        items.add("Entertainment")
-        items.add("Technology")
-        items.add("Business")
-        items.add("Health")
-        items.add("Automotive")
-        items.add("Crime")
         return items
     }
 
     fun isExcludeCategoryEnabled(): Boolean {
-        return false
+        return true
     }
 
     fun isCategoryIncluded(category: Category): Boolean {
