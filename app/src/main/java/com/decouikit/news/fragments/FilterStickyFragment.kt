@@ -24,15 +24,19 @@ import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.fragment_filter.view.*
 import org.jetbrains.anko.doAsync
 
-class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, NestedScrollView.OnScrollChangeListener {
+class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener,
+    NestedScrollView.OnScrollChangeListener {
 
 
     private lateinit var itemView: View
     private var categoryId: Int? = null
     private lateinit var categoryName: String
 
-    private val postsService by lazy { RetrofitClientInstance.getRetrofitInstance(requireContext())?.create(
-        PostsService::class.java) }
+    private val postsService by lazy {
+        RetrofitClientInstance.getRetrofitInstance(requireContext())?.create(
+            PostsService::class.java
+        )
+    }
 
     private var allMediaList = InMemory.getMediaList()
 
@@ -52,26 +56,25 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
         categoryName = arguments?.getString(NewsConstants.CATEGORY_NAME, "").toString()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         itemView = inflater.inflate(R.layout.fragment_filter, container, false)
         return itemView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initLayout()
         initListeners()
-    }
-
-    override fun onResume() {
-        super.onResume()
         itemView.nestedParent.setOnScrollChangeListener(this)
         refreshContent()
     }
+
     private fun initLayout() {
         featuredAdapter = FeaturedNewsAdapter(arrayListOf(), itemView.context)
-
         recentAdapter = RecentNewsAdapter(arrayListOf())
         recentManager = GridLayoutManager(itemView.context, 2)
         itemView.rvRecentNews.layoutManager = recentManager
@@ -80,6 +83,7 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
 
         setShimmerAnimationVisibility(true)
     }
+
     private fun initListeners() {
         itemView.tvFeaturedNewsViewAll.setOnClickListener(this)
         itemView.tvRecentNewsViewAll.setOnClickListener(this)
@@ -96,6 +100,8 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
         itemView.viewPager.removeAllViews()
         setShimmerAnimationVisibility(true)
         page = 0
+        featuresSync = false
+        recentSync = false
         featuredAdapter.removeAllItems()
         recentAdapter.removeAllItems()
         recentPostItems.removeAll { true }
@@ -120,6 +126,7 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
             }
         }
     }
+
     private fun getFeaturedNews() {
         doAsync {
             postsService?.getPostsByCategoryWithSticky(
@@ -145,7 +152,8 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
                             }
                             featuredAdapter.setData(featuredPostItems)
                             itemView.viewPager.adapter = featuredAdapter
-                            itemView.viewPager.offscreenPageLimit = Config.getNumberOfItemForSlider()
+                            itemView.viewPager.offscreenPageLimit =
+                                Config.getNumberOfItemForSlider()
                             itemView.viewPager.setCurrentItem(
                                 1,
                                 true
@@ -270,6 +278,7 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
             }
         }
     }
+
     companion object {
         fun newInstance(categoryId: Int, categoryName: String): FilterStickyFragment {
             val fragment = FilterStickyFragment()
