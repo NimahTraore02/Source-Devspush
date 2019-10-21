@@ -37,6 +37,10 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
     private lateinit var adapter: ViewAllAdapter
     private var postItems = arrayListOf<PostItem>()
     private val allMediaList = InMemory.getMediaList()
+    val postsService by lazy {
+        RetrofitClientInstance.getRetrofitInstance(context = applicationContext)
+            ?.create(PostsService::class.java)
+    }
 
     private val commentsService by lazy {
         RetrofitClientInstance.getRetrofitInstance(this)?.create(CommentsService::class.java)
@@ -63,6 +67,15 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
     }
 
     private fun loadPostItem(): PostItem {
+//        val postItemTemp =
+//        doAsync {
+//            postsService?.getPostsById(postItemTemp.id.toString())?.enqueue {
+//                when (it) {
+//                    is Result.Success -> {
+//
+//                    }
+//            }
+//        }
         return gson.fromJson(intent.getStringExtra(NewsConstants.POST_ITEM), PostItem::class.java)
     }
 
@@ -92,11 +105,7 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
             NewsConstants.HTML_STYLE_DARK
         }
 
-        webView.loadData(
-            String.format("%s%s", style, postItem.content.rendered),
-            NewsConstants.TEXT_HTML,
-            NewsConstants.UTF_8
-        )
+        webView.loadDataWithBaseURL(null, "<HTML>" + String.format("%s%s",style, postItem.content.rendered) + "</HTML>", NewsConstants.TEXT_HTML, NewsConstants.UTF_8, null);
         adapter = ViewAllAdapter(arrayListOf(), this)
         rvRecentNews.layoutManager = LinearLayoutManager(this)
         rvRecentNews.adapter = adapter
@@ -128,12 +137,9 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
 
     private fun getRelatedNews() {
         doAsync {
-            val postsService =
-                RetrofitClientInstance.getRetrofitInstance(context = applicationContext)?.create(PostsService::class.java)
             val categoryId = postItem.categories[0]
             postsService?.getPostsByCategory(
-                categoryId.toString(),
-                page,
+                categoryId.toString(), page,
                 Config.getNumberOfItemPerPage()
             )?.enqueue(result = {
                 when (it) {

@@ -31,28 +31,46 @@ object InMemory {
 
     fun setCategoryList(categoryList: List<Category>) {
         //CHECK INCLUDE CATEGORY
+        val categoryTemp = mutableListOf<Category>()
         categoryList.forEach {
             if (Config.isExcludeCategoryEnabled()) {
                 if (!Config.isCategoryExcluded(it) && it.count > 0) {
-                    CATEGORY.add(it)
+                    categoryTemp.add(it)
                 }
             } else {
                 if (Config.isCategoryIncluded(it) && it.count > 0) {
-                    CATEGORY.add(it)
+                    categoryTemp.add(it)
                 }
             }
         }
+        if (!Config.isExcludeCategoryEnabled()) {
+            //sort category
+            if (categoryList.isNotEmpty()) {
+                val categoryMapTemp = mutableMapOf<String, Category>()
+                categoryList.forEach { categoryMapTemp[it.name] = it }
+                for (categoryName in Config.getListOfIncludedCategories()) {
+                    val category = categoryMapTemp[categoryName]
+                    if (category != null) {
+                        CATEGORY.add(category)
+                    }
+                }
+            }
+        } else {
+            CATEGORY.addAll(categoryList)
+        }
+
         if (CATEGORY.isNotEmpty()) {
-            CATEGORY.forEach { CATEGORY_MAP.plus((Pair(it.id, it))) }
+            CATEGORY.forEach { CATEGORY_MAP[it.id] = it }
         }
     }
+
 
     fun getCategoryList(): List<Category> = CATEGORY
 
     fun setTagsList(tagsList: List<Tag>) {
         TAGS.addAll(tagsList)
         if (TAGS.isNotEmpty()) {
-            TAGS.forEach { TAGS_MAP.plus((Pair(it.id, it))) }
+            TAGS.forEach { TAGS_MAP[it.id] = it }
         }
     }
 
@@ -61,7 +79,7 @@ object InMemory {
     fun setUserList(userList: List<User>) {
         USER.addAll(userList)
         if (USER.isNotEmpty()) {
-            USER.forEach { USER_MAP.plus((Pair(it.id, it))) }
+            USER.forEach { USER_MAP[it.id] = it }
         }
     }
 
@@ -70,7 +88,7 @@ object InMemory {
     fun setMediaList(mediaList: List<MediaItem>) {
         MEDIA.addAll(mediaList)
         if (MEDIA.isNotEmpty()) {
-            MEDIA.forEach { MEDIA_MAP.plus((Pair(it.id, it))) }
+            MEDIA.forEach { MEDIA_MAP[it.id] = it }
         }
     }
 

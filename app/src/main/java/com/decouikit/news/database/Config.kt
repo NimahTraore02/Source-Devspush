@@ -14,25 +14,25 @@ object Config {
         val languages = mutableListOf<Language>()
         languages.add(
             Language(
-                baseUrl = "https://afgarabic.org/wp-json/wp/v2/",
-                language = "Agarabi",
-                languageCode = ""
+                baseUrl = "https://ebmnews.com/wp-json/wp/v2/",
+                language = "English",
+                languageCode = "en"
             )
         )
-//        languages.add(
-//            Language(
-//                baseUrl = "http://hindi.decouikit.com/wp-json/wp/v2/",
-//                language = "Hindi",
-//                languageCode = "hi"
-//            )
-//        )
-//        languages.add(
-//            Language(
-//                baseUrl = "http://malayalam.decouikit.com/wp-json/wp/v2/",
-//                language = "Malayalam",
-//                languageCode = "ml"
-//            )
-//        )
+        languages.add(
+            Language(
+                baseUrl = "https://hindi.ebmnews.com/wp-json/wp/v2/",
+                language = "Hindi",
+                languageCode = "hi"
+            )
+        )
+        languages.add(
+            Language(
+                baseUrl = "https://malayalam.ebmnews.com//wp-json/wp/v2/",
+                language = "Malayalam",
+                languageCode = "ml"
+            )
+        )
         return languages
     }
 
@@ -119,7 +119,7 @@ object Config {
         return items
     }
 
-    private fun getListOfIncludedCategories(): ArrayList<String> {
+    fun getListOfIncludedCategories(): ArrayList<String> {
         val items = arrayListOf<String>()
         return items
     }
