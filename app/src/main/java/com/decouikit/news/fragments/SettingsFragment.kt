@@ -56,7 +56,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
         itemView.cbEnableRtl.isChecked = prefs.isRtlEnabled
 
         selectedIndex = Config.getLanguageIndexByCode(prefs.languageCode)
-        if (Config.listLanguageNames().size < selectedIndex) {
+        if (Config.listLanguageNames().size > selectedIndex) {
             itemView.tvLanguage.text = Config.listLanguageNames()[selectedIndex]
         }
     }
