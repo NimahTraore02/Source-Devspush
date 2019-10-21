@@ -121,11 +121,20 @@ object Config {
 
     fun getListOfIncludedCategories(): ArrayList<String> {
         val items = arrayListOf<String>()
+        items.add("National")
+        items.add("World")
+        items.add("Sports")
+        items.add("Entertainment")
+        items.add("Technology")
+        items.add("Business")
+        items.add("Health")
+        items.add("Automotive")
+        items.add("Crime")
         return items
     }
 
     fun isExcludeCategoryEnabled(): Boolean {
-        return true
+        return false
     }
 
     fun isCategoryIncluded(category: Category): Boolean {

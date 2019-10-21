@@ -25,6 +25,7 @@ class RecentNewsAdapter(private var items: ArrayList<PostItem>)
     }
 
     fun setData(items: ArrayList<PostItem>) {
+        this.items.clear()
         this.items.addAll(items)
         notifyDataSetChanged()
     }

@@ -18,7 +18,6 @@ import com.decouikit.news.fragments.*
 import com.decouikit.news.interfaces.HomeFragmentListener
 import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.NewsConstants
-import com.decouikit.news.utils.RateMe
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -28,7 +27,6 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
     HomeFragmentListener, View.OnClickListener {
 
     private lateinit var toolbar: Toolbar
-    private var fragmentPosition: Int? = -1
     private lateinit var menuItem: Menu
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,12 +47,21 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         setSocialNetworksIconVisibility()
-
-        fragmentPosition = intent.getIntExtra(NewsConstants.FRAGMENT_POSITION, -1)
         navView.setNavigationItemSelectedListener(this)
         ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.parent)
         showBannerAds()
+        loadFragment(intent.getIntExtra(NewsConstants.FRAGMENT_POSITION, -1))
+    }
 
+    private fun loadFragment(fragmentPosition: Int) {
+        if (fragmentPosition == 5) {
+            ActivityUtil.setAppBarElevation(appBar, 8f)
+            replaceFragment(SettingsFragment.newInstance(), R.id.navigation_container)
+            nav_view.setCheckedItem(R.id.nav_settings)
+        } else {
+            replaceFragment(HomeFragment.newInstance(), R.id.navigation_container)
+            nav_view.setCheckedItem(R.id.nav_home)
+        }
     }
 
     private fun setSocialNetworksIconVisibility() {
@@ -86,15 +93,6 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
 
     override fun onResume() {
         super.onResume()
-        if (fragmentPosition == 5) {
-            ActivityUtil.setAppBarElevation(appBar, 8f)
-            replaceFragment(SettingsFragment.newInstance(), R.id.navigation_container)
-            nav_view.setCheckedItem(R.id.nav_settings)
-            fragmentPosition = -1
-        } else {
-            replaceFragment(HomeFragment.newInstance(), R.id.navigation_container)
-            nav_view.setCheckedItem(R.id.nav_home)
-        }
         NewsApplication.activityResumed()
     }
 

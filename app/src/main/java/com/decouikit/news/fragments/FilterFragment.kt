@@ -1,6 +1,7 @@
 package com.decouikit.news.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +21,6 @@ import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.NewsConstants
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.fragment_filter.view.*
 import org.jetbrains.anko.doAsync
@@ -252,7 +252,6 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
                 if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
                     swipeRefresh.isRefreshing = true
                     loadMoreRecentData()
-
                 }
             }
         }
