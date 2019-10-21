@@ -10,7 +10,7 @@ import org.greenrobot.eventbus.EventBus
 
 class NetworkChangeReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        Log.e("TEST", "onReceive:" + NetworkUtil.isNetworkConnected(context))
-        EventBus.getDefault().post(InternetAccess(NetworkUtil.isNetworkConnected(context)))
+//        Log.e("TEST", "onReceive:" + NetworkUtil.isNetworkConnected(context))
+//        EventBus.getDefault().post(InternetAccess(NetworkUtil.isNetworkConnected(context)))
     }
 }

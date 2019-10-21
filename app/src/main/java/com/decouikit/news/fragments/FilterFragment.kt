@@ -150,7 +150,10 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
                     postItem.source_url = mediaItem.source_url
                 }
             }
-            recentPostItems.add(postItem)
+            if (!recentPostItems.contains(postItem)) {
+                recentPostItems.add(postItem)
+            }
+
         }
         recentAdapter.setData(recentPostItems)
 
@@ -175,7 +178,9 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
                                         postItem.source_url = mediaItem.source_url
                                     }
                                 }
-                                recentPostItems.add(postItem)
+                                if (!recentPostItems.contains(postItem)) {
+                                    recentPostItems.add(postItem)
+                                }
                             }
                             recentAdapter.setData(recentPostItems)
                         }

@@ -56,7 +56,9 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
         itemView.cbEnableRtl.isChecked = prefs.isRtlEnabled
 
         selectedIndex = Config.getLanguageIndexByCode(prefs.languageCode)
-        itemView.tvLanguage.text = Config.listLanguageNames()[selectedIndex]
+        if (Config.listLanguageNames().size < selectedIndex) {
+            itemView.tvLanguage.text = Config.listLanguageNames()[selectedIndex]
+        }
     }
 
     private fun initListeners() {
@@ -64,6 +66,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
         itemView.btnDarkMode.setOnClickListener(this)
         itemView.cbNotifications.setOnClickListener(this)
         itemView.tvLanguage.setOnClickListener(this)
+        itemView.cbEnableRtl.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
