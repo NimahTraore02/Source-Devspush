@@ -1,7 +1,6 @@
 package com.decouikit.news.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,7 +61,7 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        itemView = inflater.inflate(R.layout.fragment_filter, container, false)
+        itemView = inflater.inflate(R.layout.fragment_filter_sticky, container, false)
         return itemView
     }
 
@@ -97,7 +96,6 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
     }
 
     private fun refreshContent() {
-        hideFeaturedNews(false)
         itemView.viewPager.removeAllViews()
         setShimmerAnimationVisibility(true)
         page = 0
@@ -160,6 +158,13 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
                                 true
                             )
                             checkEmptyState()
+                            if (featuredAdapter.count != 0) {
+                                hideFeaturedNews(false)
+                            }
+
+                            if (featuresSync && recentSync) {
+                                setEmptyState(featuredAdapter.count == 0 && recentAdapter.itemCount == 0)
+                            }
                         } else {
                             hideFeaturedNews(true)
                             checkEmptyState()
@@ -173,8 +178,6 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
             })
         }
     }
-
-
 
 
     private fun getRecentNews() {
@@ -240,6 +243,10 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
             itemView.tvFeaturedNewsTitle.visibility = View.GONE
             itemView.tvFeaturedNewsViewAll.visibility = View.GONE
             itemView.viewPager.visibility = View.GONE
+        } else {
+            itemView.tvFeaturedNewsTitle.visibility = View.VISIBLE
+            itemView.tvFeaturedNewsViewAll.visibility = View.VISIBLE
+            itemView.viewPager.visibility = View.VISIBLE
         }
     }
 
