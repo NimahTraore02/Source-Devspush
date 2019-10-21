@@ -12,25 +12,30 @@ import com.decouikit.news.network.dto.User
 import org.jetbrains.anko.doAsync
 
 object SyncUsers : Sync {
+    private val users = mutableListOf<User>()
+    var pageNumber = 1
     override fun sync(context: Context, listener: SyncListener?) {
         val userService =
             RetrofitClientInstance.getRetrofitInstance(context)?.create(UserService::class.java)
         doAsync {
-            userService?.getUserList()?.enqueue(result = { it ->
+            userService?.getUserList(page = pageNumber)?.enqueue(result = { it ->
                 when (it) {
                     is Result.Success -> {
                         if (!it.response.body().isNullOrEmpty()) {
-                            InMemory.setUserList(it.response.body() as List<User>)
+                            users.addAll(it.response.body() as List<User>)
+                            pageNumber++
+                            sync(context, listener)
+                            return@enqueue
                         }
+                        InMemory.setUserList(users)
                         listener?.finish(true)
                     }
                     is Result.Failure -> {
+                        InMemory.setUserList(users)
                         listener?.finish(false)
                     }
                 }
             })
         }
     }
-
-
 }
