@@ -50,7 +50,7 @@ class BookmarkAdapter(private var items: ArrayList<PostItem>,
 
         fun bind(item: PostItem) {
             this.item = item
-            view.ivItemBg.load(item.source_url)
+            view.ivItemBg.load(item)
             view.tvItemTitle.setHtml(item.title.rendered)
             view.tvItemDate.text = Date().getDateFromString(item.date)?.getCalendarDate()
             view.tvItemTag.text = item.categoryName

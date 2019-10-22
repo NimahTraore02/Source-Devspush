@@ -29,11 +29,6 @@ object SyncPost {
                                     postItem.categoryName = category.name
                                 }
                             }
-                            for (mediaItem in InMemory.getMediaList()) {
-                                if (mediaItem.id == postItem.featured_media) {
-                                    postItem.source_url = mediaItem.source_url
-                                }
-                            }
                             listener?.onSuccess(postItem)
                         } catch (e: Exception) {
                             listener?.onError(e)

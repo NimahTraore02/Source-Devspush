@@ -37,8 +37,6 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
             ?.create(PostsService::class.java)
     }
 
-    private var allMediaList = InMemory.getMediaList()
-
     private lateinit var allPostList: List<PostItem>
 
     private lateinit var featuredAdapter: FeaturedNewsAdapter
@@ -118,11 +116,6 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
         var postCounter = 0
         for (postItem in allPostList) {
             postItem.categoryName = categoryName
-            for (mediaItem in allMediaList) {
-                if (mediaItem.id == postItem.featured_media) {
-                    postItem.source_url = mediaItem.source_url
-                }
-            }
             featuredPostItems.add(postItem)
             postCounter++
             if (postCounter == Config.getNumberOfItemForSlider()) {
@@ -147,15 +140,9 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
         }
         for (postItem in allPostList.subList(start, end)) {
             postItem.categoryName = categoryName
-            for (mediaItem in allMediaList) {
-                if (mediaItem.id == postItem.featured_media) {
-                    postItem.source_url = mediaItem.source_url
-                }
-            }
             if (!recentPostItems.contains(postItem)) {
                 recentPostItems.add(postItem)
             }
-
         }
         recentAdapter.setData(recentPostItems)
 
@@ -175,11 +162,6 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
                             val allPostList = it.response.body() as ArrayList<PostItem>
                             for (postItem in allPostList) {
                                 postItem.categoryName = categoryName
-                                for (mediaItem in allMediaList) {
-                                    if (mediaItem.id == postItem.featured_media) {
-                                        postItem.source_url = mediaItem.source_url
-                                    }
-                                }
                                 if (!recentPostItems.contains(postItem)) {
                                     recentPostItems.add(postItem)
                                 }

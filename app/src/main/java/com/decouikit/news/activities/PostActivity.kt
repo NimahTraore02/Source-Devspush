@@ -10,7 +10,6 @@ import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
 import com.decouikit.news.adapters.ViewAllAdapter
 import com.decouikit.news.database.Config
-import com.decouikit.news.database.InMemory
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.*
 import com.decouikit.news.interfaces.OpenPostListener
@@ -36,7 +35,6 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
 
     private lateinit var adapter: ViewAllAdapter
     private var postItems = arrayListOf<PostItem>()
-    private val allMediaList = InMemory.getMediaList()
     val postsService by lazy {
         RetrofitClientInstance.getRetrofitInstance(context = applicationContext)
             ?.create(PostsService::class.java)
@@ -70,12 +68,13 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
         return gson.fromJson(intent.getStringExtra(NewsConstants.POST_ITEM), PostItem::class.java)
     }
 
+
     @SuppressLint("SetJavaScriptEnabled")
     private fun initLayout() {
         if (Preference(this).isRtlEnabled) {
             ivBack.rotation = 180f
         }
-        ivPostBg.load(postItem.source_url)
+        ivPostBg.load(postItem)
         if (Preference(this).getBookmarkedNews().contains(postItem)) {
             ivBookmark.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_bookmark_red))
         } else {
@@ -144,13 +143,8 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
                         if (!it.response.body().isNullOrEmpty()) {
                             val items = it.response.body() as ArrayList<PostItem>
                             for (item in items) {
-                                for (mediaItem in allMediaList) {
-                                    if (mediaItem.id == item.featured_media) {
-                                        item.source_url = mediaItem.source_url
-                                        item.categoryName = postItem.categoryName
-                                        postItems.add(item)
-                                    }
-                                }
+                                item.categoryName = postItem.categoryName
+                                postItems.add(item)
                             }
                             adapter.setData(postItems)
                             adapter.removeItem(postItem)

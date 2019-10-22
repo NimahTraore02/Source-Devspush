@@ -7,7 +7,7 @@ object SyncApi : SyncListener {
     private var syncApiCounter = 0
     private var isSyncSuccess = true
     private var listener: SyncListener? = null
-    private val services = arrayListOf(SyncMedia, SyncUsers, SyncCategory, SyncTags)
+    private val services = arrayListOf(SyncUsers, SyncCategory, SyncTags)
 
     fun sync(context: Context, listener: SyncListener?) {
         this.listener = listener

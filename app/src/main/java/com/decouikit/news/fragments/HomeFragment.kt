@@ -37,6 +37,7 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initTabs()
+        callback.homeFragmentBehavior()
     }
 
     private fun initTabs() {
@@ -66,11 +67,6 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
 
     override fun onTabSelected(tab: TabLayout.Tab) {
         itemView.viewPager.currentItem = tab.position
-    }
-
-    override fun onResume() {
-        super.onResume()
-        callback.homeFragmentBehavior()
     }
 
     private fun getFilterFragment(category: Category): Fragment {

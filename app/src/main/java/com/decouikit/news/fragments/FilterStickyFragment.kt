@@ -12,7 +12,6 @@ import com.decouikit.news.R
 import com.decouikit.news.adapters.FeaturedNewsAdapter
 import com.decouikit.news.adapters.RecentNewsAdapter
 import com.decouikit.news.database.Config
-import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.extensions.viewAll
@@ -38,8 +37,6 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
             PostsService::class.java
         )
     }
-
-    private var allMediaList = InMemory.getMediaList()
 
     private lateinit var featuredAdapter: FeaturedNewsAdapter
 
@@ -143,11 +140,6 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
                             val featuredPostItems = arrayListOf<PostItem>()
                             for (postItem in featuredItems) {
                                 postItem.categoryName = categoryName
-                                for (mediaItem in allMediaList) {
-                                    if (mediaItem.id == postItem.featured_media) {
-                                        postItem.source_url = mediaItem.source_url
-                                    }
-                                }
                                 featuredPostItems.add(postItem)
                             }
                             featuredAdapter.setData(featuredPostItems)
@@ -195,11 +187,6 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
                         val allPostList = it.response.body() as ArrayList<PostItem>
                         for (postItem in allPostList) {
                             postItem.categoryName = categoryName
-                            for (mediaItem in allMediaList) {
-                                if (mediaItem.id == postItem.featured_media) {
-                                    postItem.source_url = mediaItem.source_url
-                                }
-                            }
                             if (!recentPostItems.contains(postItem)) {
                                 recentPostItems.add(postItem)
                             }

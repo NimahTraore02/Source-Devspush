@@ -8,7 +8,6 @@ import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
 import com.decouikit.news.adapters.ViewAllAdapter
 import com.decouikit.news.database.Config
-import com.decouikit.news.database.InMemory
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
@@ -31,7 +30,6 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
     private var categoryName: String? = ""
     private var categoryType: CategoryType = CategoryType.ALL
     private var isDataLoading = false
-    private val allMediaList = InMemory.getMediaList()
     private lateinit var adapter: ViewAllAdapter
     private val items = arrayListOf<PostItem>()
     private val postService by lazy {
@@ -148,14 +146,9 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
                         } else {
                             val posts = it.response.body() as ArrayList<PostItem>
                             for (postItem in posts) {
-                                for (mediaItem in allMediaList) {
-                                    if (mediaItem.id == postItem.featured_media) {
-                                        //loop for getting image urls, post name is fixed from intent
-                                        postItem.categoryName = categoryName.toString()
-                                        postItem.source_url = mediaItem.source_url
-                                        items.add(postItem)
-                                    }
-                                }
+                                //loop for getting image urls, post name is fixed from intent
+                                postItem.categoryName = categoryName.toString()
+                                items.add(postItem)
                             }
                             if (items.isEmpty()) {
                                 hideContent(true)
@@ -193,14 +186,9 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
                             } else {
                                 val posts = it.response.body() as ArrayList<PostItem>
                                 for (postItem in posts) {
-                                    for (mediaItem in allMediaList) {
-                                        if (mediaItem.id == postItem.featured_media) {
-                                            //loop for getting image urls, post name is fixed from intent
-                                            postItem.categoryName = categoryName.toString()
-                                            postItem.source_url = mediaItem.source_url
-                                            items.add(postItem)
-                                        }
-                                    }
+                                    //loop for getting image urls, post name is fixed from intent
+                                    postItem.categoryName = categoryName.toString()
+                                    items.add(postItem)
                                 }
                                 if (items.isEmpty()) {
                                     hideContent(true)

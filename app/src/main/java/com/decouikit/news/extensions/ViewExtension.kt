@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Matrix
 import android.net.Uri
+import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -15,10 +17,14 @@ import com.decouikit.news.R
 import com.decouikit.news.activities.PostActivity
 import com.decouikit.news.activities.ViewAllActivity
 import com.decouikit.news.database.Preference
-import com.decouikit.news.network.dto.CategoryType
+import com.decouikit.news.network.MediaService
+import com.decouikit.news.network.RetrofitClientInstance
+import com.decouikit.news.network.dto.MediaItem
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.NewsConstants
 import com.google.gson.Gson
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.doAsyncResult
 
 
 fun View.pxToDp(px: Int): Int {
@@ -44,6 +50,27 @@ fun ImageView.load(imageUrl: String?, isRounded: Boolean = false) {
             .with(this)
             .load(imageUrl)
             .into(this)
+    }
+}
+
+fun ImageView.load(postItem: PostItem) {
+    if (TextUtils.isEmpty(postItem.source_url)) {
+        val mediaService = RetrofitClientInstance.getRetrofitInstance(context)?.create(MediaService::class.java)
+        mediaService?.getMediaById(postItem.featured_media.toString())?.enqueue {
+            when (it) {
+                is Result.Success -> {
+                    try {
+                        val mediaItem = it.response.body() as MediaItem
+                        postItem.source_url = mediaItem.source_url
+                        load(mediaItem.source_url)
+                    } catch (e: Exception) {
+                        Log.e("TEST", "Image error")
+                    }
+                }
+            }
+        }
+    } else {
+        load(postItem.source_url)
     }
 }
 

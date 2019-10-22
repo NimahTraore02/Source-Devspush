@@ -7,16 +7,29 @@ import com.decouikit.news.activities.common.NavigationActivity
 import com.decouikit.news.network.dto.Category
 import com.decouikit.news.network.dto.WizardItemModel
 
-
 object Config {
 
     fun listOfLanguages(): List<Language> {
         val languages = mutableListOf<Language>()
         languages.add(
             Language(
-                baseUrl = "https://deconews.decouikit.com/wp-json/wp/v2/",
+                baseUrl = "https://ebmnews.com/wp-json/wp/v2/",
                 language = "English",
                 languageCode = "en"
+            )
+        )
+        languages.add(
+            Language(
+                baseUrl = "https://hindi.ebmnews.com/wp-json/wp/v2/",
+                language = "Hindi",
+                languageCode = "hi"
+            )
+        )
+        languages.add(
+            Language(
+                baseUrl = "https://malayalam.ebmnews.com//wp-json/wp/v2/",
+                language = "Malayalam",
+                languageCode = "ml"
             )
         )
         return languages
@@ -66,7 +79,7 @@ object Config {
     }
 
     fun isFeaturesPostsGetFromSticky(): Boolean{
-        return true
+        return false
     }
 
     fun getDefaultValueForPushNotification(): Boolean {
@@ -109,11 +122,20 @@ object Config {
 
     fun getListOfIncludedCategories(): ArrayList<String> {
         val items = arrayListOf<String>()
+        items.add("National")
+        items.add("World")
+        items.add("Sports")
+        items.add("Entertainment")
+        items.add("Technology")
+        items.add("Business")
+        items.add("Health")
+        items.add("Automotive")
+        items.add("Crime")
         return items
     }
 
     fun isExcludeCategoryEnabled(): Boolean {
-        return true
+        return false
     }
 
     fun isCategoryIncluded(category: Category): Boolean {

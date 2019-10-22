@@ -24,14 +24,14 @@ object SyncMedia : Sync {
                         if (!it.response.body().isNullOrEmpty()) {
                             mediaList.addAll(it.response.body() as List<MediaItem>)
                             pageNumber++
-                            sync(context, listener)
-                            return@enqueue
+                            if (pageNumber < 3) {
+                                sync(context, listener)
+                                return@enqueue
+                            }
                         }
-                        InMemory.setMediaList(mediaList)
                         listener?.finish(true)
                     }
                     is Result.Failure -> {
-                        InMemory.setMediaList(mediaList)
                         listener?.finish(false)
                     }
                 }

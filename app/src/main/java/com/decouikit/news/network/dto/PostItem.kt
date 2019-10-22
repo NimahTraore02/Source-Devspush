@@ -26,7 +26,7 @@ data class PostItem(
     @SerializedName("sticky") val sticky: Boolean,
     @SerializedName("format") val format: String,
     @SerializedName("categories") val categories: List<Int>,
-    var source_url: String = "", var categoryName: String = "", var isBookmarked: Boolean = false
+    var source_url:String, var categoryName: String = "", var isBookmarked: Boolean = false
 ) {
     fun getCommentVisible(): Int {
         return if (comment_status == NewsConstants.OPEN_COMMENT_STATUS) {

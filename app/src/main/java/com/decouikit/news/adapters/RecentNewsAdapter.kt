@@ -52,7 +52,7 @@ class RecentNewsAdapter(private var items: ArrayList<PostItem>)
             view.tvItemTag.text = item.categoryName
             view.tvItemTitle.setHtml(item.title.rendered)
             view.tvItemDate.text = Date().getDateFromString(item.date)?.getCalendarDate()
-            view.ivItemBg.load(item.source_url)
+            view.ivItemBg.load(item)
         }
 
         override fun onClick(v: View) {
