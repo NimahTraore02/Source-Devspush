@@ -148,4 +148,10 @@
         <item name="android:buttonTint">@color/colorBlue</item>
         <item name="android:padding">@dimen/normal_padding</item>
     </style>
+
+    <style name="SearchEditTextStyle">
+        <item name="android:editTextColor">@color/icon_gray</item>
+        <item name="android:textColorHint">@color/icon_gray</item>
+        <item name="android:backgroundTint">@color/icon_gray</item>
+    </style>
 </resources>

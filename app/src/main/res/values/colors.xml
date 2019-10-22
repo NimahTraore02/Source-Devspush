@@ -11,4 +11,5 @@
     <color name="colorBlue">#3980FF</color>
     <color name="darkerGrayFiftyTransparency">#40000000</color>
     <color name="shimmer_background">#dddddd</color>
+    <color name="icon_gray">#AAB2B7</color>
 </resources>

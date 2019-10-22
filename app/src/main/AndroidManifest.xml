@@ -63,6 +63,9 @@
         <activity
             android:name=".activities.ViewAllActivity"
             android:configChanges="orientation|screenSize"/>
+        <activity
+            android:name=".activities.SearchActivity"
+            android:configChanges="orientation|screenSize"/>
         <service
             android:name=".firebase.MyFirebaseMessagingService"
             tools:ignore="ExportedService">

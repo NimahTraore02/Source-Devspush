@@ -1,5 +1,6 @@
 package com.decouikit.news.activities.common
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
@@ -12,6 +13,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.decouikit.news.R
 import com.decouikit.news.activities.NewsApplication
+import com.decouikit.news.activities.SearchActivity
 import com.decouikit.news.database.Config
 import com.decouikit.news.extensions.openExternalApp
 import com.decouikit.news.extensions.replaceFragment
@@ -124,7 +126,7 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
         menuInflater.inflate(R.menu.main, menu)
         menuItem = menu
         //set true for visible search button
-        return false
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -133,7 +135,7 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_search -> {
-                Toast.makeText(this, getString(R.string.search), Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, SearchActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
