@@ -4,6 +4,7 @@ object NewsConstants {
 
     const val CATEGORY_ID = "categoryId"
     const val CATEGORY_NAME = "categoryName"
+    const val CATEGORY_FEATURES = "categoryFeatures"
     const val FRAGMENT_POSITION = "fragmentPosition"
     const val POST_ITEM = "postItem"
     const val POST_ITEM_ID = "postItemId"

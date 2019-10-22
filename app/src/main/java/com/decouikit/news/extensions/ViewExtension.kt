@@ -15,6 +15,7 @@ import com.decouikit.news.R
 import com.decouikit.news.activities.PostActivity
 import com.decouikit.news.activities.ViewAllActivity
 import com.decouikit.news.database.Preference
+import com.decouikit.news.network.dto.CategoryType
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.NewsConstants
 import com.google.gson.Gson
@@ -64,10 +65,11 @@ fun View.bookmark(context: Context, postItem: PostItem, imageView: ImageView) {
     imageView.setBookmarkIcon(item == null)
 }
 
-fun View.viewAll(context: Context, categoryId: Int?, categoryName: String) {
+fun View.viewAll(context: Context, categoryId: Int?, categoryName: String, categoryType: Int? = 0) {
     val intent = Intent(context, ViewAllActivity::class.java)
     intent.putExtra(NewsConstants.CATEGORY_ID, categoryId)
     intent.putExtra(NewsConstants.CATEGORY_NAME, categoryName)
+    intent.putExtra(NewsConstants.CATEGORY_FEATURES, categoryType)
     context.startActivity(intent)
 }
 

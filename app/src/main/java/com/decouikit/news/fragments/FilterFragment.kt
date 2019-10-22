@@ -1,7 +1,6 @@
 package com.decouikit.news.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,19 +18,24 @@ import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.extensions.viewAll
 import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
+import com.decouikit.news.network.dto.CategoryType
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.fragment_filter.view.*
 import org.jetbrains.anko.doAsync
 
-class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, NestedScrollView.OnScrollChangeListener {
+class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener,
+    NestedScrollView.OnScrollChangeListener {
 
     private lateinit var itemView: View
     private var categoryId: Int? = null
     private lateinit var categoryName: String
 
-    private val postsService by lazy { RetrofitClientInstance.getRetrofitInstance(requireContext())?.create(PostsService::class.java) }
+    private val postsService by lazy {
+        RetrofitClientInstance.getRetrofitInstance(requireContext())
+            ?.create(PostsService::class.java)
+    }
 
     private var allMediaList = InMemory.getMediaList()
 
@@ -62,7 +66,6 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initLayout()
         initListeners()
     }
@@ -75,7 +78,6 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
 
     private fun initLayout() {
         featuredAdapter = FeaturedNewsAdapter(arrayListOf(), itemView.context)
-
         recentAdapter = RecentNewsAdapter(arrayListOf())
         recentManager = GridLayoutManager(itemView.context, 2)
         itemView.rvRecentNews.layoutManager = recentManager
@@ -89,15 +91,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
         itemView.swipeRefresh.setOnRefreshListener(this)
     }
 
-    private fun initDataSticky() {
-//        Config.isFeaturesPostsGetFromSticky()
-//        postsService.getPostsByCategoryWithSticky() sticky = true -> rezultat prikazi u slajder
-//        postsService.getPostsByCategoryWithSticky() sticky = false -> rezultat prikazi u recent + load more
-//        U Slucaju da je 0 postova sakriti slider
-    }
-
     private fun initData() {
-
         doAsync {
             postsService?.getPostsByCategory(
                 categoryId.toString(),
@@ -233,10 +227,10 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     override fun onClick(v: View) {
         when (v) {
             itemView.tvFeaturedNewsViewAll -> {
-                v.viewAll(v.context, categoryId, categoryName)
+                v.viewAll(v.context, categoryId, categoryName, CategoryType.FEATURED.ordinal)
             }
             itemView.tvRecentNewsViewAll -> {
-                v.viewAll(v.context, categoryId, categoryName)
+                v.viewAll(v.context, categoryId, categoryName, CategoryType.RECENT.ordinal)
             }
         }
     }

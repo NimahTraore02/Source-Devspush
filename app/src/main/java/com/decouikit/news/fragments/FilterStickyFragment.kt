@@ -18,6 +18,7 @@ import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.extensions.viewAll
 import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
+import com.decouikit.news.network.dto.CategoryType
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.fragment_filter.*
@@ -261,10 +262,10 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
     override fun onClick(v: View) {
         when (v) {
             itemView.tvFeaturedNewsViewAll -> {
-                v.viewAll(v.context, categoryId, categoryName)
+                v.viewAll(v.context, categoryId, categoryName, CategoryType.FEATURED.ordinal)
             }
             itemView.tvRecentNewsViewAll -> {
-                v.viewAll(v.context, categoryId, categoryName)
+                v.viewAll(v.context, categoryId, categoryName, CategoryType.RECENT.ordinal)
             }
         }
     }
