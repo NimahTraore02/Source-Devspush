@@ -20,12 +20,19 @@ interface PostsService {
         @Query("per_page") per_page: Int = 30
     ): Call<List<PostItem>>
 
-    @GET("posts/")
+    @GET("posts")
     fun getPostsByCategoryWithSticky(
         @Query("categories") categories: String,
         @Query("page") page: Int = 1,
         @Query("per_page") per_page: Int = 30,
         @Query("sticky") sticky: Boolean = false
+    ): Call<List<PostItem>>
+
+    @GET("posts")
+    fun getPostsSearch(
+        @Query("search") search: String,
+        @Query("page") page: Int = 1,
+        @Query("per_page") per_page: Int = 30
     ): Call<List<PostItem>>
 
     @GET("posts/{id}")
