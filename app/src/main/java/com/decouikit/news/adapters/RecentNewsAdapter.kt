@@ -1,5 +1,6 @@
 package com.decouikit.news.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,7 @@ class RecentNewsAdapter(private var items: ArrayList<PostItem>)
     fun setData(items: ArrayList<PostItem>) {
         this.items.clear()
         this.items.addAll(items)
+        Log.e("TEST", "this.items:" + this.items.size)
         notifyDataSetChanged()
     }
 

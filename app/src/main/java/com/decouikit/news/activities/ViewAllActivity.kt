@@ -115,7 +115,7 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
     override fun onRefresh() {
         if (!swipeRefresh.isRefreshing) {
             swipeRefresh.isRefreshing = true
-            refreshContent()
+            getAllPosts()
         }
     }
 
@@ -172,7 +172,7 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
     private fun getAllPosts() {
         doAsync {
             isDataLoading = true
-            postService?.getPostsByCategoryWithSticky(
+            postService?.getPostsByCategory(
                 categoryId.toString(),
                 ++page,
                 perPage

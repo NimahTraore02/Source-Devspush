@@ -205,7 +205,11 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     override fun onClick(v: View) {
         when (v) {
             itemView.tvFeaturedNewsViewAll -> {
-                v.viewAll(v.context, categoryId, categoryName, CategoryType.FEATURED.ordinal)
+                if (Config.isFeaturesPostsGetFromSticky()) {
+                    v.viewAll(v.context, categoryId, categoryName, CategoryType.FEATURED.ordinal)
+                } else {
+                    v.viewAll(v.context, categoryId, categoryName, CategoryType.RECENT.ordinal)
+                }
             }
             itemView.tvRecentNewsViewAll -> {
                 v.viewAll(v.context, categoryId, categoryName, CategoryType.RECENT.ordinal)

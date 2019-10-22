@@ -35,53 +35,6 @@ fun View.dpToPx(dp: Int): Int {
     return (dp * resources.displayMetrics.density).toInt()
 }
 
-
-fun ImageView.load(imageUrl: String?, isRounded: Boolean = false) {
-    if (imageUrl == null) {
-        return
-    }
-    if (isRounded) {
-        Glide.with(context)
-            .load(imageUrl)
-            .apply(RequestOptions.circleCropTransform())
-            .into(this)
-    } else {
-        Glide
-            .with(this)
-            .load(imageUrl)
-            .into(this)
-    }
-}
-
-fun ImageView.load(postItem: PostItem) {
-    if (TextUtils.isEmpty(postItem.source_url)) {
-        val mediaService = RetrofitClientInstance.getRetrofitInstance(context)?.create(MediaService::class.java)
-        mediaService?.getMediaById(postItem.featured_media.toString())?.enqueue {
-            when (it) {
-                is Result.Success -> {
-                    try {
-                        val mediaItem = it.response.body() as MediaItem
-                        postItem.source_url = mediaItem.source_url
-                        load(mediaItem.source_url)
-                    } catch (e: Exception) {
-                        Log.e("TEST", "Image error")
-                    }
-                }
-            }
-        }
-    } else {
-        load(postItem.source_url)
-    }
-}
-
-fun ImageView.setBookmarkIcon(isBookmarked: Boolean) {
-    if (isBookmarked) {
-        this.setImageDrawable(ContextCompat.getDrawable(this.context, R.drawable.ic_bookmark_red))
-    } else {
-        this.setImageDrawable(ContextCompat.getDrawable(this.context, R.drawable.ic_bookmark))
-    }
-}
-
 fun View.bookmark(context: Context, postItem: PostItem, imageView: ImageView) {
     val item = Preference(context).getBookmarkByPostId(postItem.id)
     if (item == null) {
@@ -116,23 +69,12 @@ fun View.openExternalApp(url: String) {
     context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
 }
 
-fun ImageView.rotate(angle: Float, imageView: ImageView) {
-    val matrix = Matrix()
-    imageView.scaleType = ImageView.ScaleType.MATRIX   //required
-    matrix.postRotate(angle, pivotX, pivotY)
-    imageView.imageMatrix = matrix
-}
-
 fun View.share(context: Context, item: PostItem) {
     val intent = Intent(Intent.ACTION_SEND)
     intent.type = NewsConstants.TEXT_PLAIN
     intent.putExtra(Intent.EXTRA_TEXT, item.link)
     intent.putExtra(Intent.EXTRA_SUBJECT, item.title.rendered)
     context.startActivity(Intent.createChooser(intent, context.getString(R.string.share_via)))
-}
-
-fun TextView.setHtml(content: String) {
-    this.text = content.fromHtmlToString()
 }
 
 fun View.validationCommon(editText: EditText, error: Int): Boolean {

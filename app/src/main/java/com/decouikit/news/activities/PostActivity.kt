@@ -31,10 +31,8 @@ import kotlin.math.abs
 open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     UriChromeClient.FullscreenInterface {
 
-    private lateinit var postItem: PostItem
-
     private lateinit var adapter: ViewAllAdapter
-    private var postItems = arrayListOf<PostItem>()
+
     val postsService by lazy {
         RetrofitClientInstance.getRetrofitInstance(context = applicationContext)
             ?.create(PostsService::class.java)
@@ -44,7 +42,9 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
         RetrofitClientInstance.getRetrofitInstance(this)?.create(CommentsService::class.java)
     }
 
+    private lateinit var postItem: PostItem
     private var page = 1
+    private var postItems = arrayListOf<PostItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +67,6 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
     private fun loadPostItem(): PostItem {
         return gson.fromJson(intent.getStringExtra(NewsConstants.POST_ITEM), PostItem::class.java)
     }
-
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun initLayout() {
