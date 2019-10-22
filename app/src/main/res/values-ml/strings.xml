@@ -73,4 +73,8 @@
     <string name="wizard_page_two_subtitle">Choose your technology, you get Ionic 3 or Native Android code</string>
     <string name="wizard_page_three_title">Unleash Creativity</string>
     <string name="wizard_page_three_subtitle">With Deco UI Kit you can build any app you imagine for Android &amp; iPhone.</string>
+
+    <string name="progress_loading">Loading&#8230;</string>
+    <string name="choose_lang">Choose language</string>
+    <string name="back_exit_text">Please click BACK again to exit</string>
 </resources>

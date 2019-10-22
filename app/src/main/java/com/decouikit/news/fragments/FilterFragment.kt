@@ -66,10 +66,6 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
         super.onViewCreated(view, savedInstanceState)
         initLayout()
         initListeners()
-    }
-
-    override fun onResume() {
-        super.onResume()
         itemView.nestedParent.setOnScrollChangeListener(this)
         refreshContent()
     }

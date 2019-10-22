@@ -12,7 +12,6 @@ import com.decouikit.news.network.dto.Category
 import org.jetbrains.anko.doAsync
 
 object SyncCategory : Sync {
-
     private val categories = mutableListOf<Category>()
     var pageNumber = 1
     override fun sync(context: Context, listener: SyncListener?) {
@@ -28,10 +27,12 @@ object SyncCategory : Sync {
                             sync(context, listener)
                             return@enqueue
                         }
+                        pageNumber = 1
                         InMemory.setCategoryList(categories)
                         listener?.finish(true)
                     }
                     is Result.Failure -> {
+                        pageNumber = 1
                         InMemory.setCategoryList(categories)
                         listener?.finish(false)
                     }

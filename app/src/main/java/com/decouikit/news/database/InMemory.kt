@@ -8,9 +8,6 @@ object InMemory {
     private var CATEGORY: MutableList<Category> = mutableListOf()
     private var CATEGORY_MAP = mutableMapOf<Int, Category>()
 
-//    private var MEDIA: MutableList<MediaItem> = mutableListOf()
-//    private var MEDIA_MAP = mutableMapOf<Int, MediaItem>()
-
     private var USER: MutableList<User> = mutableListOf()
     private var USER_MAP = mutableMapOf<Int, User>()
 
@@ -19,11 +16,9 @@ object InMemory {
 
     fun clear() {
         CATEGORY.clear()
-//        MEDIA.clear()
         USER.clear()
         TAGS.clear()
         CATEGORY_MAP.clear()
-//        MEDIA_MAP.clear()
         USER_MAP.clear()
         TAGS_MAP.clear()
     }
@@ -84,15 +79,6 @@ object InMemory {
 
     fun getUserList(): List<User> = USER
 
-//    fun setMediaList(mediaList: List<MediaItem>) {
-//        MEDIA.addAll(mediaList)
-//        if (MEDIA.isNotEmpty()) {
-//            MEDIA.forEach { MEDIA_MAP[it.id] = it }
-//        }
-//    }
-//
-//    fun getMediaList(): List<MediaItem> = MEDIA
-
     fun getCategoryById(categoryId: Int): Category? {
         return CATEGORY_MAP[categoryId]
     }
@@ -100,10 +86,6 @@ object InMemory {
     fun getUserById(userId: Int): User? {
         return USER_MAP[userId]
     }
-
-//    fun getMediaById(mediaId: Int): MediaItem? {
-//        return MEDIA_MAP[mediaId]
-//    }
 
     fun getTagById(tagId: Int): Tag? {
         return TAGS_MAP[tagId]

@@ -1,6 +1,7 @@
 package com.decouikit.news.activities.common
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -28,6 +29,7 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
 
     private lateinit var toolbar: Toolbar
     private lateinit var menuItem: Menu
+    private var doubleBackToExitPressedOnce = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,7 +108,14 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            super.onBackPressed()
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed()
+                return
+            }
+
+            this.doubleBackToExitPressedOnce = true
+            Toast.makeText(this, R.string.back_exit_text, Toast.LENGTH_SHORT).show()
+            Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
         }
     }
 

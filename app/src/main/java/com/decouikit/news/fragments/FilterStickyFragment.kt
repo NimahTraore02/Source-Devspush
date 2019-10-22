@@ -27,7 +27,6 @@ import org.jetbrains.anko.doAsync
 class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener,
     NestedScrollView.OnScrollChangeListener {
 
-
     private lateinit var itemView: View
     private var categoryId: Int? = null
     private lateinit var categoryName: String

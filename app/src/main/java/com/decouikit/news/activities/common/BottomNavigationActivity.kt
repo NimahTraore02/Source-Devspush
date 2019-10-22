@@ -1,7 +1,9 @@
 package com.decouikit.news.activities.common
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.MenuItem
+import android.widget.Toast
 import com.decouikit.news.R
 import com.decouikit.news.activities.NewsApplication
 import com.decouikit.news.extensions.replaceFragment
@@ -18,6 +20,7 @@ class BottomNavigationActivity : BaseActivity(),
     HomeFragmentListener {
 
     private var fragmentPosition: Int? = -1
+    private var doubleBackToExitPressedOnce = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +80,16 @@ class BottomNavigationActivity : BaseActivity(),
         return false
     }
 
+    override fun onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed()
+            return
+        }
+
+        this.doubleBackToExitPressedOnce = true
+        Toast.makeText(this, R.string.back_exit_text, Toast.LENGTH_SHORT).show()
+        Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
+    }
 
     override fun homeFragmentBehavior() {
         ActivityUtil.setAppBarElevation(appBar, 0f)

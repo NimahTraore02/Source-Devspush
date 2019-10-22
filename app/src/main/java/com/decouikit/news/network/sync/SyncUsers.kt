@@ -27,10 +27,12 @@ object SyncUsers : Sync {
                             sync(context, listener)
                             return@enqueue
                         }
+                        pageNumber = 1
                         InMemory.setUserList(users)
                         listener?.finish(true)
                     }
                     is Result.Failure -> {
+                        pageNumber = 1
                         InMemory.setUserList(users)
                         listener?.finish(false)
                     }

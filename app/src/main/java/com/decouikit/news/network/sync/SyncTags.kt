@@ -27,10 +27,12 @@ object SyncTags : Sync {
                             sync(context, listener)
                             return@enqueue
                         }
+                        pageNumber = 1
                         InMemory.setTagsList(tags)
                         listener?.finish(true)
                     }
                     is Result.Failure -> {
+                        pageNumber = 1
                         InMemory.setTagsList(tags)
                         listener?.finish(false)
                     }

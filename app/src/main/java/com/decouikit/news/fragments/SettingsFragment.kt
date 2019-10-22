@@ -136,8 +136,8 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
             prefs.languageCode = lang.languageCode
             SyncApi.sync(requireContext(), object : SyncListener {
                 override fun finish(success: Boolean) {
-                    ActivityUtil.reload(activity, 0)
                     progressDialog.dismiss()
+                    ActivityUtil.reload(activity, 0)
                 }
             })
         }
