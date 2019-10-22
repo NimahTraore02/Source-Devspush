@@ -76,7 +76,7 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
         refreshContent()
     }
 
-    public fun loadData() {
+    private fun loadData() {
         when (categoryType) {
             CategoryType.ALL -> {
                 getAllPosts()
