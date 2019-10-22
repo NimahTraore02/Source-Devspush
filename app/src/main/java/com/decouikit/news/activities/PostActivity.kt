@@ -74,11 +74,7 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
             ivBack.rotation = 180f
         }
         ivPostBg.load(postItem)
-        if (Preference(this).getBookmarkedNews().contains(postItem)) {
-            ivBookmark.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_bookmark_red))
-        } else {
-            ivBookmark.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_bookmark))
-        }
+        ivBookmark.setBookmarkIcon(postItem)
         tvTag.text = postItem.categoryName
         tvItemTitle.setHtml(postItem.title.rendered)
         tvDate.text = Date().getDateFromString(postItem.date)?.getCalendarDate()

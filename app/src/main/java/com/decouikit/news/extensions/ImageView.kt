@@ -6,10 +6,10 @@ import android.util.Log
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
-import com.bumptech.glide.MemoryCategory
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.decouikit.news.R
+import com.decouikit.news.database.Preference
 import com.decouikit.news.network.MediaService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.MediaItem
@@ -29,11 +29,9 @@ fun ImageView.load(imageUrl: String?, isRounded: Boolean = false) {
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(this)
     } else {
-
         Glide
             .with(this)
             .load(imageUrl)
-
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(this)
     }
@@ -42,7 +40,8 @@ fun ImageView.load(imageUrl: String?, isRounded: Boolean = false) {
 fun ImageView.load(postItem: PostItem) {
     if (TextUtils.isEmpty(postItem.source_url)) {
         load("")
-        val mediaService = RetrofitClientInstance.getRetrofitInstance(context)?.create(MediaService::class.java)
+        val mediaService =
+            RetrofitClientInstance.getRetrofitInstance(context)?.create(MediaService::class.java)
         mediaService?.getMediaById(postItem.featured_media.toString())?.enqueue {
             when (it) {
                 is Result.Success -> {
@@ -67,6 +66,10 @@ fun ImageView.setBookmarkIcon(isBookmarked: Boolean) {
     } else {
         this.setImageDrawable(ContextCompat.getDrawable(this.context, R.drawable.ic_bookmark))
     }
+}
+
+fun ImageView.setBookmarkIcon(postItem: PostItem) {
+    setBookmarkIcon(Preference(context).getBookmarkedNews().contains(postItem))
 }
 
 fun ImageView.rotate(angle: Float, imageView: ImageView) {

@@ -4,15 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.PagerAdapter
 import com.decouikit.news.R
-import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.*
 import com.decouikit.news.network.dto.PostItem
 import kotlinx.android.synthetic.main.adapter_featured_news_item.view.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 class FeaturedNewsAdapter(
     private var postItems: ArrayList<PostItem>,
@@ -46,24 +43,10 @@ class FeaturedNewsAdapter(
 
     private fun initLayout(view: View, position: Int) {
         view.tvTag.text = postItems[position].categoryName
-        view.tvItemTitle.setHtml( postItems[position].title.rendered)
+        view.tvItemTitle.setHtml(postItems[position].title.rendered)
         view.tvItemDate.text = Date().getDateFromString(postItems[position].date)?.getCalendarDate()
         view.ivItemBg.load(postItems[position])
-        if (Preference(view.context).getBookmarkedNews().contains(postItems[position])) {
-            view.ivBookmark.setImageDrawable(
-                ContextCompat.getDrawable(
-                    view.context,
-                    R.drawable.ic_bookmark_red
-                )
-            )
-        } else {
-            view.ivBookmark.setImageDrawable(
-                ContextCompat.getDrawable(
-                    view.context,
-                    R.drawable.ic_bookmark
-                )
-            )
-        }
+        view.ivBookmark.setBookmarkIcon(postItems[position])
     }
 
     private fun initListener(view: View, position: Int) {

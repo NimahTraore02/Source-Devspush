@@ -3,19 +3,18 @@ package com.decouikit.news.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.decouikit.news.R
-import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.*
 import com.decouikit.news.interfaces.OpenPostListener
 import com.decouikit.news.network.dto.PostItem
 import kotlinx.android.synthetic.main.adapter_view_all_item.view.*
 import java.util.*
 
-class ViewAllAdapter(private var items: ArrayList<PostItem>,
-                     private var listener: OpenPostListener)
-    : RecyclerView.Adapter<ViewAllAdapter.ViewHolder>() {
+class ViewAllAdapter(
+    private var items: ArrayList<PostItem>,
+    private var listener: OpenPostListener
+) : RecyclerView.Adapter<ViewAllAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -48,8 +47,8 @@ class ViewAllAdapter(private var items: ArrayList<PostItem>,
         holder.bind(items[position])
     }
 
-    class ViewHolder(private val view: View, private val listener: OpenPostListener)
-        : RecyclerView.ViewHolder(view), View.OnClickListener {
+    class ViewHolder(private val view: View, private val listener: OpenPostListener) :
+        RecyclerView.ViewHolder(view), View.OnClickListener {
 
         private lateinit var item: PostItem
 
@@ -64,15 +63,11 @@ class ViewAllAdapter(private var items: ArrayList<PostItem>,
             view.tvItemTitle.setHtml(item.title.rendered)
             view.tvItemDate.text = Date().getDateFromString(item.date)?.getCalendarDate()
             view.tvItemTag.text = item.categoryName
-            if (Preference(view.context).getBookmarkedNews().contains(item)){
-                view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_bookmark_red))
-            } else {
-                view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_bookmark))
-            }
+            view.ivBookmark.setBookmarkIcon(item)
         }
 
         override fun onClick(v: View) {
-            when(v) {
+            when (v) {
                 v.itemParent -> {
                     listener.openPost(v, item)
                 }

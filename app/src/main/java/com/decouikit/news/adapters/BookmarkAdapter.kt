@@ -54,7 +54,7 @@ class BookmarkAdapter(private var items: ArrayList<PostItem>,
             view.tvItemTitle.setHtml(item.title.rendered)
             view.tvItemDate.text = Date().getDateFromString(item.date)?.getCalendarDate()
             view.tvItemTag.text = item.categoryName
-            view.ivBookmark.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_bookmark_red))
+            view.ivBookmark.setBookmarkIcon(true)
         }
 
         override fun onClick(v: View) {
