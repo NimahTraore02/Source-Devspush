@@ -16,13 +16,11 @@ import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.NewsConstants
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_bottom_navigation.*
-import kotlinx.android.synthetic.main.activity_main.*
 
 class BottomNavigationActivity : BaseActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener,
     HomeFragmentListener {
 
-    private var fragmentPosition: Int? = -1
     private var doubleBackToExitPressedOnce = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,7 +109,7 @@ class BottomNavigationActivity : BaseActivity(),
 
         this.doubleBackToExitPressedOnce = true
         Toast.makeText(this, R.string.back_exit_text, Toast.LENGTH_SHORT).show()
-        Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
+        Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
     }
 
     override fun homeFragmentBehavior() {

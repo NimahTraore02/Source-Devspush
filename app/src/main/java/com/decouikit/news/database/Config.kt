@@ -161,16 +161,6 @@ object Config {
         return arrayListOf(pageOne, pageTwo, pageThree)
     }
 
-    fun getLanguageByName(lang: String): Language? {
-        var language: Language? = null
-        for (l in listOfLanguages()) {
-            if (l.language == lang) {
-                language = l
-            }
-        }
-        return language
-    }
-
     fun getBaseUrl(context: Context): Language? {
         val code = Preference(context).languageCode
         val languages = listOfLanguages()
