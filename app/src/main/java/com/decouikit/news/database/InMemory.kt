@@ -8,6 +8,9 @@ object InMemory {
     private var CATEGORY: MutableList<Category> = mutableListOf()
     private var CATEGORY_MAP = mutableMapOf<Int, Category>()
 
+    private var CATEGORY_ALL: MutableList<Category> = mutableListOf()
+    private var CATEGORY_MAP_ALL = mutableMapOf<Int, Category>()
+
     private var USER: MutableList<User> = mutableListOf()
     private var USER_MAP = mutableMapOf<Int, User>()
 
@@ -37,6 +40,7 @@ object InMemory {
                 }
             }
         }
+        CATEGORY_ALL.addAll(categoryList)
         if (!Config.isExcludeCategoryEnabled()) {
             //sort category
             if (categoryList.isNotEmpty()) {
@@ -56,8 +60,10 @@ object InMemory {
         if (CATEGORY.isNotEmpty()) {
             CATEGORY.forEach { CATEGORY_MAP[it.id] = it }
         }
+        if (CATEGORY_ALL.isNotEmpty()) {
+            CATEGORY_ALL.forEach { CATEGORY_MAP_ALL[it.id] = it }
+        }
     }
-
 
     fun getCategoryList(): List<Category> = CATEGORY
 
@@ -80,7 +86,7 @@ object InMemory {
     fun getUserList(): List<User> = USER
 
     fun getCategoryById(categoryId: Int): Category? {
-        return CATEGORY_MAP[categoryId]
+        return CATEGORY_MAP_ALL[categoryId]
     }
 
     fun getUserById(userId: Int): User? {

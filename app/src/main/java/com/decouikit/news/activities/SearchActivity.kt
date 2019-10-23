@@ -8,25 +8,28 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
 import com.decouikit.news.adapters.ViewAllAdapter
+import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
+import com.decouikit.news.extensions.hideSoftKeyboard
 import com.decouikit.news.extensions.openPostActivity
 import com.decouikit.news.interfaces.OpenPostListener
 import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.ActivityUtil
+import com.decouikit.news.utils.EndlessRecyclerOnScrollListener
 import kotlinx.android.synthetic.main.activity_search.*
 import org.jetbrains.anko.doAsync
-import com.decouikit.news.extensions.hideSoftKeyboard
 
 
-class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener, SwipeRefreshLayout.OnRefreshListener, View.OnKeyListener {
+class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
+    SwipeRefreshLayout.OnRefreshListener, View.OnKeyListener {
 
     private var adapter = ViewAllAdapter(arrayListOf(), this)
 
     private var searchText = ""
-
+    private var page = 0
     private val postService by lazy {
         RetrofitClientInstance.getRetrofitInstance(this)?.create(PostsService::class.java)
     }
@@ -44,7 +47,6 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener, S
     private fun initLayout() {
         rvSearch.layoutManager = LinearLayoutManager(this)
         rvSearch.adapter = adapter
-
         setEmptyState(false)
         swipeRefresh.isRefreshing = true
         search(searchText)
@@ -55,6 +57,11 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener, S
         ivSearch.setOnClickListener(this)
         swipeRefresh.setOnRefreshListener(this)
         etSearch.setOnKeyListener(this)
+        rvSearch.addOnScrollListener(object : EndlessRecyclerOnScrollListener() {
+            override fun onLoadMore() {
+                startSearching()
+            }
+        })
     }
 
     override fun onClick(v: View) {
@@ -63,15 +70,18 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener, S
                 onBackPressed()
             }
             ivSearch -> {
+                page = 0
                 searchText = etSearch.text.toString()
                 startSearching()
             }
         }
     }
+
     override fun onKey(v: View?, keyCode: Int, event: KeyEvent?): Boolean {
         // If the event is a key-down event on the "enter" button
         if ((event?.action == KeyEvent.ACTION_DOWN) &&
-            (keyCode == KeyEvent.KEYCODE_ENTER)) {
+            (keyCode == KeyEvent.KEYCODE_ENTER)
+        ) {
             startSearching()
             return true
         }
@@ -82,18 +92,27 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener, S
         swipeRefresh.isRefreshing = true
         setEmptyState(false)
         hideSoftKeyboard()
-        adapter.removeAllItems()
+        if (page == 0) {
+            adapter.removeAllItems()
+        }
         search(searchText)
     }
+
     private fun search(text: String) {
         doAsync {
-            postService?.getPostsSearch(text)?.enqueue {
+            postService?.getPostsSearch(text, ++page)?.enqueue {
                 when (it) {
                     is Result.Success -> {
                         if (it.response.body().isNullOrEmpty() && adapter.itemCount == 0) {
                             setEmptyState(true)
                         } else {
-                            val posts = it.response.body() as ArrayList<PostItem>
+                            val postsResponse = it.response.body() as ArrayList<PostItem>
+                            val posts: ArrayList<PostItem> = ArrayList()
+                            for (postItem in postsResponse) {
+                                val category = InMemory.getCategoryById(postItem.categories[0])
+                                postItem.categoryName = category?.name ?: ""
+                                posts.add(postItem)
+                            }
                             adapter.setData(posts)
                         }
                     }
@@ -105,6 +124,7 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener, S
             }
         }
     }
+
     override fun onRefresh() {
         startSearching()
     }
