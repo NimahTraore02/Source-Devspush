@@ -16,10 +16,10 @@ object InMemory {
 
     fun clear() {
         CATEGORY.clear()
-        USER.clear()
-        TAGS.clear()
         CATEGORY_MAP.clear()
+        USER.clear()
         USER_MAP.clear()
+        TAGS.clear()
         TAGS_MAP.clear()
     }
 

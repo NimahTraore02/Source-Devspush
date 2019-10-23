@@ -86,7 +86,7 @@ class PostCommentActivity : BaseActivity(), View.OnClickListener {
 
     private fun validation(v: View): Boolean {
         return v.validationCommon(etName, R.string.name_validation)
-                && v.validationOfEmail(etEmail)
+                && etEmail.validationOfEmail()
                 && v.validationCommon(etComment, R.string.comment_validation)
     }
 }

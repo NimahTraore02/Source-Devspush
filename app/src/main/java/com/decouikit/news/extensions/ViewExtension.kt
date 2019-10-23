@@ -2,29 +2,17 @@ package com.decouikit.news.extensions
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Matrix
 import android.net.Uri
-import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
-import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.decouikit.news.R
 import com.decouikit.news.activities.PostActivity
 import com.decouikit.news.activities.ViewAllActivity
 import com.decouikit.news.database.Preference
-import com.decouikit.news.network.MediaService
-import com.decouikit.news.network.RetrofitClientInstance
-import com.decouikit.news.network.dto.MediaItem
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.NewsConstants
 import com.google.gson.Gson
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.doAsyncResult
 
 
 fun View.pxToDp(px: Int): Int {
@@ -87,22 +75,21 @@ fun View.validationCommon(editText: EditText, error: Int): Boolean {
     }
 }
 
-fun View.validationOfEmail(editText: EditText): Boolean {
-    return if (editText.text.toString().length > 4) {
-        if (!editText.text.toString().matches(NewsConstants.EMAIL_REGEX.toRegex())) {
-            editText.error = editText.context.getString(R.string.email_validation_format)
+fun EditText.validationOfEmail(): Boolean {
+    return if (text.toString().length > 4) {
+        if (!text.toString().matches(NewsConstants.EMAIL_REGEX.toRegex())) {
+            error = context.getString(R.string.email_validation_format)
             false
         } else {
-            editText.error = null
+            error = null
             true
         }
     } else {
-        if (editText.text.toString().isEmpty()) {
-            editText.error = editText.context.getString(R.string.email_validation_empty)
-            false
+        error = if (text.toString().isEmpty()) {
+            context.getString(R.string.email_validation_empty)
         } else {
-            editText.error = editText.context.getString(R.string.email_validation_short)
-            false
+            context.getString(R.string.email_validation_short)
         }
+        false
     }
 }
