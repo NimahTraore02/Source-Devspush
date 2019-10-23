@@ -2,9 +2,7 @@ package com.decouikit.news.activities
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
@@ -33,7 +31,7 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
 
     private lateinit var adapter: ViewAllAdapter
 
-    val postsService by lazy {
+    private val postsService by lazy {
         RetrofitClientInstance.getRetrofitInstance(context = applicationContext)
             ?.create(PostsService::class.java)
     }
