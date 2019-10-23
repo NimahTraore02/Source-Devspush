@@ -9,6 +9,7 @@
         android:layout_height="match_parent">
 
         <ImageView
+            android:contentDescription="@string/image_desc_background"
             android:id="@+id/backgroundImage"
             android:scaleType="fitXY"
             android:layout_width="match_parent"
@@ -20,6 +21,7 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:contentDescription="@string/image_desc_icon"
                 android:id="@+id/imageView"
                 android:layout_width="@dimen/card_width_extra_large"
                 android:layout_height="@dimen/card_width_extra_large"

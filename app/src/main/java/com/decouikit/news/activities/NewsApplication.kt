@@ -3,7 +3,6 @@ package com.decouikit.news.activities
 import android.app.Application
 import com.bumptech.glide.Glide
 import com.bumptech.glide.MemoryCategory
-import com.decouikit.news.database.Config
 import com.decouikit.news.database.Preference
 import com.decouikit.news.notification.OneSignalNotificationOpenHandler
 import com.google.android.gms.ads.MobileAds

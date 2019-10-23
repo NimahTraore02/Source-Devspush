@@ -3,5 +3,4 @@
     android:id="@+id/rbLanguage"
     style="@style/RadioButtonStyle"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Language Title" />
+    android:layout_height="wrap_content" />

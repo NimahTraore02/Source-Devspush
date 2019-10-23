@@ -1,8 +1,8 @@
 package com.decouikit.news.activities.common
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -17,6 +17,7 @@ import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.app_bar_main.*
 
+@SuppressLint("Registered")
 open class BaseActivity : AppCompatActivity() {
 
     protected val gson by lazy { Gson() }

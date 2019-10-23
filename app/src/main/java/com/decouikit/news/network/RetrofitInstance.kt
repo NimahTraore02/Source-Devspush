@@ -21,14 +21,14 @@ object RetrofitClientInstance {
 
             val lang = Config.getBaseUrl(context)
             if (lang != null) {
-                if (BuildConfig.DEBUG) {
-                    retrofit = Retrofit.Builder()
+                retrofit = if (BuildConfig.DEBUG) {
+                    Retrofit.Builder()
                         .baseUrl(lang.baseUrl)
                         .addConverterFactory(GsonConverterFactory.create())
                         .client(httpClient.build())
                         .build()
                 } else {
-                    retrofit = Retrofit.Builder()
+                    Retrofit.Builder()
                         .baseUrl(lang.baseUrl)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build()

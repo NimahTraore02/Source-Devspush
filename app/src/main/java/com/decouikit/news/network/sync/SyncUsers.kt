@@ -13,7 +13,7 @@ import org.jetbrains.anko.doAsync
 
 object SyncUsers : Sync {
     private val users = mutableListOf<User>()
-    var pageNumber = 1
+    private var pageNumber = 1
     override fun sync(context: Context, listener: SyncListener?) {
         val userService =
             RetrofitClientInstance.getRetrofitInstance(context)?.create(UserService::class.java)

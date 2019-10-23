@@ -1,7 +1,6 @@
 package com.decouikit.news.extensions
 
 import android.app.Dialog
-import android.view.View
 import android.view.Window
 import com.decouikit.news.R
 

@@ -117,7 +117,7 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
 
             this.doubleBackToExitPressedOnce = true
             Toast.makeText(this, R.string.back_exit_text, Toast.LENGTH_SHORT).show()
-            Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
+            Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
         }
     }
 
