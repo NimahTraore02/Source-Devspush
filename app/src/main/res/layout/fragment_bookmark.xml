@@ -98,6 +98,7 @@
                 style="@style/ViewAllTextStyle"
                 android:text="@string/no_bookmarks"
                 android:gravity="center"
+                android:textAlignment="center"
                 android:layout_marginTop="@dimen/small_padding"/>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

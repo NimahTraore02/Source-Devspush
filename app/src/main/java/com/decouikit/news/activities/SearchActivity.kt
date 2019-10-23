@@ -9,6 +9,7 @@ import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
 import com.decouikit.news.adapters.ViewAllAdapter
 import com.decouikit.news.database.InMemory
+import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.extensions.hideSoftKeyboard
@@ -45,6 +46,9 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     }
 
     private fun initLayout() {
+        if (Preference(this).isRtlEnabled) {
+            ivBack.rotation = 180f
+        }
         rvSearch.layoutManager = LinearLayoutManager(this)
         rvSearch.adapter = adapter
         setEmptyState(false)
