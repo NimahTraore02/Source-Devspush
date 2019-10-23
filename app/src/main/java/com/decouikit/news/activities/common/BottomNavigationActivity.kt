@@ -37,10 +37,10 @@ class BottomNavigationActivity : BaseActivity(),
         if (fragmentPosition == 5) {
             ActivityUtil.setAppBarElevation(appBar, 8f)
             replaceFragment(SettingsFragment.newInstance(), R.id.navigation_container)
-            nav_view.setCheckedItem(R.id.nav_settings)
+            navigation.selectedItemId = R.id.nav_settings
         } else {
             replaceFragment(HomeFragment.newInstance(), R.id.navigation_container)
-            nav_view.setCheckedItem(R.id.nav_home)
+            navigation.selectedItemId = R.id.nav_home
         }
     }
 
