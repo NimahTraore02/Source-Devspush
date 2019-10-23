@@ -94,7 +94,13 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
             NewsConstants.TEXT_HTML,
             NewsConstants.UTF_8,
             null
-        );
+        )
+        tvComments.text = resources.getQuantityString(
+            R.plurals.numberOfComments, 0, 0
+        )
+        btnOpenComments.text =
+            getString(R.string.view_all_comments, 0)
+
         adapter = ViewAllAdapter(arrayListOf(), this)
         rvRecentNews.layoutManager = LinearLayoutManager(this)
         rvRecentNews.adapter = adapter
@@ -160,6 +166,12 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
                             )
                             btnOpenComments.text =
                                 getString(R.string.view_all_comments, result.size)
+                        } else {
+                            tvComments.text = resources.getQuantityString(
+                                R.plurals.numberOfComments, 0, 0
+                            )
+                            btnOpenComments.text =
+                                getString(R.string.view_all_comments, 0)
                         }
                     }
                     is Result.Failure -> {
@@ -199,7 +211,6 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
         appbar.visibility = View.GONE
         btnOpenComments.visibility = View.GONE
         recentTitle.visibility = View.GONE
-
         cardParent.visibility = View.GONE
     }
 
