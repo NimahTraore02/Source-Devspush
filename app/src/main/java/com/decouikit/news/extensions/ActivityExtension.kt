@@ -2,6 +2,7 @@ package com.decouikit.news.extensions
 
 import android.app.Activity
 import android.content.Intent
+import android.view.inputmethod.InputMethodManager
 import com.decouikit.news.activities.PostActivity
 import com.decouikit.news.activities.WizardActivity
 import com.decouikit.news.database.Config
@@ -27,4 +28,13 @@ fun Activity.openSinglePage(postItem: PostItem) {
     intentPost.putExtra(NewsConstants.POST_ITEM, Gson().toJson(postItem))
     startActivities(arrayOf(intentMain, intentPost))
     finish()
+}
+
+fun Activity.hideSoftKeyboard() {
+    val inputMethodManager = this.getSystemService(
+        Activity.INPUT_METHOD_SERVICE
+    ) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(
+        this.currentFocus?.windowToken, 0
+    )
 }

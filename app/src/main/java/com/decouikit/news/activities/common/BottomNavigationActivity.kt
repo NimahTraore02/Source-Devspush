@@ -1,11 +1,14 @@
 package com.decouikit.news.activities.common
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.decouikit.news.R
 import com.decouikit.news.activities.NewsApplication
+import com.decouikit.news.activities.SearchActivity
 import com.decouikit.news.extensions.replaceFragment
 import com.decouikit.news.fragments.*
 import com.decouikit.news.interfaces.HomeFragmentListener
@@ -49,6 +52,26 @@ class BottomNavigationActivity : BaseActivity(),
     override fun onPause() {
         NewsApplication.activityPaused()
         super.onPause()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.main, menu)
+        //set true for visible search button
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        return when (item.itemId) {
+            R.id.action_search -> {
+                startActivity(Intent(this, SearchActivity::class.java))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

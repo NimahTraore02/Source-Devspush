@@ -77,4 +77,6 @@
     <string name="progress_loading">Loading&#8230;</string>
     <string name="choose_lang">Choose language</string>
     <string name="back_exit_text">Please click BACK again to exit</string>
+
+    <string name="search_hint">Start searching&#8230;</string>
 </resources>
