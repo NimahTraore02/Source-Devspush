@@ -62,8 +62,8 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
             commentsService?.getCommentListPostId(postId, ++page, perPage)?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
-                        if (it.response.body().isNullOrEmpty() && adapter.itemCount == 0) {
-                            hideContent(true)
+                        if (it.response.body().isNullOrEmpty()) {
+                            hideContent(adapter.itemCount == 0)
                         } else {
                             val comments = it.response.body() as ArrayList<CommentItem>
                             hideContent(false)

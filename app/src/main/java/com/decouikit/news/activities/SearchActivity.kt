@@ -103,8 +103,10 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
             postService?.getPostsSearch(text, ++page)?.enqueue {
                 when (it) {
                     is Result.Success -> {
-                        if (it.response.body().isNullOrEmpty() && adapter.itemCount == 0) {
-                            setEmptyState(true)
+                        if (it.response.body().isNullOrEmpty()) {
+                            if (adapter.itemCount == 0) {
+                                setEmptyState(true)
+                            }
                         } else {
                             val postsResponse = it.response.body() as ArrayList<PostItem>
                             val posts: ArrayList<PostItem> = ArrayList()

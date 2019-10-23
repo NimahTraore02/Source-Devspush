@@ -141,8 +141,8 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
                 isDataLoading = false
                 when (it) {
                     is Result.Success -> {
-                        if (it.response.body().isNullOrEmpty() && adapter.itemCount == 0) {
-                            hideContent(true)
+                        if (it.response.body().isNullOrEmpty()) {
+                            hideContent(adapter.itemCount == 0)
                         } else {
                             val posts = it.response.body() as ArrayList<PostItem>
                             for (postItem in posts) {
@@ -181,8 +181,8 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
                     isDataLoading = false
                     when (it) {
                         is Result.Success -> {
-                            if (it.response.body().isNullOrEmpty() && adapter.itemCount == 0) {
-                                hideContent(true)
+                            if (it.response.body().isNullOrEmpty()) {
+                                hideContent(adapter.itemCount == 0)
                             } else {
                                 val posts = it.response.body() as ArrayList<PostItem>
                                 for (postItem in posts) {

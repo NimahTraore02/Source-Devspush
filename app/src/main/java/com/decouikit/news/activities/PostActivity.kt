@@ -165,7 +165,11 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
                         }
                     }
                     is Result.Failure -> {
-                        Log.e("TEST", "Failure")
+                        tvComments.text = resources.getQuantityString(
+                            R.plurals.numberOfComments, 0, 0
+                        )
+                        btnOpenComments.text =
+                            getString(R.string.view_all_comments, 0)
                     }
                 }
             })
