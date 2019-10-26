@@ -21,7 +21,7 @@ class ChooseLanguageDialog(
     init {
         val builder = Builder(context)
         val foregroundColorSpan =
-            ForegroundColorSpan(ContextCompat.getColor(context, R.color.colorBlue))
+            ForegroundColorSpan(ContextCompat.getColor(context, R.color.colorPrimaryDark))
         val ssBuilder = SpannableStringBuilder(titleText)
         ssBuilder.setSpan(
             foregroundColorSpan,

@@ -68,7 +68,7 @@
             android:textSize="@dimen/text_size_18sp"
             android:drawableEnd="@drawable/ic_arrow_drop_down_24dp"
             android:drawablePadding="@dimen/small_padding"
-            android:textColor="@color/colorBlue"
+            android:textColor="?attr/colorTitleText"
             android:layout_marginStart="@dimen/normal_margin"
             android:layout_marginEnd="@dimen/normal_margin"
             app:layout_constraintBottom_toBottomOf="@+id/divider3"
