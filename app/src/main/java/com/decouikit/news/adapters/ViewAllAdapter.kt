@@ -28,6 +28,7 @@ class ViewAllAdapter(
     }
 
     fun setData(items: ArrayList<PostItem>) {
+        this.items.clear()
         this.items.addAll(items)
         notifyDataSetChanged()
     }

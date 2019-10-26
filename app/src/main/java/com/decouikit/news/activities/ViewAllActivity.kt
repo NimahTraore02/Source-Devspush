@@ -68,13 +68,14 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
 
         rvItems.addOnScrollListener(object : EndlessRecyclerOnScrollListener() {
             override fun onLoadMore() {
-                onRefresh()
+                loadData()
             }
         })
         refreshContent()
     }
 
     private fun loadData() {
+        swipeRefresh.isRefreshing = true
         when (categoryType) {
             CategoryType.ALL -> {
                 getAllPosts()
@@ -113,10 +114,8 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
     }
 
     override fun onRefresh() {
-        if (!swipeRefresh.isRefreshing) {
-            swipeRefresh.isRefreshing = true
-            getAllPosts()
-        }
+        swipeRefresh.isRefreshing = true
+        refreshContent()
     }
 
     private fun refreshContent() {

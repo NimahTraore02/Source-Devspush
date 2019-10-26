@@ -29,7 +29,7 @@
                     android:layout_height="@dimen/post_bg_height"
                     android:contentDescription="@string/image_desc_background"
                     android:fitsSystemWindows="true"
-                    android:scaleType="fitXY"
+                    android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax" />
 
             <ImageView

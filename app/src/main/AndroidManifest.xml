@@ -25,7 +25,10 @@
                 android:name="preloaded_fonts"
                 android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".activities.SplashActivity">
+        <activity
+                android:name=".activities.SplashActivity"
+                android:screenOrientation="portrait"
+                tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -39,36 +42,42 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:host="deconews.decouikit.com" android:scheme="https" />
+
+                <data
+                        android:host="deconews.decouikit.com"
+                        android:scheme="https" />
             </intent-filter>
         </activity>
         <activity
                 android:name=".activities.common.NavigationActivity"
-            android:configChanges="orientation|screenSize"/>
+                android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".activities.common.BottomNavigationActivity"
-            android:configChanges="orientation|screenSize"/>
+                android:name=".activities.common.BottomNavigationActivity"
+                android:configChanges="orientation|screenSize" />
         <activity
                 android:name=".activities.WizardActivity"
-                android:configChanges="orientation|screenSize"/>
+                android:configChanges="orientation|screenSize"
+                android:screenOrientation="portrait"
+                tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".activities.PostActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
+                android:name=".activities.PostActivity"
+                android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name=".activities.CommentsActivity"
-            android:configChanges="orientation|screenSize"/>
+                android:name=".activities.CommentsActivity"
+                android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".activities.PostCommentActivity"
-            android:configChanges="orientation|screenSize"/>
+                android:name=".activities.PostCommentActivity"
+                android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".activities.ViewAllActivity"
-            android:configChanges="orientation|screenSize"/>
+                android:name=".activities.ViewAllActivity"
+                android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".activities.SearchActivity"
-            android:configChanges="orientation|screenSize"/>
+                android:name=".activities.SearchActivity"
+                android:configChanges="orientation|screenSize" />
+
         <service
-            android:name=".firebase.MyFirebaseMessagingService"
-            tools:ignore="ExportedService">
+                android:name=".firebase.MyFirebaseMessagingService"
+                tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
