@@ -93,7 +93,7 @@ object Config {
     }
 
     fun getPurchaseLink(): String {
-        return "https://devspush.com/category/android"
+        return "https://devspush.com/deco-news-android-mobile-app-for-wordpress"
     }
 
     fun isRateMeEnabled(): Boolean = true

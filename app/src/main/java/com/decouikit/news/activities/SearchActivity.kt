@@ -75,7 +75,6 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
             }
             ivSearch -> {
                 page = 0
-                searchText = etSearch.text.toString()
                 startSearching()
             }
         }
@@ -86,6 +85,7 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
         if ((event?.action == KeyEvent.ACTION_DOWN) &&
             (keyCode == KeyEvent.KEYCODE_ENTER)
         ) {
+            page = 0
             startSearching()
             return true
         }
@@ -99,7 +99,7 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
         if (page == 0) {
             adapter.removeAllItems()
         }
-        search(searchText)
+        search(etSearch.text.toString())
     }
 
     private fun search(text: String) {
