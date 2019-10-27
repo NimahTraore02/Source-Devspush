@@ -132,9 +132,10 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
 
     private fun getRelatedNews() {
         doAsync {
-            val categoryId = postItem.categories[0]
-            postsService?.getPostsByCategory(
-                categoryId.toString(), page,
+            postsService?.getPostsList(
+                postItem.categories[0].categoryToString(),
+                null,
+                page,
                 Config.getNumberOfItemPerPage()
             )?.enqueue(result = {
                 when (it) {

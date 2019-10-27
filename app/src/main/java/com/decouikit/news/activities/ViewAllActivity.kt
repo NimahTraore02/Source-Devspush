@@ -10,6 +10,7 @@ import com.decouikit.news.adapters.ViewAllAdapter
 import com.decouikit.news.database.Config
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.Result
+import com.decouikit.news.extensions.categoryToString
 import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.extensions.openPostActivity
 import com.decouikit.news.interfaces.OpenPostListener
@@ -131,11 +132,12 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
     private fun getPostsWithSticky(sticky: Boolean) {
         doAsync {
             isDataLoading = true
-            postService?.getPostsByCategoryWithSticky(
-                categoryId.toString(),
+
+            postService?.getPostsList(
+                categoryId?.categoryToString(),
+                sticky,
                 ++page,
-                perPage,
-                sticky
+                perPage
             )?.enqueue(result = {
                 isDataLoading = false
                 when (it) {
@@ -171,8 +173,9 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
     private fun getAllPosts() {
         doAsync {
             isDataLoading = true
-            postService?.getPostsByCategory(
-                categoryId.toString(),
+            postService?.getPostsList(
+                categoryId?.categoryToString(),
+                null,
                 ++page,
                 perPage
             )

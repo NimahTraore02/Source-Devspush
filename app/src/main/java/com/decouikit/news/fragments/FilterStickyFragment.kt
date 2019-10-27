@@ -125,11 +125,11 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
 
     private fun getFeaturedNews() {
         doAsync {
-            postsService?.getPostsByCategoryWithSticky(
+            postsService?.getPostsList(
                 categoryId.toString(),
+                true,
                 1,
-                Config.getNumberOfItemPerPage(),
-                true
+                Config.getNumberOfItemPerPage()
             )?.enqueue(result = {
                 featuresSync = true
                 when (it) {
@@ -173,11 +173,11 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
 
 
     private fun getRecentNews() {
-        postsService?.getPostsByCategoryWithSticky(
+        postsService?.getPostsList(
             categoryId.toString(),
+            false,
             ++page,
-            Config.getNumberOfItemPerPage(),
-            false
+            Config.getNumberOfItemPerPage()
         )?.enqueue(result = {
             recentSync = true
             when (it) {

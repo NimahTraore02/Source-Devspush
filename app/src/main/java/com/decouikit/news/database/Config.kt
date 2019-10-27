@@ -65,7 +65,7 @@ object Config {
     }
 
     fun isFeaturesPostsGetFromSticky(): Boolean{
-        return false
+        return true
     }
 
     fun getDefaultValueForPushNotification(): Boolean {

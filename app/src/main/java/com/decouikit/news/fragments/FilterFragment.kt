@@ -14,6 +14,7 @@ import com.decouikit.news.adapters.RecentNewsAdapter
 import com.decouikit.news.database.Config
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.Result
+import com.decouikit.news.extensions.categoryToString
 import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.extensions.viewAll
 import com.decouikit.news.network.PostsService
@@ -87,8 +88,9 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
 
     private fun initData() {
         doAsync {
-            postsService?.getPostsByCategory(
-                categoryId.toString(),
+            postsService?.getPostsList(
+                categoryId?.categoryToString(),
+                null,
                 ++page,
                 Config.getNumberOfItemPerPage()
             )?.enqueue(result = {
@@ -147,8 +149,8 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
 
     private fun loadMoreRecentData() {
         doAsync {
-            postsService?.getPostsByCategory(
-                categoryId.toString(),
+            postsService?.getPostsList(
+                categoryId.toString(), null,
                 ++page,
                 Config.getNumberOfItemPerPage()
             )?.enqueue(result = {
