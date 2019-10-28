@@ -13,7 +13,7 @@ object Config {
         val languages = mutableListOf<Language>()
         languages.add(
             Language(
-                baseUrl = "https://deconews.decouikit.com/wp-json/wp/v2/",
+                baseUrl = "http://farsi.unews.pk/wp-json/wp/v2/",
                 language = "English",
                 languageCode = "en"
             )
@@ -65,7 +65,7 @@ object Config {
     }
 
     fun isFeaturesPostsGetFromSticky(): Boolean{
-        return true
+        return false
     }
 
     fun getDefaultValueForPushNotification(): Boolean {
@@ -73,7 +73,7 @@ object Config {
     }
 
     fun getDefaultValueForRTL(): Boolean {
-        return false
+        return true
     }
 
     fun getFacebookUrl(): String {
