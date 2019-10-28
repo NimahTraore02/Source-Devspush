@@ -9,6 +9,7 @@ object NewsConstants {
     const val POST_ITEM = "postItem"
     const val POST_ITEM_ID = "postItemId"
     const val OPEN_COMMENT_STATUS = "open"
+    const val SEARCH_SLUG = "searchSlug"
     const val EMAIL_REGEX = "[a-zA-Z0-9._+!#$%&'*/=?^`{|}~-]+@[a-z]+\\.+[a-z].+"
     const val TEXT_PLAIN = "text/plain"
     const val TEXT_HTML = "text/html"

@@ -80,4 +80,6 @@
 
     <string name="search_hint">Start searching&#8230;</string>
 
+    <string name="hash_tag">#%s</string>
+    <string name="hash_tag_search">Filter Tag: #%s</string>
 </resources>

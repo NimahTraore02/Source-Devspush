@@ -154,4 +154,16 @@
         <item name="android:textColorHint">@color/icon_gray</item>
         <item name="android:backgroundTint">@color/icon_gray</item>
     </style>
+
+    <style name="PostTagTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="android:textSize">@dimen/text_size_12sp</item>
+        <item name="android:textColor">?attr/colorTitleText</item>
+        <item name="android:paddingTop">@dimen/small_padding</item>
+        <item name="android:paddingBottom">@dimen/small_padding</item>
+        <item name="android:layout_marginStart">@dimen/normal_margin</item>
+        <item name="android:layout_marginTop">@dimen/normal_margin</item>
+    </style>
 </resources>

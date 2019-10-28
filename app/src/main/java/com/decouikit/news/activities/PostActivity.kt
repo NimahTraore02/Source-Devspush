@@ -1,15 +1,19 @@
 package com.decouikit.news.activities
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
+import com.decouikit.news.adapters.HashTagAdapter
 import com.decouikit.news.adapters.ViewAllAdapter
 import com.decouikit.news.database.Config
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.*
+import com.decouikit.news.interfaces.OnHashTagClickListener
 import com.decouikit.news.interfaces.OpenPostListener
 import com.decouikit.news.interfaces.TagListener
 import com.decouikit.news.network.CommentsService
@@ -22,6 +26,8 @@ import com.decouikit.news.network.sync.SyncTags
 import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.NewsConstants
 import com.decouikit.news.utils.UriChromeClient
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_post.*
 import org.jetbrains.anko.doAsync
@@ -30,7 +36,7 @@ import kotlin.math.abs
 
 
 open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
-    UriChromeClient.FullscreenInterface {
+    UriChromeClient.FullscreenInterface, OnHashTagClickListener {
 
     private lateinit var adapter: ViewAllAdapter
 
@@ -127,6 +133,12 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
         rvRecentNews.adapter = adapter
 
         getRelatedNews()
+
+        //Setting tags
+        val layoutManager = FlexboxLayoutManager(this)
+        layoutManager.justifyContent = JustifyContent.FLEX_START
+        rvTags.layoutManager = layoutManager
+        rvTags.adapter = HashTagAdapter(tagList, this)
     }
 
     private fun initListeners() {
@@ -226,6 +238,12 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
                 v.share(this, postItem)
             }
         }
+    }
+
+    override fun onHashtagClick(tag: Tag) {
+        val intent = Intent(this, SearchActivity::class.java)
+        intent.putExtra(NewsConstants.SEARCH_SLUG, tag.id)
+        startActivity(intent)
     }
 
     override fun showFullscreen() {

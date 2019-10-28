@@ -19,6 +19,7 @@ interface PostsService {
     @GET("posts")
     fun getPostsSearch(
         @Query("search") search: String,
+        @Query("tags") tags: Int?,
         @Query("page") page: Int = 1,
         @Query("per_page") per_page: Int = Config.getNumberOfItemPerPage()
     ): Call<List<PostItem>>

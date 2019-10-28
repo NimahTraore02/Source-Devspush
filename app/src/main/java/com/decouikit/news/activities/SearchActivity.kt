@@ -20,6 +20,7 @@ import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.EndlessRecyclerOnScrollListener
+import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.activity_search.*
 import org.jetbrains.anko.doAsync
 
@@ -31,6 +32,7 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
 
     private var searchText = ""
     private var page = 0
+    private var tagId: Int? = null
     private val postService by lazy {
         RetrofitClientInstance.getRetrofitInstance(this)?.create(PostsService::class.java)
     }
@@ -41,8 +43,30 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
 
         ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.searchParent)
 
+        tagId = getTagId()
+        setTagName()
+
         initLayout()
         initListeners()
+    }
+
+    private fun getTagId(): Int? {
+        var id: Int? = null
+        if (intent.hasExtra(NewsConstants.SEARCH_SLUG)) {
+            id = intent.getIntExtra(NewsConstants.SEARCH_SLUG, -1)
+            if (id == -1) {
+                id = null
+            }
+        }
+        return id
+    }
+
+    private fun setTagName() {
+        val tag = InMemory.getTagById(tagId ?: -1)
+        if (tag != null) {
+            tvTagName.visibility = View.VISIBLE
+            tvTagName.text = getString(R.string.hash_tag_search, tag.name)
+        }
     }
 
     private fun initLayout() {
@@ -104,7 +128,7 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
 
     private fun search(text: String) {
         doAsync {
-            postService?.getPostsSearch(text, ++page)?.enqueue {
+            postService?.getPostsSearch(text, tagId, ++page)?.enqueue {
                 when (it) {
                     is Result.Success -> {
                         if (it.response.body().isNullOrEmpty()) {
@@ -141,9 +165,15 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
 
     private fun setEmptyState(isHidden: Boolean) {
         if (isHidden) {
+            tvTagName.visibility = View.GONE
             empty_container.visibility = View.VISIBLE
             swipeRefresh.visibility = View.GONE
         } else {
+            tvTagName.visibility = if (tagId != null) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
             empty_container.visibility = View.GONE
             swipeRefresh.visibility = View.VISIBLE
         }
