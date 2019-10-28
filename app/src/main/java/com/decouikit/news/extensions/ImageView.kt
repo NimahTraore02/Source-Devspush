@@ -10,10 +10,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.decouikit.news.R
 import com.decouikit.news.database.Preference
+import com.decouikit.news.interfaces.MediaListener
 import com.decouikit.news.network.MediaService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.MediaItem
 import com.decouikit.news.network.dto.PostItem
+import com.decouikit.news.network.sync.SyncMedia
 
 //
 // Created by Dragan Koprena on 10/22/19.
@@ -40,21 +42,16 @@ fun ImageView.load(imageUrl: String?, isRounded: Boolean = false) {
 fun ImageView.load(postItem: PostItem) {
     if (TextUtils.isEmpty(postItem.source_url)) {
         load("")
-        val mediaService =
-            RetrofitClientInstance.getRetrofitInstance(context)?.create(MediaService::class.java)
-        mediaService?.getMediaById(postItem.featured_media.toString())?.enqueue {
-            when (it) {
-                is Result.Success -> {
-                    try {
-                        val mediaItem = it.response.body() as MediaItem
-                        postItem.source_url = mediaItem.source_url
-                        load(mediaItem.source_url)
-                    } catch (e: Exception) {
-                        Log.e("TEST", "Image error")
-                    }
+        SyncMedia.getMediaById(postItem.featured_media, context, object: MediaListener{
+            override fun onResult(isSuccess: Boolean, mediaItem: MediaItem?) {
+                try {
+                    postItem.source_url = mediaItem?.source_url?:""
+                    load(mediaItem?.source_url)
+                } catch (e: Exception) {
+                    Log.e("TEST", "Image error")
                 }
             }
-        }
+        })
     } else {
         load(postItem.source_url)
     }

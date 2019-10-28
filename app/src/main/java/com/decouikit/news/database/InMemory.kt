@@ -1,6 +1,8 @@
 package com.decouikit.news.database
 
+import android.content.Context
 import com.decouikit.news.network.dto.Category
+import com.decouikit.news.network.dto.MediaItem
 import com.decouikit.news.network.dto.Tag
 import com.decouikit.news.network.dto.User
 
@@ -17,6 +19,9 @@ object InMemory {
     private var TAGS: MutableList<Tag> = mutableListOf()
     private var TAGS_MAP = mutableMapOf<Int, Tag>()
 
+    private var MEDIA: MutableList<MediaItem> = mutableListOf()
+    private var MEDIA_MAP = mutableMapOf<Int, MediaItem>()
+
     fun clear() {
         CATEGORY.clear()
         CATEGORY_MAP.clear()
@@ -24,6 +29,8 @@ object InMemory {
         USER_MAP.clear()
         TAGS.clear()
         TAGS_MAP.clear()
+        MEDIA.clear()
+        MEDIA_MAP.clear()
     }
 
     fun setCategoryList(categoryList: List<Category>) {
@@ -67,23 +74,12 @@ object InMemory {
 
     fun getCategoryList(): List<Category> = CATEGORY
 
-    fun setTagsList(tagsList: List<Tag>) {
-        TAGS.addAll(tagsList)
-        if (TAGS.isNotEmpty()) {
-            TAGS.forEach { TAGS_MAP[it.id] = it }
-        }
-    }
-
-    fun getTagsList(): List<Tag> = TAGS
-
     fun setUserList(userList: List<User>) {
         USER.addAll(userList)
         if (USER.isNotEmpty()) {
             USER.forEach { USER_MAP[it.id] = it }
         }
     }
-
-    fun getUserList(): List<User> = USER
 
     fun getCategoryById(categoryId: Int): Category? {
         return CATEGORY_MAP_ALL[categoryId]
@@ -93,7 +89,44 @@ object InMemory {
         return USER_MAP[userId]
     }
 
+
+    //TAG
     fun getTagById(tagId: Int): Tag? {
         return TAGS_MAP[tagId]
+    }
+
+    fun loadTag(context: Context) {
+        TAGS.addAll(Preference(context).loadTags())
+        if (TAGS.isNotEmpty()) {
+            TAGS.forEach { TAGS_MAP[it.id] = it }
+        }
+    }
+
+    fun addTag(context: Context, tag: Tag) {
+        if (!TAGS_MAP.containsKey(tag.id)) {
+            TAGS_MAP[tag.id] = tag
+            TAGS.add(tag)
+        }
+        Preference(context).persistTags(TAGS as ArrayList<Tag>)
+    }
+
+    //MEDIA
+    fun getMediaById(mediaId: Int): MediaItem? {
+        return MEDIA_MAP[mediaId]
+    }
+
+    fun loadMedia(context: Context) {
+        MEDIA.addAll(Preference(context).loadMedia())
+        if (MEDIA.isNotEmpty()) {
+            MEDIA.forEach { MEDIA_MAP[it.id] = it }
+        }
+    }
+
+    fun addMedia(context: Context, media: MediaItem) {
+        if (!MEDIA_MAP.containsKey(media.id)) {
+            MEDIA_MAP[media.id] = media
+            MEDIA.add(media)
+        }
+        Preference(context).persistMedia(MEDIA as ArrayList<MediaItem>)
     }
 }

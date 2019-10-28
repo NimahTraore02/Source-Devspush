@@ -11,11 +11,14 @@ import com.decouikit.news.database.Config
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.*
 import com.decouikit.news.interfaces.OpenPostListener
+import com.decouikit.news.interfaces.TagListener
 import com.decouikit.news.network.CommentsService
 import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.CommentItem
 import com.decouikit.news.network.dto.PostItem
+import com.decouikit.news.network.dto.Tag
+import com.decouikit.news.network.sync.SyncTags
 import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.NewsConstants
 import com.decouikit.news.utils.UriChromeClient
@@ -40,15 +43,21 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
         RetrofitClientInstance.getRetrofitInstance(this)?.create(CommentsService::class.java)
     }
 
+    private val tagsService by lazy {
+        SyncTags
+    }
+
     private lateinit var postItem: PostItem
     private var page = 1
     private var postItems = arrayListOf<PostItem>()
+    private var tagList = arrayListOf<Tag>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post)
         ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.coordinatorParent)
         postItem = loadPostItem()
+        loadTag(postItem)
         initLayout()
         initListeners()
         incrementAdsCounterAndShowAds()
@@ -59,6 +68,18 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
         if (prefs.interstitialAdCounter == Config.promptForInterstitialCounter()) {
             prefs.interstitialAdCounter = 0
             showInterstitialAds()
+        }
+    }
+
+    private fun loadTag(post: PostItem) {
+        post.tags.forEach { tagId ->
+            tagsService.getTagById(tagId, this, object : TagListener {
+                override fun onResult(isSuccess: Boolean, tag: Tag?) {
+                    if (isSuccess && tag != null) {
+                        tagList.add(tag)
+                    }
+                }
+            })
         }
     }
 

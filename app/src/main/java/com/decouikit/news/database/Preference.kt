@@ -2,7 +2,10 @@ package com.decouikit.news.database
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.decouikit.news.network.dto.MediaItem
 import com.decouikit.news.network.dto.PostItem
+import com.decouikit.news.network.dto.Tag
+import com.decouikit.news.network.dto.User
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -40,7 +43,8 @@ class Preference(context: Context) {
         set(value) = prefs.edit { it.putBoolean("RTL_ENABLED", value) }
 
     var languageCode: String
-        get() = prefs.getString("LANGUAGE_CODE", Config.getDefaultValueForLanguage())?:Config.getDefaultValueForLanguage()
+        get() = prefs.getString("LANGUAGE_CODE", Config.getDefaultValueForLanguage())
+            ?: Config.getDefaultValueForLanguage()
         set(value) = prefs.edit { it.putString("LANGUAGE_CODE", value) }
 
     var isIntroPageShown: Boolean
@@ -50,6 +54,7 @@ class Preference(context: Context) {
     fun isThemeLight(): Boolean {
         return colorTheme == Config.getDefaultTheme()
     }
+
     fun setBookmarkedNews(items: ArrayList<PostItem>) {
         val gson = Gson()
         val json = gson.toJson(items)
@@ -77,9 +82,10 @@ class Preference(context: Context) {
         result.remove(item)
         setBookmarkedNews(result)
     }
+
     fun saveBookmark(postItem: PostItem) {
         val item = getBookmarkByPostId(postItem.id)
-        if(item == null) {
+        if (item == null) {
             addBookmark(postItem)
         } else {
             removeBookmark(postItem)
@@ -98,4 +104,44 @@ class Preference(context: Context) {
     var tabPosition: Int
         get() = prefs.getInt("TAB_POSITION", 0)
         set(value) = prefs.edit { it.putInt("TAB_POSITION", value) }
+
+    fun persistTags(items: ArrayList<Tag>) {
+        prefs.edit().putString("TAGS", Gson().toJson(items)).apply()
+    }
+
+    fun loadTags(): ArrayList<Tag> {
+        val json = prefs.getString("TAGS", arrayListOf<Tag>().toString())
+        if (json.isNullOrEmpty()) {
+            return arrayListOf()
+        }
+        val type = object : TypeToken<List<Tag>>() {}.type
+        return Gson().fromJson(json, type)
+    }
+
+    fun persistUsers(items: ArrayList<User>) {
+        prefs.edit().putString("USERS", Gson().toJson(items)).apply()
+    }
+
+    fun loadUsers(): ArrayList<User> {
+        val json = prefs.getString("USERS", arrayListOf<User>().toString())
+        if (json.isNullOrEmpty()) {
+            return arrayListOf()
+        }
+        val type = object : TypeToken<List<User>>() {}.type
+        return Gson().fromJson(json, type)
+    }
+
+    fun loadMedia(): ArrayList<MediaItem> {
+        val json = prefs.getString("MEDIA", arrayListOf<MediaItem>().toString())
+        if (json.isNullOrEmpty()) {
+            return arrayListOf()
+        }
+        val type = object : TypeToken<List<MediaItem>>() {}.type
+        return Gson().fromJson(json, type)
+    }
+
+    fun persistMedia(items: ArrayList<MediaItem>) {
+        prefs.edit().putString("MEDIA", Gson().toJson(items)).apply()
+    }
+
 }
