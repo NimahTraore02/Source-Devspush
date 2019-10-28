@@ -143,19 +143,19 @@ object Config {
         val pageOne = WizardItemModel(
             context.getString(R.string.wizard_page_one_title),
             context.getString(R.string.wizard_page_one_subtitle),
-            "https://firebasestorage.googleapis.com/v0/b/deco-fef08.appspot.com/o/wizard%2F1.jpg?alt=media&token=a6ee513a-cd8f-47b0-8fa5-7e31d032e8e7"
+            "https://deco-news.s3.eu-central-1.amazonaws.com/Magic.png"
         )
 
         val pageTwo = WizardItemModel(
             context.getString(R.string.wizard_page_two_title),
             context.getString(R.string.wizard_page_two_subtitle),
-            "https://firebasestorage.googleapis.com/v0/b/deco-fef08.appspot.com/o/wizard%2F2.jpg?alt=media&token=ca473522-2688-4f6f-ad3c-0df6bd5ecd36"
+            "https://deco-news.s3.eu-central-1.amazonaws.com/Design.png"
         )
 
         val pageThree = WizardItemModel(
             context.getString(R.string.wizard_page_three_title),
             context.getString(R.string.wizard_page_three_subtitle),
-            "https://firebasestorage.googleapis.com/v0/b/deco-fef08.appspot.com/o/wizard%2F3.jpg?alt=media&token=b0b0fd45-5420-4454-8fe8-ddbb73449a5c"
+            "https://deco-news.s3.eu-central-1.amazonaws.com/Code.png"
         )
 
         return arrayListOf(pageOne, pageTwo, pageThree)

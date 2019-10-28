@@ -68,13 +68,12 @@
     <string name="wizard_finish">Finish</string>
     <string name="wizard_skip">Skip</string>
     <string name="wizard_get_started">Started</string>
-    <string name="wizard_page_one_title">Modern Design</string>
-    <string name="wizard_page_one_subtitle">All screens and components are compatible with Photoshop &amp; Sketch</string>
-    <string name="wizard_page_two_title">Clean code</string>
-    <string name="wizard_page_two_subtitle">Choose your technology, you get Ionic 3 or Native Android code</string>
-    <string name="wizard_page_three_title">Unleash Creativity</string>
-    <string name="wizard_page_three_subtitle">With Deco UI Kit you can build any app you imagine for Android &amp; iPhone.</string>
-
+    <string name="wizard_page_one_title">Magic</string>
+    <string name="wizard_page_one_subtitle">Make mobile application from your Wordpress web</string>
+    <string name="wizard_page_two_title">Design</string>
+    <string name="wizard_page_two_subtitle">Fresh &amp; stylish design for your mobile news app</string>
+    <string name="wizard_page_three_title">Code</string>
+    <string name="wizard_page_three_subtitle">Well written code with online documentation</string>
     <string name="progress_loading">Loading&#8230;</string>
     <string name="choose_lang">Choose language</string>
     <string name="back_exit_text">Please click BACK again to exit</string>
