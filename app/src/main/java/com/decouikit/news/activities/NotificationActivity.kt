@@ -66,6 +66,7 @@ class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListe
             //Remove swiped item from list and notify the RecyclerView
             InMemory.removeNotificationPosts(this@NotificationActivity,
                 notificationList[viewHolder.adapterPosition].id)
+            adapter.notifyDataSetChanged()
         }
     }
     private fun initListeners() {
