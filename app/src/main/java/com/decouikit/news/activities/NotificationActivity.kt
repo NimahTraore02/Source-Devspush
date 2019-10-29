@@ -2,7 +2,9 @@ package com.decouikit.news.activities
 
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
 import com.decouikit.news.adapters.ViewAllAdapter
@@ -42,8 +44,31 @@ class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListe
             rvNotifications.layoutManager = LinearLayoutManager(this)
             rvNotifications.adapter = adapter
         }
-    }
 
+        //swipe to remove item listener
+        val itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(rvNotifications)
+    }
+    private var callback: ItemTouchHelper.SimpleCallback = object :
+        ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.START or ItemTouchHelper.END
+        ) {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            return false
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
+            //Remove swiped item from list and notify the RecyclerView
+            adapter.removeItem(notificationList[viewHolder.adapterPosition])
+            InMemory.removeNotificationPosts(this@NotificationActivity,
+                notificationList[viewHolder.adapterPosition].id)
+        }
+    }
     private fun initListeners() {
         ivBack.setOnClickListener(this)
     }
