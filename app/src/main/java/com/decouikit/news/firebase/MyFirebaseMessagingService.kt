@@ -2,6 +2,7 @@ package com.decouikit.news.firebase
 
 import android.util.Log
 import com.decouikit.news.database.InMemory
+import com.decouikit.news.extensions.getUrlFromString
 import com.decouikit.news.interfaces.PostListener
 import com.decouikit.news.network.dto.CustomNotification
 import com.decouikit.news.network.dto.PostItem
@@ -10,7 +11,6 @@ import com.decouikit.news.notification.NotificationUtil
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
-import java.lang.Exception
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
@@ -19,15 +19,19 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         Log.e("TEST", "onMessageReceived:firebase")
         if (remoteMessage.data != null) {
             try {
-                val customNotification = Gson().fromJson(remoteMessage.data["custom"], CustomNotification::class.java)
-                SyncPost.getPostById(this, getPostIdFromUrl(customNotification.url), object: PostListener {
-                    override fun onSuccess(post: PostItem) {
-                        InMemory.addNotificationPosts(applicationContext, post)
-                    }
+                val customNotification =
+                    Gson().fromJson(remoteMessage.data["custom"], CustomNotification::class.java)
+                SyncPost.getPostById(
+                    this,
+                    customNotification.url.getUrlFromString(),
+                    object : PostListener {
+                        override fun onSuccess(post: PostItem) {
+                            InMemory.addNotificationPosts(applicationContext, post)
+                        }
 
-                    override fun onError(error: Throwable?) {
-                    }
-                })
+                        override fun onError(error: Throwable?) {
+                        }
+                    })
             } catch (e: Exception) {
                 Log.e("FirebaseService", e.localizedMessage, e)
             }
@@ -40,7 +44,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
-    private fun getPostIdFromUrl(url:String): String {
+    private fun getPostIdFromUrl(url: String): String {
         return ""
     }
 
