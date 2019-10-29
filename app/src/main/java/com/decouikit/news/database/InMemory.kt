@@ -116,6 +116,10 @@ object InMemory {
         Preference(context).persisNotificationPosts(NOTIFICATION as ArrayList<PostItem>)
     }
 
+    fun getNotificationPosts(): ArrayList<PostItem> {
+        return NOTIFICATION as ArrayList<PostItem>
+    }
+
     fun removeNotificationPosts(context: Context, postId: Int) {
         if (!NOTIFICATION_MAP.containsKey(postId)) {
             val post = NOTIFICATION_MAP[postId]

@@ -13,6 +13,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.decouikit.news.R
 import com.decouikit.news.activities.NewsApplication
+import com.decouikit.news.activities.NotificationActivity
 import com.decouikit.news.activities.SearchActivity
 import com.decouikit.news.database.Config
 import com.decouikit.news.extensions.openExternalApp
@@ -135,7 +136,7 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_search -> {
-                startActivity(Intent(this, SearchActivity::class.java))
+                startActivity(Intent(this, NotificationActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
