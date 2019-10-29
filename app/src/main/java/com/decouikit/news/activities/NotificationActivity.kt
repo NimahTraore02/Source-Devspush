@@ -12,7 +12,7 @@ import com.decouikit.news.interfaces.OpenPostListener
 import com.decouikit.news.network.dto.PostItem
 import kotlinx.android.synthetic.main.activity_notifications.*
 
-class NotificationActivity : BaseActivity(), OpenPostListener {
+class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListener {
 
     private lateinit var adapter: ViewAllAdapter
     private lateinit var notificationList: ArrayList<PostItem>
@@ -22,6 +22,7 @@ class NotificationActivity : BaseActivity(), OpenPostListener {
         setContentView(R.layout.activity_notifications)
 
         initLayout()
+        initListeners()
     }
 
     private fun initLayout() {
@@ -34,7 +35,20 @@ class NotificationActivity : BaseActivity(), OpenPostListener {
             rvNotifications.layoutManager = LinearLayoutManager(this)
             rvNotifications.adapter = adapter
         }
+    }
 
+    private fun initListeners() {
+        ivBack.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View) {
+        when(v) {
+            ivBack -> onBackPressed()
+        }
+    }
+
+    override fun openPost(view: View, item: PostItem) {
+        view.openPostActivity(this, item)
     }
 
     private fun hideContent(isListEmpty: Boolean) {
@@ -45,9 +59,5 @@ class NotificationActivity : BaseActivity(), OpenPostListener {
             rvNotifications.visibility = View.VISIBLE
             empty_container.visibility = View.GONE
         }
-    }
-
-    override fun openPost(view: View, item: PostItem) {
-        view.openPostActivity(this, item)
     }
 }

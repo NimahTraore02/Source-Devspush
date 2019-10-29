@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import com.decouikit.news.R
 import com.decouikit.news.activities.NewsApplication
+import com.decouikit.news.activities.NotificationActivity
 import com.decouikit.news.activities.SearchActivity
 import com.decouikit.news.extensions.replaceFragment
 import com.decouikit.news.fragments.*
@@ -66,6 +67,10 @@ class BottomNavigationActivity : BaseActivity(),
         return when (item.itemId) {
             R.id.action_search -> {
                 startActivity(Intent(this, SearchActivity::class.java))
+                true
+            }
+            R.id.action_notification -> {
+                startActivity(Intent(this, NotificationActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
