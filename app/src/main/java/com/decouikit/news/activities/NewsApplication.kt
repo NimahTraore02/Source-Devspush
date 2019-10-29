@@ -1,6 +1,7 @@
 package com.decouikit.news.activities
 
 import android.app.Application
+import android.util.Log
 import com.bumptech.glide.Glide
 import com.bumptech.glide.MemoryCategory
 import com.decouikit.news.database.Preference
@@ -19,6 +20,9 @@ class NewsApplication : Application() {
                 .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
                 .unsubscribeWhenNotificationsAreDisabled(true)
                 .init()
+            OneSignal.idsAvailable { userId, registrationId ->
+                Log.e("TEST", "userId:$userId - registrationId:$registrationId")
+            }
         } else {
             OneSignal.setSubscription(false)
         }

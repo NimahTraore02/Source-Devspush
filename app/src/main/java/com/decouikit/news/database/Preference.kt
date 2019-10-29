@@ -131,6 +131,19 @@ class Preference(context: Context) {
         return Gson().fromJson(json, type)
     }
 
+    fun loadNotificationPosts(): ArrayList<PostItem> {
+        val json = prefs.getString("NOTIFICATION_POSTS", arrayListOf<PostItem>().toString())
+        if (json.isNullOrEmpty()) {
+            return arrayListOf()
+        }
+        val type = object : TypeToken<List<PostItem>>() {}.type
+        return Gson().fromJson(json, type)
+    }
+
+    fun persisNotificationPosts(items: ArrayList<PostItem>) {
+        prefs.edit().putString("NOTIFICATION_POSTS", Gson().toJson(items)).apply()
+    }
+
     fun loadMedia(): ArrayList<MediaItem> {
         val json = prefs.getString("MEDIA", arrayListOf<MediaItem>().toString())
         if (json.isNullOrEmpty()) {

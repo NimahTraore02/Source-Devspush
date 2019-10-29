@@ -15,6 +15,7 @@ object SyncApi : SyncListener {
         syncApiCounter = services.size
         services.forEach { it.sync(context, this) }
         InMemory.loadTag(context)
+        InMemory.loadNotificationPosts(context)
     }
 
     override fun finish(success: Boolean) {

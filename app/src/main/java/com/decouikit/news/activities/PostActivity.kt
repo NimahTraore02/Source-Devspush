@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
@@ -33,7 +32,6 @@ import kotlinx.android.synthetic.main.activity_post.*
 import org.jetbrains.anko.doAsync
 import java.util.*
 import kotlin.math.abs
-
 
 open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     UriChromeClient.FullscreenInterface, OnHashTagClickListener {

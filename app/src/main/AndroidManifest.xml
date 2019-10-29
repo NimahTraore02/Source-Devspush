@@ -12,10 +12,10 @@
             android:allowBackup="false"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
-            android:usesCleartextTraffic="true"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/SplashTheme"
+            android:usesCleartextTraffic="true"
             tools:ignore="GoogleAppIndexingWarning">
 
         <meta-data
@@ -41,6 +41,7 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 

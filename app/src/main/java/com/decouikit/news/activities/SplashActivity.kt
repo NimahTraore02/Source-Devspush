@@ -25,6 +25,8 @@ class SplashActivity : Activity(), SyncListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         animation()
+        val u = "http://deconews.decouikit.com/thanks-for-using-our-app/posts/2679"
+
         MobileAds.initialize(this)
         SyncApi.sync(this, this)
     }

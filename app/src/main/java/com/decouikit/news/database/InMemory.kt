@@ -1,10 +1,7 @@
 package com.decouikit.news.database
 
 import android.content.Context
-import com.decouikit.news.network.dto.Category
-import com.decouikit.news.network.dto.MediaItem
-import com.decouikit.news.network.dto.Tag
-import com.decouikit.news.network.dto.User
+import com.decouikit.news.network.dto.*
 
 object InMemory {
     private var CATEGORY: MutableList<Category> = mutableListOf()
@@ -22,6 +19,9 @@ object InMemory {
     private var MEDIA: MutableList<MediaItem> = mutableListOf()
     private var MEDIA_MAP = mutableMapOf<Int, MediaItem>()
 
+    private var NOTIFICATION: MutableList<PostItem> = mutableListOf()
+    private var NOTIFICATION_MAP = mutableMapOf<Int, PostItem>()
+
     fun clear() {
         CATEGORY.clear()
         CATEGORY_MAP.clear()
@@ -31,6 +31,8 @@ object InMemory {
         TAGS_MAP.clear()
         MEDIA.clear()
         MEDIA_MAP.clear()
+        NOTIFICATION.clear()
+        NOTIFICATION_MAP.clear()
     }
 
     fun setCategoryList(categoryList: List<Category>) {
@@ -89,6 +91,34 @@ object InMemory {
         return USER_MAP[userId]
     }
 
+    //NOTIFICATION
+    fun getPostNotificationById(id: Int): PostItem? {
+        return NOTIFICATION_MAP[id]
+    }
+
+    fun loadNotificationPosts(context: Context) {
+        NOTIFICATION.addAll(Preference(context).loadNotificationPosts())
+        if (NOTIFICATION.isNotEmpty()) {
+            NOTIFICATION.forEach { NOTIFICATION_MAP[it.id] = it }
+        }
+    }
+
+    fun addNotificationPosts(context: Context, post: PostItem) {
+        if (!NOTIFICATION_MAP.containsKey(post.id)) {
+            NOTIFICATION_MAP[post.id] = post
+            NOTIFICATION.add(post)
+        }
+        Preference(context).persisNotificationPosts(NOTIFICATION as ArrayList<PostItem>)
+    }
+
+    fun removeNotificationPosts(context: Context, postId: Int) {
+        if (!NOTIFICATION_MAP.containsKey(postId)) {
+            val post = NOTIFICATION_MAP[postId]
+            NOTIFICATION_MAP.remove(postId)
+            NOTIFICATION.remove(post)
+        }
+        Preference(context).persisNotificationPosts(NOTIFICATION as ArrayList<PostItem>)
+    }
 
     //TAG
     fun getTagById(tagId: Int): Tag? {

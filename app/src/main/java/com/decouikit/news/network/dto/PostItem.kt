@@ -8,7 +8,6 @@ data class PostItem(
     @SerializedName("id") val id: Int,
     @SerializedName("date") val date: String,
     @SerializedName("date_gmt") val date_gmt: String,
-
     @SerializedName("modified") val modified: String,
     @SerializedName("modified_gmt") val modified_gmt: String,
     @SerializedName("slug") val slug: String,
