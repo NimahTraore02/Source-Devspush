@@ -22,6 +22,9 @@ object InMemory {
     private var NOTIFICATION: MutableList<PostItem> = mutableListOf()
     private var NOTIFICATION_MAP = mutableMapOf<Int, PostItem>()
 
+    private var BOOKMARK: MutableList<PostItem> = mutableListOf()
+    private var BOOKMARK_MAP = mutableMapOf<Int, PostItem>()
+
     fun clear() {
         CATEGORY.clear()
         CATEGORY_MAP.clear()
@@ -33,6 +36,8 @@ object InMemory {
         MEDIA_MAP.clear()
         NOTIFICATION.clear()
         NOTIFICATION_MAP.clear()
+        BOOKMARK.clear()
+        BOOKMARK_MAP.clear()
     }
 
     fun setCategoryList(categoryList: List<Category>) {
