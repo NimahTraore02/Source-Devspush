@@ -7,9 +7,11 @@ import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
 import com.decouikit.news.adapters.ViewAllAdapter
 import com.decouikit.news.database.InMemory
+import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.openPostActivity
 import com.decouikit.news.interfaces.OpenPostListener
 import com.decouikit.news.network.dto.PostItem
+import com.decouikit.news.utils.ActivityUtil
 import kotlinx.android.synthetic.main.activity_notifications.*
 
 class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListener {
@@ -21,11 +23,16 @@ class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListe
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notifications)
 
+        ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.notification_parent)
         initLayout()
         initListeners()
     }
 
     private fun initLayout() {
+        if (Preference(this).isRtlEnabled) {
+            ivBack.rotation = 180f
+        }
+
         notificationList = InMemory.getNotificationPosts()
         if (notificationList.isNullOrEmpty()) {
             hideContent(true)
