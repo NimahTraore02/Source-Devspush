@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.decouikit.news.R
 import com.decouikit.news.adapters.BookmarkAdapter
+import com.decouikit.news.database.InMemory
 import com.decouikit.news.database.Preference
 import com.decouikit.news.interfaces.RemoveBookmarkListener
 import com.decouikit.news.network.dto.PostItem
@@ -33,7 +34,7 @@ class BookmarkFragment : Fragment(), View.OnClickListener, RemoveBookmarkListene
     }
 
     private fun initLayout() {
-        bookmarkedList = Preference(itemView.context).getBookmarkedNews()
+        bookmarkedList = InMemory.getBookmarks()
         if (bookmarkedList.isNullOrEmpty()) {
             hideContent(true)
         } else {
@@ -52,7 +53,7 @@ class BookmarkFragment : Fragment(), View.OnClickListener, RemoveBookmarkListene
         when(v) {
             itemView.tvClearAll -> {
                 bookmarkedList.removeAll { true }
-                Preference(itemView.context).setBookmarkedNews(arrayListOf())
+                InMemory.clearAllBookmark(v.context)
                 adapter.notifyDataSetChanged()
                 hideContent(true)
             }
@@ -71,7 +72,7 @@ class BookmarkFragment : Fragment(), View.OnClickListener, RemoveBookmarkListene
 
     override fun removeBookmark(item: PostItem) {
         bookmarkedList.remove(item)
-        Preference(itemView.context).setBookmarkedNews(bookmarkedList)
+        InMemory.removeBookmark(requireContext(), item)
         adapter.notifyDataSetChanged()
         if (bookmarkedList.isNullOrEmpty()) {
             hideContent(true)

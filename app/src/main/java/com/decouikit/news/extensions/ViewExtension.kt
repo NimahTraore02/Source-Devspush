@@ -10,6 +10,7 @@ import com.decouikit.news.R
 import com.decouikit.news.activities.PostActivity
 import com.decouikit.news.activities.SearchActivity
 import com.decouikit.news.activities.ViewAllActivity
+import com.decouikit.news.database.InMemory
 import com.decouikit.news.database.Preference
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.NewsConstants
@@ -25,11 +26,12 @@ fun View.dpToPx(dp: Int): Int {
 }
 
 fun View.bookmark(context: Context, postItem: PostItem, imageView: ImageView) {
-    val item = Preference(context).getBookmarkByPostId(postItem.id)
+//    val item = Preference(context).getBookmarkByPostId(postItem.id)
+    val item = InMemory.getBookmarkById(postItem.id)
     if (item == null) {
-        Preference(context).addBookmark(postItem)
+        InMemory.addBookmark(context, postItem)
     } else {
-        Preference(context).removeBookmark(postItem)
+        InMemory.removeBookmark(context, postItem)
     }
     imageView.setBookmarkIcon(item == null)
 }

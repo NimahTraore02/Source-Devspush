@@ -96,6 +96,45 @@ object InMemory {
         return USER_MAP[userId]
     }
 
+    //BOOKMARK
+    fun getBookmarkById(id: Int): PostItem? {
+        return BOOKMARK_MAP[id]
+    }
+
+    fun loadBookmark(context: Context) {
+        BOOKMARK.addAll(Preference(context).loadBookmark())
+        if (BOOKMARK.isNotEmpty()) {
+            BOOKMARK.forEach { BOOKMARK_MAP[it.id] = it }
+        }
+    }
+
+    fun addBookmark(context: Context, post: PostItem) {
+        if (!BOOKMARK_MAP.containsKey(post.id)) {
+            BOOKMARK_MAP[post.id] = post
+            BOOKMARK.add(post)
+        }
+        Preference(context).persistBookmark(BOOKMARK as ArrayList<PostItem>)
+    }
+
+    fun getBookmarks(): ArrayList<PostItem> {
+        return BOOKMARK as ArrayList<PostItem>
+    }
+
+    fun removeBookmark(context: Context, postItem: PostItem) {
+        if (BOOKMARK_MAP.containsKey(postItem.id)) {
+            val post = BOOKMARK_MAP[postItem.id]
+            BOOKMARK_MAP.remove(postItem.id)
+            BOOKMARK.remove(post)
+        }
+        Preference(context).persisNotificationPosts(BOOKMARK as ArrayList<PostItem>)
+    }
+
+    fun clearAllBookmark(context: Context) {
+        BOOKMARK.clear()
+        BOOKMARK_MAP.clear()
+        Preference(context).persisNotificationPosts(BOOKMARK as ArrayList<PostItem>)
+    }
+
     //NOTIFICATION
     fun getPostNotificationById(id: Int): PostItem? {
         return NOTIFICATION_MAP[id]
@@ -121,7 +160,7 @@ object InMemory {
     }
 
     fun removeNotificationPosts(context: Context, postId: Int) {
-        if (!NOTIFICATION_MAP.containsKey(postId)) {
+        if (NOTIFICATION_MAP.containsKey(postId)) {
             val post = NOTIFICATION_MAP[postId]
             NOTIFICATION_MAP.remove(postId)
             NOTIFICATION.remove(post)

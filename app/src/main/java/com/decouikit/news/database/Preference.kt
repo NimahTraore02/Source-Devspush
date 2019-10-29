@@ -54,56 +54,60 @@ class Preference(context: Context) {
     fun isThemeLight(): Boolean {
         return colorTheme == Config.getDefaultTheme()
     }
+//
+//    fun setBookmarkedNews(items: ArrayList<PostItem>) {
+//        val gson = Gson()
+//        val json = gson.toJson(items)
+//        prefs.edit().putString("BOOKMARKED_NEWS", json).apply()
+//    }
+//
+//    fun getBookmarkedNews(): ArrayList<PostItem> {
+//        val gson = Gson()
+//        val json = prefs.getString("BOOKMARKED_NEWS", arrayListOf<PostItem>().toString())
+//        if (json.isNullOrEmpty()) {
+//            return arrayListOf()
+//        }
+//        val type = object : TypeToken<List<PostItem>>() {}.type
+//        return gson.fromJson(json, type)
+//    }
+//
+//    fun addBookmark(item: PostItem) {
+//        val result = getBookmarkedNews()
+//        result.add(item)
+//        setBookmarkedNews(result)
+//    }
+//
+//    fun removeBookmark(item: PostItem) {
+//        val result = getBookmarkedNews()
+//        result.remove(item)
+//        setBookmarkedNews(result)
+//    }
+//
+//    fun getBookmarkByPostId(id: Int): PostItem? {
+//        for (bookmarkedItem in getBookmarkedNews()) {
+//            if (bookmarkedItem.id == id) {
+//                return bookmarkedItem
+//            }
+//        }
+//        return null
+//    }
 
-    fun setBookmarkedNews(items: ArrayList<PostItem>) {
-        val gson = Gson()
-        val json = gson.toJson(items)
-        prefs.edit().putString("BOOKMARKED_NEWS", json).apply()
+    var tabPosition: Int
+        get() = prefs.getInt("TAB_POSITION", 0)
+        set(value) = prefs.edit { it.putInt("TAB_POSITION", value) }
+
+    fun persistBookmark(items: ArrayList<PostItem>) {
+        prefs.edit().putString("BOOKMARKED_NEWS", Gson().toJson(items)).apply()
     }
 
-    fun getBookmarkedNews(): ArrayList<PostItem> {
-        val gson = Gson()
+    fun loadBookmark(): ArrayList<PostItem> {
         val json = prefs.getString("BOOKMARKED_NEWS", arrayListOf<PostItem>().toString())
         if (json.isNullOrEmpty()) {
             return arrayListOf()
         }
         val type = object : TypeToken<List<PostItem>>() {}.type
-        return gson.fromJson(json, type)
+        return Gson().fromJson(json, type)
     }
-
-    fun addBookmark(item: PostItem) {
-        val result = getBookmarkedNews()
-        result.add(item)
-        setBookmarkedNews(result)
-    }
-
-    fun removeBookmark(item: PostItem) {
-        val result = getBookmarkedNews()
-        result.remove(item)
-        setBookmarkedNews(result)
-    }
-
-    fun saveBookmark(postItem: PostItem) {
-        val item = getBookmarkByPostId(postItem.id)
-        if (item == null) {
-            addBookmark(postItem)
-        } else {
-            removeBookmark(postItem)
-        }
-    }
-
-    fun getBookmarkByPostId(id: Int): PostItem? {
-        for (bookmarkedItem in getBookmarkedNews()) {
-            if (bookmarkedItem.id == id) {
-                return bookmarkedItem
-            }
-        }
-        return null
-    }
-
-    var tabPosition: Int
-        get() = prefs.getInt("TAB_POSITION", 0)
-        set(value) = prefs.edit { it.putInt("TAB_POSITION", value) }
 
     fun persistTags(items: ArrayList<Tag>) {
         prefs.edit().putString("TAGS", Gson().toJson(items)).apply()

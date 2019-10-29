@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.decouikit.news.R
+import com.decouikit.news.database.InMemory
 import com.decouikit.news.database.Preference
 import com.decouikit.news.interfaces.MediaListener
 import com.decouikit.news.network.MediaService
@@ -66,7 +67,7 @@ fun ImageView.setBookmarkIcon(isBookmarked: Boolean) {
 }
 
 fun ImageView.setBookmarkIcon(postItem: PostItem) {
-    setBookmarkIcon(Preference(context).getBookmarkedNews().contains(postItem))
+    setBookmarkIcon(InMemory.getBookmarkById(postItem.id) != null)
 }
 
 fun ImageView.rotate(angle: Float, imageView: ImageView) {
