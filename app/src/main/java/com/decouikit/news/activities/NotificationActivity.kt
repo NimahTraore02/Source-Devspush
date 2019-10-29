@@ -35,7 +35,7 @@ class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListe
             ivBack.rotation = 180f
         }
 
-        notificationList = InMemory.getNotificationPosts()
+        notificationList = arrayListOf()
         if (notificationList.isNullOrEmpty()) {
             hideContent(true)
         } else {
@@ -49,6 +49,7 @@ class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListe
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(rvNotifications)
     }
+
     private var callback: ItemTouchHelper.SimpleCallback = object :
         ItemTouchHelper.SimpleCallback(
             0,
@@ -69,8 +70,15 @@ class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListe
             adapter.notifyDataSetChanged()
         }
     }
+
     private fun initListeners() {
         ivBack.setOnClickListener(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        notificationList = InMemory.getNotificationPosts()
+        adapter.setData(notificationList)
     }
 
     override fun onClick(v: View) {
