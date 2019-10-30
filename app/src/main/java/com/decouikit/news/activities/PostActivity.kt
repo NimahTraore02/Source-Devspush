@@ -10,6 +10,7 @@ import com.decouikit.news.activities.common.BaseActivity
 import com.decouikit.news.adapters.HashTagAdapter
 import com.decouikit.news.adapters.ViewAllAdapter
 import com.decouikit.news.database.Config
+import com.decouikit.news.database.InMemory
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.*
 import com.decouikit.news.interfaces.OnHashTagClickListener
@@ -61,6 +62,7 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
         setContentView(R.layout.activity_post)
         ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.coordinatorParent)
         postItem = loadPostItem()
+        InMemory.addNotificationPosts(this, postItem)
         loadTag(postItem)
         initLayout()
         initListeners()

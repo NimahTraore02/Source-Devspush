@@ -37,6 +37,7 @@ fun ImageView.load(imageUrl: String?, isRounded: Boolean = false) {
 }
 
 fun ImageView.load(postItem: PostItem) {
+
     if (TextUtils.isEmpty(postItem.source_url)) {
         load("")
         SyncMedia.getMediaById(

@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_notifications.*
 class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListener {
 
     private lateinit var adapter: ViewAllAdapter
-    private lateinit var notificationList: ArrayList<PostItem>
+    private var notificationList: ArrayList<PostItem> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,15 +36,10 @@ class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListe
         }
 
         notificationList = arrayListOf()
-        if (notificationList.isNullOrEmpty()) {
-            hideContent(true)
-        } else {
-            hideContent(false)
-            adapter = ViewAllAdapter(notificationList, this)
-            rvNotifications.layoutManager = LinearLayoutManager(this)
-            rvNotifications.adapter = adapter
-        }
-
+        adapter = ViewAllAdapter(notificationList, this)
+        rvNotifications.layoutManager = LinearLayoutManager(this)
+        rvNotifications.adapter = adapter
+        hideContent(notificationList.isNullOrEmpty())
         //swipe to remove item listener
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(rvNotifications)
@@ -77,8 +72,13 @@ class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListe
 
     override fun onResume() {
         super.onResume()
+        loadData()
+    }
+
+    private fun loadData() {
         notificationList = InMemory.getNotificationPosts()
         adapter.setData(notificationList)
+        hideContent(notificationList.isNullOrEmpty())
     }
 
     override fun onClick(v: View) {
