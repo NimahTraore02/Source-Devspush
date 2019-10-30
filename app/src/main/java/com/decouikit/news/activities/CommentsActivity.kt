@@ -47,14 +47,10 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
         rvItems.addOnScrollListener(object : EndlessRecyclerOnScrollListener() {
             override fun onLoadMore() {
                 swipeRefresh.isRefreshing = true
-                loadData()
+                getComments()
             }
         })
         refreshContent()
-    }
-
-    private fun loadData() {
-        getComments()
     }
 
     private fun getComments() {
@@ -82,7 +78,7 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun initLayout() {
-        if(Preference(this).isRtlEnabled) {
+        if (Preference(this).isRtlEnabled) {
             ivBack.rotation = 180f
         }
         adapter = CommentsAdapter(arrayListOf())
@@ -120,7 +116,7 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
         mShimmerViewContainer.startShimmerAnimation()
         adapter.removeAllItems()
         page = 0
-        loadData()
+        getComments()
     }
 
     private fun hideAllOnRefresh() {
@@ -131,12 +127,8 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
 
     override fun onClick(v: View) {
         when (v) {
-            ivBack -> {
-                onBackPressed()
-            }
-            btnWriteComment -> {
-                v.openComments(this, PostCommentActivity::class.java, postId)
-            }
+            ivBack -> onBackPressed()
+            btnWriteComment -> v.openComments(this, PostCommentActivity::class.java, postId)
         }
     }
 }

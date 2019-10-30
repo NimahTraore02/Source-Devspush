@@ -14,7 +14,7 @@ import com.decouikit.news.database.InMemory
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.initPopupDialog
 import com.decouikit.news.interfaces.ChooseLanguageDialogListener
-import com.decouikit.news.interfaces.SyncListener
+import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.sync.SyncApi
 import com.decouikit.news.notification.OneSignalNotificationOpenHandler
@@ -117,12 +117,15 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
                 ActivityUtil.reload(activity, 5)
             }
             itemView.tvLanguage -> {
-                ChooseLanguageDialog(itemView.context,
+                ChooseLanguageDialog(
+                    itemView.context,
                     getString(R.string.choose_lang),
-                    Config.listLanguageNames().toTypedArray(), selectedIndex, this)
+                    Config.listLanguageNames().toTypedArray(), selectedIndex, this
+                )
             }
         }
     }
+
     override fun onLanguageItemChecked(selectedIndex: Int) {
         progressDialog = Dialog(itemView.context)
         progressDialog.initPopupDialog()
@@ -134,8 +137,8 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
             RetrofitClientInstance.clear()
             InMemory.clear()
             prefs.languageCode = lang.languageCode
-            SyncApi.sync(requireContext(), object : SyncListener {
-                override fun finish(success: Boolean) {
+            SyncApi.sync(requireContext(), object : ResultListener<Boolean> {
+                override fun onResult(value: Boolean?) {
                     progressDialog.dismiss()
                     ActivityUtil.reload(activity, 0)
                 }

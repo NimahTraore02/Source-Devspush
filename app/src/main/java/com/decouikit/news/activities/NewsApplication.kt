@@ -20,13 +20,9 @@ class NewsApplication : Application() {
                 .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
                 .unsubscribeWhenNotificationsAreDisabled(true)
                 .init()
-            OneSignal.idsAvailable { userId, registrationId ->
-                Log.e("TEST", "userId:$userId - registrationId:$registrationId")
-            }
         } else {
             OneSignal.setSubscription(false)
         }
-
         Glide.get(this).setMemoryCategory(MemoryCategory.HIGH)
         MobileAds.initialize(this) {}
     }

@@ -10,8 +10,7 @@ import com.decouikit.news.extensions.loadDeepLinkUrl
 import com.decouikit.news.extensions.openIntroPage
 import com.decouikit.news.extensions.openMainPage
 import com.decouikit.news.extensions.openSinglePage
-import com.decouikit.news.interfaces.PostListener
-import com.decouikit.news.interfaces.SyncListener
+import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.sync.SyncApi
 import com.decouikit.news.network.sync.SyncPost
@@ -19,29 +18,28 @@ import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_splash.*
 
 
-class SplashActivity : Activity(), SyncListener {
+class SplashActivity : Activity(), ResultListener<Boolean> {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         animation()
-        val u = "http://deconews.decouikit.com/thanks-for-using-our-app/posts/2679"
-
         MobileAds.initialize(this)
         SyncApi.sync(this, this)
     }
 
-    override fun finish(success: Boolean) {
-        SyncPost.getPostById(this, intent.loadDeepLinkUrl(), object : PostListener {
-            override fun onSuccess(post: PostItem) {
-                openSinglePage(post)
-            }
-
-            override fun onError(error: Throwable?) {
-                if (!Preference(applicationContext).isIntroPageShown && Config.isIntroPageEnabled()) {
-                    openIntroPage()
+    override fun onResult(value: Boolean?) {
+        SyncPost.getPostById(this, intent.loadDeepLinkUrl(), object : ResultListener<PostItem> {
+            override fun onResult(value: PostItem?) {
+                if (value != null) {
+                    openSinglePage(value)
                 } else {
-                    openMainPage()
+                    if (!Preference(applicationContext).isIntroPageShown && Config.isIntroPageEnabled()) {
+                        openIntroPage()
+                    } else {
+                        openMainPage()
+                    }
                 }
             }
         })

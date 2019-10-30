@@ -10,12 +10,11 @@ import com.decouikit.news.activities.common.BaseActivity
 import com.decouikit.news.adapters.HashTagAdapter
 import com.decouikit.news.adapters.ViewAllAdapter
 import com.decouikit.news.database.Config
-import com.decouikit.news.database.InMemory
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.*
 import com.decouikit.news.interfaces.OnHashTagClickListener
 import com.decouikit.news.interfaces.OpenPostListener
-import com.decouikit.news.interfaces.TagListener
+import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.CommentsService
 import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
@@ -78,18 +77,15 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
 
     private fun loadTag(post: PostItem) {
         post.tags.forEach { tagId ->
-            tagsService.getTagById(tagId, this, object : TagListener {
-                override fun onResult(isSuccess: Boolean, tag: Tag?) {
-                    if (isSuccess && tag != null) {
-                        tagList.add(tag)
-                    }
+            tagsService.getTagById(tagId, this, object : ResultListener<Tag> {
+                override fun onResult(value: Tag?) {
+                    value?.let { tagList.add(it) }
                 }
             })
         }
     }
 
     private fun loadPostItem(): PostItem {
-
         return gson.fromJson(intent.getStringExtra(NewsConstants.POST_ITEM), PostItem::class.java)
     }
 

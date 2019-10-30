@@ -81,19 +81,41 @@ object InMemory {
 
     fun getCategoryList(): List<Category> = CATEGORY
 
-    fun setUserList(userList: List<User>) {
-        USER.addAll(userList)
+    fun getCategoryById(categoryId: Int): Category? {
+        return CATEGORY_MAP_ALL[categoryId]
+    }
+
+    //USER
+    fun loadUsers(context: Context) {
+        USER.addAll(Preference(context).loadUsers())
         if (USER.isNotEmpty()) {
             USER.forEach { USER_MAP[it.id] = it }
         }
     }
 
-    fun getCategoryById(categoryId: Int): Category? {
-        return CATEGORY_MAP_ALL[categoryId]
+    fun addUser(context: Context, user: User) {
+        if (!USER_MAP.containsKey(user.id)) {
+            USER_MAP[user.id] = user
+            USER.add(user)
+        }
+        Preference(context).persistUsers(USER as ArrayList<User>)
     }
 
     fun getUserById(userId: Int): User? {
         return USER_MAP[userId]
+    }
+
+    fun getUsers(): ArrayList<User> {
+        return USER as ArrayList<User>
+    }
+
+    fun removeUser(context: Context, userItem: User) {
+        if (USER_MAP.containsKey(userItem.id)) {
+            val user = USER_MAP[userItem.id]
+            USER_MAP.remove(userItem.id)
+            USER.remove(user)
+        }
+        Preference(context).persistUsers(USER as ArrayList<User>)
     }
 
     //BOOKMARK
