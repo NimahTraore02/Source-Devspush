@@ -33,6 +33,12 @@ class BookmarkFragment : Fragment(), View.OnClickListener, RemoveBookmarkListene
         initListeners()
     }
 
+    override fun onResume() {
+        super.onResume()
+        bookmarkedList = InMemory.getBookmarks()
+        adapter.setData(bookmarkedList)
+    }
+
     private fun initLayout() {
         bookmarkedList = InMemory.getBookmarks()
         if (bookmarkedList.isNullOrEmpty()) {
