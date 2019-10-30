@@ -1,6 +1,7 @@
 package com.decouikit.news.activities.common
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
@@ -183,6 +184,15 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
             ivFacebook -> v.openExternalApp(Config.getFacebookUrl())
             ivTwitter -> v.openExternalApp(Config.getTwitterUrl())
             ivYoutube -> v.openExternalApp(Config.getYoutubeUrl())
+        }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            llSocialNetwork.visibility = View.GONE
+        } else {
+            llSocialNetwork.visibility = View.VISIBLE
         }
     }
 }

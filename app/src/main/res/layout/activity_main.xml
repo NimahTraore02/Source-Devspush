@@ -27,6 +27,7 @@
         app:itemIconTint="@drawable/navigation_item_color">
 
         <LinearLayout
+            android:id="@+id/llSocialNetwork"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"

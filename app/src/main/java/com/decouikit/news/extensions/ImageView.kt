@@ -36,7 +36,7 @@ fun ImageView.load(imageUrl: String?, isRounded: Boolean = false) {
                     .into(imageView)
             } else {
                 Glide
-                    .with(this)
+                    .with(context)
                     .load(imageUrl)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(imageView)
