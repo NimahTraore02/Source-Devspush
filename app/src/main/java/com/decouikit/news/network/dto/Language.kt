@@ -1,4 +1,4 @@
-package com.decouikit.news.database
+package com.decouikit.news.network.dto
 
 //
 // Created by Dragan Koprena on 10/19/19.

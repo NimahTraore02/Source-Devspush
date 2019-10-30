@@ -173,6 +173,10 @@ object InMemory {
         return TAGS_MAP[tagId]
     }
 
+    fun getTags(): ArrayList<Tag>? {
+        return TAGS as ArrayList<Tag>
+    }
+
     fun loadTag(context: Context) {
         TAGS.addAll(Preference(context).loadTags())
         if (TAGS.isNotEmpty()) {

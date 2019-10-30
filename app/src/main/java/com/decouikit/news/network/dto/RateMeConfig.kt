@@ -1,4 +1,4 @@
-package com.decouikit.news.database
+package com.decouikit.news.network.dto
 //installDays - default 10, 0 means install day.
 //launchTimes - default 10
 //remindInterval - default 1

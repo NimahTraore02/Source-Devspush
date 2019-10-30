@@ -5,6 +5,8 @@ import com.decouikit.news.R
 import com.decouikit.news.activities.common.BottomNavigationActivity
 import com.decouikit.news.activities.common.NavigationActivity
 import com.decouikit.news.network.dto.Category
+import com.decouikit.news.network.dto.Language
+import com.decouikit.news.network.dto.RateMeConfig
 import com.decouikit.news.network.dto.WizardItemModel
 
 object Config {
@@ -21,80 +23,44 @@ object Config {
         return languages
     }
 
-    fun getDefaultValueForLanguage(): String {
-        return "en"
-    }
+    fun getDefaultValueForLanguage(): String = "en"
 
-    fun getDefaultTheme(): Int {
-        //Set default theme light or dark
-        return getLightTheme()
-    }
+    //Set default theme light or dark
+    fun getDefaultTheme(): Int = getLightTheme()
 
-    fun getLightTheme(): Int {
-        return R.style.AppTheme
-    }
+    fun getLightTheme(): Int = R.style.AppTheme
 
-    fun getDarkTheme(): Int {
-        return R.style.AppThemeDark
-    }
+    fun getDarkTheme(): Int = R.style.AppThemeDark
 
-    fun getDefaultNavigationStyle(): Class<*> {
-        return drawerNavigationStyle()
-    }
+    fun getDefaultNavigationStyle(): Class<*> = drawerNavigationStyle()
 
-    fun bottomNavigationStyle(): Class<*> {
-        return BottomNavigationActivity::class.java
-    }
+    fun bottomNavigationStyle(): Class<*> = BottomNavigationActivity::class.java
 
-    fun drawerNavigationStyle(): Class<*> {
-        return NavigationActivity::class.java
-    }
+    fun drawerNavigationStyle(): Class<*> = NavigationActivity::class.java
 
     //Show interstitial after 10 opens single post
     // if you don't want interstitial ads just put value -1
-    fun promptForInterstitialCounter(): Int {
-        return 10
-    }
+    fun promptForInterstitialCounter(): Int = 10
 
-    fun getNumberOfItemPerPage(): Int {
-        return 10
-    }
+    fun getNumberOfItemPerPage(): Int = 10
 
-    fun getNumberOfItemForSlider(): Int {
-        return 3
-    }
+    fun getNumberOfItemForSlider(): Int = 3
 
-    fun isFeaturesPostsGetFromSticky(): Boolean{
-        return false
-    }
+    fun isFeaturesPostsGetFromSticky(): Boolean = false
 
-    fun getDefaultValueForPushNotification(): Boolean {
-        return true
-    }
+    fun getDefaultValueForPushNotification(): Boolean = true
 
-    fun getDefaultValueForRTL(): Boolean {
-        return false
-    }
+    fun getDefaultValueForRTL(): Boolean = false
 
-    fun getFacebookUrl(): String {
-        return "https://www.facebook.com"
-    }
+    fun getFacebookUrl(): String = "https://www.facebook.com"
 
-    fun getTwitterUrl(): String {
-        return "https://twitter.com"
-    }
+    fun getTwitterUrl(): String = "https://twitter.com"
 
-    fun getYoutubeUrl(): String {
-        return "https://www.youtube.com/"
-    }
+    fun getYoutubeUrl(): String = "https://www.youtube.com/"
 
-    fun getInstagramUrl(): String {
-        return "https://www.instagram.com"
-    }
+    fun getInstagramUrl(): String = "https://www.instagram.com"
 
-    fun getPurchaseLink(): String {
-        return "https://devspush.com/deco-news-android-mobile-app-for-wordpress"
-    }
+    fun getPurchaseLink(): String = "https://devspush.com/deco-news-android-mobile-app-for-wordpress"
 
     fun isRateMeEnabled(): Boolean = true
 
@@ -111,9 +77,7 @@ object Config {
         return items
     }
 
-    fun isExcludeCategoryEnabled(): Boolean {
-        return true
-    }
+    fun isExcludeCategoryEnabled(): Boolean = true
 
     fun isCategoryIncluded(category: Category): Boolean {
         return getListOfIncludedCategories().contains(category.name)

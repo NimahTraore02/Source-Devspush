@@ -26,6 +26,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     customNotification.url.getUrlFromString(),
                     object : PostListener {
                         override fun onSuccess(post: PostItem) {
+                            post.categoryName =
+                                InMemory.getCategoryById(post.categories[0])?.name ?: ""
                             InMemory.addNotificationPosts(applicationContext, post)
                         }
 
@@ -42,10 +44,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 remoteMessage.notification?.body ?: ""
             )
         }
-    }
-
-    private fun getPostIdFromUrl(url: String): String {
-        return ""
     }
 
     override fun onNewToken(token: String) {
