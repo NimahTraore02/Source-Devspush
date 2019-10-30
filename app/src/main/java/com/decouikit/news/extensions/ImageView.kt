@@ -2,6 +2,7 @@ package com.decouikit.news.extensions
 
 import android.graphics.Matrix
 import android.text.TextUtils
+import android.util.Log
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
@@ -13,26 +14,36 @@ import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.dto.MediaItem
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.sync.SyncMedia
+import org.jetbrains.anko.runOnUiThread
+import java.lang.Exception
 
 //
 // Created by Dragan Koprena on 10/22/19.
 //
 fun ImageView.load(imageUrl: String?, isRounded: Boolean = false) {
+
     if (imageUrl == null) {
         return
     }
-    if (isRounded) {
-        Glide.with(context)
-            .load(imageUrl)
-            .apply(RequestOptions.circleCropTransform())
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .into(this)
-    } else {
-        Glide
-            .with(this)
-            .load(imageUrl)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .into(this)
+    val imageView = this
+    try {
+        context.runOnUiThread {
+            if (isRounded) {
+                Glide.with(context)
+                    .load(imageUrl)
+                    .apply(RequestOptions.circleCropTransform())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imageView)
+            } else {
+                Glide
+                    .with(this)
+                    .load(imageUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imageView)
+            }
+        }
+    } catch (e: Exception) {
+        Log.e("TEST", e.localizedMessage, e)
     }
 }
 
