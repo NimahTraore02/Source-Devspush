@@ -15,7 +15,7 @@ object Config {
         val languages = mutableListOf<Language>()
         languages.add(
             Language(
-                baseUrl = "https://deconews.decouikit.com/wp-json/wp/v2/",
+                baseUrl = "http://www.teknolo.com/wp-json/wp/v2/",
                 language = "English",
                 languageCode = "en"
             )

@@ -62,6 +62,7 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
         setContentView(R.layout.activity_post)
         ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.coordinatorParent)
         postItem = loadPostItem()
+        InMemory.addNotificationPosts(this, postItem)
         loadTag(postItem)
         initLayout()
         initListeners()

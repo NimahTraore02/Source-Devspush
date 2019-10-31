@@ -68,9 +68,7 @@ class PostCommentActivity : BaseActivity(), View.OnClickListener {
             )?.enqueue(result = {
                 when (it) {
                     is Result.Success -> {
-                        if (it.response.body() != null) {
-                            finish()
-                        }
+                        finish()
                     }
                     is Result.Failure -> {
                         Toast.makeText(

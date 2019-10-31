@@ -37,18 +37,15 @@ class BookmarkFragment : Fragment(), View.OnClickListener, RemoveBookmarkListene
         super.onResume()
         bookmarkedList = InMemory.getBookmarks()
         adapter.setData(bookmarkedList)
+        hideContent(bookmarkedList.isNullOrEmpty())
     }
 
     private fun initLayout() {
         bookmarkedList = InMemory.getBookmarks()
-        if (bookmarkedList.isNullOrEmpty()) {
-            hideContent(true)
-        } else {
-            hideContent(false)
-            adapter = BookmarkAdapter(bookmarkedList, this)
-            itemView.rvItems.layoutManager = LinearLayoutManager(itemView.context)
-            itemView.rvItems.adapter = adapter
-        }
+        adapter = BookmarkAdapter(bookmarkedList, this)
+        itemView.rvItems.layoutManager = LinearLayoutManager(itemView.context)
+        itemView.rvItems.adapter = adapter
+        hideContent(bookmarkedList.isNullOrEmpty())
     }
 
     private fun initListeners() {

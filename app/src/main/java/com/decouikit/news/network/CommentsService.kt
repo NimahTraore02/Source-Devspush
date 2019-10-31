@@ -1,6 +1,5 @@
 package com.decouikit.news.network
 
-import com.decouikit.news.database.Config
 import com.decouikit.news.network.dto.CommentItem
 import com.decouikit.news.network.dto.CommentRequest
 import retrofit2.Call
@@ -14,7 +13,7 @@ interface CommentsService {
     fun getCommentListPostId(
         @Query("post") post: Int,
         @Query("page") page: Int = 1,
-        @Query("per_page") per_page: Int = Config.getNumberOfItemPerPage()
+        @Query("per_page") per_page: Int = 100
     ): Call<List<CommentItem>>
 
     @POST("comments")
