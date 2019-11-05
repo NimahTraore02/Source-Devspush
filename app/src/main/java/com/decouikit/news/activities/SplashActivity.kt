@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.animation.AnimationUtils
 import com.decouikit.news.R
 import com.decouikit.news.database.Config
+import com.decouikit.news.database.InMemory
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.loadDeepLinkUrl
 import com.decouikit.news.extensions.openIntroPage
@@ -26,6 +27,7 @@ class SplashActivity : Activity(), ResultListener<Boolean> {
         setContentView(R.layout.activity_splash)
         animation()
         MobileAds.initialize(this)
+        InMemory.clear()
         SyncApi.sync(this, this)
     }
 

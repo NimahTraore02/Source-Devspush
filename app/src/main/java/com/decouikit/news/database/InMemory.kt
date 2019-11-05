@@ -42,6 +42,8 @@ object InMemory {
 
     fun setCategoryList(categoryList: List<Category>) {
         //CHECK INCLUDE CATEGORY
+        CATEGORY_ALL.clear()
+        CATEGORY_MAP_ALL.clear()
         val categoryTemp = mutableListOf<Category>()
         categoryList.forEach {
             if (Config.isExcludeCategoryEnabled()) {

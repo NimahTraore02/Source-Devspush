@@ -15,11 +15,18 @@ object Config {
         val languages = mutableListOf<Language>()
         languages.add(
             Language(
-                baseUrl = "http://www.teknolo.com/wp-json/wp/v2/",
+                baseUrl = "https://deconews.decouikit.com/wp-json/wp/v2/",
                 language = "English",
                 languageCode = "en"
             )
         )
+//        languages.add(
+//            Language(
+//                baseUrl = "SITE YOUR NEW LANGUAGE",
+//                language = "NEW LANGUAGE",
+//                languageCode = "SHORT CODE FOR LANGUAGE"
+//            )
+//        )
         return languages
     }
 
@@ -107,19 +114,19 @@ object Config {
         val pageOne = WizardItemModel(
             context.getString(R.string.wizard_page_one_title),
             context.getString(R.string.wizard_page_one_subtitle),
-            "https://deco-news.s3.eu-central-1.amazonaws.com/Magic.png"
+            "https://decouikit.com/presentationEnvato/deco-news-android/magic.png"
         )
 
         val pageTwo = WizardItemModel(
             context.getString(R.string.wizard_page_two_title),
             context.getString(R.string.wizard_page_two_subtitle),
-            "https://deco-news.s3.eu-central-1.amazonaws.com/Design.png"
+            "https://decouikit.com/presentationEnvato/deco-news-android/design.png"
         )
 
         val pageThree = WizardItemModel(
             context.getString(R.string.wizard_page_three_title),
             context.getString(R.string.wizard_page_three_subtitle),
-            "https://deco-news.s3.eu-central-1.amazonaws.com/Code.png"
+            "https://decouikit.com/presentationEnvato/deco-news-android/code.png"
         )
 
         return arrayListOf(pageOne, pageTwo, pageThree)

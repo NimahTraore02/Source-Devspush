@@ -28,11 +28,13 @@ object SyncCategory {
                         }
                         pageNumber = 1
                         InMemory.setCategoryList(categories)
+                        categories.clear()
                         listener?.onResult(true)
                     }
                     is Result.Failure -> {
                         pageNumber = 1
                         InMemory.setCategoryList(categories)
+                        categories.clear()
                         listener?.onResult(false)
                     }
                 }
