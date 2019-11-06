@@ -44,7 +44,7 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
         val adapter = fragmentManager?.let { ViewPagerAdapter(it) }
 
         val mTabLayout = itemView.findViewById<TabLayout>(R.id.homeTab)
-        InMemory.getCategoryList().forEach {
+        InMemory.getCategoryList(requireContext()).forEach {
             mTabLayout.addTab(mTabLayout.newTab().setText(it.name))
             adapter?.addFragment(getFilterFragment(it))
         }

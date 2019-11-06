@@ -35,13 +35,13 @@ class BookmarkFragment : Fragment(), View.OnClickListener, RemoveBookmarkListene
 
     override fun onResume() {
         super.onResume()
-        bookmarkedList = InMemory.getBookmarks()
+        bookmarkedList = InMemory.getBookmarks(requireContext())
         adapter.setData(bookmarkedList)
         hideContent(bookmarkedList.isNullOrEmpty())
     }
 
     private fun initLayout() {
-        bookmarkedList = InMemory.getBookmarks()
+        bookmarkedList = InMemory.getBookmarks(requireContext())
         adapter = BookmarkAdapter(bookmarkedList, this)
         itemView.rvItems.layoutManager = LinearLayoutManager(itemView.context)
         itemView.rvItems.adapter = adapter

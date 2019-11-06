@@ -21,7 +21,7 @@ object SyncPost {
                     is Result.Success -> {
                         try {
                             val postItem: PostItem = it.response.body() as PostItem
-                            for (category in InMemory.getCategoryList()) {
+                            for (category in InMemory.getCategoryList(context)) {
                                 if (postItem.categories.contains(category.id)) {
                                     postItem.categoryName = category.name
                                 }

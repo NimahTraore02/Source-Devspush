@@ -77,7 +77,7 @@ class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListe
     }
 
     private fun loadData() {
-        notificationList = InMemory.getNotificationPosts()
+        notificationList = InMemory.getNotificationPosts(this)
         adapter.setData(notificationList)
         hideContent(notificationList.isNullOrEmpty())
     }

@@ -2,6 +2,7 @@ package com.decouikit.news.network.sync
 
 import android.content.Context
 import com.decouikit.news.database.InMemory
+import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.interfaces.ResultListener
@@ -28,12 +29,14 @@ object SyncCategory {
                         }
                         pageNumber = 1
                         InMemory.setCategoryList(categories)
+                        Preference(context).persisCategoris(categories as ArrayList<Category>)
                         categories.clear()
                         listener?.onResult(true)
                     }
                     is Result.Failure -> {
                         pageNumber = 1
                         InMemory.setCategoryList(categories)
+                        Preference(context).persisCategoris(categories as ArrayList<Category>)
                         categories.clear()
                         listener?.onResult(false)
                     }

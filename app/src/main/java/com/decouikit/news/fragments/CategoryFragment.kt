@@ -30,7 +30,7 @@ class CategoryFragment : Fragment(), OnCategoryItemClickListener {
     }
 
     private fun initLayout() {
-        val adapter = CategoryAdapter(InMemory.getCategoryList() as ArrayList<Category>, this)
+        val adapter = CategoryAdapter(InMemory.getCategoryList(requireContext()), this)
         itemView.rvCategory.layoutManager = GridLayoutManager(itemView.context, 2)
         itemView.rvCategory.adapter = adapter
     }

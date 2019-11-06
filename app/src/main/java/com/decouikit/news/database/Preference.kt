@@ -2,10 +2,7 @@ package com.decouikit.news.database
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.decouikit.news.network.dto.MediaItem
-import com.decouikit.news.network.dto.PostItem
-import com.decouikit.news.network.dto.Tag
-import com.decouikit.news.network.dto.User
+import com.decouikit.news.network.dto.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -96,6 +93,19 @@ class Preference(context: Context) {
         }
         val type = object : TypeToken<List<User>>() {}.type
         return Gson().fromJson(json, type)
+    }
+
+    fun loadCategories(): ArrayList<Category> {
+        val json = prefs.getString("CATEGORIS", arrayListOf<Category>().toString())
+        if (json.isNullOrEmpty()) {
+            return arrayListOf()
+        }
+        val type = object : TypeToken<List<Category>>() {}.type
+        return Gson().fromJson(json, type)
+    }
+
+    fun persisCategoris(items: ArrayList<Category>) {
+        prefs.edit().putString("CATEGORIS", Gson().toJson(items)).apply()
     }
 
     fun loadNotificationPosts(): ArrayList<PostItem> {
