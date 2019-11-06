@@ -5,11 +5,13 @@ import com.decouikit.news.database.Config
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
+import com.decouikit.news.extensions.toDate
 import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.PostItem
 import org.jetbrains.anko.doAsync
+import java.sql.Date
 
 object SyncPost {
     fun getPostById(context: Context, postId: String, listener: ResultListener<PostItem>?) {
@@ -42,7 +44,7 @@ object SyncPost {
 
     fun getPostsList(
         context: Context,
-        categoryId: String,
+        categoryId: String?,
         sticky: Boolean?,
         page: Int = 1,
         perPage: Int = Config.getNumberOfItemPerPage(),
@@ -53,14 +55,14 @@ object SyncPost {
                 RetrofitClientInstance.getRetrofitInstance(context)
                     ?.create(PostsService::class.java)
             service?.getPostsList(categoryId, sticky, page, perPage)?.enqueue(result = {
-                val items: ArrayList<PostItem> = ArrayList()
+                var items: ArrayList<PostItem> = ArrayList()
 
                 when (it) {
                     is Result.Success -> {
                         try {
                             if (!it.response.body().isNullOrEmpty()) {
-                                val items = it.response.body() as ArrayList<PostItem>
-                                items.sortedBy { it.modified_gmt }
+                                items = it.response.body() as ArrayList<PostItem>
+                                items.sortedBy { it.id }
                             }
                             items.forEach { postItem ->
                                 if (postItem.categories.isNotEmpty()) {
@@ -80,7 +82,6 @@ object SyncPost {
         }
     }
 
-
     fun getPostsSearch(
         context: Context,
         search: String,
@@ -94,13 +95,13 @@ object SyncPost {
                 RetrofitClientInstance.getRetrofitInstance(context)
                     ?.create(PostsService::class.java)
             service?.getPostsSearch(search, tags, page, perPage)?.enqueue(result = {
-                val items: ArrayList<PostItem> = ArrayList()
+                var items: ArrayList<PostItem> = ArrayList()
                 when (it) {
                     is Result.Success -> {
                         try {
                             if (!it.response.body().isNullOrEmpty()) {
-                                val items = it.response.body() as ArrayList<PostItem>
-                                items.sortedBy { it.modified_gmt }
+                                items = it.response.body() as ArrayList<PostItem>
+                                items.sortedBy { it.id }
                             }
                             items.forEach { postItem ->
                                 if (postItem.categories.isNotEmpty()) {

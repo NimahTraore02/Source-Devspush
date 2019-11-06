@@ -10,19 +10,18 @@ import com.decouikit.news.activities.common.BaseActivity
 import com.decouikit.news.adapters.ViewAllAdapter
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.database.Preference
-import com.decouikit.news.extensions.Result
-import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.extensions.hideSoftKeyboard
 import com.decouikit.news.extensions.openPostActivity
 import com.decouikit.news.interfaces.OpenPostListener
-import com.decouikit.news.network.PostsService
-import com.decouikit.news.network.RetrofitClientInstance
+import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.dto.PostItem
+import com.decouikit.news.network.sync.SyncPost
 import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.EndlessRecyclerOnScrollListener
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.activity_search.*
 import org.jetbrains.anko.doAsync
+import java.util.*
 
 
 class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
@@ -33,9 +32,6 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     private var searchText = ""
     private var page = 0
     private var tagId: Int? = null
-    private val postService by lazy {
-        RetrofitClientInstance.getRetrofitInstance(this)?.create(PostsService::class.java)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,30 +124,27 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
 
     private fun search(text: String) {
         doAsync {
-            postService?.getPostsSearch(text, tagId, ++page)?.enqueue {
-                when (it) {
-                    is Result.Success -> {
-                        if (it.response.body().isNullOrEmpty()) {
+            SyncPost.getPostsSearch(
+                applicationContext,
+                text,
+                tagId,
+                ++page,
+                listener = object : ResultListener<List<PostItem>> {
+                    override fun onResult(value: List<PostItem>?) {
+                        if (value == null) {
                             if (adapter.itemCount == 0) {
                                 setEmptyState(true)
                             }
-                        } else {
-                            val postsResponse = it.response.body() as ArrayList<PostItem>
-                            val posts: ArrayList<PostItem> = ArrayList()
-                            for (postItem in postsResponse) {
-                                val category = InMemory.getCategoryById(postItem.categories[0])
-                                postItem.categoryName = category?.name ?: ""
-                                posts.add(postItem)
-                            }
-                            adapter.setData(posts)
+                            return
                         }
+                        if (value.isEmpty()) {
+                            setEmptyState(true)
+                        } else {
+                            adapter.setData(value as ArrayList<PostItem>)
+                        }
+                        swipeRefresh.isRefreshing = false
                     }
-                    is Result.Failure -> {
-                        setEmptyState(true)
-                    }
-                }
-                swipeRefresh.isRefreshing = false
-            }
+                })
         }
     }
 

@@ -12,15 +12,12 @@ import com.decouikit.news.R
 import com.decouikit.news.adapters.FeaturedNewsAdapter
 import com.decouikit.news.adapters.RecentNewsAdapter
 import com.decouikit.news.database.Config
-import com.decouikit.news.database.InMemory
-import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.categoryToString
-import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.extensions.viewAll
-import com.decouikit.news.network.PostsService
-import com.decouikit.news.network.RetrofitClientInstance
+import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.dto.CategoryType
 import com.decouikit.news.network.dto.PostItem
+import com.decouikit.news.network.sync.SyncPost
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.fragment_filter.view.*
@@ -32,11 +29,6 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     private lateinit var itemView: View
     private var categoryId: Int? = null
     private lateinit var categoryName: String
-
-    private val postsService by lazy {
-        RetrofitClientInstance.getRetrofitInstance(requireContext())
-            ?.create(PostsService::class.java)
-    }
 
     private lateinit var allPostList: List<PostItem>
 
@@ -88,25 +80,19 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
 
     private fun initData() {
         doAsync {
-            postsService?.getPostsList(
-                categoryId?.categoryToString(),
-                null,
-                ++page,
-                Config.getNumberOfItemPerPage()
-            )?.enqueue(result = {
-                when (it) {
-                    is Result.Success -> {
-                        if (!it.response.body().isNullOrEmpty()) {
-                            allPostList = it.response.body() as ArrayList<PostItem>
-                            allPostList.sortedBy { it.modified_gmt }
+            SyncPost.getPostsList(
+                requireContext(), categoryId?.categoryToString(), null, ++page,
+                Config.getNumberOfItemPerPage(), object : ResultListener<List<PostItem>> {
+                    override fun onResult(value: List<PostItem>?) {
+                        if (value != null) {
+                            allPostList = value
                             initFeaturedNews()
                             initRecentNews()
                         }
                         setShimmerAnimationVisibility(false)
                         itemView.swipeRefresh.isRefreshing = false
                     }
-                }
-            })
+                })
         }
     }
 
@@ -150,28 +136,26 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
 
     private fun loadMoreRecentData() {
         doAsync {
-            postsService?.getPostsList(
-                categoryId.toString(), null,
+
+            SyncPost.getPostsList(
+                requireContext(),
+                categoryId.toString(),
+                null,
                 ++page,
-                Config.getNumberOfItemPerPage()
-            )?.enqueue(result = {
-                when (it) {
-                    is Result.Success -> {
-                        if (!it.response.body().isNullOrEmpty()) {
-                            val allPostList = it.response.body() as ArrayList<PostItem>
-                            for (postItem in allPostList) {
-                                postItem.categoryName = categoryName
+                Config.getNumberOfItemPerPage(),
+                object : ResultListener<List<PostItem>> {
+                    override fun onResult(value: List<PostItem>?) {
+                        if (value != null) {
+                            allPostList.forEach { postItem ->
                                 if (!recentPostItems.contains(postItem)) {
                                     recentPostItems.add(postItem)
                                 }
                             }
-                            allPostList.sortedBy { it.modified_gmt }
-                            recentAdapter.setData(recentPostItems)
                         }
+                        recentAdapter.setData(recentPostItems)
+                        itemView.swipeRefresh.isRefreshing = false
                     }
-                }
-                itemView.swipeRefresh.isRefreshing = false
-            })
+                })
         }
     }
 

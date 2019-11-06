@@ -12,13 +12,11 @@ import com.decouikit.news.R
 import com.decouikit.news.adapters.FeaturedNewsAdapter
 import com.decouikit.news.adapters.RecentNewsAdapter
 import com.decouikit.news.database.Config
-import com.decouikit.news.extensions.Result
-import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.extensions.viewAll
-import com.decouikit.news.network.PostsService
-import com.decouikit.news.network.RetrofitClientInstance
+import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.dto.CategoryType
 import com.decouikit.news.network.dto.PostItem
+import com.decouikit.news.network.sync.SyncPost
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.fragment_filter.view.*
@@ -30,12 +28,6 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
     private lateinit var itemView: View
     private var categoryId: Int? = null
     private lateinit var categoryName: String
-
-    private val postsService by lazy {
-        RetrofitClientInstance.getRetrofitInstance(requireContext())?.create(
-            PostsService::class.java
-        )
-    }
 
     private lateinit var featuredAdapter: FeaturedNewsAdapter
 
@@ -77,7 +69,6 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
         itemView.rvRecentNews.layoutManager = recentManager
         itemView.rvRecentNews.adapter = recentAdapter
         itemView.rvRecentNews.setHasFixedSize(true)
-
         setShimmerAnimationVisibility(true)
     }
 
@@ -101,10 +92,8 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
         featuredAdapter.removeAllItems()
         recentAdapter.removeAllItems()
         recentPostItems.removeAll { true }
-
         getFeaturedNews()
         getRecentNews()
-
     }
 
     private fun setShimmerAnimationVisibility(isVisible: Boolean) {
@@ -125,82 +114,74 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
 
     private fun getFeaturedNews() {
         doAsync {
-            postsService?.getPostsList(
+            SyncPost?.getPostsList(
+                requireContext(),
                 categoryId.toString(),
                 true,
                 1,
-                Config.getNumberOfItemPerPage()
-            )?.enqueue(result = {
-                featuresSync = true
-                when (it) {
-                    is Result.Success -> {
-                        if (!it.response.body().isNullOrEmpty()) {
-                            val featuredItems = it.response.body() as ArrayList<PostItem>
-                            val featuredPostItems = arrayListOf<PostItem>()
-                            for (postItem in featuredItems) {
-                                postItem.categoryName = categoryName
-                                featuredPostItems.add(postItem)
-                            }
-                            featuredAdapter.setData(featuredPostItems)
-                            itemView.viewPager.adapter = featuredAdapter
-                            itemView.viewPager.offscreenPageLimit =
-                                Config.getNumberOfItemForSlider()
-                            itemView.viewPager.setCurrentItem(
-                                1,
-                                true
-                            )
-                            checkEmptyState()
-                            if (featuredAdapter.count != 0) {
-                                hideFeaturedNews(false)
-                            }
-
-                            if (featuresSync && recentSync) {
-                                setEmptyState(featuredAdapter.count == 0 && recentAdapter.itemCount == 0)
+                Config.getNumberOfItemPerPage(),
+                object : ResultListener<List<PostItem>> {
+                    override fun onResult(value: List<PostItem>?) {
+                        featuresSync = true
+                        if (value != null) {
+                            if (value.isEmpty()) {
+                                hideFeaturedNews(true)
+                                checkEmptyState()
+                            } else {
+                                val featuredItems = value as ArrayList<PostItem>
+                                featuredAdapter.setData(featuredItems)
+                                itemView.viewPager.adapter = featuredAdapter
+                                itemView.viewPager.offscreenPageLimit =
+                                    Config.getNumberOfItemForSlider()
+                                itemView.viewPager.setCurrentItem(1, true)
+                                checkEmptyState()
+                                hideFeaturedNews(featuredAdapter.count == 0)
+                                if (featuresSync && recentSync) {
+                                    setEmptyState(featuredAdapter.count == 0 && recentAdapter.itemCount == 0)
+                                }
                             }
                         } else {
                             hideFeaturedNews(true)
                             checkEmptyState()
                         }
                     }
-                    is Result.Failure -> {
-                        hideFeaturedNews(true)
-                        checkEmptyState()
-                    }
                 }
-            })
+            )
         }
     }
 
 
     private fun getRecentNews() {
-        postsService?.getPostsList(
+        SyncPost?.getPostsList(
+            requireContext(),
             categoryId.toString(),
             false,
             ++page,
-            Config.getNumberOfItemPerPage()
-        )?.enqueue(result = {
-            recentSync = true
-            when (it) {
-                is Result.Success -> {
-                    if (!it.response.body().isNullOrEmpty()) {
-                        val allPostList = it.response.body() as ArrayList<PostItem>
-                        for (postItem in allPostList) {
-                            postItem.categoryName = categoryName
-                            if (!recentPostItems.contains(postItem)) {
-                                recentPostItems.add(postItem)
+            Config.getNumberOfItemPerPage(),
+            object : ResultListener<List<PostItem>> {
+                override fun onResult(value: List<PostItem>?) {
+                    recentSync = true
+                    if (value != null) {
+                        if (value.isNotEmpty()) {
+                            val allPostList = value as ArrayList<PostItem>
+                            for (postItem in allPostList) {
+                                if (!recentPostItems.contains(postItem)) {
+                                    recentPostItems.add(postItem)
+                                }
                             }
+                            recentAdapter.setData(recentPostItems)
+                            hideRecentNews(recentAdapter.itemCount == 0)
+                            checkEmptyState()
+                        } else {
+                            hideRecentNews(true)
+                            checkEmptyState()
                         }
-                        recentAdapter.setData(recentPostItems)
-                        hideRecentNews(recentAdapter.itemCount == 0)
+                    } else {
+                        hideRecentNews(true)
                         checkEmptyState()
                     }
                 }
-                is Result.Failure -> {
-                    hideRecentNews(true)
-                    checkEmptyState()
-                }
-            }
-        })
+            })
         swipeRefresh.isRefreshing = false
         setShimmerAnimationVisibility(false)
         checkEmptyState()
