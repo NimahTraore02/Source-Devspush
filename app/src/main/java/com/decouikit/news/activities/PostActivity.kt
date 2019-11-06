@@ -177,6 +177,7 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
                                 item.categoryName = postItem.categoryName
                                 postItems.add(item)
                             }
+                            postItems.sortBy { it.modified_gmt }
                             adapter.setData(postItems)
                             adapter.removeItem(postItem)
                         }

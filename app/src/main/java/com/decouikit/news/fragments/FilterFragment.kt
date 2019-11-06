@@ -98,6 +98,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
                     is Result.Success -> {
                         if (!it.response.body().isNullOrEmpty()) {
                             allPostList = it.response.body() as ArrayList<PostItem>
+                            allPostList.sortedBy { it.modified_gmt }
                             initFeaturedNews()
                             initRecentNews()
                         }
@@ -164,6 +165,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
                                     recentPostItems.add(postItem)
                                 }
                             }
+                            allPostList.sortedBy { it.modified_gmt }
                             recentAdapter.setData(recentPostItems)
                         }
                     }
