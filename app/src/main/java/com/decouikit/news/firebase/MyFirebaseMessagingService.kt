@@ -16,7 +16,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-        Log.e("TEST", "onMessageReceived:firebase")
         if (remoteMessage.data != null) {
             try {
                 val customNotification =
@@ -27,8 +26,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     object : ResultListener<PostItem> {
                         override fun onResult(value: PostItem?) {
                             if (value != null) {
-                                value.categoryName =
-                                    InMemory.getCategoryById(value.categories[0])?.name ?: ""
+                                value.categoryName = InMemory.getCategoryById(value.categories[0])?.name ?: ""
                                 InMemory.addNotificationPosts(applicationContext, value)
                             }
                         }

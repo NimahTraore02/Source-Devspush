@@ -19,7 +19,6 @@ import kotlinx.android.synthetic.main.activity_notifications.*
 class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListener {
 
     private lateinit var adapter: ViewAllAdapter
-    private var notificationList: ArrayList<PostItem> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,12 +33,10 @@ class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListe
         if (Preference(this).isRtlEnabled) {
             ivBack.rotation = 180f
         }
-
-        notificationList = arrayListOf()
-        adapter = ViewAllAdapter(notificationList, this)
+        adapter = ViewAllAdapter(arrayListOf(), this)
         rvNotifications.layoutManager = LinearLayoutManager(this)
         rvNotifications.adapter = adapter
-        hideContent(notificationList.isNullOrEmpty())
+        hideContent(true)
         //swipe to remove item listener
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(rvNotifications)
@@ -60,10 +57,10 @@ class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListe
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
             //Remove swiped item from list and notify the RecyclerView
-            val tempPostItem = notificationList[viewHolder.adapterPosition]
-            adapter.removeItem(tempPostItem)
-            InMemory.removeNotificationPosts(this@NotificationActivity, tempPostItem.id)
-            hideContent(notificationList.isNullOrEmpty())
+            val post = adapter.getItemByPosition(viewHolder.adapterPosition)
+            adapter.removeItemByPosition(viewHolder.adapterPosition)
+            InMemory.removeNotificationPosts(this@NotificationActivity, post.id)
+            hideContent(adapter.itemCount == 0)
         }
     }
 
@@ -77,9 +74,8 @@ class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListe
     }
 
     private fun loadData() {
-        notificationList = InMemory.getNotificationPosts(this)
-        adapter.setData(notificationList)
-        hideContent(notificationList.isNullOrEmpty())
+        adapter.setData(InMemory.getNotificationPosts(this) as ArrayList<PostItem>)
+        hideContent(adapter.itemCount == 0)
     }
 
     override fun onClick(v: View) {

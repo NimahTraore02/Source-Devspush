@@ -30,8 +30,6 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     private var categoryId: Int? = null
     private lateinit var categoryName: String
 
-    private lateinit var allPostList: List<PostItem>
-
     private lateinit var featuredAdapter: FeaturedNewsAdapter
 
     private lateinit var recentAdapter: RecentNewsAdapter
@@ -84,11 +82,8 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
                 requireContext(), categoryId?.categoryToString(), null, ++page,
                 Config.getNumberOfItemPerPage(), object : ResultListener<List<PostItem>> {
                     override fun onResult(value: List<PostItem>?) {
-                        if (value != null) {
-                            allPostList = value
-                            initFeaturedNews()
-                            initRecentNews()
-                        }
+                        initFeaturedNews(value)
+                        initRecentNews(value)
                         setShimmerAnimationVisibility(false)
                         itemView.swipeRefresh.isRefreshing = false
                     }
@@ -96,41 +91,41 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
         }
     }
 
-    private fun initFeaturedNews() {
+    private fun initFeaturedNews(value: List<PostItem>?) {
         val featuredPostItems = arrayListOf<PostItem>()
         var postCounter = 0
-        for (postItem in allPostList) {
-            postItem.categoryName = categoryName
-            featuredPostItems.add(postItem)
-            postCounter++
-            if (postCounter == Config.getNumberOfItemForSlider()) {
-                break
+        if (value != null) {
+            for (postItem in value) {
+                postItem.categoryName = categoryName
+                featuredPostItems.add(postItem)
+                postCounter++
+                if (postCounter == Config.getNumberOfItemForSlider()) {
+                    break
+                }
             }
         }
         featuredAdapter.setData(featuredPostItems)
         itemView.viewPager.adapter = featuredAdapter
         itemView.viewPager.offscreenPageLimit = Config.getNumberOfItemForSlider()
-        itemView.viewPager.setCurrentItem(
-            1,
-            true
-        )
+        itemView.viewPager.setCurrentItem(1, true)
         setEmptyState(featuredAdapter.count == 0)
     }
 
-    private fun initRecentNews() {
+    private fun initRecentNews(value: List<PostItem>?) {
         var start = Config.getNumberOfItemForSlider()
-        val end = allPostList.size
+        val end = value?.size?:0
         if (start > end) {
             start = end
         }
-        for (postItem in allPostList.subList(start, end)) {
-            postItem.categoryName = categoryName
-            if (!recentPostItems.contains(postItem)) {
-                recentPostItems.add(postItem)
+        if (value != null) {
+            for (postItem in value.subList(start, end)) {
+                postItem.categoryName = categoryName
+                if (!recentPostItems.contains(postItem)) {
+                    recentPostItems.add(postItem)
+                }
             }
         }
         recentAdapter.setData(recentPostItems)
-
         hideRecentNews(recentAdapter.itemCount == 0)
     }
 
@@ -145,11 +140,9 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
                 Config.getNumberOfItemPerPage(),
                 object : ResultListener<List<PostItem>> {
                     override fun onResult(value: List<PostItem>?) {
-                        if (value != null) {
-                            allPostList.forEach { postItem ->
-                                if (!recentPostItems.contains(postItem)) {
-                                    recentPostItems.add(postItem)
-                                }
+                        value?.forEach { postItem ->
+                            if (!recentPostItems.contains(postItem)) {
+                                recentPostItems.add(postItem)
                             }
                         }
                         recentAdapter.setData(recentPostItems)

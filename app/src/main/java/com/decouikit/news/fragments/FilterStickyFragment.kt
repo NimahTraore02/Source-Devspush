@@ -114,7 +114,7 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
 
     private fun getFeaturedNews() {
         doAsync {
-            SyncPost?.getPostsList(
+            SyncPost.getPostsList(
                 requireContext(),
                 categoryId.toString(),
                 true,
@@ -150,9 +150,8 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
         }
     }
 
-
     private fun getRecentNews() {
-        SyncPost?.getPostsList(
+        SyncPost.getPostsList(
             requireContext(),
             categoryId.toString(),
             false,
@@ -173,11 +172,11 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
                             hideRecentNews(recentAdapter.itemCount == 0)
                             checkEmptyState()
                         } else {
-                            hideRecentNews(true)
+                            hideRecentNews(recentAdapter.itemCount == 0)
                             checkEmptyState()
                         }
                     } else {
-                        hideRecentNews(true)
+                        hideRecentNews(recentAdapter.itemCount == 0)
                         checkEmptyState()
                     }
                 }

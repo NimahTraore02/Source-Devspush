@@ -38,6 +38,15 @@ class ViewAllAdapter(
         notifyDataSetChanged()
     }
 
+    fun removeItemByPosition(position: Int) {
+        items.removeAt(position)
+        notifyDataSetChanged()
+    }
+
+    fun getItemByPosition(position: Int): PostItem {
+        return items[position]
+    }
+
     fun removeAllItems() {
         items.removeAll { true }
         notifyDataSetChanged()

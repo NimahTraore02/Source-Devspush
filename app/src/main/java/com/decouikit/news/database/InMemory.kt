@@ -2,6 +2,7 @@ package com.decouikit.news.database
 
 import android.content.Context
 import com.decouikit.news.network.dto.*
+import org.jetbrains.anko.collections.forEachReversedByIndex
 
 object InMemory {
     private var CATEGORY: MutableList<Category> = mutableListOf()
@@ -82,7 +83,7 @@ object InMemory {
     }
 
     fun getCategoryList(context: Context): ArrayList<Category> {
-        if (CATEGORY.size == 0) {
+        if (CATEGORY.isEmpty()) {
             loadCategories(context)
         }
         return CATEGORY as ArrayList<Category>
@@ -90,7 +91,7 @@ object InMemory {
 
     //USER
     fun loadCategories(context: Context) {
-        if (CATEGORY.size == 0) {
+        if (CATEGORY.isEmpty()) {
             CATEGORY.addAll(Preference(context).loadCategories())
             if (CATEGORY.isNotEmpty()) {
                 CATEGORY.forEach { CATEGORY_MAP[it.id] = it }
@@ -104,7 +105,7 @@ object InMemory {
 
     //USER
     fun loadUsers(context: Context) {
-        if (USER.size == 0) {
+        if (USER.isEmpty()) {
             USER.addAll(Preference(context).loadUsers())
             if (USER.isNotEmpty()) {
                 USER.forEach { USER_MAP[it.id] = it }
@@ -125,7 +126,7 @@ object InMemory {
     }
 
     fun getUsers(context: Context): ArrayList<User> {
-        if (USER.size == 0) {
+        if (USER.isEmpty()) {
             loadUsers(context)
         }
         return USER as ArrayList<User>
@@ -146,7 +147,7 @@ object InMemory {
     }
 
     fun loadBookmark(context: Context) {
-        if (BOOKMARK.size == 0) {
+        if (BOOKMARK.isEmpty()) {
             BOOKMARK.addAll(Preference(context).loadBookmark())
             if (BOOKMARK.isNotEmpty()) {
                 BOOKMARK.forEach { BOOKMARK_MAP[it.id] = it }
@@ -163,7 +164,7 @@ object InMemory {
     }
 
     fun getBookmarks(context: Context): ArrayList<PostItem> {
-        if (BOOKMARK.size == 0) {
+        if (BOOKMARK.isEmpty()) {
             loadBookmark(context)
         }
         return BOOKMARK as ArrayList<PostItem>
@@ -190,7 +191,7 @@ object InMemory {
     }
 
     fun loadNotificationPosts(context: Context) {
-        if (NOTIFICATION.size == 0) {
+        if (NOTIFICATION.isEmpty()) {
             NOTIFICATION.addAll(Preference(context).loadNotificationPosts())
             if (NOTIFICATION.isNotEmpty()) {
                 NOTIFICATION.forEach { NOTIFICATION_MAP[it.id] = it }
@@ -199,18 +200,23 @@ object InMemory {
     }
 
     fun addNotificationPosts(context: Context, post: PostItem) {
-        if (!NOTIFICATION_MAP.containsKey(post.id)) {
-            NOTIFICATION_MAP[post.id] = post
-            NOTIFICATION.add(post)
+        if (NOTIFICATION.isEmpty()) {
+            loadNotificationPosts(context)
         }
+        NOTIFICATION_MAP[post.id] = post
+        NOTIFICATION.add(post)
         Preference(context).persisNotificationPosts(NOTIFICATION as ArrayList<PostItem>)
     }
 
-    fun getNotificationPosts(context: Context): ArrayList<PostItem> {
-        if (NOTIFICATION.size == 0) {
+    fun getNotificationPosts(context: Context): List<PostItem> {
+        if (NOTIFICATION.isEmpty()) {
             loadNotificationPosts(context)
         }
-        return NOTIFICATION as ArrayList<PostItem>
+        val result: ArrayList<PostItem> = ArrayList()
+        NOTIFICATION.forEachReversedByIndex {
+            result.add(it)
+        }
+        return result
     }
 
     fun removeNotificationPosts(context: Context, postId: Int) {
@@ -228,14 +234,14 @@ object InMemory {
     }
 
     fun getTags(context: Context): ArrayList<Tag>? {
-        if (TAGS.size == 0) {
+        if (TAGS.isEmpty()) {
             loadTag(context)
         }
         return TAGS as ArrayList<Tag>
     }
 
     fun loadTag(context: Context) {
-        if (TAGS.size == 0) {
+        if (TAGS.isEmpty()) {
             TAGS.addAll(Preference(context).loadTags())
             if (TAGS.isNotEmpty()) {
                 TAGS.forEach { TAGS_MAP[it.id] = it }
@@ -257,7 +263,7 @@ object InMemory {
     }
 
     fun loadMedia(context: Context) {
-        if (MEDIA.size == 0) {
+        if (MEDIA.isEmpty()) {
             MEDIA.addAll(Preference(context).loadMedia())
             if (MEDIA.isNotEmpty()) {
                 MEDIA.forEach { MEDIA_MAP[it.id] = it }
@@ -274,7 +280,7 @@ object InMemory {
     }
 
     fun getAllMedia(context: Context): ArrayList<MediaItem> {
-        if (MEDIA.size == 0) {
+        if (MEDIA.isEmpty()) {
             loadMedia(context)
         }
         return MEDIA as ArrayList<MediaItem>

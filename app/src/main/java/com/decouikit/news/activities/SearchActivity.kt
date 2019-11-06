@@ -131,17 +131,12 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
                 ++page,
                 listener = object : ResultListener<List<PostItem>> {
                     override fun onResult(value: List<PostItem>?) {
-                        if (value == null) {
-                            if (adapter.itemCount == 0) {
-                                setEmptyState(true)
+                        if (value != null) {
+                            if (value.isNotEmpty()) {
+                                adapter.setData(value as ArrayList<PostItem>)
                             }
-                            return
                         }
-                        if (value.isEmpty()) {
-                            setEmptyState(true)
-                        } else {
-                            adapter.setData(value as ArrayList<PostItem>)
-                        }
+                        setEmptyState(adapter.itemCount == 0)
                         swipeRefresh.isRefreshing = false
                     }
                 })
