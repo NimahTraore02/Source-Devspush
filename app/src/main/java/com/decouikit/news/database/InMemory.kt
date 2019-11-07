@@ -176,13 +176,13 @@ object InMemory {
             BOOKMARK_MAP.remove(postItem.id)
             BOOKMARK.remove(post)
         }
-        Preference(context).persisNotificationPosts(BOOKMARK as ArrayList<PostItem>)
+        Preference(context).persistBookmark(BOOKMARK as ArrayList<PostItem>)
     }
 
     fun clearAllBookmark(context: Context) {
         BOOKMARK.clear()
         BOOKMARK_MAP.clear()
-        Preference(context).persisNotificationPosts(BOOKMARK as ArrayList<PostItem>)
+        Preference(context).persistBookmark(BOOKMARK as ArrayList<PostItem>)
     }
 
     //NOTIFICATION
@@ -200,6 +200,10 @@ object InMemory {
     }
 
     fun addNotificationPosts(context: Context, post: PostItem) {
+        if (NOTIFICATION_MAP.containsKey(post.id)) {
+            return
+        }
+
         if (NOTIFICATION.isEmpty()) {
             loadNotificationPosts(context)
         }

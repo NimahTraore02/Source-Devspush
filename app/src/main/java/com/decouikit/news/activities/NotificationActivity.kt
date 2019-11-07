@@ -58,8 +58,8 @@ class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListe
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
             //Remove swiped item from list and notify the RecyclerView
             val post = adapter.getItemByPosition(viewHolder.adapterPosition)
-            adapter.removeItemByPosition(viewHolder.adapterPosition)
             InMemory.removeNotificationPosts(this@NotificationActivity, post.id)
+            adapter.removeItemByPosition(viewHolder.adapterPosition)
             hideContent(adapter.itemCount == 0)
         }
     }
