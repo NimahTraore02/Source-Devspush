@@ -14,15 +14,12 @@ class NewsApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         // OneSignal Initialization
-        if (Preference(context = this).isPushNotificationEnabled) {
-            OneSignal.startInit(this)
-                .setNotificationOpenedHandler(OneSignalNotificationOpenHandler(this))
-                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
-                .unsubscribeWhenNotificationsAreDisabled(true)
-                .init()
-        } else {
-            OneSignal.setSubscription(false)
-        }
+        OneSignal.startInit(this)
+            .setNotificationOpenedHandler(OneSignalNotificationOpenHandler(this))
+            .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
+            .unsubscribeWhenNotificationsAreDisabled(true)
+            .init()
+        OneSignal.setSubscription(Preference(context = this).isPushNotificationEnabled)
         Glide.get(this).setMemoryCategory(MemoryCategory.HIGH)
         MobileAds.initialize(this) {}
     }

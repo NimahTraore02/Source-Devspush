@@ -81,18 +81,13 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
                 val isChecked: Boolean = (v as CheckBox).isChecked
                 prefs.isPushNotificationEnabled = isChecked
                 if (isChecked) {
-                    OneSignal.startInit(context)
-                        .setNotificationOpenedHandler(
-                            OneSignalNotificationOpenHandler(
-                                requireContext()
-                            )
-                        )
+                    OneSignal.startInit(requireContext().applicationContext)
+                        .setNotificationOpenedHandler(OneSignalNotificationOpenHandler(requireContext().applicationContext))
                         .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
                         .unsubscribeWhenNotificationsAreDisabled(true)
                         .init()
-                } else {
-                    OneSignal.setSubscription(false)
                 }
+                OneSignal.setSubscription(isChecked)
             }
             itemView.cbEnableRtl -> {
                 val isChecked: Boolean = (v as CheckBox).isChecked
