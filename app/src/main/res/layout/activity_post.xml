@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/coordinatorParent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/postBg">
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/coordinatorParent"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:background="?attr/postBg"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toTopOf="@+id/btnOpenComments"
+    android:layout_marginBottom="@dimen/large_margin">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -218,12 +229,18 @@
                         android:nestedScrollingEnabled="false" />
                 </RelativeLayout>
 
-                <Button
-                    android:id="@+id/btnOpenComments"
-                    style="@style/ButtonStyle"
-                    android:layout_margin="@dimen/normal_padding"
-                    android:text="@string/view_all_comments" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <Button
+        android:id="@+id/btnOpenComments"
+        style="@style/ButtonStyle"
+        android:layout_marginBottom="@dimen/large_margin"
+        android:layout_marginStart="@dimen/button_margin"
+        android:layout_marginEnd="@dimen/button_margin"
+        android:text="@string/view_all_comments"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
