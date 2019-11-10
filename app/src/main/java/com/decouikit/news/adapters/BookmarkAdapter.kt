@@ -52,7 +52,7 @@ class BookmarkAdapter(private var items: ArrayList<PostItem>,
             view.ivItemBg.load(item)
             view.tvItemTitle.setHtml(item.title.rendered)
             view.tvItemDate.text = Date().getDateFromString(item.date)?.getCalendarDate()
-            view.tvItemTag.text = item.categoryName
+            view.tvItemTag.loadCategoryName(item)
             view.ivBookmark.setBookmarkIcon(true)
         }
 

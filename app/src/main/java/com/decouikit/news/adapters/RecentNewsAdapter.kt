@@ -50,7 +50,7 @@ class RecentNewsAdapter(private var items: ArrayList<PostItem>)
 
         fun bind(item: PostItem) {
             this.item = item
-            view.tvItemTag.text = item.categoryName
+            view.tvItemTag.loadCategoryName(item)
             view.tvItemTitle.setHtml(item.title.rendered)
             view.tvItemDate.text = Date().getDateFromString(item.date)?.getCalendarDate()
             view.ivItemBg.load(item)

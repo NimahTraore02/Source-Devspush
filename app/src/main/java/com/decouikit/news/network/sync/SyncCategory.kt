@@ -7,8 +7,10 @@ import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.CategoryService
+import com.decouikit.news.network.MediaService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.Category
+import com.decouikit.news.network.dto.MediaItem
 import org.jetbrains.anko.doAsync
 
 object SyncCategory {
@@ -35,13 +37,41 @@ object SyncCategory {
                     }
                     is Result.Failure -> {
                         pageNumber = 1
-                        InMemory.setCategoryList(categories)
-                        Preference(context).persisCategoris(categories as ArrayList<Category>)
+                        Preference(context).loadCategories()
                         categories.clear()
                         listener?.onResult(false)
                     }
                 }
             })
+        }
+    }
+
+    fun getCategoryById(id: Int, context: Context, listener: ResultListener<Category>?) {
+        doAsync {
+            val categoryService =
+                RetrofitClientInstance.getRetrofitInstance(context)
+                    ?.create(CategoryService::class.java)
+            val category = InMemory.getCategoryById(id)
+            if (category != null) {
+                listener?.onResult(category)
+            } else {
+                categoryService?.getCategoryById(id.toString())?.enqueue {
+                    when (it) {
+                        is Result.Success -> {
+                            try {
+                                val categoryItem = it.response.body() as Category
+                                InMemory.addCategory(context, categoryItem)
+                                listener?.onResult(categoryItem)
+                            } catch (e: Exception) {
+                                listener?.onResult(null)
+                            }
+                        }
+                        is Result.Failure -> {
+                            listener?.onResult(null)
+                        }
+                    }
+                }
+            }
         }
     }
 }

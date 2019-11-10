@@ -24,7 +24,6 @@ fun String.getUrlFromString(): String {
     return ""
 }
 
-
 fun String.toDate(): Date? {
     val tz = TimeZone.getTimeZone("UTC")
     val df = SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'")

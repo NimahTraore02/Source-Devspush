@@ -99,6 +99,14 @@ object InMemory {
         }
     }
 
+    fun addCategory(context: Context, category: Category) {
+        if (!MEDIA_MAP.containsKey(category.id)) {
+            CATEGORY_MAP[category.id] = category
+            CATEGORY.add(category)
+        }
+        Preference(context).persisCategoris(CATEGORY as ArrayList<Category>)
+    }
+
     fun getCategoryById(categoryId: Int): Category? {
         return CATEGORY_MAP_ALL[categoryId]
     }

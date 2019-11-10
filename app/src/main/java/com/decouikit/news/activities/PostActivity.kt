@@ -97,7 +97,7 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
         }
         ivPostBg.load(postItem)
         ivBookmark.setBookmarkIcon(postItem)
-        tvTag.text = postItem.categoryName
+        tvTag.loadCategoryName(postItem)
         tvItemTitle.setHtml(postItem.title.rendered)
         tvDate.text = Date().getDateFromString(postItem.date)?.getCalendarDate()
         tvComments.visibility = postItem.getCommentVisible()

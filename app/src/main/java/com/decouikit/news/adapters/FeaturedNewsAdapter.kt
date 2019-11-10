@@ -42,7 +42,7 @@ class FeaturedNewsAdapter(
     }
 
     private fun initLayout(view: View, position: Int) {
-        view.tvTag.text = postItems[position].categoryName
+        view.tvTag.loadCategoryName(postItems[position])
         view.tvItemTitle.setHtml(postItems[position].title.rendered)
         view.tvItemDate.text = Date().getDateFromString(postItems[position].date)?.getCalendarDate()
         view.ivItemBg.load(postItems[position])

@@ -1,12 +1,10 @@
 package com.decouikit.news.adapters
 
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.decouikit.news.R
-import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.*
 import com.decouikit.news.interfaces.OpenPostListener
 import com.decouikit.news.network.dto.PostItem
@@ -73,11 +71,7 @@ class ViewAllAdapter(
             view.ivItemBg.load(item)
             view.tvItemTitle.setHtml(item.title.rendered)
             view.tvItemDate.text = Date().getDateFromString(item.date)?.getCalendarDate()
-            if (TextUtils.isEmpty(item.categoryName)) {
-                view.tvItemTag.text = InMemory.getCategoryById(item.categories[0])?.name?:""
-            } else {
-                view.tvItemTag.text = item.categoryName
-            }
+            view.tvItemTag.loadCategoryName(item)
             view.ivBookmark.setBookmarkIcon(item)
         }
 
