@@ -92,7 +92,8 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun initLayout() {
-        if (Preference(this).isRtlEnabled) {
+        val isRTL = Preference(this).isRtlEnabled
+        if (isRTL) {
             ivBack.rotation = 180f
         }
         ivPostBg.load(postItem)
@@ -112,9 +113,11 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
             NewsConstants.HTML_STYLE_DARK
         }
 
+        val rtlText = if (Preference(this).isRtlEnabled) "dir=\"rtl\" lang=\"\""  else ""
+
         webView.loadDataWithBaseURL(
             null,
-            "<HTML>" + String.format("%s%s", style, postItem.content.rendered) + "</HTML>",
+            "<HTML $rtlText>" + String.format("%s%s", style, postItem.content.rendered) + "</HTML>",
             NewsConstants.TEXT_HTML,
             NewsConstants.UTF_8,
             null

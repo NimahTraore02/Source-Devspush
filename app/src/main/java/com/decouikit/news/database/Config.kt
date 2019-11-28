@@ -22,7 +22,7 @@ object Config {
         )
 //        languages.add(
 //            Language(
-//                baseUrl = "SITE YOUR NEW LANGUAGE",i
+//                baseUrl = "SITE YOUR NEW LANGUAGE",
 //                language = "NEW LANGUAGE",
 //                languageCode = "SHORT CODE FOR LANGUAGE"
 //            )
