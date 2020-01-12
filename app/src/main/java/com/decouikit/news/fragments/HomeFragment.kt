@@ -44,6 +44,8 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
         val adapter = fragmentManager?.let { ViewPagerAdapter(it) }
 
         val mTabLayout = itemView.findViewById<TabLayout>(R.id.homeTab)
+        mTabLayout.addTab(mTabLayout.newTab().setText(getString(R.string.menu_home)))
+        adapter?.addFragment(getFilterFragment())
         InMemory.getCategoryList(requireContext()).forEach {
             mTabLayout.addTab(mTabLayout.newTab().setText(it.name))
             adapter?.addFragment(getFilterFragment(it))
@@ -74,6 +76,14 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
             FilterStickyFragment.newInstance(category.id, category.name)
         } else {
             FilterFragment.newInstance(category.id, category.name)
+        }
+    }
+
+    private fun getFilterFragment(): Fragment {
+        return if (Config.isFeaturesPostsGetFromSticky()) {
+            FilterStickyFragment.newInstance(0, getString(R.string.menu_home))
+        } else {
+            FilterFragment.newInstance(0, getString(R.string.menu_home))
         }
     }
 
