@@ -6,6 +6,7 @@ import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import com.decouikit.news.R
 import com.decouikit.news.activities.NewsApplication
 import com.decouikit.news.activities.NotificationActivity
@@ -22,11 +23,14 @@ class BottomNavigationActivity : BaseActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener,
     HomeFragmentListener {
 
+    private lateinit var toolbar: Toolbar
     private var doubleBackToExitPressedOnce = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bottom_navigation)
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
         ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.parent)
         navigation?.setOnNavigationItemSelectedListener(this)
         loadFragment(intent.getIntExtra(NewsConstants.FRAGMENT_POSITION, -1))

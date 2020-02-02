@@ -39,7 +39,7 @@ object Config {
 
     fun getDarkTheme(): Int = R.style.AppThemeDark
 
-    fun getDefaultNavigationStyle(): Class<*> = drawerNavigationStyle()
+    fun getDefaultNavigationStyle(): Class<*> = bottomNavigationStyle()
 
     fun bottomNavigationStyle(): Class<*> = BottomNavigationActivity::class.java
 
