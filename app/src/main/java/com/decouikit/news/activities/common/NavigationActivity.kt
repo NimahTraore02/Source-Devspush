@@ -41,7 +41,7 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false) //hide default app title in toolbar
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        val drawerLayout: DrawerLayout = findViewById(R.id.parent)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
             this,
@@ -108,7 +108,7 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
     }
 
     override fun onBackPressed() {
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        val drawerLayout: DrawerLayout = findViewById(R.id.parent)
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
@@ -169,7 +169,7 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
         if (item.itemId != R.id.nav_home) {
             ActivityUtil.setAppBarElevation(appBar, 8f)
         }
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        val drawerLayout: DrawerLayout = findViewById(R.id.parent)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
