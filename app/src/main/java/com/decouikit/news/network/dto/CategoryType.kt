@@ -4,8 +4,8 @@ package com.decouikit.news.network.dto
 // Created by Dragan Koprena on 10/22/19.
 //
 
-enum class CategoryType(type: Int) {
-    ALL(0), FEATURED(1), RECENT(2);
+enum class CategoryType {
+    ALL, FEATURED, RECENT;
 
     companion object {
         fun getType(type: Int): CategoryType {

@@ -16,30 +16,22 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-        if (remoteMessage.data != null) {
-            try {
-                val customNotification =
-                    Gson().fromJson(remoteMessage.data["custom"], CustomNotification::class.java)
-                SyncPost.getPostById(
-                    this,
-                    customNotification.url.getUrlFromString(),
-                    object : ResultListener<PostItem> {
-                        override fun onResult(value: PostItem?) {
-                            if (value != null) {
-                                value.categoryName = InMemory.getCategoryById(value.categories[0])?.name ?: ""
-                                InMemory.addNotificationPosts(applicationContext, value)
-                            }
-                        }
-                    })
-            } catch (e: Exception) {
-                Log.e("FirebaseService", e.localizedMessage, e)
-            }
-        } else if (remoteMessage.notification != null) {
-            NotificationUtil.showNotification(
+        try {
+            val customNotification =
+                Gson().fromJson(remoteMessage.data["custom"], CustomNotification::class.java)
+            SyncPost.getPostById(
                 this,
-                remoteMessage.notification?.title ?: "",
-                remoteMessage.notification?.body ?: ""
-            )
+                customNotification.url.getUrlFromString(),
+                object : ResultListener<PostItem> {
+                    override fun onResult(value: PostItem?) {
+                        if (value != null) {
+                            value.categoryName = InMemory.getCategoryById(value.categories[0])?.name ?: ""
+                            InMemory.addNotificationPosts(applicationContext, value)
+                        }
+                    }
+                })
+        } catch (e: Exception) {
+            Log.e("FirebaseService", e.localizedMessage, e)
         }
     }
 

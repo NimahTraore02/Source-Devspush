@@ -57,7 +57,7 @@ object InMemory {
                 }
             }
         }
-        CATEGORY_ALL.addAll(categoryList)
+        CATEGORY_ALL.addAll(categoryTemp)
         if (!Config.isExcludeCategoryEnabled()) {
             //sort category
             if (categoryList.isNotEmpty()) {
@@ -71,7 +71,7 @@ object InMemory {
                 }
             }
         } else {
-            CATEGORY.addAll(categoryList)
+            CATEGORY.addAll(categoryTemp)
         }
 
         if (CATEGORY.isNotEmpty()) {
