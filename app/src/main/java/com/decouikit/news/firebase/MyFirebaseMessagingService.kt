@@ -7,7 +7,6 @@ import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.dto.CustomNotification
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.sync.SyncPost
-import com.decouikit.news.notification.NotificationUtil
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
@@ -33,10 +32,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         } catch (e: Exception) {
             Log.e("FirebaseService", e.localizedMessage, e)
         }
-    }
-
-    override fun onNewToken(token: String) {
-        super.onNewToken(token)
     }
 }
 

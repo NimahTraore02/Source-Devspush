@@ -2,10 +2,7 @@ package com.decouikit.news.notification
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import com.decouikit.news.activities.SplashActivity
-import com.decouikit.news.database.Config
-import com.onesignal.OSNotification
 import com.onesignal.OSNotificationOpenResult
 import com.onesignal.OneSignal
 

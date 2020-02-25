@@ -1,10 +1,7 @@
 package com.decouikit.news.network.dto
 
-//
-// Created by Dragan Koprena on 10/22/19.
-//
-
 enum class CategoryType {
+
     ALL, FEATURED, RECENT;
 
     companion object {

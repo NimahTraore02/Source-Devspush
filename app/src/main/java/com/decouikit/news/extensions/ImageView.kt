@@ -17,9 +17,6 @@ import com.decouikit.news.network.sync.SyncMedia
 import org.jetbrains.anko.runOnUiThread
 import java.lang.Exception
 
-//
-// Created by Dragan Koprena on 10/22/19.
-//
 fun ImageView.load(imageUrl: String?, isRounded: Boolean = false) {
 
     if (imageUrl == null) {

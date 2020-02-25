@@ -49,7 +49,7 @@ class Preference(context: Context) {
         set(value) = prefs.edit { it.putBoolean("INTRO_PAGE", value) }
 
     fun isThemeLight(): Boolean {
-        return colorTheme == Config.getDefaultTheme()
+        return colorTheme == Config.getLightTheme()
     }
 
     var tabPosition: Int
@@ -96,7 +96,7 @@ class Preference(context: Context) {
     }
 
     fun loadCategories(): ArrayList<Category> {
-        val json = prefs.getString("CATEGORIS", arrayListOf<Category>().toString())
+        val json = prefs.getString("CATEGORIES", arrayListOf<Category>().toString())
         if (json.isNullOrEmpty()) {
             return arrayListOf()
         }
@@ -104,8 +104,8 @@ class Preference(context: Context) {
         return Gson().fromJson(json, type)
     }
 
-    fun persisCategoris(items: ArrayList<Category>) {
-        prefs.edit().putString("CATEGORIS", Gson().toJson(items)).apply()
+    fun persisCategories(items: ArrayList<Category>) {
+        prefs.edit().putString("CATEGORIES", Gson().toJson(items)).apply()
     }
 
     fun loadNotificationPosts(): ArrayList<PostItem> {

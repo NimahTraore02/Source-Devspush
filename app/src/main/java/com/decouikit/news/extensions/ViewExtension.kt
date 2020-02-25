@@ -8,10 +8,8 @@ import android.widget.EditText
 import android.widget.ImageView
 import com.decouikit.news.R
 import com.decouikit.news.activities.PostActivity
-import com.decouikit.news.activities.SearchActivity
 import com.decouikit.news.activities.ViewAllActivity
 import com.decouikit.news.database.InMemory
-import com.decouikit.news.database.Preference
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.NewsConstants
 import com.google.gson.Gson

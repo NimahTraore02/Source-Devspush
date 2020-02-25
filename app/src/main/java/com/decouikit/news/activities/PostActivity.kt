@@ -10,7 +10,6 @@ import com.decouikit.news.activities.common.BaseActivity
 import com.decouikit.news.adapters.HashTagAdapter
 import com.decouikit.news.adapters.ViewAllAdapter
 import com.decouikit.news.database.Config
-import com.decouikit.news.database.InMemory
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.*
 import com.decouikit.news.interfaces.OnHashTagClickListener

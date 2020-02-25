@@ -104,7 +104,7 @@ object InMemory {
             CATEGORY_MAP[category.id] = category
             CATEGORY.add(category)
         }
-        Preference(context).persisCategoris(CATEGORY as ArrayList<Category>)
+        Preference(context).persisCategories(CATEGORY as ArrayList<Category>)
     }
 
     fun getCategoryById(categoryId: Int): Category? {

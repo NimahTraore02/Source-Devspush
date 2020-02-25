@@ -5,13 +5,11 @@ import com.decouikit.news.database.Config
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
-import com.decouikit.news.extensions.toDate
 import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.PostItem
 import org.jetbrains.anko.doAsync
-import java.sql.Date
 
 object SyncPost {
     fun getPostById(context: Context, postId: String, listener: ResultListener<PostItem>?) {

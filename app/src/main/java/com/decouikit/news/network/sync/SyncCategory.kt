@@ -7,15 +7,13 @@ import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.CategoryService
-import com.decouikit.news.network.MediaService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.Category
-import com.decouikit.news.network.dto.MediaItem
 import org.jetbrains.anko.doAsync
 
 object SyncCategory {
     private val categories = mutableListOf<Category>()
-    var pageNumber = 1
+    private var pageNumber = 1
     fun sync(context: Context, listener: ResultListener<Boolean>?) {
         val categoryService =
             RetrofitClientInstance.getRetrofitInstance(context)?.create(CategoryService::class.java)
@@ -31,7 +29,7 @@ object SyncCategory {
                         }
                         pageNumber = 1
                         InMemory.setCategoryList(categories)
-                        Preference(context).persisCategoris(categories as ArrayList<Category>)
+                        Preference(context).persisCategories(categories as ArrayList<Category>)
                         categories.clear()
                         listener?.onResult(true)
                     }

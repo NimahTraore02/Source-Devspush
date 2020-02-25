@@ -1,9 +1,5 @@
 package com.decouikit.news.utils
 
-/**
- * Created by dragank on 5/11/2017.
- */
-
 import android.annotation.TargetApi
 import android.content.Context
 import android.content.ContextWrapper

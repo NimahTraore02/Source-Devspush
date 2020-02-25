@@ -1,7 +1,6 @@
 package com.decouikit.news.database
 
 import android.content.Context
-import android.util.Log
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BottomNavigationActivity
 import com.decouikit.news.activities.common.NavigationActivity
@@ -16,7 +15,7 @@ object Config {
         val languages = mutableListOf<Language>()
         languages.add(
             Language(
-                baseUrl = "http://news.ez-wp.com//wp-json/wp/v2/",
+                baseUrl = "https://deconews.decouikit.com/wp-json/wp/v2/",
                 language = "English",
                 languageCode = "en"
             )
@@ -34,7 +33,7 @@ object Config {
     fun getDefaultValueForLanguage(): String = "en"
 
     //Set default theme light or dark
-    fun getDefaultTheme(): Int = getLightTheme()
+    fun getDefaultTheme(): Int = getDarkTheme()
 
     fun getLightTheme(): Int = R.style.AppTheme
 
@@ -76,13 +75,11 @@ object Config {
 
     //If you want to exclude some category from list add that category in this array
     private fun getListOfExcludedCategories(): ArrayList<String> {
-        val items = arrayListOf<String>()
-        return items
+        return arrayListOf()
     }
 
     fun getListOfIncludedCategories(): ArrayList<String> {
-        val items = arrayListOf<String>()
-        return items
+        return arrayListOf()
     }
 
     fun isExcludeCategoryEnabled(): Boolean = true

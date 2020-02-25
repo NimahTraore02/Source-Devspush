@@ -1,7 +1,6 @@
 package com.decouikit.news.activities
 
 import android.app.Application
-import android.util.Log
 import com.bumptech.glide.Glide
 import com.bumptech.glide.MemoryCategory
 import com.decouikit.news.database.Preference

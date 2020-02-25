@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.decouikit.news.R
 import com.decouikit.news.adapters.BookmarkAdapter
 import com.decouikit.news.database.InMemory
-import com.decouikit.news.database.Preference
 import com.decouikit.news.interfaces.RemoveBookmarkListener
 import com.decouikit.news.network.dto.PostItem
 import kotlinx.android.synthetic.main.fragment_bookmark.*
