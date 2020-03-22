@@ -105,7 +105,9 @@ class Preference(context: Context) {
     }
 
     fun persisCategories(items: ArrayList<Category>) {
-        prefs.edit().putString("CATEGORIES", Gson().toJson(items)).apply()
+        val categoryFilter = CategoryFilter()
+        categoryFilter.filterCategoryList(items)
+        prefs.edit().putString("CATEGORIES", Gson().toJson(categoryFilter.categoryAll)).apply()
     }
 
     fun loadNotificationPosts(): ArrayList<PostItem> {

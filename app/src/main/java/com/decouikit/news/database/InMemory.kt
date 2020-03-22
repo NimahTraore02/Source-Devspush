@@ -1,6 +1,7 @@
 package com.decouikit.news.database
 
 import android.content.Context
+import android.util.Log
 import com.decouikit.news.network.dto.*
 import org.jetbrains.anko.collections.forEachReversedByIndex
 
@@ -42,44 +43,13 @@ object InMemory {
     }
 
     fun setCategoryList(categoryList: List<Category>) {
-        //CHECK INCLUDE CATEGORY
-        CATEGORY_ALL.clear()
-        CATEGORY_MAP_ALL.clear()
-        val categoryTemp = mutableListOf<Category>()
-        categoryList.forEach {
-            if (Config.isExcludeCategoryEnabled()) {
-                if (!Config.isCategoryExcluded(it) && it.count > 0) {
-                    categoryTemp.add(it)
-                }
-            } else {
-                if (Config.isCategoryIncluded(it) && it.count > 0) {
-                    categoryTemp.add(it)
-                }
-            }
-        }
-        CATEGORY_ALL.addAll(categoryTemp)
-        if (!Config.isExcludeCategoryEnabled()) {
-            //sort category
-            if (categoryList.isNotEmpty()) {
-                val categoryMapTemp = mutableMapOf<String, Category>()
-                categoryList.forEach { categoryMapTemp[it.name] = it }
-                for (categoryName in Config.getListOfIncludedCategories()) {
-                    val category = categoryMapTemp[categoryName]
-                    if (category != null) {
-                        CATEGORY.add(category)
-                    }
-                }
-            }
-        } else {
-            CATEGORY.addAll(categoryTemp)
-        }
+        val categoryFilter = CategoryFilter()
+        categoryFilter.filterCategoryList(categoryList)
 
-        if (CATEGORY.isNotEmpty()) {
-            CATEGORY.forEach { CATEGORY_MAP[it.id] = it }
-        }
-        if (CATEGORY_ALL.isNotEmpty()) {
-            CATEGORY_ALL.forEach { CATEGORY_MAP_ALL[it.id] = it }
-        }
+        CATEGORY = categoryFilter.category
+        CATEGORY_ALL = categoryFilter.categoryAll
+        CATEGORY_MAP = categoryFilter.categoryMap
+        CATEGORY_MAP_ALL = categoryFilter.categoryMapAll
     }
 
     fun getCategoryList(context: Context): ArrayList<Category> {
