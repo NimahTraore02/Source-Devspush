@@ -13,7 +13,8 @@ interface PostsService {
         @Query("categories") categories: String?,
         @Query("sticky") sticky: Boolean?,
         @Query("page") page: Int = 1,
-        @Query("per_page") per_page: Int = Config.getNumberOfItemPerPage()
+        @Query("per_page") per_page: Int = Config.getNumberOfItemPerPage(),
+        @Query("order") order: String = Config.getOrder()
     ): Call<List<PostItem>>
 
     @GET("posts")

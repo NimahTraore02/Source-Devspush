@@ -51,6 +51,8 @@ object Config {
 
     fun getNumberOfItemPerPage(): Int = 10
 
+    fun getOrder(): String = "desc"
+
     fun getNumberOfItemForSlider(): Int = 3
 
     fun isFeaturesPostsGetFromSticky(): Boolean = false

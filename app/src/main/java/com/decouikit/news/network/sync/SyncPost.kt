@@ -60,7 +60,6 @@ object SyncPost {
                         try {
                             if (!it.response.body().isNullOrEmpty()) {
                                 items = it.response.body() as ArrayList<PostItem>
-                                items.sortedBy { it.id }
                             }
                             items.forEach { postItem ->
                                 if (postItem.categories.isNotEmpty()) {
