@@ -12,7 +12,7 @@ fun String.fromHtmlToString(): String {
     return fromHtml(this, FROM_HTML_MODE_COMPACT).toString()
 }
 
-fun String.getUrlFromString(): String {
+fun String.getPostIdFromUrl(): String {
     try {
         if (isNotEmpty()) {
             val uri = Uri.parse(this)

@@ -2,7 +2,7 @@ package com.decouikit.news.firebase
 
 import android.util.Log
 import com.decouikit.news.database.InMemory
-import com.decouikit.news.extensions.getUrlFromString
+import com.decouikit.news.extensions.getPostIdFromUrl
 import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.dto.CustomNotification
 import com.decouikit.news.network.dto.PostItem
@@ -20,7 +20,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 Gson().fromJson(remoteMessage.data["custom"], CustomNotification::class.java)
             SyncPost.getPostById(
                 this,
-                customNotification.url.getUrlFromString(),
+                customNotification.url.getPostIdFromUrl(),
                 object : ResultListener<PostItem> {
                     override fun onResult(value: PostItem?) {
                         if (value != null) {
