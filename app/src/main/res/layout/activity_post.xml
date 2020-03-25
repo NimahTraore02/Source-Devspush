@@ -85,7 +85,7 @@
         android:id="@+id/postParent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/negative_post_margin"
+        app:behavior_overlapTop ="@dimen/parallax_post_margin"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -237,10 +237,18 @@
     <Button
         android:id="@+id/btnOpenComments"
         style="@style/ButtonStyle"
-        android:layout_marginBottom="@dimen/large_margin"
+        android:layout_marginBottom="@dimen/button_margin"
         android:layout_marginStart="@dimen/button_margin"
         android:layout_marginEnd="@dimen/button_margin"
         android:text="@string/view_all_comments"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/publisherAdView"/>
+
+    <com.google.android.gms.ads.doubleclick.PublisherAdView
+        android:id="@+id/publisherAdView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:adSize="BANNER"
+        app:adUnitId="@string/banner_id"
         app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

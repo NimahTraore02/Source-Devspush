@@ -26,6 +26,10 @@ class HashTagAdapter(private var items: ArrayList<Tag>,
         holder.bind(items[position])
     }
 
+    fun setData(items: ArrayList<Tag>) {
+        this.items = items
+        notifyDataSetChanged()
+    }
 
     class ViewHolder(private val view: View,
                      private val listener: OnHashTagClickListener) :

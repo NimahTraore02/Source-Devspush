@@ -30,7 +30,7 @@
     <dimen name="shimmer_comment_image_size">50dp</dimen>
     <dimen name="shimmer_tag_size">60dp</dimen>
     <dimen name="post_bg_height">370dp</dimen>
-    <dimen name="negative_post_margin">-40dp</dimen>
+    <dimen name="parallax_post_margin">84dp</dimen>
     <dimen name="zero_density">0dp</dimen>
     <dimen name="category_item_height">173dp</dimen>
     <dimen name="recent_item_height">230dp</dimen>

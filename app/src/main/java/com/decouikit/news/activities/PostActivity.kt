@@ -3,6 +3,7 @@ package com.decouikit.news.activities
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.decouikit.news.R
@@ -33,10 +34,11 @@ import org.jetbrains.anko.doAsync
 import java.util.*
 import kotlin.math.abs
 
-open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
+class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     UriChromeClient.FullscreenInterface, OnHashTagClickListener {
 
     private lateinit var adapter: ViewAllAdapter
+    private lateinit var hashTagAdapter: HashTagAdapter
 
     private val postsService by lazy {
         RetrofitClientInstance.getRetrofitInstance(context = applicationContext)
@@ -61,10 +63,28 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
         setContentView(R.layout.activity_post)
         ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.coordinatorParent)
         postItem = loadPostItem()
-        loadTag(postItem)
         initLayout()
+        Handler().postDelayed({
+            initValues()
+        }, 200)
         initListeners()
+        
         incrementAdsCounterAndShowAds()
+        showBannerAds()
+    }
+
+    private fun initLayout() {
+        //setting recent news
+        adapter = ViewAllAdapter(arrayListOf(), this)
+        rvRecentNews.layoutManager = LinearLayoutManager(this)
+        rvRecentNews.adapter = adapter
+
+        //Setting tags
+        hashTagAdapter = HashTagAdapter(arrayListOf(), this)
+        val layoutManager = FlexboxLayoutManager(this)
+        layoutManager.justifyContent = JustifyContent.FLEX_START
+        rvTags.layoutManager = layoutManager
+        rvTags.adapter = hashTagAdapter
     }
 
     private fun incrementAdsCounterAndShowAds() {
@@ -80,6 +100,7 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
             tagsService.getTagById(tagId, this, object : ResultListener<Tag> {
                 override fun onResult(value: Tag?) {
                     value?.let { tagList.add(it) }
+                    hashTagAdapter.setData(tagList)
                 }
             })
         }
@@ -90,7 +111,7 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private fun initLayout() {
+    private fun initValues() {
         val isRTL = Preference(this).isRtlEnabled
         if (isRTL) {
             ivBack.rotation = 180f
@@ -127,17 +148,8 @@ open class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener
         btnOpenComments.text =
             getString(R.string.view_all_comments, 0)
 
-        adapter = ViewAllAdapter(arrayListOf(), this)
-        rvRecentNews.layoutManager = LinearLayoutManager(this)
-        rvRecentNews.adapter = adapter
-
+        loadTag(postItem)
         getRelatedNews()
-
-        //Setting tags
-        val layoutManager = FlexboxLayoutManager(this)
-        layoutManager.justifyContent = JustifyContent.FLEX_START
-        rvTags.layoutManager = layoutManager
-        rvTags.adapter = HashTagAdapter(tagList, this)
     }
 
     private fun initListeners() {

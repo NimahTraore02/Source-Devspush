@@ -34,6 +34,7 @@ class BottomNavigationActivity : BaseActivity(),
         supportActionBar?.setDisplayShowTitleEnabled(false) //hide default app title in toolbar
         ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.parent)
         navigation?.setOnNavigationItemSelectedListener(this)
+        showBannerAds()
         loadFragment(intent.getIntExtra(NewsConstants.FRAGMENT_POSITION, -1))
     }
 
