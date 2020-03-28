@@ -1,7 +1,9 @@
 package com.decouikit.news.activities.common
 
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.res.Configuration
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
@@ -19,21 +21,27 @@ import com.decouikit.news.activities.SearchActivity
 import com.decouikit.news.database.Config
 import com.decouikit.news.extensions.openExternalApp
 import com.decouikit.news.extensions.replaceFragment
+import com.decouikit.news.extensions.showNetworkMessage
 import com.decouikit.news.fragments.*
 import com.decouikit.news.interfaces.HomeFragmentListener
+import com.decouikit.news.network.receiver.NetworkReceiver
+import com.decouikit.news.network.receiver.NetworkReceiverListener
 import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.NewsConstants
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
 
 class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener,
-    HomeFragmentListener, View.OnClickListener {
+    HomeFragmentListener, View.OnClickListener,
+    NetworkReceiverListener {
 
     private lateinit var toolbar: Toolbar
     private lateinit var menuItem: Menu
     private var doubleBackToExitPressedOnce = false
+    private lateinit var snackBar: Snackbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,8 +63,11 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
         setSocialNetworksIconVisibility()
         navView.setNavigationItemSelectedListener(this)
         ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.parent)
-        showBannerAds()
         loadFragment(intent.getIntExtra(NewsConstants.FRAGMENT_POSITION, -1))
+
+        snackBar = Snackbar.make(findViewById(R.id.parent),
+            getString(R.string.check_internet_connection), Snackbar.LENGTH_LONG)
+        registerReceiver(NetworkReceiver(this), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
     }
 
     private fun loadFragment(fragmentPosition: Int) {
@@ -193,6 +204,13 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
             llSocialNetwork.visibility = View.GONE
         } else {
             llSocialNetwork.visibility = View.VISIBLE
+        }
+    }
+
+    override fun onNetworkConnectionChanged(isConnected: Boolean) {
+        snackBar.showNetworkMessage(this, isConnected)
+        if (isConnected) {
+            showBannerAds()
         }
     }
 }

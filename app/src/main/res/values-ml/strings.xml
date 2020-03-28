@@ -83,4 +83,6 @@
     <string name="hash_tag">#%s</string>
     <string name="hash_tag_search">Filter Tag: #%s</string>
     <string name="notification">Notifications</string>
+
+    <string name="check_internet_connection">Please check your internet connection and try again</string>
 </resources>

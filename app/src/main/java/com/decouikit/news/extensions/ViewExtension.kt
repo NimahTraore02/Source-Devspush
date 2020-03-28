@@ -4,14 +4,19 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.decouikit.news.R
 import com.decouikit.news.activities.PostActivity
 import com.decouikit.news.activities.ViewAllActivity
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.NewsConstants
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 
 
@@ -92,5 +97,15 @@ fun EditText.validationOfEmail(): Boolean {
             context.getString(R.string.email_validation_short)
         }
         false
+    }
+}
+
+fun Snackbar.showNetworkMessage(context: Context, isConnected: Boolean) {
+    if (!isConnected) {
+        this.setBackgroundTint(ContextCompat.getColor(context, R.color.colorAccent))
+        this.duration = BaseTransientBottomBar.LENGTH_INDEFINITE
+        this.show()
+    } else {
+        this.dismiss()
     }
 }

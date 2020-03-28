@@ -1,30 +1,41 @@
 package com.decouikit.news.activities.common
 
 import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import com.decouikit.news.R
 import com.decouikit.news.activities.NewsApplication
 import com.decouikit.news.activities.NotificationActivity
 import com.decouikit.news.activities.SearchActivity
 import com.decouikit.news.extensions.replaceFragment
+import com.decouikit.news.extensions.showNetworkMessage
 import com.decouikit.news.fragments.*
 import com.decouikit.news.interfaces.HomeFragmentListener
+import com.decouikit.news.network.receiver.NetworkReceiverListener
+import com.decouikit.news.network.receiver.NetworkReceiver
 import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.NewsConstants
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_bottom_navigation.*
 
 class BottomNavigationActivity : BaseActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener,
-    HomeFragmentListener {
+    HomeFragmentListener,
+    NetworkReceiverListener {
 
     private lateinit var toolbar: Toolbar
     private var doubleBackToExitPressedOnce = false
+
+    private lateinit var snackBar: Snackbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +45,11 @@ class BottomNavigationActivity : BaseActivity(),
         supportActionBar?.setDisplayShowTitleEnabled(false) //hide default app title in toolbar
         ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.parent)
         navigation?.setOnNavigationItemSelectedListener(this)
-        showBannerAds()
         loadFragment(intent.getIntExtra(NewsConstants.FRAGMENT_POSITION, -1))
+
+        snackBar = Snackbar.make(findViewById(R.id.parent),
+            getString(R.string.check_internet_connection), Snackbar.LENGTH_LONG)
+        registerReceiver(NetworkReceiver(this), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
     }
 
     private fun loadFragment(fragmentPosition: Int) {
@@ -125,5 +139,12 @@ class BottomNavigationActivity : BaseActivity(),
 
     override fun homeFragmentBehavior() {
         ActivityUtil.setAppBarElevation(appBar, 0f)
+    }
+
+    override fun onNetworkConnectionChanged(isConnected: Boolean) {
+        snackBar.showNetworkMessage(this, isConnected)
+        if (isConnected) {
+            showBannerAds()
+        }
     }
 }
