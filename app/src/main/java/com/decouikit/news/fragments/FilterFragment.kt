@@ -107,7 +107,6 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
         featuredAdapter.setData(featuredPostItems)
         itemView.viewPager.adapter = featuredAdapter
         itemView.viewPager.offscreenPageLimit = Config.getNumberOfItemForSlider()
-        itemView.viewPager.setCurrentItem(1, true)
         setEmptyState(featuredAdapter.count == 0)
     }
 
@@ -134,7 +133,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
 
             SyncPost.getPostsList(
                 requireContext(),
-                categoryId.toString(),
+                getCategoryId(),
                 null,
                 ++page,
                 Config.getNumberOfItemPerPage(),
@@ -149,6 +148,14 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
                         itemView.swipeRefresh.isRefreshing = false
                     }
                 })
+        }
+    }
+
+    private fun getCategoryId() : String? {
+        return if(categoryId != 0) {
+            categoryId.toString()
+        } else {
+            null
         }
     }
 

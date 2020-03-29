@@ -9,7 +9,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import com.decouikit.news.R
 import com.decouikit.news.activities.NewsApplication
 import com.decouikit.news.activities.NotificationActivity
@@ -18,12 +17,11 @@ import com.decouikit.news.extensions.replaceFragment
 import com.decouikit.news.extensions.showNetworkMessage
 import com.decouikit.news.fragments.*
 import com.decouikit.news.interfaces.HomeFragmentListener
-import com.decouikit.news.network.receiver.NetworkReceiverListener
 import com.decouikit.news.network.receiver.NetworkReceiver
+import com.decouikit.news.network.receiver.NetworkReceiverListener
 import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.NewsConstants
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_bottom_navigation.*
 

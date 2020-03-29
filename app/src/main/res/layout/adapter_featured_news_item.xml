@@ -65,12 +65,11 @@
                 style="@style/TitleTextStyle"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold"
+                android:layout_width="0dp"
                 android:layout_margin="@dimen/large_padding"
                 app:layout_constraintBottom_toTopOf="@+id/tvItemDate"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:paddingStart="@dimen/large_padding"
-                android:paddingEnd="@dimen/large_padding"
                 android:ellipsize="end"
                 android:maxLines="3"/>
 

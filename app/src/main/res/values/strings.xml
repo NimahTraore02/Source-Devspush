@@ -15,6 +15,7 @@
     <string name="featured_news">Featured news</string>
     <string name="recent_news">Recent news</string>
     <string name="view_all">View all</string>
+    <string name="all">All</string>
     <plurals name="numberOfPosts">
         <item quantity="one">%d post</item>
         <item quantity="other">%d posts</item>

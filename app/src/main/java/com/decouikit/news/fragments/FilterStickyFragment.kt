@@ -133,7 +133,6 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
                                 itemView.viewPager.adapter = featuredAdapter
                                 itemView.viewPager.offscreenPageLimit =
                                     Config.getNumberOfItemForSlider()
-                                itemView.viewPager.setCurrentItem(1, true)
                                 checkEmptyState()
                                 hideFeaturedNews(featuredAdapter.count == 0)
                                 if (featuresSync && recentSync) {
