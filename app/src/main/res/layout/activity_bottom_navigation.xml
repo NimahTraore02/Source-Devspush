@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:elevation="@dimen/zero_density">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -24,7 +24,7 @@
 
             <TextView
                 style="@style/ToolbarTitleStyle"/>
-        </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout

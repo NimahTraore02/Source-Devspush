@@ -30,7 +30,6 @@ class BottomNavigationActivity : BaseActivity(),
     HomeFragmentListener,
     NetworkReceiverListener {
 
-    private lateinit var toolbar: Toolbar
     private var doubleBackToExitPressedOnce = false
 
     private lateinit var snackBar: Snackbar
@@ -38,7 +37,6 @@ class BottomNavigationActivity : BaseActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bottom_navigation)
-        toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false) //hide default app title in toolbar
         ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.parent)
