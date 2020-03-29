@@ -2,6 +2,7 @@ package com.decouikit.news.utils
 
 import android.content.Intent
 import android.view.Menu
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity
 import com.decouikit.news.R
@@ -28,6 +29,9 @@ object ActivityUtil {
         appBar.elevation = elevation
     }
 
+    fun setAppBarElevation(appBar: ConstraintLayout, elevation: Float) {
+        appBar.elevation = elevation
+    }
     fun setSearchVisibility(menuItem: Menu, isVisible: Boolean) {
         menuItem.findItem(R.id.action_search).isVisible = isVisible
     }

@@ -37,6 +37,7 @@
     <dimen name="recent_item_image_height">110dp</dimen>
     <dimen name="view_all_image_height">120dp</dimen>
     <dimen name="view_all_item_height">130dp</dimen>
+    <dimen name="toolbar_title_padding">56dp</dimen>
 
     <dimen name="text_size_10sp">10sp</dimen>
     <dimen name="text_size_12sp">12sp</dimen>

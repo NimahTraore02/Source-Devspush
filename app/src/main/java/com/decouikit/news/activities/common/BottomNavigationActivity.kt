@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import com.decouikit.news.R
@@ -28,7 +29,7 @@ import kotlinx.android.synthetic.main.activity_bottom_navigation.*
 class BottomNavigationActivity : BaseActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener,
     HomeFragmentListener,
-    NetworkReceiverListener {
+    NetworkReceiverListener, View.OnClickListener {
 
     private var doubleBackToExitPressedOnce = false
 
@@ -37,14 +38,17 @@ class BottomNavigationActivity : BaseActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bottom_navigation)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false) //hide default app title in toolbar
+
+
         ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.parent)
         navigation?.setOnNavigationItemSelectedListener(this)
         loadFragment(intent.getIntExtra(NewsConstants.FRAGMENT_POSITION, -1))
 
         snackBar = Snackbar.make(findViewById(R.id.parent),
             getString(R.string.check_internet_connection), Snackbar.LENGTH_LONG)
+
+        initListeners()
+
         registerReceiver(NetworkReceiver(this), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
     }
 
@@ -69,27 +73,19 @@ class BottomNavigationActivity : BaseActivity(),
         super.onPause()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        //set true for visible search button
-        return true
+    private fun initListeners() {
+        ivSearch.setOnClickListener(this)
+        ivNotification.setOnClickListener(this)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_search -> {
+    override fun onClick(v: View) {
+        when(v) {
+            ivSearch -> {
                 startActivity(Intent(this, SearchActivity::class.java))
-                true
             }
-            R.id.action_notification -> {
+            ivNotification -> {
                 startActivity(Intent(this, NotificationActivity::class.java))
-                true
             }
-            else -> super.onOptionsItemSelected(item)
         }
     }
 
