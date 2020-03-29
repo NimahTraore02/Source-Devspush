@@ -45,6 +45,9 @@ object Config {
 
     fun drawerNavigationStyle(): Class<*> = NavigationActivity::class.java
 
+    //if you want "All" screen at tab beginning
+    fun isAllScreenEnabled(): Boolean = false
+
     //Show interstitial after 10 opens single post
     // if you don't want interstitial ads just put value -1
     fun promptForInterstitialCounter(): Int = 10
