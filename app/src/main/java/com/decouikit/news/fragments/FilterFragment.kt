@@ -1,6 +1,7 @@
 package com.decouikit.news.fragments
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,6 +38,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     private lateinit var recentManager: GridLayoutManager
 
     private var page = 0
+    private var reCallApi = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,10 +84,19 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
                 requireContext(), categoryId?.categoryToString(), null, ++page,
                 Config.getNumberOfItemPerPage(), object : ResultListener<List<PostItem>> {
                     override fun onResult(value: List<PostItem>?) {
-                        initFeaturedNews(value)
-                        initRecentNews(value)
-                        setShimmerAnimationVisibility(false)
-                        itemView.swipeRefresh.isRefreshing = false
+                        if (value?.size?:0 > 0) {
+                            initFeaturedNews(value)
+                            initRecentNews(value)
+                            setShimmerAnimationVisibility(false)
+                            itemView.swipeRefresh.isRefreshing = false
+                        } else {
+                          if (page == 1 && !reCallApi) {
+                              reCallApi = true
+                              Handler().postDelayed({ reCallApi = false }, 500)
+                              page = 0
+                              initData()
+                          }
+                        }
                     }
                 })
         }

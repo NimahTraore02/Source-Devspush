@@ -2,6 +2,7 @@ package com.decouikit.news.activities
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.animation.AnimationUtils
 import com.decouikit.news.R
 import com.decouikit.news.database.Config
@@ -26,6 +27,8 @@ class SplashActivity : Activity(), ResultListener<Boolean> {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         animation()
+        "laksjdlaskjd".toDouble()
+        Log.e("TEST", null)
         MobileAds.initialize(this)
         InMemory.clear()
         SyncApi.sync(this, this)

@@ -36,6 +36,7 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
     private lateinit var recentManager: GridLayoutManager
 
     private var page = 0
+    private var reCallApi = false
     private var featuresSync = false
     private var recentSync = false
 

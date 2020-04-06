@@ -7,6 +7,8 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.time.Duration
+import java.util.concurrent.TimeUnit
 
 object RetrofitClientInstance {
 
@@ -18,7 +20,9 @@ object RetrofitClientInstance {
             logging.level = HttpLoggingInterceptor.Level.BASIC
             val httpClient = OkHttpClient.Builder()
             httpClient.addInterceptor(logging)  // <-- this is the important line!
-
+            httpClient.callTimeout(15, TimeUnit.SECONDS)
+            httpClient.writeTimeout(30, TimeUnit.SECONDS)
+            httpClient.readTimeout(30, TimeUnit.SECONDS)
             val lang = Config.getBaseUrl(context)
             if (lang != null) {
                 retrofit = if (BuildConfig.DEBUG) {

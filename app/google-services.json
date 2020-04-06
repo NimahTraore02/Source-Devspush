@@ -10,6 +10,42 @@
       "client_info": {
         "mobilesdk_app_id": "1:471435303437:android:4b0c196953678651",
         "android_client_info": {
+          "package_name": "com.decouikit.news"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "471435303437-idnq2nh7vnjp8ht1u9vs6r9v4cm1rolm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcjnvkLidUpXfYvnPqYRanyByNmtE0jEs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "471435303437-idnq2nh7vnjp8ht1u9vs6r9v4cm1rolm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "471435303437-boqq7iac30m7a04dr3leh97a0hcoknkg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.decouikit.newsIonic4"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:471435303437:android:e56f20763e954f9cddd344",
+        "android_client_info": {
           "package_name": "com.decouikit.news.android"
         }
       },
