@@ -49,7 +49,7 @@ class BottomNavigationActivity : BaseActivity(),
 
         initListeners()
 
-//        registerReceiver(NetworkReceiver(this), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+        registerReceiver(NetworkReceiver(this), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
     }
 
     private fun loadFragment(fragmentPosition: Int) {
