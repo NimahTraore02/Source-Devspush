@@ -27,8 +27,6 @@ class SplashActivity : Activity(), ResultListener<Boolean> {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         animation()
-        "laksjdlaskjd".toDouble()
-        Log.e("TEST", null)
         MobileAds.initialize(this)
         InMemory.clear()
         SyncApi.sync(this, this)
