@@ -21,14 +21,9 @@ android {
         ]
     }
     buildTypes {
-        debug {
-            shrinkResources true
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
         release {
-            shrinkResources true
-            minifyEnabled true
+            shrinkResources false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -36,12 +31,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-//    lintOptions {
-//        checkReleaseBuilds false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
-//        abortOnError false
-//    }
 }
 
 dependencies {
@@ -83,9 +72,6 @@ dependencies {
 
     // Rate Me
     implementation 'com.github.hotchemi:android-rate:1.0.1'
-
-    //EventBus
-    implementation 'org.greenrobot:eventbus:3.1.1'
 
     //fabric
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
