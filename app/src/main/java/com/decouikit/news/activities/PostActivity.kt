@@ -91,11 +91,11 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     }
 
     private fun incrementAdsCounterAndShowAds() {
-//        prefs.interstitialAdCounter = prefs.interstitialAdCounter + 1
-//        if (prefs.interstitialAdCounter == Config.promptForInterstitialCounter()) {
-//            prefs.interstitialAdCounter = 0
+        prefs.interstitialAdCounter = prefs.interstitialAdCounter + 1
+        if (prefs.interstitialAdCounter == Config.promptForInterstitialCounter()) {
+            prefs.interstitialAdCounter = 0
             showInterstitialAds()
-//        }
+        }
     }
 
     private fun loadTag(post: PostItem) {
