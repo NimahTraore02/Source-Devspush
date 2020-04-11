@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.decouikit.news.R
 import com.decouikit.news.extensions.*
 import com.decouikit.news.network.dto.PostItem
+import com.decouikit.news.utils.ImageLoadingUtil
 import kotlinx.android.synthetic.main.adapter_recent_news_item.view.*
 import java.util.*
 
@@ -52,7 +53,7 @@ class RecentNewsAdapter(private var items: ArrayList<PostItem>)
             view.tvItemTag.loadCategoryName(item)
             view.tvItemTitle.setHtml(item.title.rendered)
             view.tvItemDate.text = Date().getDateFromString(item.date)?.getCalendarDate()
-            view.ivItemBg.load(item)
+            ImageLoadingUtil.load(view.context, item, view.ivItemBg)
         }
 
         override fun onClick(v: View) {

@@ -1,8 +1,6 @@
 package com.decouikit.news.activities
 
 import android.app.Application
-import com.bumptech.glide.Glide
-import com.bumptech.glide.MemoryCategory
 import com.decouikit.news.database.Preference
 import com.decouikit.news.notification.OneSignalNotificationOpenHandler
 import com.google.android.gms.ads.MobileAds
@@ -19,7 +17,6 @@ class NewsApplication : Application() {
             .unsubscribeWhenNotificationsAreDisabled(true)
             .init()
         OneSignal.setSubscription(Preference(context = this).isPushNotificationEnabled)
-        Glide.get(this).setMemoryCategory(MemoryCategory.HIGH)
         MobileAds.initialize(this) {}
     }
 

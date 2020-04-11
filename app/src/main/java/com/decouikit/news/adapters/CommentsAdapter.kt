@@ -7,12 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.decouikit.news.R
 import com.decouikit.news.extensions.getCalendarDate
 import com.decouikit.news.extensions.getDateFromString
-import com.decouikit.news.extensions.load
 import com.decouikit.news.extensions.setHtml
 import com.decouikit.news.network.dto.CommentItem
+import com.decouikit.news.utils.ImageLoadingUtil
 import kotlinx.android.synthetic.main.adapter_comment_item.view.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 class CommentsAdapter(private var items: ArrayList<CommentItem>) :
     RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
@@ -45,7 +44,7 @@ class CommentsAdapter(private var items: ArrayList<CommentItem>) :
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(item: CommentItem) {
-            view.ivAvatar.load(item.author_avatar_urls.url48, true)
+            ImageLoadingUtil.load(item.author_avatar_urls.url48, view.ivAvatar, true)
             view.tvName.text = item.authorName
             view.tvCommentDate.text = Date().getDateFromString(item.date)?.getCalendarDate()
             view.tvCommentText.setHtml(item.content.rendered)

@@ -24,6 +24,7 @@ import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.dto.Tag
 import com.decouikit.news.network.sync.SyncTags
 import com.decouikit.news.utils.ActivityUtil
+import com.decouikit.news.utils.ImageLoadingUtil
 import com.decouikit.news.utils.NewsConstants
 import com.decouikit.news.utils.UriChromeClient
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -39,6 +40,8 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
 
     private lateinit var adapter: ViewAllAdapter
     private lateinit var hashTagAdapter: HashTagAdapter
+
+    private var isRunning = false
 
     private val postsService by lazy {
         RetrofitClientInstance.getRetrofitInstance(context = applicationContext)
@@ -88,11 +91,11 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     }
 
     private fun incrementAdsCounterAndShowAds() {
-        prefs.interstitialAdCounter = prefs.interstitialAdCounter + 1
-        if (prefs.interstitialAdCounter == Config.promptForInterstitialCounter()) {
-            prefs.interstitialAdCounter = 0
+//        prefs.interstitialAdCounter = prefs.interstitialAdCounter + 1
+//        if (prefs.interstitialAdCounter == Config.promptForInterstitialCounter()) {
+//            prefs.interstitialAdCounter = 0
             showInterstitialAds()
-        }
+//        }
     }
 
     private fun loadTag(post: PostItem) {
@@ -116,7 +119,7 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
         if (isRTL) {
             ivBack.rotation = 180f
         }
-        ivPostBg.load(postItem)
+        ImageLoadingUtil.load(this, postItem, ivPostBg)
         ivBookmark.setBookmarkIcon(postItem)
         tvTag.loadCategoryName(postItem)
         tvItemTitle.setHtml(postItem.title.rendered)
@@ -172,6 +175,20 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     override fun onResume() {
         super.onResume()
         getNumberOfComments()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        isRunning = true
+    }
+
+    override fun onStop() {
+        super.onStop()
+        isRunning = false
+    }
+
+    override fun isRunning(): Boolean {
+        return isRunning
     }
 
     private fun getRelatedNews() {

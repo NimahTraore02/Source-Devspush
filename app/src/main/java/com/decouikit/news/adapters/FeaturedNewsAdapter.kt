@@ -8,6 +8,7 @@ import androidx.viewpager.widget.PagerAdapter
 import com.decouikit.news.R
 import com.decouikit.news.extensions.*
 import com.decouikit.news.network.dto.PostItem
+import com.decouikit.news.utils.ImageLoadingUtil
 import kotlinx.android.synthetic.main.adapter_featured_news_item.view.*
 import java.util.*
 
@@ -45,7 +46,7 @@ class FeaturedNewsAdapter(
         view.tvTag.loadCategoryName(postItems[position])
         view.tvItemTitle.setHtml(postItems[position].title.rendered)
         view.tvItemDate.text = Date().getDateFromString(postItems[position].date)?.getCalendarDate()
-        view.ivItemBg.load(postItems[position])
+        ImageLoadingUtil.load(view.context, postItems[position], view.ivItemBg)
         view.ivBookmark.setBookmarkIcon(postItems[position])
     }
 

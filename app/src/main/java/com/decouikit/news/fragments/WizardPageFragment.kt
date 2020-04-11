@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.decouikit.news.R
-import com.decouikit.news.extensions.load
 import com.decouikit.news.network.dto.WizardItemModel
+import com.decouikit.news.utils.ImageLoadingUtil
 import kotlinx.android.synthetic.main.fragment_wizard_page.view.*
 
 class WizardPageFragment : Fragment() {
@@ -32,7 +32,7 @@ class WizardPageFragment : Fragment() {
     private fun initValues(view: View?) {
         view?.tvTitle?.text = fragmentData?.title
         view?.tvSubtitle?.text = fragmentData?.subtitle
-        view?.imageView?.load(fragmentData?.image, true)
+        ImageLoadingUtil.load(fragmentData?.image, view?.imageView, true)
     }
 
     companion object {

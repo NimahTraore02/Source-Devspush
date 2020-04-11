@@ -7,6 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import com.decouikit.news.R
+import com.decouikit.news.activities.PostActivity
 import com.decouikit.news.database.Preference
 import com.decouikit.news.utils.ChangeLanguageUtil
 import com.decouikit.news.utils.RateMe
@@ -60,7 +61,7 @@ open class BaseActivity : AppCompatActivity() {
             mInterstitialAd.loadAd(adRequest)
             mInterstitialAd.adListener = object : AdListener() {
                 override fun onAdLoaded() {
-                    if (mInterstitialAd.isLoaded) {
+                    if (mInterstitialAd.isLoaded && isRunning()) {
                         mInterstitialAd.show()
                     }
                 }
@@ -79,4 +80,6 @@ open class BaseActivity : AppCompatActivity() {
         super.onResume()
         RateMe.rateApp(this)
     }
+
+    open fun isRunning(): Boolean = false
 }
