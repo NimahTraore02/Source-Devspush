@@ -1,15 +1,12 @@
 package com.decouikit.news.activities.common
 
 import android.content.Intent
-import android.content.IntentFilter
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Handler
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
 import com.decouikit.news.R
 import com.decouikit.news.activities.NewsApplication
 import com.decouikit.news.activities.NotificationActivity
@@ -18,8 +15,7 @@ import com.decouikit.news.extensions.replaceFragment
 import com.decouikit.news.extensions.showNetworkMessage
 import com.decouikit.news.fragments.*
 import com.decouikit.news.interfaces.HomeFragmentListener
-import com.decouikit.news.network.receiver.NetworkReceiver
-import com.decouikit.news.network.receiver.NetworkReceiverListener
+import com.decouikit.news.network.receiver.ConnectionStateMonitor
 import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.NewsConstants
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -28,8 +24,7 @@ import kotlinx.android.synthetic.main.activity_bottom_navigation.*
 
 class BottomNavigationActivity : BaseActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener,
-    HomeFragmentListener,
-    NetworkReceiverListener, View.OnClickListener {
+    HomeFragmentListener, View.OnClickListener {
 
     private var doubleBackToExitPressedOnce = false
 
@@ -48,8 +43,18 @@ class BottomNavigationActivity : BaseActivity(),
             getString(R.string.check_internet_connection), Snackbar.LENGTH_LONG)
 
         initListeners()
+        checkInternetConnection()
+    }
 
-        registerReceiver(NetworkReceiver(this), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+    private fun checkInternetConnection() {
+        ConnectionStateMonitor(this).observe(this, Observer { isConnected ->
+            isConnected?.let {
+                snackBar.showNetworkMessage(this, isConnected)
+                if (isConnected) {
+                    showBannerAds()
+                }
+            }
+        })
     }
 
     private fun loadFragment(fragmentPosition: Int) {
@@ -131,12 +136,5 @@ class BottomNavigationActivity : BaseActivity(),
 
     override fun homeFragmentBehavior() {
         ActivityUtil.setAppBarElevation(appBar, 0f)
-    }
-
-    override fun onNetworkConnectionChanged(isConnected: Boolean) {
-        snackBar.showNetworkMessage(this, isConnected)
-        if (isConnected) {
-            showBannerAds()
-        }
     }
 }

@@ -1,9 +1,7 @@
 package com.decouikit.news.activities.common
 
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.res.Configuration
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
@@ -14,6 +12,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import com.decouikit.news.R
 import com.decouikit.news.activities.NewsApplication
 import com.decouikit.news.activities.NotificationActivity
@@ -24,8 +23,7 @@ import com.decouikit.news.extensions.replaceFragment
 import com.decouikit.news.extensions.showNetworkMessage
 import com.decouikit.news.fragments.*
 import com.decouikit.news.interfaces.HomeFragmentListener
-import com.decouikit.news.network.receiver.NetworkReceiver
-import com.decouikit.news.network.receiver.NetworkReceiverListener
+import com.decouikit.news.network.receiver.ConnectionStateMonitor
 import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.NewsConstants
 import com.google.android.material.navigation.NavigationView
@@ -35,8 +33,7 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 
 
 class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener,
-    HomeFragmentListener, View.OnClickListener,
-    NetworkReceiverListener {
+    HomeFragmentListener, View.OnClickListener {
 
     private lateinit var toolbar: Toolbar
     private lateinit var menuItem: Menu
@@ -67,7 +64,19 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
 
         snackBar = Snackbar.make(findViewById(R.id.parent),
             getString(R.string.check_internet_connection), Snackbar.LENGTH_LONG)
-        registerReceiver(NetworkReceiver(this), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+
+        checkInternetConnection()
+    }
+
+    private fun checkInternetConnection() {
+        ConnectionStateMonitor(this).observe(this, Observer { isConnected ->
+            isConnected?.let {
+                snackBar.showNetworkMessage(this, isConnected)
+                if (isConnected) {
+                    showBannerAds()
+                }
+            }
+        })
     }
 
     private fun loadFragment(fragmentPosition: Int) {
@@ -204,13 +213,6 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
             llSocialNetwork.visibility = View.GONE
         } else {
             llSocialNetwork.visibility = View.VISIBLE
-        }
-    }
-
-    override fun onNetworkConnectionChanged(isConnected: Boolean) {
-        snackBar.showNetworkMessage(this, isConnected)
-        if (isConnected) {
-            showBannerAds()
         }
     }
 }

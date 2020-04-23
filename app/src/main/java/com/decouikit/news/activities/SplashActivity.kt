@@ -2,7 +2,6 @@ package com.decouikit.news.activities
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.animation.AnimationUtils
 import com.decouikit.news.R
 import com.decouikit.news.database.Config

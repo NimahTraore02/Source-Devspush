@@ -1,78 +1,35 @@
 {
   "project_info": {
-    "project_number": "471435303437",
-    "firebase_url": "https://deco-ionic4-news.firebaseio.com",
-    "project_id": "deco-ionic4-news",
-    "storage_bucket": "deco-ionic4-news.appspot.com"
+    "project_number": "827631053705",
+    "firebase_url": "https://news-wp-61cf4.firebaseio.com",
+    "project_id": "news-wp-61cf4",
+    "storage_bucket": "news-wp-61cf4.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:471435303437:android:4b0c196953678651",
-        "android_client_info": {
-          "package_name": "com.decouikit.news"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "471435303437-idnq2nh7vnjp8ht1u9vs6r9v4cm1rolm.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCcjnvkLidUpXfYvnPqYRanyByNmtE0jEs"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "471435303437-idnq2nh7vnjp8ht1u9vs6r9v4cm1rolm.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "471435303437-boqq7iac30m7a04dr3leh97a0hcoknkg.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.decouikit.newsIonic4"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:471435303437:android:e56f20763e954f9cddd344",
+        "mobilesdk_app_id": "1:827631053705:android:a640fcb51cad9b68f4cf58",
         "android_client_info": {
           "package_name": "com.decouikit.news.android"
         }
       },
       "oauth_client": [
         {
-          "client_id": "471435303437-idnq2nh7vnjp8ht1u9vs6r9v4cm1rolm.apps.googleusercontent.com",
+          "client_id": "827631053705-bf4o5i3enelje6tn5d5rc958rrsnigeq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCcjnvkLidUpXfYvnPqYRanyByNmtE0jEs"
+          "current_key": "AIzaSyDSg2VEWHbckLaL9SGx3UGf7EcDleCr2Rk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "471435303437-idnq2nh7vnjp8ht1u9vs6r9v4cm1rolm.apps.googleusercontent.com",
+              "client_id": "827631053705-bf4o5i3enelje6tn5d5rc958rrsnigeq.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "471435303437-boqq7iac30m7a04dr3leh97a0hcoknkg.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.decouikit.newsIonic4"
-              }
             }
           ]
         }
@@ -80,35 +37,28 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:471435303437:android:5c56b961ffc8a4e7",
+        "mobilesdk_app_id": "1:827631053705:android:d7a8e0470611db26f4cf58",
         "android_client_info": {
-          "package_name": "com.decouikit.newsIonic4"
+          "package_name": "com.decouikit.newsIonic"
         }
       },
       "oauth_client": [
         {
-          "client_id": "471435303437-idnq2nh7vnjp8ht1u9vs6r9v4cm1rolm.apps.googleusercontent.com",
+          "client_id": "827631053705-bf4o5i3enelje6tn5d5rc958rrsnigeq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCcjnvkLidUpXfYvnPqYRanyByNmtE0jEs"
+          "current_key": "AIzaSyDSg2VEWHbckLaL9SGx3UGf7EcDleCr2Rk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "471435303437-idnq2nh7vnjp8ht1u9vs6r9v4cm1rolm.apps.googleusercontent.com",
+              "client_id": "827631053705-bf4o5i3enelje6tn5d5rc958rrsnigeq.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "471435303437-boqq7iac30m7a04dr3leh97a0hcoknkg.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.decouikit.newsIonic4"
-              }
             }
           ]
         }
