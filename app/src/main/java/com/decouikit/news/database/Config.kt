@@ -1,6 +1,12 @@
 package com.decouikit.news.database
 
 import android.content.Context
+import android.view.ViewGroup
+import com.decouikit.advertising.FacebookAds
+import com.decouikit.advertising.GoogleAds
+import com.decouikit.advertising.model.AdEventListener
+import com.decouikit.advertising.model.AdsConfigItem
+import com.decouikit.advertising.model.AdsContract
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BottomNavigationActivity
 import com.decouikit.news.activities.common.NavigationActivity
@@ -50,7 +56,7 @@ object Config {
 
     //Show interstitial after 10 opens single post
     // if you don't want interstitial ads just put value -1
-    fun promptForInterstitialCounter(): Int = 10
+    fun promptForInterstitialCounter(): Int = 1
 
     fun getNumberOfItemPerPage(): Int = 10
 
@@ -166,5 +172,19 @@ object Config {
             languages.add(lang.language)
         }
         return languages
+    }
+
+    fun getAdsProvider(adsContainer: ViewGroup?, listener: AdEventListener): AdsContract {
+//        return GoogleAds(AdsConfigItem(
+//            bannerAdUnitId = "ca-app-pub-3940256099942544/6300978111",
+//            interstitialAdUnitId = "ca-app-pub-3940256099942544/1033173712",
+//            testDeviceId = "D4660E67112CAF17CE018F3C95A8F64D"
+//        ), adsContainer, listener)
+
+        return FacebookAds(AdsConfigItem(
+            bannerAdUnitId = "232044561380871_232073974711263",
+            interstitialAdUnitId = "232044561380871_232073981377929",
+            testDeviceId = "d50d31a3-cdd3-4652-9d2c-cd443578afa5"
+        ), adsContainer, listener)
     }
 }

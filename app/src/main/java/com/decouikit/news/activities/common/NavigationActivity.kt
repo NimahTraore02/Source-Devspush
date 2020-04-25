@@ -7,6 +7,7 @@ import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
@@ -28,8 +29,9 @@ import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.NewsConstants
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_bottom_navigation.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.app_bar_main.appBar
 
 
 class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -77,6 +79,10 @@ class NavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
                 }
             }
         })
+    }
+
+    override fun getAdsContainer(): ViewGroup? {
+        return viewContainerForAds
     }
 
     private fun loadFragment(fragmentPosition: Int) {

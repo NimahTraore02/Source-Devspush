@@ -69,14 +69,14 @@
         app:itemIconTint="@drawable/bottom_navigation_item_color"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/publisherAdView"
+        app:layout_constraintBottom_toTopOf="@+id/viewContainerForAds"
         app:menu="@menu/bottom_nav_menu" />
 
-    <com.google.android.gms.ads.doubleclick.PublisherAdView
-        android:id="@+id/publisherAdView"
+    <LinearLayout
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:id="@+id/viewContainerForAds"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:adSize="BANNER"
-        app:adUnitId="@string/banner_id"
         app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

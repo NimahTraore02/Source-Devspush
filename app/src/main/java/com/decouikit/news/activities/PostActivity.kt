@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
@@ -71,9 +72,12 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
             initValues()
         }, 200)
         initListeners()
-        
         incrementAdsCounterAndShowAds()
         showBannerAds()
+    }
+
+    override fun getAdsContainer(): ViewGroup? {
+        return viewContainerForAds
     }
 
     private fun initLayout() {

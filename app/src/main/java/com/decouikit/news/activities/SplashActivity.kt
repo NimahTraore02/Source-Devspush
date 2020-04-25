@@ -15,7 +15,6 @@ import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.sync.SyncApi
 import com.decouikit.news.network.sync.SyncPost
-import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_splash.*
 
 
@@ -26,7 +25,6 @@ class SplashActivity : Activity(), ResultListener<Boolean> {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         animation()
-        MobileAds.initialize(this)
         InMemory.clear()
         SyncApi.sync(this, this)
     }

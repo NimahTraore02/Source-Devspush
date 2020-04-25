@@ -36,20 +36,21 @@
             android:id="@+id/navigation_container"
             android:layout_width="match_parent"
             android:layout_height="@dimen/zero_density"
-            app:layout_constraintBottom_toTopOf="@+id/publisherAdView"
+            app:layout_constraintBottom_toTopOf="@+id/viewContainerForAds"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appBar"/>
 
-    <com.google.android.gms.ads.doubleclick.PublisherAdView
-            android:id="@+id/publisherAdView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            app:adSize="BANNER"
-            app:adUnitId="@string/banner_id"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+    <LinearLayout
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:id="@+id/viewContainerForAds"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintStart_toStartOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

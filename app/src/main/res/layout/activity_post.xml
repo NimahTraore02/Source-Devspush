@@ -242,13 +242,14 @@
         android:layout_marginEnd="@dimen/button_margin"
         android:text="@string/view_all_comments"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/publisherAdView"/>
+        app:layout_constraintBottom_toTopOf="@+id/viewContainerForAds"/>
 
-    <com.google.android.gms.ads.doubleclick.PublisherAdView
-        android:id="@+id/publisherAdView"
+    <LinearLayout
+        android:id="@+id/viewContainerForAds"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:adSize="BANNER"
-        app:adUnitId="@string/banner_id"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:gravity="bottom"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

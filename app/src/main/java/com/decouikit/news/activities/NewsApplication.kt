@@ -3,7 +3,6 @@ package com.decouikit.news.activities
 import android.app.Application
 import com.decouikit.news.database.Preference
 import com.decouikit.news.notification.OneSignalNotificationOpenHandler
-import com.google.android.gms.ads.MobileAds
 import com.onesignal.OneSignal
 
 class NewsApplication : Application() {
@@ -17,7 +16,6 @@ class NewsApplication : Application() {
             .unsubscribeWhenNotificationsAreDisabled(true)
             .init()
         OneSignal.setSubscription(Preference(context = this).isPushNotificationEnabled)
-        MobileAds.initialize(this) {}
     }
 
     companion object {
@@ -31,6 +29,4 @@ class NewsApplication : Application() {
             activityVisible = false
         }
     }
-
-
 }

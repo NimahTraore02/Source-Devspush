@@ -3,33 +3,25 @@ package com.decouikit.news.activities.common
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.view.View
+import android.util.Log
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
-import com.decouikit.news.R
-import com.decouikit.news.activities.PostActivity
+import com.decouikit.advertising.model.AdEventListener
+import com.decouikit.news.database.Config
 import com.decouikit.news.database.Preference
 import com.decouikit.news.utils.ChangeLanguageUtil
 import com.decouikit.news.utils.RateMe
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.doubleclick.PublisherAdRequest
-import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.app_bar_main.*
 
 @SuppressLint("Registered")
-open class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity(), AdEventListener {
 
     protected val gson by lazy { Gson() }
-    protected lateinit var mInterstitialAd: PublisherInterstitialAd
-    protected val prefs: Preference by lazy { Preference(this) }
 
-    private val adRequest: PublisherAdRequest
-        get() = PublisherAdRequest.Builder()
-            .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-            .addTestDevice(getString(R.string.test_device_id))
-            .build()
+    private val advertising by lazy { Config.getAdsProvider(getAdsContainer(), this) }
+
+    protected val prefs: Preference by lazy { Preference(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,31 +36,15 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     protected fun showBannerAds() {
-        val bannerId = getString(R.string.banner_id)
-        if (bannerId.isNotEmpty()) {
-            publisherAdView.visibility = View.VISIBLE
-            publisherAdView.loadAd(adRequest)
-        } else {
-            publisherAdView.visibility = View.GONE
-        }
+        Log.e("Test" , "showBannerAds")
+        advertising.showBanner()
+
     }
 
     protected fun showInterstitialAds() {
-        val interstitialID = getString(R.string.interstitial_id)
-        if (interstitialID.isNotEmpty()) {
-            mInterstitialAd = PublisherInterstitialAd(this)
-            mInterstitialAd.adUnitId = interstitialID
-            mInterstitialAd.loadAd(adRequest)
-            mInterstitialAd.adListener = object : AdListener() {
-                override fun onAdLoaded() {
-                    if (mInterstitialAd.isLoaded && isRunning()) {
-                        mInterstitialAd.show()
-                    }
-                }
-            }
-        }
+        Log.e("Test" , "showBannerAds")
+        advertising.showInterstitial()
     }
-
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(
@@ -80,6 +56,60 @@ open class BaseActivity : AppCompatActivity() {
         super.onResume()
         RateMe.rateApp(this)
     }
+
+    override fun onEventInterstitialAdLoaded() {
+
+    }
+
+    override fun onEventInterstitialAdOpened() {
+
+    }
+
+    override fun onEventInterstitialAdLeftApplication() {
+
+    }
+
+    override fun onEventInterstitialAdClosed() {
+
+    }
+
+    override fun onEventRewardedVideoAdLeftApplication() {
+
+    }
+
+    override fun onEventInterstitialAdFailedToLoad(errorCode: Int) {
+
+    }
+
+    override fun onEventRewardedVideoAdLoaded() {
+
+    }
+
+    override fun onEventRewardedVideoAdClosed() {
+
+    }
+
+    override fun onEventRewardedVideoAdOpen() {
+
+    }
+
+    override fun onEventRewardedVideoCompleted() {
+
+    }
+
+    override fun onEventRewarded(type: String?, amount: Int?) {
+
+    }
+
+    override fun onEventRewardedVideoStarted() {
+
+    }
+
+    override fun onEventRewardedVideoAdFailedToLoad(errorCode: Int) {
+
+    }
+
+    open fun getAdsContainer(): ViewGroup? = null
 
     open fun isRunning(): Boolean = false
 }
