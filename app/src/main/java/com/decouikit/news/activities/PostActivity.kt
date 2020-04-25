@@ -20,6 +20,7 @@ import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.CommentsService
 import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
+import com.decouikit.news.network.TagService
 import com.decouikit.news.network.dto.CommentItem
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.dto.Tag
@@ -68,9 +69,7 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
         ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.coordinatorParent)
         postItem = loadPostItem()
         initLayout()
-        Handler().postDelayed({
-            initValues()
-        }, 200)
+        initValues()
         initListeners()
         incrementAdsCounterAndShowAds()
         showBannerAds()
@@ -103,13 +102,15 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     }
 
     private fun loadTag(post: PostItem) {
-        post.tags.forEach { tagId ->
-            tagsService.getTagById(tagId, this, object : ResultListener<Tag> {
-                override fun onResult(value: Tag?) {
-                    value?.let { tagList.add(it) }
-                    hashTagAdapter.setData(tagList)
-                }
-            })
+        runOnUiThread {
+            post.tags.forEach { tagId ->
+                tagsService.getTagById(tagId, this, object : ResultListener<Tag> {
+                    override fun onResult(value: Tag?) {
+                        value?.let { tagList.add(it) }
+                        hashTagAdapter.setData(tagList)
+                    }
+                })
+            }
         }
     }
 
@@ -155,8 +156,8 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
         btnOpenComments.text =
             getString(R.string.view_all_comments, 0)
 
-        loadTag(postItem)
         getRelatedNews()
+        loadTag(postItem)
     }
 
     private fun initListeners() {
