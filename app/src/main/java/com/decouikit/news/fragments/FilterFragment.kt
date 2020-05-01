@@ -40,6 +40,8 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     private var page = 0
     private var reCallApi = false
 
+    private var recallCounter = 0;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         categoryId = arguments?.getInt(NewsConstants.CATEGORY_ID)
@@ -90,12 +92,17 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
                             setShimmerAnimationVisibility(false)
                             itemView.swipeRefresh.isRefreshing = false
                         } else {
-                          if (page == 1 && !reCallApi) {
-                              reCallApi = true
-                              Handler().postDelayed({ reCallApi = false }, 500)
-                              page = 0
-                              initData()
-                          }
+                            if (recallCounter <= 3) {
+                                if (page == 1 && !reCallApi) {
+                                    recallCounter++
+                                    reCallApi = true
+                                    Handler().postDelayed({ reCallApi = false }, 500)
+                                    page = 0
+                                    initData()
+                                }
+                            } else {
+                                setEmptyState(true)
+                            }
                         }
                     }
                 })
