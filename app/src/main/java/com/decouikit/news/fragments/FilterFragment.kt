@@ -196,13 +196,13 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
         activity?.runOnUiThread {
             if (isVisible) {
                 mShimmerFeaturedNewsContainer.visibility = View.VISIBLE
-                mShimmerFeaturedNewsContainer.startShimmerAnimation()
+                mShimmerFeaturedNewsContainer.startShimmer()
                 mShimmerRecentNewsContainer.visibility = View.VISIBLE
-                mShimmerRecentNewsContainer.startShimmerAnimation()
+                mShimmerRecentNewsContainer.startShimmer()
             } else {
-                mShimmerFeaturedNewsContainer.stopShimmerAnimation()
+                mShimmerFeaturedNewsContainer.stopShimmer()
                 mShimmerFeaturedNewsContainer.visibility = View.GONE
-                mShimmerRecentNewsContainer.stopShimmerAnimation()
+                mShimmerRecentNewsContainer.stopShimmer()
                 mShimmerRecentNewsContainer.visibility = View.GONE
             }
         }

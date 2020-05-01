@@ -70,7 +70,7 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
                         hideContent(true)
                     }
                 }
-                mShimmerViewContainer.stopShimmerAnimation()
+                mShimmerViewContainer.stopShimmer()
                 mShimmerViewContainer.visibility = View.GONE
                 swipeRefresh.isRefreshing = false
             })
@@ -113,7 +113,7 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
     private fun refreshContent() {
         hideAllOnRefresh()
         mShimmerViewContainer.visibility = View.VISIBLE
-        mShimmerViewContainer.startShimmerAnimation()
+        mShimmerViewContainer.startShimmer()
         adapter.removeAllItems()
         page = 0
         getComments()

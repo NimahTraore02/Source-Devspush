@@ -122,7 +122,7 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
     private fun refreshContent() {
         hideAllOnRefresh()
         mShimmerViewContainer.visibility = View.VISIBLE
-        mShimmerViewContainer.startShimmerAnimation()
+        mShimmerViewContainer.startShimmer()
         items.removeAll { true }
         adapter.removeAllItems()
         page = 0
@@ -163,7 +163,7 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
                         hideContent(true)
                     }
                 }
-                mShimmerViewContainer.stopShimmerAnimation()
+                mShimmerViewContainer.startShimmer()
                 mShimmerViewContainer.visibility = View.GONE
                 swipeRefresh.isRefreshing = false
             })
@@ -204,7 +204,7 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
                             hideContent(true)
                         }
                     }
-                    mShimmerViewContainer.stopShimmerAnimation()
+                    mShimmerViewContainer.startShimmer()
                     mShimmerViewContainer.visibility = View.GONE
                     swipeRefresh.isRefreshing = false
                 })
