@@ -36,14 +36,17 @@ abstract class BaseActivity : AppCompatActivity(), AdEventListener {
     }
 
     protected fun showBannerAds() {
-        Log.e("Test" , "showBannerAds")
-        advertising.showBanner()
-
+        advertising?.showBanner()
     }
 
     protected fun showInterstitialAds() {
-        Log.e("Test" , "showBannerAds")
-        advertising.showInterstitial()
+        advertising?.showInterstitial()
+    }
+
+    override fun onDestroy() {
+        advertising?.removeInterstitial()
+        advertising?.resumeRewardedVideo()
+        super.onDestroy()
     }
 
     override fun attachBaseContext(newBase: Context) {

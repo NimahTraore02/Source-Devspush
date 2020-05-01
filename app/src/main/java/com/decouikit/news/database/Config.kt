@@ -174,17 +174,24 @@ object Config {
         return languages
     }
 
-    fun getAdsProvider(adsContainer: ViewGroup?, listener: AdEventListener): AdsContract {
-//        return GoogleAds(AdsConfigItem(
-//            bannerAdUnitId = "ca-app-pub-3940256099942544/6300978111",
-//            interstitialAdUnitId = "ca-app-pub-3940256099942544/1033173712",
-//            testDeviceId = "D4660E67112CAF17CE018F3C95A8F64D"
-//        ), adsContainer, listener)
+    fun getAdsType(): AdsType = AdsType.NONE
 
-        return FacebookAds(AdsConfigItem(
-            bannerAdUnitId = "232044561380871_232073974711263",
-            interstitialAdUnitId = "232044561380871_232073981377929",
-            testDeviceId = "d50d31a3-cdd3-4652-9d2c-cd443578afa5"
-        ), adsContainer, listener)
+    fun getAdsProvider(adsContainer: ViewGroup?, listener: AdEventListener): AdsContract? {
+        if (getAdsType() == AdsType.NONE) {
+            return null
+        }
+        return if (AdsType.FACEBOOK == getAdsType()) {
+            FacebookAds(AdsConfigItem(
+                bannerAdUnitId = "232044561380871_232073974711263",
+                interstitialAdUnitId = "232044561380871_232073981377929",
+                testDeviceId = "0564736e-7d56-4a71-8232-77b7d9696329"
+            ), adsContainer, listener)
+        } else {
+            GoogleAds(AdsConfigItem(
+                bannerAdUnitId = "ca-app-pub-3940256099942544/6300978111",
+                interstitialAdUnitId = "ca-app-pub-3940256099942544/1033173712",
+                testDeviceId = "D4660E67112CAF17CE018F3C95A8F64D"
+             ), adsContainer, listener)
+        }
     }
 }
