@@ -1,6 +1,8 @@
 package com.decouikit.news.extensions
 
 import android.net.Uri
+import android.os.Build
+import android.text.Html
 import androidx.core.text.HtmlCompat.FROM_HTML_MODE_COMPACT
 import androidx.core.text.HtmlCompat.fromHtml
 import java.text.ParseException
@@ -34,4 +36,12 @@ fun String.toDate(): Date? {
         e.printStackTrace()
     }
     return null
+}
+
+fun String.decode(): String {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY).toString()
+    } else {
+        Html.fromHtml(this).toString()
+    }
 }

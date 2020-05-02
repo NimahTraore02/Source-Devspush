@@ -10,6 +10,7 @@ import com.decouikit.news.R
 import com.decouikit.news.adapters.ViewPagerAdapter
 import com.decouikit.news.database.Config
 import com.decouikit.news.database.InMemory
+import com.decouikit.news.extensions.decode
 import com.decouikit.news.interfaces.HomeFragmentListener
 import com.decouikit.news.network.dto.Category
 import com.google.android.material.tabs.TabLayout
@@ -49,7 +50,7 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
             adapter?.addFragment(FilterFragment.newInstance(0, ""))
         }
         InMemory.getCategoryList(requireContext()).forEach {
-            mTabLayout.addTab(mTabLayout.newTab().setText(it.name))
+            mTabLayout.addTab(mTabLayout.newTab().setText(it.name.decode()))
             adapter?.addFragment(getFilterFragment(it))
         }
         itemView.viewPager.adapter = adapter
