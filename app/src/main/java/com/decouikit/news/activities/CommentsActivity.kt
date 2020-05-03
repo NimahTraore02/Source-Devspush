@@ -8,8 +8,6 @@ import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
 import com.decouikit.news.adapters.CommentsAdapter
 import com.decouikit.news.database.Preference
-import com.decouikit.news.extensions.Result
-import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.extensions.openComments
 import com.decouikit.news.network.CommentsService
 import com.decouikit.news.network.RetrofitClientInstance
@@ -18,7 +16,10 @@ import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.EndlessRecyclerOnScrollListener
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.activity_all_comments.*
-import org.jetbrains.anko.doAsync
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import retrofit2.awaitResponse
 
 class CommentsActivity : BaseActivity(), View.OnClickListener,
     SwipeRefreshLayout.OnRefreshListener {
@@ -54,26 +55,20 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun getComments() {
-        doAsync {
-            commentsService?.getCommentListPostId(postId, ++page, perPage)?.enqueue(result = {
-                when (it) {
-                    is Result.Success -> {
-                        if (it.response.body().isNullOrEmpty()) {
-                            hideContent(adapter.itemCount == 0)
-                        } else {
-                            val comments = it.response.body() as ArrayList<CommentItem>
-                            hideContent(false)
-                            adapter.setData(comments)
-                        }
-                    }
-                    is Result.Failure -> {
-                        hideContent(true)
-                    }
+        GlobalScope.launch(Dispatchers.IO) {
+            val response =
+                commentsService?.getCommentListPostId(postId, ++page, perPage)?.awaitResponse()
+            if (response?.isSuccessful == true) {
+                if (!response.body().isNullOrEmpty()) {
+                    val comments = response.body() as ArrayList<CommentItem>
+                    hideContent(false)
+                    adapter.setData(comments)
                 }
-                mShimmerViewContainer.stopShimmer()
-                mShimmerViewContainer.visibility = View.GONE
-                swipeRefresh.isRefreshing = false
-            })
+            }
+            hideContent(true)
+            mShimmerViewContainer.stopShimmer()
+            mShimmerViewContainer.visibility = View.GONE
+            swipeRefresh.isRefreshing = false
         }
     }
 

@@ -15,7 +15,6 @@ import com.decouikit.news.adapters.RecentNewsAdapter
 import com.decouikit.news.database.Config
 import com.decouikit.news.extensions.categoryToString
 import com.decouikit.news.extensions.viewAll
-import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.dto.CategoryType
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.sync.SyncPost
@@ -26,7 +25,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.jetbrains.anko.doAsync
 
 class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener,
     NestedScrollView.OnScrollChangeListener {
@@ -83,21 +81,22 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     }
 
     private fun initData() {
-        GlobalScope.launch(context = Dispatchers.Main) {
+        GlobalScope.launch(context = Dispatchers.IO) {
             delay(500)
-            SyncPost.getPostsList(requireContext(), categoryId?.categoryToString(), null, ++page,
-                Config.getNumberOfItemPerPage(), object : ResultListener<List<PostItem>> {
-                    override fun onResult(value: List<PostItem>?) {
-                        if (value?.size ?: 0 > 0) {
-                            initFeaturedNews(value)
-                            initRecentNews(value)
-                            setShimmerAnimationVisibility(false)
-                        } else {
-                            setEmptyState(featuredAdapter.count == 0)
-                        }
-                        itemView.swipeRefresh.isRefreshing = false
-                    }
-                })
+            val posts = SyncPost.getPostsList(
+                requireContext(),
+                categoryId?.categoryToString(), null, ++page,
+                Config.getNumberOfItemPerPage()
+            )
+
+            if (posts.isNotEmpty()) {
+                initFeaturedNews(posts)
+                initRecentNews(posts)
+                setShimmerAnimationVisibility(false)
+            } else {
+                setEmptyState(true)
+            }
+            itemView.swipeRefresh.isRefreshing = false
         }
     }
 
@@ -139,25 +138,18 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     }
 
     private fun loadMoreRecentData() {
-        doAsync {
-
-            SyncPost.getPostsList(
-                requireContext(),
-                getCategoryId(),
-                null,
-                ++page,
-                Config.getNumberOfItemPerPage(),
-                object : ResultListener<List<PostItem>> {
-                    override fun onResult(value: List<PostItem>?) {
-                        value?.forEach { postItem ->
-                            if (!recentPostItems.contains(postItem)) {
-                                recentPostItems.add(postItem)
-                            }
-                        }
-                        recentAdapter.setData(recentPostItems)
-                        itemView.swipeRefresh.isRefreshing = false
-                    }
-                })
+        GlobalScope.launch(context = Dispatchers.IO) {
+            val posts = SyncPost.getPostsList(
+                requireContext(), getCategoryId(),
+                null, ++page, Config.getNumberOfItemPerPage()
+            )
+            posts.forEach { postItem ->
+                if (!recentPostItems.contains(postItem)) {
+                    recentPostItems.add(postItem)
+                }
+            }
+            recentAdapter.setData(recentPostItems)
+            itemView.swipeRefresh.isRefreshing = false
         }
     }
 

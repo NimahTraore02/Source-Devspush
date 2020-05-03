@@ -14,16 +14,17 @@ import com.decouikit.news.database.InMemory
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.initPopupDialog
 import com.decouikit.news.interfaces.ChooseLanguageDialogListener
-import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.sync.SyncApi
 import com.decouikit.news.notification.OneSignalNotificationOpenHandler
 import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.ChooseLanguageDialog
 import com.onesignal.OneSignal
-import kotlinx.android.synthetic.main.fragment_settings.*
 import kotlinx.android.synthetic.main.fragment_settings.view.*
 import kotlinx.android.synthetic.main.fragment_settings.view.tvEnableRtl
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogListener {
 
@@ -146,12 +147,12 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
             RetrofitClientInstance.clear()
             InMemory.clear()
             prefs.languageCode = lang.languageCode
-            SyncApi.sync(requireContext(), object : ResultListener<Boolean> {
-                override fun onResult(value: Boolean?) {
-                    progressDialog.dismiss()
-                    ActivityUtil.reload(activity, 0)
-                }
-            })
+
+            GlobalScope.launch(Dispatchers.IO) {
+                SyncApi.sync(requireContext())
+                progressDialog.dismiss()
+                ActivityUtil.reload(activity, 0)
+            }
         }
     }
 

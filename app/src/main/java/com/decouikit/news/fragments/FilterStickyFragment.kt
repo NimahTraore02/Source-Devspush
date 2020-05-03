@@ -13,14 +13,15 @@ import com.decouikit.news.adapters.FeaturedNewsAdapter
 import com.decouikit.news.adapters.RecentNewsAdapter
 import com.decouikit.news.database.Config
 import com.decouikit.news.extensions.viewAll
-import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.dto.CategoryType
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.sync.SyncPost
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.fragment_filter.view.*
-import org.jetbrains.anko.doAsync
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener,
     NestedScrollView.OnScrollChangeListener {
@@ -113,73 +114,52 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
     }
 
     private fun getFeaturedNews() {
-        doAsync {
-            SyncPost.getPostsList(
-                requireContext(),
-                categoryId.toString(),
-                true,
-                1,
-                Config.getNumberOfItemPerPage(),
-                object : ResultListener<List<PostItem>> {
-                    override fun onResult(value: List<PostItem>?) {
-                        featuresSync = true
-                        if (value != null) {
-                            if (value.isEmpty()) {
-                                hideFeaturedNews(true)
-                                checkEmptyState()
-                            } else {
-                                val featuredItems = value as ArrayList<PostItem>
-                                featuredAdapter.setData(featuredItems)
-                                itemView.viewPager.adapter = featuredAdapter
-                                itemView.viewPager.offscreenPageLimit =
-                                    Config.getNumberOfItemForSlider()
-                                checkEmptyState()
-                                hideFeaturedNews(featuredAdapter.count == 0)
-                                if (featuresSync && recentSync) {
-                                    setEmptyState(featuredAdapter.count == 0 && recentAdapter.itemCount == 0)
-                                }
-                            }
-                        } else {
-                            hideFeaturedNews(true)
-                            checkEmptyState()
-                        }
-                    }
-                }
+        GlobalScope.launch(Dispatchers.IO) {
+            val posts = SyncPost.getPostsList(
+                requireContext(), categoryId.toString(), true, 1, Config.getNumberOfItemPerPage()
             )
+            featuresSync = true
+            if (posts.isEmpty()) {
+                hideFeaturedNews(true)
+                checkEmptyState()
+            } else {
+                val featuredItems = posts as ArrayList<PostItem>
+                featuredAdapter.setData(featuredItems)
+                itemView.viewPager.adapter = featuredAdapter
+                itemView.viewPager.offscreenPageLimit =
+                    Config.getNumberOfItemForSlider()
+                checkEmptyState()
+                hideFeaturedNews(featuredAdapter.count == 0)
+                if (featuresSync && recentSync) {
+                    setEmptyState(featuredAdapter.count == 0 && recentAdapter.itemCount == 0)
+                }
+            }
         }
     }
 
     private fun getRecentNews() {
-        SyncPost.getPostsList(
-            requireContext(),
-            categoryId.toString(),
-            false,
-            ++page,
-            Config.getNumberOfItemPerPage(),
-            object : ResultListener<List<PostItem>> {
-                override fun onResult(value: List<PostItem>?) {
-                    recentSync = true
-                    if (value != null) {
-                        if (value.isNotEmpty()) {
-                            val allPostList = value as ArrayList<PostItem>
-                            for (postItem in allPostList) {
-                                if (!recentPostItems.contains(postItem)) {
-                                    recentPostItems.add(postItem)
-                                }
-                            }
-                            recentAdapter.setData(recentPostItems)
-                            hideRecentNews(recentAdapter.itemCount == 0)
-                            checkEmptyState()
-                        } else {
-                            hideRecentNews(recentAdapter.itemCount == 0)
-                            checkEmptyState()
-                        }
-                    } else {
-                        hideRecentNews(recentAdapter.itemCount == 0)
-                        checkEmptyState()
+        GlobalScope.launch(Dispatchers.IO) {
+            val posts = SyncPost.getPostsList(
+                requireContext(), categoryId.toString(),
+                false, ++page, Config.getNumberOfItemPerPage()
+            )
+            recentSync = true
+            if (posts.isNotEmpty()) {
+                val allPostList = posts as ArrayList<PostItem>
+                for (postItem in allPostList) {
+                    if (!recentPostItems.contains(postItem)) {
+                        recentPostItems.add(postItem)
                     }
                 }
-            })
+                recentAdapter.setData(recentPostItems)
+                hideRecentNews(recentAdapter.itemCount == 0)
+                checkEmptyState()
+            } else {
+                hideRecentNews(recentAdapter.itemCount == 0)
+                checkEmptyState()
+            }
+        }
+
         swipeRefresh.isRefreshing = false
         setShimmerAnimationVisibility(false)
         checkEmptyState()

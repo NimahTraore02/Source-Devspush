@@ -13,14 +13,15 @@ import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.hideSoftKeyboard
 import com.decouikit.news.extensions.openPostActivity
 import com.decouikit.news.interfaces.OpenPostListener
-import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.sync.SyncPost
 import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.EndlessRecyclerOnScrollListener
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.activity_search.*
-import org.jetbrains.anko.doAsync
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -123,23 +124,13 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     }
 
     private fun search(text: String) {
-        doAsync {
-            SyncPost.getPostsSearch(
-                applicationContext,
-                text,
-                tagId,
-                ++page,
-                listener = object : ResultListener<List<PostItem>> {
-                    override fun onResult(value: List<PostItem>?) {
-                        if (value != null) {
-                            if (value.isNotEmpty()) {
-                                adapter.setData(value as ArrayList<PostItem>)
-                            }
-                        }
-                        setEmptyState(adapter.itemCount == 0)
-                        swipeRefresh.isRefreshing = false
-                    }
-                })
+        GlobalScope.launch(Dispatchers.IO) {
+            val posts = SyncPost.getPostsSearch(applicationContext, text, tagId, ++page)
+            if (posts.isNotEmpty()) {
+                adapter.setData(posts as ArrayList<PostItem>)
+            }
+            setEmptyState(adapter.itemCount == 0)
+            swipeRefresh.isRefreshing = false
         }
     }
 
