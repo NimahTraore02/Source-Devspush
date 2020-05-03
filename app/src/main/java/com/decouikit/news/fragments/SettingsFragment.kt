@@ -21,7 +21,9 @@ import com.decouikit.news.notification.OneSignalNotificationOpenHandler
 import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.ChooseLanguageDialog
 import com.onesignal.OneSignal
+import kotlinx.android.synthetic.main.fragment_settings.*
 import kotlinx.android.synthetic.main.fragment_settings.view.*
+import kotlinx.android.synthetic.main.fragment_settings.view.tvEnableRtl
 
 class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogListener {
 
@@ -46,8 +48,8 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initLayout()
+        initVisibilityForRTLRow()
         initListeners()
     }
 
@@ -58,6 +60,18 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
         selectedIndex = Config.getLanguageIndexByCode(prefs.languageCode)
         if (Config.listLanguageNames().size > selectedIndex) {
             itemView.tvLanguage.text = Config.listLanguageNames()[selectedIndex]
+        }
+    }
+
+    private fun initVisibilityForRTLRow() {
+        if (Config.isHideRTLButtonInSettings()) {
+            itemView.tvEnableRtl.visibility = View.GONE
+            itemView.cbEnableRtl.visibility = View.GONE
+            itemView.divider2.visibility = View.GONE
+        } else {
+            itemView.tvEnableRtl.visibility = View.VISIBLE
+            itemView.cbEnableRtl.visibility = View.VISIBLE
+            itemView.divider2.visibility = View.VISIBLE
         }
     }
 

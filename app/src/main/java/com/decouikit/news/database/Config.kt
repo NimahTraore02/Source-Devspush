@@ -71,6 +71,8 @@ object Config {
 
     fun getDefaultValueForRTL(): Boolean = false
 
+    fun isHideRTLButtonInSettings(): Boolean = true
+
     fun getFacebookUrl(): String = "https://www.facebook.com"
 
     fun getTwitterUrl(): String = "https://twitter.com"
