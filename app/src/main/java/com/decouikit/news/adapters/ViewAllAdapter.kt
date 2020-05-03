@@ -1,32 +1,27 @@
 package com.decouikit.news.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.decouikit.news.R
-import com.decouikit.news.extensions.*
+import com.decouikit.news.adapters.holder.ViewAllViewHolder
 import com.decouikit.news.interfaces.OpenPostListener
 import com.decouikit.news.network.dto.PostItem
-import com.decouikit.news.utils.ImageLoadingUtil
-import kotlinx.android.synthetic.main.adapter_view_all_item.view.*
 import java.util.*
 
 class ViewAllAdapter(
     private var items: ArrayList<PostItem>,
     private var listener: OpenPostListener
-) : RecyclerView.Adapter<ViewAllAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<ViewAllViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewAllViewHolder {
+        return ViewAllViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.adapter_view_all_item, parent, false), listener
         )
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override fun getItemCount(): Int = items.size
 
     fun setData(items: ArrayList<PostItem>) {
         this.items.clear()
@@ -44,47 +39,14 @@ class ViewAllAdapter(
         notifyDataSetChanged()
     }
 
-    fun getItemByPosition(position: Int): PostItem {
-        return items[position]
-    }
+    fun getItemByPosition(position: Int): PostItem = items[position]
 
     fun removeAllItems() {
         items.removeAll { true }
         notifyDataSetChanged()
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewAllViewHolder, position: Int) =
         holder.bind(items[position])
-    }
 
-    class ViewHolder(private val view: View, private val listener: OpenPostListener) :
-        RecyclerView.ViewHolder(view), View.OnClickListener {
-
-        private lateinit var item: PostItem
-
-        init {
-            view.itemParent.setOnClickListener(this)
-            view.ivBookmark.setOnClickListener(this)
-        }
-
-        fun bind(item: PostItem) {
-            this.item = item
-            ImageLoadingUtil.load(view.context, item, view.ivItemBg)
-            view.tvItemTitle.setHtml(item.title.rendered)
-            view.tvItemDate.text = Date().getDateFromString(item.date)?.getCalendarDate()
-            view.tvItemTag.loadCategoryName(item)
-            view.ivBookmark.setBookmarkIcon(item)
-        }
-
-        override fun onClick(v: View) {
-            when (v) {
-                v.itemParent -> {
-                    listener.openPost(v, item)
-                }
-                v.ivBookmark -> {
-                    v.bookmark(v.context, item, v.ivBookmark)
-                }
-            }
-        }
-    }
 }

@@ -16,7 +16,7 @@ object NewsConstants {
     const val UTF_8 = "UTF-8"
 
     const val HTML_STYLE = "<style>img{display: inline;height: auto;max-width: 100%;} iframe{display: block;max-width:100%;margin-top:10px;margin-bottom:10px;}</style>"
-    const val HTML_STYLE_DARK = "<style>img{display:inline;height:auto;max-width:100%}iframe{display:block;max-width:100%;margin-top:10px;margin-bottom:10px}body{background-color:rgb(27, 30, 40);color:white}a{color:red}</style>"
+    const val HTML_STYLE_DARK = "<style>img{display:inline;height:auto;max-width:100%} iframe{display:block;max-width:100%;margin-top:10px;margin-bottom:10px}body{background-color:rgb(27, 30, 40);color:white}a{color:red}</style>"
 //
 }
 // h2{color: #FFFFFF;}b{font-weight: bold;color: #FFFFFF;}body{background-color: #1B1E28;} p {color: #FFFFFF; font-size: 14px;line-height: 16px;margin-top: 10px;margin-bottom: 10px;}i{font-style: italic;color: #FFFFFF;}

@@ -15,7 +15,12 @@ import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.sync.SyncApi
 import com.decouikit.news.network.sync.SyncPost
+import com.decouikit.news.network.sync.SyncTags2
 import kotlinx.android.synthetic.main.activity_splash.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import okhttp3.Dispatcher
 
 
 class SplashActivity : Activity(), ResultListener<Boolean> {

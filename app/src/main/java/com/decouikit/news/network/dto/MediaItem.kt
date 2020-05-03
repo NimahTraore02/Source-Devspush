@@ -1,8 +1,11 @@
 package com.decouikit.news.network.dto
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
-data class MediaItem(
+@Parcelize
+class MediaItem(
     @SerializedName("id") val id: Int,
     @SerializedName("date") val date: String,
     @SerializedName("date_gmt") val date_gmt: String,
@@ -23,8 +26,4 @@ data class MediaItem(
     @SerializedName("mime_type") val mime_type: String,
     @SerializedName("post") val post: String,
     @SerializedName("source_url") val source_url: String
-)
-
-
-
-//"guid", "title", description, "caption", "media_details"
+) : Parcelable

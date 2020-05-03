@@ -36,7 +36,6 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
     private lateinit var recentManager: GridLayoutManager
 
     private var page = 0
-    private var reCallApi = false
     private var featuresSync = false
     private var recentSync = false
 
@@ -59,7 +58,6 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
         super.onViewCreated(view, savedInstanceState)
         initLayout()
         initListeners()
-        itemView.nestedParent.setOnScrollChangeListener(this)
         refreshContent()
     }
 
@@ -77,6 +75,7 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
         itemView.tvFeaturedNewsViewAll.setOnClickListener(this)
         itemView.tvRecentNewsViewAll.setOnClickListener(this)
         itemView.swipeRefresh.setOnRefreshListener(this)
+        itemView.nestedParent.setOnScrollChangeListener(this)
     }
 
     override fun onRefresh() {

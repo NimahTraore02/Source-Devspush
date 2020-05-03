@@ -167,7 +167,8 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
         ivShare.setOnClickListener(this)
         btnOpenComments.setOnClickListener(this)
 
-        appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+        appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener {
+                appBarLayout, verticalOffset ->
             tvToolbarTitle.visibility =
                 if (abs(verticalOffset) - appBarLayout.totalScrollRange == 0) {
                     View.VISIBLE

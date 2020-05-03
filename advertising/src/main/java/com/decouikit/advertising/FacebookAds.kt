@@ -23,9 +23,7 @@ class FacebookAds(
         if (!AudienceNetworkAds.isInitialized(getContext())) {
             AudienceNetworkAds
                 .buildInitSettings(getContext())
-                .withInitListener {
-                    Log.e("Test", "withInitListener")
-                }
+                .withInitListener { }
                 .initialize()
             AudienceNetworkAds.initialize(getContext())
             AdSettings.addTestDevice(adsItem.testDeviceId)
@@ -92,7 +90,6 @@ class FacebookAds(
     }
 
     override fun showRewardedVideo() {
-        Log.e("Test", "showRewardedVideo")
         mRewardedVideoAd = RewardedVideoAd(getContext(), adsItem.rewardedVideoAdUnitId)
         val loadAdConfig = mRewardedVideoAd
             ?.buildLoadAdConfig()

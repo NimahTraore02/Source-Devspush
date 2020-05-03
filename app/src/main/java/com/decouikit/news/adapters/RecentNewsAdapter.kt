@@ -1,29 +1,24 @@
 package com.decouikit.news.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.decouikit.news.R
-import com.decouikit.news.extensions.*
+import com.decouikit.news.adapters.holder.RecentNewsViewHolder
 import com.decouikit.news.network.dto.PostItem
-import com.decouikit.news.utils.ImageLoadingUtil
-import kotlinx.android.synthetic.main.adapter_recent_news_item.view.*
 import java.util.*
 
-class RecentNewsAdapter(private var items: ArrayList<PostItem>)
-    : RecyclerView.Adapter<RecentNewsAdapter.ViewHolder>() {
+class RecentNewsAdapter(private var items: ArrayList<PostItem>) :
+    RecyclerView.Adapter<RecentNewsViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecentNewsViewHolder {
+        return RecentNewsViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.adapter_recent_news_item, parent, false)
         )
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override fun getItemCount(): Int = items.size
 
     fun setData(items: ArrayList<PostItem>) {
         this.items.clear()
@@ -36,28 +31,8 @@ class RecentNewsAdapter(private var items: ArrayList<PostItem>)
         notifyDataSetChanged()
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecentNewsViewHolder, position: Int) =
         holder.bind(items[position])
-    }
 
-    class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
-        private lateinit var item: PostItem
-
-        init {
-            view.setOnClickListener(this)
-        }
-
-        fun bind(item: PostItem) {
-            this.item = item
-            view.tvItemTag.loadCategoryName(item)
-            view.tvItemTitle.setHtml(item.title.rendered)
-            view.tvItemDate.text = Date().getDateFromString(item.date)?.getCalendarDate()
-            ImageLoadingUtil.load(view.context, item, view.ivItemBg)
-        }
-
-        override fun onClick(v: View) {
-            v.openPostActivity(v.context, item)
-        }
-    }
 }

@@ -1,30 +1,24 @@
 package com.decouikit.news.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.decouikit.news.R
-import com.decouikit.news.extensions.*
+import com.decouikit.news.adapters.holder.BookmarkViewHolder
 import com.decouikit.news.interfaces.RemoveBookmarkListener
 import com.decouikit.news.network.dto.PostItem
-import com.decouikit.news.utils.ImageLoadingUtil
-import kotlinx.android.synthetic.main.adapter_view_all_item.view.*
 import java.util.*
 
-class BookmarkAdapter(private var items: ArrayList<PostItem>,
-                      private var mListener: RemoveBookmarkListener)
-    : RecyclerView.Adapter<BookmarkAdapter.ViewHolder>() {
+class BookmarkAdapter(
+    private var items: ArrayList<PostItem>,
+    private var mListener: RemoveBookmarkListener
+) : RecyclerView.Adapter<BookmarkViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkViewHolder {
+        return BookmarkViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.adapter_view_all_item, parent, false), mListener
         )
-    }
-
-    override fun getItemCount(): Int {
-        return items.size
     }
 
     fun setData(items: ArrayList<PostItem>) {
@@ -32,40 +26,9 @@ class BookmarkAdapter(private var items: ArrayList<PostItem>,
         notifyDataSetChanged()
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun getItemCount(): Int = items.size
+
+    override fun onBindViewHolder(holder: BookmarkViewHolder, position: Int) =
         holder.bind(items[position])
-    }
 
-    class ViewHolder(private val view: View,
-                     private val mListener: RemoveBookmarkListener)
-        : RecyclerView.ViewHolder(view), View.OnClickListener {
-
-        private lateinit var item: PostItem
-
-
-        init {
-            view.itemParent.setOnClickListener(this)
-            view.ivBookmark.setOnClickListener(this)
-        }
-
-        fun bind(item: PostItem) {
-            this.item = item
-            ImageLoadingUtil.load(view.context, item, view.ivItemBg)
-            view.tvItemTitle.setHtml(item.title.rendered)
-            view.tvItemDate.text = Date().getDateFromString(item.date)?.getCalendarDate()
-            view.tvItemTag.loadCategoryName(item)
-            view.ivBookmark.setBookmarkIcon(true)
-        }
-
-        override fun onClick(v: View) {
-            when (v) {
-                view.itemParent -> {
-                    v.openPostActivity(v.context, item)
-                }
-                view.ivBookmark -> {
-                    mListener.removeBookmark(item)
-                }
-            }
-        }
-    }
 }

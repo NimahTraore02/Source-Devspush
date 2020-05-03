@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-fun String.fromHtmlToString(): String {
+fun String.decode(): String {
     return fromHtml(this, FROM_HTML_MODE_COMPACT).toString()
 }
 
@@ -36,12 +36,4 @@ fun String.toDate(): Date? {
         e.printStackTrace()
     }
     return null
-}
-
-fun String.decode(): String {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY).toString()
-    } else {
-        Html.fromHtml(this).toString()
-    }
 }

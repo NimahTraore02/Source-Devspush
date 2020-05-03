@@ -1,8 +1,11 @@
 package com.decouikit.news.network.dto
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
-data class CommentItem(
+@Parcelize
+class CommentItem(
     @SerializedName("id") val id: Int,
     @SerializedName("date") val date: String,
     @SerializedName("date_gmt") val date_gmt: String,
@@ -25,4 +28,4 @@ data class CommentItem(
     @SerializedName("author_name") val authorName: String,
     @SerializedName("author_link") val authorLink: String,
     @SerializedName("author_avatar_urls") val author_avatar_urls: AvatarUrl
-)
+) : Parcelable

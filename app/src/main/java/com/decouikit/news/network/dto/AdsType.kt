@@ -1,4 +1,4 @@
-package com.decouikit.news.database
+package com.decouikit.news.network.dto
 
 
 enum class AdsType {

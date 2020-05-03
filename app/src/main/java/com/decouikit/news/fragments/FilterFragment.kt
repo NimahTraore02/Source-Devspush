@@ -1,7 +1,7 @@
 package com.decouikit.news.fragments
 
 import android.os.Bundle
-import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +22,10 @@ import com.decouikit.news.network.sync.SyncPost
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.fragment_filter.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jetbrains.anko.doAsync
 
 class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener,
@@ -38,9 +42,6 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     private lateinit var recentManager: GridLayoutManager
 
     private var page = 0
-    private var reCallApi = false
-
-    private var recallCounter = 0;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +62,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
         super.onViewCreated(view, savedInstanceState)
         initLayout()
         initListeners()
-        itemView.nestedParent.setOnScrollChangeListener(this)
+
         refreshContent()
     }
 
@@ -78,32 +79,23 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
         itemView.tvFeaturedNewsViewAll.setOnClickListener(this)
         itemView.tvRecentNewsViewAll.setOnClickListener(this)
         itemView.swipeRefresh.setOnRefreshListener(this)
+        itemView.nestedParent.setOnScrollChangeListener(this)
     }
 
     private fun initData() {
-        doAsync {
-            SyncPost.getPostsList(
-                requireContext(), categoryId?.categoryToString(), null, ++page,
+        GlobalScope.launch(context = Dispatchers.Main) {
+            delay(500)
+            SyncPost.getPostsList(requireContext(), categoryId?.categoryToString(), null, ++page,
                 Config.getNumberOfItemPerPage(), object : ResultListener<List<PostItem>> {
                     override fun onResult(value: List<PostItem>?) {
-                        if (value?.size?:0 > 0) {
+                        if (value?.size ?: 0 > 0) {
                             initFeaturedNews(value)
                             initRecentNews(value)
                             setShimmerAnimationVisibility(false)
-                            itemView.swipeRefresh.isRefreshing = false
                         } else {
-                            if (recallCounter <= 3) {
-                                if (page == 1 && !reCallApi) {
-                                    recallCounter++
-                                    reCallApi = true
-                                    Handler().postDelayed({ reCallApi = false }, 500)
-                                    page = 0
-                                    initData()
-                                }
-                            } else {
-                                setEmptyState(true)
-                            }
+                            setEmptyState(featuredAdapter.count == 0)
                         }
+                        itemView.swipeRefresh.isRefreshing = false
                     }
                 })
         }
@@ -130,7 +122,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
 
     private fun initRecentNews(value: List<PostItem>?) {
         var start = Config.getNumberOfItemForSlider()
-        val end = value?.size?:0
+        val end = value?.size ?: 0
         if (start > end) {
             start = end
         }
@@ -169,8 +161,8 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
         }
     }
 
-    private fun getCategoryId() : String? {
-        return if(categoryId != 0) {
+    private fun getCategoryId(): String? {
+        return if (categoryId != 0) {
             categoryId.toString()
         } else {
             null
@@ -248,6 +240,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     }
 
     private fun setEmptyState(isVisible: Boolean) {
+        Log.e("OkHttp", "setEmptyState $isVisible")
         if (isVisible) {
             itemView.nestedParent.visibility = View.GONE
             itemView.emptyStateContainer.visibility = View.VISIBLE

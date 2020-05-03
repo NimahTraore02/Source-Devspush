@@ -1,6 +1,10 @@
 package com.decouikit.news.network.dto
 
-enum class CategoryType {
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+enum class CategoryType : Parcelable {
 
     ALL, FEATURED, RECENT;
 

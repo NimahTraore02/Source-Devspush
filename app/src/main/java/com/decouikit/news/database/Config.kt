@@ -10,6 +10,7 @@ import com.decouikit.advertising.model.AdsContract
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BottomNavigationActivity
 import com.decouikit.news.activities.common.NavigationActivity
+import com.decouikit.news.network.dto.AdsType
 import com.decouikit.news.network.dto.Category
 import com.decouikit.news.network.dto.Language
 import com.decouikit.news.network.dto.RateMeConfig
@@ -21,7 +22,7 @@ object Config {
         val languages = mutableListOf<Language>()
         languages.add(
             Language(
-                baseUrl = "https://deconews.decouikit.com/wp-json/wp/v2/",
+                baseUrl = "https://osrc.ng/wp-json/wp/v2/",
                 language = "English",
                 languageCode = "en"
             )
@@ -58,7 +59,7 @@ object Config {
     // if you don't want interstitial ads just put value -1
     fun promptForInterstitialCounter(): Int = 1
 
-    fun getNumberOfItemPerPage(): Int = 10
+    fun getNumberOfItemPerPage(): Int = 5
 
     fun getOrder(): String = "desc"
 

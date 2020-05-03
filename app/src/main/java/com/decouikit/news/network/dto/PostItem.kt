@@ -1,10 +1,13 @@
 package com.decouikit.news.network.dto
 
+import android.os.Parcelable
 import android.view.View
 import com.decouikit.news.utils.NewsConstants
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
-data class PostItem(
+@Parcelize
+class PostItem(
     @SerializedName("id") val id: Int,
     @SerializedName("date") val date: String,
     @SerializedName("date_gmt") val date_gmt: String,
@@ -26,13 +29,9 @@ data class PostItem(
     @SerializedName("format") val format: String,
     @SerializedName("categories") val categories: List<Int>,
     @SerializedName("tags") val tags: List<Int>,
-    var source_url:String, var categoryName: String = "", var isBookmarked: Boolean = false
-) {
+    var source_url: String, var categoryName: String = "", var isBookmarked: Boolean = false
+) : Parcelable {
     fun getCommentVisible(): Int {
-        return if (comment_status == NewsConstants.OPEN_COMMENT_STATUS) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
+        return if (comment_status == NewsConstants.OPEN_COMMENT_STATUS) View.VISIBLE else View.GONE
     }
 }

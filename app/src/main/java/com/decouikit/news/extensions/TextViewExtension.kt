@@ -8,7 +8,7 @@ import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.sync.SyncCategory
 
 fun TextView.setHtml(content: String) {
-    this.text = content.fromHtmlToString()
+    this.text = content.decode()
 }
 
 fun TextView.loadCategoryName(postItem: PostItem) {
@@ -19,11 +19,11 @@ fun TextView.loadCategoryName(postItem: PostItem) {
             object : ResultListener<Category> {
                 override fun onResult(value: Category?) {
                     value?.let {
-                        text = value.name
+                        text = value.name.decode()
                     }
                 }
             })
     } else {
-        this.text = postItem.categoryName
+        this.text = postItem.categoryName.decode()
     }
 }
