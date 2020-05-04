@@ -82,7 +82,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
 
     private fun initData() {
         GlobalScope.launch(context = Dispatchers.IO) {
-            delay(500)
+//            delay(500)
             val posts = SyncPost.getPostsList(
                 requireContext(),
                 categoryId?.categoryToString(), null, ++page,
@@ -177,18 +177,16 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     }
 
     private fun setShimmerAnimationVisibility(isVisible: Boolean) {
-        activity?.runOnUiThread {
-            if (isVisible) {
-                mShimmerFeaturedNewsContainer.visibility = View.VISIBLE
-                mShimmerFeaturedNewsContainer.startShimmer()
-                mShimmerRecentNewsContainer.visibility = View.VISIBLE
-                mShimmerRecentNewsContainer.startShimmer()
-            } else {
-                mShimmerFeaturedNewsContainer.stopShimmer()
-                mShimmerFeaturedNewsContainer.visibility = View.GONE
-                mShimmerRecentNewsContainer.stopShimmer()
-                mShimmerRecentNewsContainer.visibility = View.GONE
-            }
+        if (isVisible) {
+            mShimmerFeaturedNewsContainer.visibility = View.VISIBLE
+            mShimmerFeaturedNewsContainer.startShimmer()
+            mShimmerRecentNewsContainer.visibility = View.VISIBLE
+            mShimmerRecentNewsContainer.startShimmer()
+        } else {
+            mShimmerFeaturedNewsContainer.stopShimmer()
+            mShimmerFeaturedNewsContainer.visibility = View.GONE
+            mShimmerRecentNewsContainer.stopShimmer()
+            mShimmerRecentNewsContainer.visibility = View.GONE
         }
     }
 
@@ -218,7 +216,6 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
             if ((scrollY >= (v.getChildAt(v.childCount - 1).measuredHeight - v.measuredHeight)) &&
                 scrollY > oldScrollY
             ) {
-
                 val visibleItemCount = recentManager.childCount
                 val totalItemCount = recentManager.itemCount
                 val pastVisibleItems = recentManager.findFirstVisibleItemPosition()
