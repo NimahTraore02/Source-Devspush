@@ -220,7 +220,6 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
             if ((scrollY >= (v.getChildAt(v.childCount - 1).measuredHeight - v.measuredHeight)) &&
                 scrollY > oldScrollY
             ) {
-
                 val visibleItemCount = recentManager.childCount
                 val totalItemCount = recentManager.itemCount
                 val pastVisibleItems = recentManager.findFirstVisibleItemPosition()

@@ -1,16 +1,10 @@
 package com.decouikit.news.network.sync
 
 import android.content.Context
-import android.util.Log
 import com.decouikit.news.database.InMemory
-import com.decouikit.news.extensions.Result
-import com.decouikit.news.extensions.enqueue
-import com.decouikit.news.interfaces.ResultListener
-import com.decouikit.news.network.MediaService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.TagService
 import com.decouikit.news.network.dto.Tag
-import org.jetbrains.anko.doAsync
 import retrofit2.awaitResponse
 
 object SyncTags {

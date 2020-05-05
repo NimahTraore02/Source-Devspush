@@ -10,27 +10,21 @@ import retrofit2.awaitResponse
 
 object SyncCategory {
 
-    private val categories = mutableListOf<Category>()
-    private var pageNumber = 1
-
     suspend fun sync(context: Context): Boolean {
         val service = getService(context)
-        val response = service?.getCategoryList(page = pageNumber)?.awaitResponse()
-        if (response?.isSuccessful == true) {
+        val response = service?.getCategoryList(page = 1)?.awaitResponse()
+        val categories = mutableListOf<Category>()
+        return if (response?.isSuccessful == true) {
             if (!response.body().isNullOrEmpty()) {
                 categories.addAll(response.body() as List<Category>)
-                pageNumber++
             }
-            pageNumber = 1
             InMemory.setCategoryList(categories)
             Preference(context).persisCategories(categories as ArrayList<Category>)
             categories.clear()
-            return true
+            true
         } else {
-            pageNumber = 1
             Preference(context).loadCategories()
-            categories.clear()
-            return false
+            false
         }
     }
 
