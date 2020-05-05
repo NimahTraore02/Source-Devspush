@@ -2,6 +2,7 @@ package com.decouikit.news.activities
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.decouikit.news.R
@@ -26,12 +27,13 @@ import kotlinx.coroutines.launch
 import retrofit2.awaitResponse
 
 class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener,
-    OpenPostListener {
+    OpenPostListener, NestedScrollView.OnScrollChangeListener {
 
     private var categoryId: Int? = 0
     private var categoryName: String? = ""
     private var categoryType: CategoryType = CategoryType.ALL
     private var isDataLoading = false
+    private lateinit var layoutManager: LinearLayoutManager
     private lateinit var adapter: ViewAllAdapter
     private val items = arrayListOf<PostItem>()
     private val postService by lazy {
@@ -68,11 +70,6 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
             }
         }
 
-        rvItems.addOnScrollListener(object : EndlessRecyclerOnScrollListener() {
-            override fun onLoadMore() {
-                loadData()
-            }
-        })
         refreshContent()
     }
 
@@ -96,13 +93,15 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
             ivBack.rotation = 180f
         }
         adapter = ViewAllAdapter(arrayListOf(), this)
-        rvItems.layoutManager = LinearLayoutManager(this)
+        layoutManager = LinearLayoutManager(this)
+        rvItems.layoutManager = layoutManager
         rvItems.adapter = adapter
     }
 
     private fun initListeners() {
         ivBack.setOnClickListener(this)
         swipeRefresh.setOnRefreshListener(this)
+        nestedParent.setOnScrollChangeListener(this)
     }
 
     override fun onClick(v: View) {
@@ -134,7 +133,7 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
 
         isDataLoading = true
 
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(Dispatchers.Main) {
             val response = postService?.getPostsList(
                 categoryId?.categoryToString(),
                 sticky,
@@ -162,7 +161,7 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
                     }
                 }
             } else {
-                hideContent(true)
+                hideContent(adapter.itemCount == 0)
             }
             mShimmerViewContainer.startShimmer()
             mShimmerViewContainer.visibility = View.GONE
@@ -171,7 +170,7 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
     }
 
     private fun getAllPosts() {
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(Dispatchers.Main) {
             isDataLoading = true
             val response = postService?.getPostsList(
                 categoryId?.categoryToString(),
@@ -198,7 +197,7 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
                     }
                 }
             } else {
-                hideContent(true)
+                hideContent(adapter.itemCount == 0)
             }
             mShimmerViewContainer.startShimmer()
             mShimmerViewContainer.visibility = View.GONE
@@ -222,5 +221,28 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
         tvTitle.visibility = View.GONE
         rvItems.visibility = View.GONE
         emptyPostsContainer.visibility = View.GONE
+    }
+
+    override fun onScrollChange(
+        v: NestedScrollView?,
+        scrollX: Int,
+        scrollY: Int,
+        oldScrollX: Int,
+        oldScrollY: Int
+    ) {
+        if (v?.getChildAt(v.childCount - 1) != null) {
+            if ((scrollY >= (v.getChildAt(v.childCount - 1).measuredHeight - v.measuredHeight)) &&
+                scrollY > oldScrollY
+            ) {
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
+                val pastVisibleItems = layoutManager.findFirstVisibleItemPosition()
+
+                if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                    swipeRefresh.isRefreshing = true
+                    loadData()
+                }
+            }
+        }
     }
 }

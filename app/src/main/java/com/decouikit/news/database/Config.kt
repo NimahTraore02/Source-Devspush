@@ -61,6 +61,9 @@ object Config {
 
     fun getNumberOfItemPerPage(): Int = 5
 
+    //It's better to have more items per page on search, because of scroll behavior at the bottom
+    fun getNumberOfSearchedItemsPerPage(): Int = 10
+
     fun getOrder(): String = "desc"
 
     fun getNumberOfItemForSlider(): Int = 3

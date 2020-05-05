@@ -3,6 +3,7 @@ package com.decouikit.news.activities
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.decouikit.news.R
@@ -26,8 +27,9 @@ import java.util.*
 
 
 class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
-    SwipeRefreshLayout.OnRefreshListener, View.OnKeyListener {
+    SwipeRefreshLayout.OnRefreshListener, View.OnKeyListener, NestedScrollView.OnScrollChangeListener  {
 
+    private lateinit var layoutManager: LinearLayoutManager
     private var adapter = ViewAllAdapter(arrayListOf(), this)
 
     private var searchText = ""
@@ -70,7 +72,8 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
         if (Preference(this).isRtlEnabled) {
             ivBack.rotation = 180f
         }
-        rvSearch.layoutManager = LinearLayoutManager(this)
+        layoutManager = LinearLayoutManager(this)
+        rvSearch.layoutManager = layoutManager
         rvSearch.adapter = adapter
         setEmptyState(false)
         swipeRefresh.isRefreshing = true
@@ -82,11 +85,7 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
         ivSearch.setOnClickListener(this)
         swipeRefresh.setOnRefreshListener(this)
         etSearch.setOnKeyListener(this)
-        rvSearch.addOnScrollListener(object : EndlessRecyclerOnScrollListener() {
-            override fun onLoadMore() {
-                startSearching()
-            }
-        })
+        nestedParent.setOnScrollChangeListener(this)
     }
 
     override fun onClick(v: View) {
@@ -124,10 +123,10 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     }
 
     private fun search(text: String) {
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(Dispatchers.Main) {
             val posts = SyncPost.getPostsSearch(applicationContext, text, tagId, ++page)
             if (posts.isNotEmpty()) {
-                adapter.setData(posts as ArrayList<PostItem>)
+                adapter.setSearchedData(posts as ArrayList<PostItem>)
             }
             setEmptyState(adapter.itemCount == 0)
             swipeRefresh.isRefreshing = false
@@ -155,6 +154,28 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
             }
             empty_container.visibility = View.GONE
             swipeRefresh.visibility = View.VISIBLE
+        }
+    }
+
+    override fun onScrollChange(
+        v: NestedScrollView?,
+        scrollX: Int,
+        scrollY: Int,
+        oldScrollX: Int,
+        oldScrollY: Int
+    ) {
+        if (v?.getChildAt(v.childCount - 1) != null) {
+            if ((scrollY >= (v.getChildAt(v.childCount - 1).measuredHeight - v.measuredHeight)) &&
+                scrollY > oldScrollY
+            ) {
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
+                val pastVisibleItems = layoutManager.findFirstVisibleItemPosition()
+
+                if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                    startSearching()
+                }
+            }
         }
     }
 }

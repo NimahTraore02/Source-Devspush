@@ -104,7 +104,7 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     private fun loadTag(post: PostItem) {
         runOnUiThread {
             post.tags.forEach { tagId ->
-                GlobalScope.launch(Dispatchers.IO) {
+                GlobalScope.launch(Dispatchers.Main) {
                     val tag = tagsService.getTagById(tagId, context = applicationContext)
                     tag?.let { tagList.add(it) }
                     hashTagAdapter.setData(tagList)
@@ -196,7 +196,7 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     }
 
     private fun getRelatedNews() {
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(Dispatchers.Main) {
             val response = postsService?.getPostsList(
                 postItem.categories[0].categoryToString(), null,
                 page, Config.getNumberOfItemPerPage()
@@ -218,7 +218,7 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     }
 
     private fun getNumberOfComments() {
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(Dispatchers.Main) {
             val response = commentsService?.getCommentListPostId(postItem.id)?.awaitResponse()
             var commentCounter = 0
             if (response?.isSuccessful == true) {

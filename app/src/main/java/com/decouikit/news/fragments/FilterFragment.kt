@@ -81,15 +81,17 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     }
 
     private fun initData() {
-        GlobalScope.launch(context = Dispatchers.IO) {
+        GlobalScope.launch(context = Dispatchers.Main) {
             delay(500)
-            val posts = SyncPost.getPostsList(
-                requireContext(),
-                categoryId?.categoryToString(), null, ++page,
-                Config.getNumberOfItemPerPage()
-            )
+            val posts = activity?.applicationContext?.let {
+                SyncPost.getPostsList(
+                    it,
+                    categoryId?.categoryToString(), null, ++page,
+                    Config.getNumberOfItemPerPage()
+                )
+            }
 
-            if (posts.isNotEmpty()) {
+            if (posts?.isNotEmpty()!!) {
                 initFeaturedNews(posts)
                 initRecentNews(posts)
                 setShimmerAnimationVisibility(false)
@@ -138,7 +140,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     }
 
     private fun loadMoreRecentData() {
-        GlobalScope.launch(context = Dispatchers.IO) {
+        GlobalScope.launch(context = Dispatchers.Main) {
             val posts = SyncPost.getPostsList(
                 requireContext(), getCategoryId(),
                 null, ++page, Config.getNumberOfItemPerPage()
@@ -184,10 +186,10 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
                 mShimmerRecentNewsContainer.visibility = View.VISIBLE
                 mShimmerRecentNewsContainer.startShimmer()
             } else {
-                mShimmerFeaturedNewsContainer.stopShimmer()
                 mShimmerFeaturedNewsContainer.visibility = View.GONE
-                mShimmerRecentNewsContainer.stopShimmer()
+                mShimmerFeaturedNewsContainer.stopShimmer()
                 mShimmerRecentNewsContainer.visibility = View.GONE
+                mShimmerRecentNewsContainer.stopShimmer()
             }
         }
     }

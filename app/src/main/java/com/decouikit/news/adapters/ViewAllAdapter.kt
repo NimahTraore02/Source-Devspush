@@ -29,6 +29,11 @@ class ViewAllAdapter(
         notifyDataSetChanged()
     }
 
+    fun setSearchedData(items: ArrayList<PostItem>) {
+        this.items.addAll(items)
+        notifyDataSetChanged()
+    }
+
     fun removeItem(item: PostItem) {
         items.remove(item)
         notifyDataSetChanged()

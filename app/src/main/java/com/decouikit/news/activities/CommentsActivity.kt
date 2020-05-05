@@ -2,6 +2,7 @@ package com.decouikit.news.activities
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.decouikit.news.R
@@ -22,7 +23,7 @@ import kotlinx.coroutines.launch
 import retrofit2.awaitResponse
 
 class CommentsActivity : BaseActivity(), View.OnClickListener,
-    SwipeRefreshLayout.OnRefreshListener {
+    SwipeRefreshLayout.OnRefreshListener, NestedScrollView.OnScrollChangeListener {
 
     private lateinit var adapter: CommentsAdapter
     private var postId: Int = -1
@@ -45,17 +46,11 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
 
     override fun onResume() {
         super.onResume()
-        rvItems.addOnScrollListener(object : EndlessRecyclerOnScrollListener() {
-            override fun onLoadMore() {
-                swipeRefresh.isRefreshing = true
-                getComments()
-            }
-        })
         refreshContent()
     }
 
     private fun getComments() {
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(Dispatchers.Main) {
             val response =
                 commentsService?.getCommentListPostId(postId, ++page, perPage)?.awaitResponse()
             if (response?.isSuccessful == true) {
@@ -63,9 +58,12 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
                     val comments = response.body() as ArrayList<CommentItem>
                     hideContent(false)
                     adapter.setData(comments)
+                } else {
+                    hideContent(adapter.itemCount == 0)
                 }
+            }else {
+                hideContent(adapter.itemCount == 0)
             }
-            hideContent(true)
             mShimmerViewContainer.stopShimmer()
             mShimmerViewContainer.visibility = View.GONE
             swipeRefresh.isRefreshing = false
@@ -86,6 +84,7 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
         ivBack.setOnClickListener(this)
         btnWriteComment.setOnClickListener(this)
         swipeRefresh.setOnRefreshListener(this)
+        nestedParent.setOnScrollChangeListener(this)
     }
 
     override fun onRefresh() {
@@ -95,11 +94,11 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
 
     private fun hideContent(isListEmpty: Boolean) {
         if (isListEmpty) {
-            rvItems.visibility = View.GONE
+            nestedParent.visibility = View.GONE
             tvTitle.visibility = View.GONE
             emptyCommentContainer.visibility = View.VISIBLE
         } else {
-            rvItems.visibility = View.VISIBLE
+            nestedParent.visibility = View.VISIBLE
             tvTitle.visibility = View.VISIBLE
             emptyCommentContainer.visibility = View.GONE
         }
@@ -115,7 +114,7 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun hideAllOnRefresh() {
-        rvItems.visibility = View.GONE
+        nestedParent.visibility = View.GONE
         tvTitle.visibility = View.GONE
         emptyCommentContainer.visibility = View.GONE
     }
@@ -124,6 +123,29 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
         when (v) {
             ivBack -> onBackPressed()
             btnWriteComment -> v.openComments(this, PostCommentActivity::class.java, postId)
+        }
+    }
+
+    override fun onScrollChange(
+        v: NestedScrollView?,
+        scrollX: Int,
+        scrollY: Int,
+        oldScrollX: Int,
+        oldScrollY: Int
+    ) {
+        if (v?.getChildAt(v.childCount - 1) != null) {
+            if ((scrollY >= (v.getChildAt(v.childCount - 1).measuredHeight - v.measuredHeight)) &&
+                scrollY > oldScrollY
+            ) {
+                val visibleItemCount = linearLayoutManager.childCount
+                val totalItemCount = linearLayoutManager.itemCount
+                val pastVisibleItems = linearLayoutManager.findFirstVisibleItemPosition()
+
+                if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                    swipeRefresh.isRefreshing = true
+                    getComments()
+                }
+            }
         }
     }
 }

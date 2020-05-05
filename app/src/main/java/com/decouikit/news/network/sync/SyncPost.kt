@@ -56,7 +56,7 @@ object SyncPost {
         search: String,
         tags: Int?,
         page: Int = 1,
-        perPage: Int = Config.getNumberOfItemPerPage()
+        perPage: Int = Config.getNumberOfSearchedItemsPerPage()
     ): List<PostItem> {
         var items = ArrayList<PostItem>()
         val service = getService(context)

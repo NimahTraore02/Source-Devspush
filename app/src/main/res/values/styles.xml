@@ -153,6 +153,7 @@
         <item name="android:editTextColor">@color/icon_gray</item>
         <item name="android:textColorHint">@color/icon_gray</item>
         <item name="android:backgroundTint">@color/icon_gray</item>
+        <item name="colorAccent">?attr/colorTitleText</item>
     </style>
 
     <style name="PostTagTextStyle">
