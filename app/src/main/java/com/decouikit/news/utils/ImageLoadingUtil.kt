@@ -25,7 +25,7 @@ object ImageLoadingUtil {
 
     fun load(context: Context, postItem: PostItem, imageView: ImageView?) {
         if (TextUtils.isEmpty(postItem.source_url)) {
-            GlobalScope.launch(Dispatchers.IO) {
+            GlobalScope.launch(Dispatchers.Main) {
                 val mediaItem = SyncMedia.getMediaById(postItem.featured_media, context)
                 mediaItem?.let {
                     postItem.source_url = it.source_url

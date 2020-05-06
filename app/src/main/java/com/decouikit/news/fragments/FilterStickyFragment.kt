@@ -114,7 +114,7 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
     }
 
     private fun getFeaturedNews() {
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(Dispatchers.Main) {
             val posts = SyncPost.getPostsList(
                 requireContext(), categoryId.toString(), true, 1, Config.getNumberOfItemPerPage()
             )
@@ -138,7 +138,7 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
     }
 
     private fun getRecentNews() {
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(Dispatchers.Main) {
             val posts = SyncPost.getPostsList(
                 requireContext(), categoryId.toString(),
                 false, ++page, Config.getNumberOfItemPerPage()

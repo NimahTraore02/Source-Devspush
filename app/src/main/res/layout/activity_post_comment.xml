@@ -44,6 +44,7 @@
         android:id="@+id/etName"
         android:hint="@string/hint_name"
         style="@style/EditTextStyle"
+        android:theme="@style/CommentsEditTextTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_container"/>
@@ -52,6 +53,7 @@
         android:id="@+id/etEmail"
         android:hint="@string/hint_email"
         style="@style/EditTextStyle"
+        android:theme="@style/CommentsEditTextTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etName"/>
@@ -60,6 +62,7 @@
         android:id="@+id/etComment"
         android:hint="@string/hint_comment"
         style="@style/EditTextStyle"
+        android:theme="@style/CommentsEditTextTheme"
         android:layout_height="@dimen/zero_density"
         android:paddingTop="@dimen/large_padding"
         android:gravity="top|start"

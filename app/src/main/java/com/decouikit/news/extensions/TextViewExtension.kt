@@ -14,7 +14,7 @@ fun TextView.setHtml(content: String) {
 
 fun TextView.loadCategoryName(postItem: PostItem) {
     if (TextUtils.isEmpty(postItem.categoryName)) {
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(Dispatchers.Main) {
             val category = SyncCategory.getCategoryById(postItem.categories[0], context)
             text = category?.name?.decode()
         }
