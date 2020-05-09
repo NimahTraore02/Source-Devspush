@@ -12,7 +12,9 @@ import com.decouikit.news.R
 import com.decouikit.news.adapters.FeaturedNewsAdapter
 import com.decouikit.news.adapters.RecentNewsAdapter
 import com.decouikit.news.database.Config
+import com.decouikit.news.extensions.openPostActivity
 import com.decouikit.news.extensions.viewAll
+import com.decouikit.news.interfaces.OpenPostListener
 import com.decouikit.news.network.dto.CategoryType
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.sync.SyncPost
@@ -24,7 +26,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener,
-    NestedScrollView.OnScrollChangeListener {
+    NestedScrollView.OnScrollChangeListener, OpenPostListener {
 
     private lateinit var itemView: View
     private var categoryId: Int? = null
@@ -64,7 +66,9 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
 
     private fun initLayout() {
         featuredAdapter = FeaturedNewsAdapter(arrayListOf(), itemView.context)
+
         recentAdapter = RecentNewsAdapter(arrayListOf())
+        recentAdapter.setItemClickListener(this)
         recentManager = GridLayoutManager(itemView.context, 2)
         itemView.rvRecentNews.layoutManager = recentManager
         itemView.rvRecentNews.adapter = recentAdapter
@@ -237,6 +241,11 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
                 }
             }
         }
+    }
+
+
+    override fun openPost(view: View, item: PostItem) {
+        view.openPostActivity(view.context, item)
     }
 
     companion object {
