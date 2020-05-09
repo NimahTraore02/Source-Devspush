@@ -33,7 +33,8 @@ class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListe
         if (Preference(this).isRtlEnabled) {
             ivBack.rotation = 180f
         }
-        adapter = ViewAllAdapter(arrayListOf(), this)
+        adapter = ViewAllAdapter(arrayListOf())
+        adapter.setItemClickListener(this)
         rvNotifications.layoutManager = LinearLayoutManager(this)
         rvNotifications.adapter = adapter
         hideContent(true)

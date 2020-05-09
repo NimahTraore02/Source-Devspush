@@ -81,7 +81,8 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
 
     private fun initLayout() {
         //setting recent news
-        adapter = ViewAllAdapter(arrayListOf(), this)
+        adapter = ViewAllAdapter(arrayListOf())
+        adapter.setItemClickListener(this)
         rvRecentNews.layoutManager = LinearLayoutManager(this)
         rvRecentNews.adapter = adapter
 

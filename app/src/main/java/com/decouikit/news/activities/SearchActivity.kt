@@ -30,7 +30,7 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     SwipeRefreshLayout.OnRefreshListener, View.OnKeyListener, NestedScrollView.OnScrollChangeListener  {
 
     private lateinit var layoutManager: LinearLayoutManager
-    private var adapter = ViewAllAdapter(arrayListOf(), this)
+    private lateinit var adapter: ViewAllAdapter
 
     private var searchText = ""
     private var page = 0
@@ -72,6 +72,8 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
         if (Preference(this).isRtlEnabled) {
             ivBack.rotation = 180f
         }
+        adapter = ViewAllAdapter(arrayListOf())
+        adapter.setItemClickListener(this)
         layoutManager = LinearLayoutManager(this)
         rvSearch.layoutManager = layoutManager
         rvSearch.adapter = adapter

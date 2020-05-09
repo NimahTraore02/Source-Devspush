@@ -92,7 +92,8 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
         if (Preference(this).isRtlEnabled) {
             ivBack.rotation = 180f
         }
-        adapter = ViewAllAdapter(arrayListOf(), this)
+        adapter = ViewAllAdapter(arrayListOf())
+        adapter.setItemClickListener(this)
         layoutManager = LinearLayoutManager(this)
         rvItems.layoutManager = layoutManager
         rvItems.adapter = adapter
