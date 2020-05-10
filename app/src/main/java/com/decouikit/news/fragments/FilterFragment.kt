@@ -95,7 +95,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
                 )
             }
 
-            if (posts?.isNotEmpty()!!) {
+            if (posts != null && posts.isNotEmpty()) {
                 initFeaturedNews(posts)
                 initRecentNews(posts)
                 setShimmerAnimationVisibility(false)
@@ -122,7 +122,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
         featuredAdapter.setData(featuredPostItems)
         itemView.viewPager.adapter = featuredAdapter
         itemView.viewPager.offscreenPageLimit = Config.getNumberOfItemForSlider()
-        tabDots.setupWithViewPager(itemView.viewPager)
+        itemView.tabDots.setupWithViewPager(itemView.viewPager)
         setEmptyState(featuredAdapter.count == 0)
     }
 
