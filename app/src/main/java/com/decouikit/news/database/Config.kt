@@ -22,7 +22,7 @@ object Config {
         val languages = mutableListOf<Language>()
         languages.add(
             Language(
-                baseUrl = "https://osrc.ng/wp-json/wp/v2/",
+                baseUrl = "https://deconews.decouikit/wp-json/wp/v2/",
                 language = "English",
                 languageCode = "en"
             )
@@ -197,4 +197,6 @@ object Config {
              ), adsContainer, listener)
         }
     }
+
+    fun isWritingCommentEnabled() = false
 }
