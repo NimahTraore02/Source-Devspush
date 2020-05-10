@@ -122,6 +122,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
         featuredAdapter.setData(featuredPostItems)
         itemView.viewPager.adapter = featuredAdapter
         itemView.viewPager.offscreenPageLimit = Config.getNumberOfItemForSlider()
+        tabDots.setupWithViewPager(itemView.viewPager)
         setEmptyState(featuredAdapter.count == 0)
     }
 
@@ -174,6 +175,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
 
     private fun refreshContent() {
         itemView.viewPager.removeAllViews()
+        itemView.tabDots.removeAllTabs()
         setShimmerAnimationVisibility(true)
         page = 0
         featuredAdapter.removeAllItems()
