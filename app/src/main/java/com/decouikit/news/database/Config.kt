@@ -22,7 +22,7 @@ object Config {
         val languages = mutableListOf<Language>()
         languages.add(
             Language(
-                baseUrl = "https://deconews.decouikit/wp-json/wp/v2/",
+                baseUrl = "https://deconews.decouikit.com/wp-json/wp/v2/",
                 language = "English",
                 languageCode = "en"
             )
@@ -199,4 +199,5 @@ object Config {
     }
 
     fun isWritingCommentEnabled() = false
+    fun isReadingCommentEnabled() = true
 }

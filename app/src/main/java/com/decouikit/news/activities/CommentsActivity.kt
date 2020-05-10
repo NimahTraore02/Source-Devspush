@@ -82,11 +82,8 @@ class CommentsActivity : BaseActivity(), View.OnClickListener,
         if (Preference(this).isRtlEnabled) {
             ivBack.rotation = 180f
         }
-        if (Config.isWritingCommentEnabled()) {
-            btnWriteComment.visibility = View.VISIBLE
-        } else {
-            btnWriteComment.visibility = View.GONE
-        }
+        btnWriteComment.visibility = if (Config.isWritingCommentEnabled()) View.VISIBLE else View.GONE
+
         adapter = CommentsAdapter(arrayListOf())
         linearLayoutManager = LinearLayoutManager(this)
         rvItems.layoutManager = linearLayoutManager
