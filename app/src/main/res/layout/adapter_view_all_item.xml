@@ -4,6 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_all_item_height"
+        android:id="@+id/itemParent"
         android:orientation="vertical"
         app:cardCornerRadius="@dimen/small_padding"
         app:cardElevation="@dimen/small_padding"
@@ -12,7 +13,6 @@
         android:layout_marginEnd="@dimen/normal_padding">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/itemParent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?attr/colorHeader">

@@ -4,22 +4,35 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.decouikit.news.R
-import com.decouikit.news.adapters.holder.RecentNewsViewHolder
-import com.decouikit.news.adapters.holder.ViewAllViewHolder
+import com.decouikit.news.adapters.common.CommonListAdapterType
+import com.decouikit.news.adapters.holder.BaseListViewHolder
 import com.decouikit.news.interfaces.OpenPostListener
 import com.decouikit.news.network.dto.PostItem
 import java.util.*
 
-class ViewAllAdapter(
-    private var items: ArrayList<PostItem>
-) : RecyclerView.Adapter<ViewAllViewHolder>() {
+open class BaseListAdapter(
+    private var items: ArrayList<PostItem>,
+    private var adapterType: CommonListAdapterType
+) :
+    RecyclerView.Adapter<BaseListViewHolder>() {
 
     private var listener: OpenPostListener? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewAllViewHolder {
-        return ViewAllViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseListViewHolder {
+        val layout = when (adapterType) {
+            CommonListAdapterType.ADAPTER_VERSION_1 -> {
+                R.layout.adapter_view_all_item
+            }
+            CommonListAdapterType.ADAPTER_VERSION_2 -> {
+                R.layout.adapter_featured_news_item
+            }
+            CommonListAdapterType.ADAPTER_VERSION_3 -> {
+                R.layout.adapter_recent_news_item
+            }
+        }
+        return BaseListViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.adapter_view_all_item, parent, false)
+                .inflate(layout, parent, false)
         )
     }
 
@@ -32,6 +45,11 @@ class ViewAllAdapter(
     fun setData(items: ArrayList<PostItem>) {
         this.items.clear()
         this.items.addAll(items)
+        notifyDataSetChanged()
+    }
+
+    fun removeAllItems() {
+        items.removeAll { true }
         notifyDataSetChanged()
     }
 
@@ -52,13 +70,7 @@ class ViewAllAdapter(
 
     fun getItemByPosition(position: Int): PostItem = items[position]
 
-    fun removeAllItems() {
-        items.removeAll { true }
-        notifyDataSetChanged()
-    }
-
-    override fun onBindViewHolder(holder: ViewAllViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BaseListViewHolder, position: Int) {
         listener?.let { holder.bind(items[position], it) }
     }
-
 }

@@ -6,10 +6,11 @@ import com.decouikit.news.extensions.*
 import com.decouikit.news.interfaces.OpenPostListener
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.ImageLoadingUtil
-import kotlinx.android.synthetic.main.adapter_view_all_item.view.*
+import kotlinx.android.synthetic.main.adapter_recent_news_item.view.*
 import java.util.*
 
-class ViewAllViewHolder(private val view: View) :
+
+class BaseListViewHolder(private val view: View) :
     RecyclerView.ViewHolder(view), View.OnClickListener {
 
     private lateinit var item: PostItem

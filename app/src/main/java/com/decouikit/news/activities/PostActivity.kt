@@ -5,11 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
+import com.decouikit.news.adapters.BaseListAdapter
 import com.decouikit.news.adapters.HashTagAdapter
-import com.decouikit.news.adapters.ViewAllAdapter
 import com.decouikit.news.database.Config
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.*
@@ -40,7 +40,7 @@ import kotlin.math.abs
 class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     UriChromeClient.FullscreenInterface, OnHashTagClickListener {
 
-    private lateinit var adapter: ViewAllAdapter
+    private lateinit var adapter: BaseListAdapter
     private lateinit var hashTagAdapter: HashTagAdapter
 
     private var isRunning = false
@@ -80,10 +80,12 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     }
 
     private fun initLayout() {
-        //setting recent news
-        adapter = ViewAllAdapter(arrayListOf())
+        //Creating list type for recent news
+        val adapterType = Config.getRecentNewsFromPostAdapterConfig()
+        adapter = BaseListAdapter(arrayListOf(), adapterType)
+        rvRecentNews.layoutManager = GridLayoutManager(this, adapterType.columns)
+
         adapter.setItemClickListener(this)
-        rvRecentNews.layoutManager = LinearLayoutManager(this)
         rvRecentNews.adapter = adapter
 
         //Setting tags

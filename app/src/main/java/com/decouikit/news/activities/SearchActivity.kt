@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
 import androidx.core.widget.NestedScrollView
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
-import com.decouikit.news.adapters.ViewAllAdapter
+import com.decouikit.news.adapters.BaseListAdapter
+import com.decouikit.news.database.Config
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.hideSoftKeyboard
@@ -17,7 +19,6 @@ import com.decouikit.news.interfaces.OpenPostListener
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.sync.SyncPost
 import com.decouikit.news.utils.ActivityUtil
-import com.decouikit.news.utils.EndlessRecyclerOnScrollListener
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +31,7 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     SwipeRefreshLayout.OnRefreshListener, View.OnKeyListener, NestedScrollView.OnScrollChangeListener  {
 
     private lateinit var layoutManager: LinearLayoutManager
-    private lateinit var adapter: ViewAllAdapter
+    private lateinit var adapter: BaseListAdapter
 
     private var searchText = ""
     private var page = 0
@@ -72,9 +73,13 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
         if (Preference(this).isRtlEnabled) {
             ivBack.rotation = 180f
         }
-        adapter = ViewAllAdapter(arrayListOf())
+
+        //Creating list type
+        val adapterType = Config.getSearchAdapterConfig()
+        adapter = BaseListAdapter(arrayListOf(), adapterType)
+        layoutManager = GridLayoutManager(this, adapterType.columns)
+
         adapter.setItemClickListener(this)
-        layoutManager = LinearLayoutManager(this)
         rvSearch.layoutManager = layoutManager
         rvSearch.adapter = adapter
         setEmptyState(false)

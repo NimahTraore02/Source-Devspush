@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.decouikit.news.R
 import com.decouikit.news.adapters.FeaturedNewsAdapter
-import com.decouikit.news.adapters.RecentNewsAdapter
+import com.decouikit.news.adapters.BaseListAdapter
 import com.decouikit.news.database.Config
 import com.decouikit.news.extensions.openPostActivity
 import com.decouikit.news.extensions.viewAll
@@ -34,7 +34,7 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
 
     private lateinit var featuredAdapter: FeaturedNewsAdapter
 
-    private lateinit var recentAdapter: RecentNewsAdapter
+    private lateinit var recentAdapter: BaseListAdapter
     private var recentPostItems = arrayListOf<PostItem>()
     private lateinit var recentManager: GridLayoutManager
 
@@ -67,9 +67,12 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
     private fun initLayout() {
         featuredAdapter = FeaturedNewsAdapter(arrayListOf(), itemView.context)
 
-        recentAdapter = RecentNewsAdapter(arrayListOf())
+        //Creating recent list type
+        val adapterType = Config.getRecentAdapterConfig()
+        recentAdapter = BaseListAdapter(arrayListOf(), adapterType)
+        recentManager = GridLayoutManager(itemView.context, adapterType.columns)
+
         recentAdapter.setItemClickListener(this)
-        recentManager = GridLayoutManager(itemView.context, 2)
         itemView.rvRecentNews.layoutManager = recentManager
         itemView.rvRecentNews.adapter = recentAdapter
         itemView.rvRecentNews.setHasFixedSize(true)

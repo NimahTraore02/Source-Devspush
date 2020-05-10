@@ -43,7 +43,7 @@ class FeaturedNewsAdapter(
     }
 
     private fun initLayout(view: View, position: Int) {
-        view.tvTag.loadCategoryName(postItems[position])
+        view.tvItemTag.loadCategoryName(postItems[position])
         view.tvItemTitle.setHtml(postItems[position].title.rendered)
         view.tvItemDate.text = Date().getDateFromString(postItems[position].date)?.getCalendarDate()
         ImageLoadingUtil.load(view.context, postItems[position], view.ivItemBg)
@@ -51,7 +51,7 @@ class FeaturedNewsAdapter(
     }
 
     private fun initListener(view: View, position: Int) {
-        view.featuredParent.setOnClickListener {
+        view.itemParent.setOnClickListener {
             view.openPostActivity(view.context, postItems[position])
         }
         view.ivBookmark.setOnClickListener {

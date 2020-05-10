@@ -35,10 +35,15 @@ class AboutFragment : Fragment() {
         val items = Config.getAboutList(context)
         itemView.rvAbout.layoutManager = LinearLayoutManager(itemView.context)
         itemView.rvAbout.adapter = AboutListAdapter(items)
-        itemView.btnPurchase.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(Config.getPurchaseLink())
-            startActivity(intent)
+        if (Config.getPurchaseLink().isNullOrEmpty()) {
+            itemView.btnPurchase.visibility = View.GONE
+        } else {
+            itemView.btnPurchase.visibility = View.VISIBLE
+            itemView.btnPurchase.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(Config.getPurchaseLink())
+                startActivity(intent)
+            }
         }
     }
 

@@ -10,6 +10,8 @@ import com.decouikit.advertising.model.AdsContract
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BottomNavigationActivity
 import com.decouikit.news.activities.common.NavigationActivity
+import com.decouikit.news.adapters.common.CategoryListAdapterType
+import com.decouikit.news.adapters.common.CommonListAdapterType
 import com.decouikit.news.network.dto.AdsType
 import com.decouikit.news.network.dto.Category
 import com.decouikit.news.network.dto.Language
@@ -199,5 +201,33 @@ object Config {
                 testDeviceId = "D4660E67112CAF17CE018F3C95A8F64D"
              ), adsContainer, listener)
         }
+    }
+
+    fun getRecentAdapterConfig(): CommonListAdapterType {
+        return CommonListAdapterType.ADAPTER_VERSION_2
+    }
+
+    fun getViewAllAdapterConfig(): CommonListAdapterType {
+        return CommonListAdapterType.ADAPTER_VERSION_2
+    }
+
+    fun getSearchAdapterConfig(): CommonListAdapterType {
+        return CommonListAdapterType.ADAPTER_VERSION_2
+    }
+
+    fun getNotificationAdapterConfig(): CommonListAdapterType {
+        return CommonListAdapterType.ADAPTER_VERSION_1
+    }
+
+    fun getRecentNewsFromPostAdapterConfig(): CommonListAdapterType {
+        return CommonListAdapterType.ADAPTER_VERSION_1
+    }
+
+    fun getBookmarkAdapterConfig(): CommonListAdapterType {
+        return CommonListAdapterType.ADAPTER_VERSION_2
+    }
+
+    fun getCategoryAdapterConfig(): CategoryListAdapterType {
+        return CategoryListAdapterType.ADAPTER_VERSION_1
     }
 }

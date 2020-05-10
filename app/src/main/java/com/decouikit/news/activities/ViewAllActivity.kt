@@ -3,11 +3,12 @@ package com.decouikit.news.activities
 import android.os.Bundle
 import android.view.View
 import androidx.core.widget.NestedScrollView
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
-import com.decouikit.news.adapters.ViewAllAdapter
+import com.decouikit.news.adapters.BaseListAdapter
 import com.decouikit.news.database.Config
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.categoryToString
@@ -18,7 +19,6 @@ import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.CategoryType
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.ActivityUtil
-import com.decouikit.news.utils.EndlessRecyclerOnScrollListener
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.activity_view_all.*
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +34,7 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
     private var categoryType: CategoryType = CategoryType.ALL
     private var isDataLoading = false
     private lateinit var layoutManager: LinearLayoutManager
-    private lateinit var adapter: ViewAllAdapter
+    private lateinit var adapter: BaseListAdapter
     private val items = arrayListOf<PostItem>()
     private val postService by lazy {
         RetrofitClientInstance.getRetrofitInstance(this)?.create(PostsService::class.java)
@@ -92,9 +92,13 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
         if (Preference(this).isRtlEnabled) {
             ivBack.rotation = 180f
         }
-        adapter = ViewAllAdapter(arrayListOf())
+
+        //Creating list type
+        val adapterType = Config.getViewAllAdapterConfig()
+        adapter = BaseListAdapter(arrayListOf(), adapterType)
+        layoutManager = GridLayoutManager(this, adapterType.columns)
+
         adapter.setItemClickListener(this)
-        layoutManager = LinearLayoutManager(this)
         rvItems.layoutManager = layoutManager
         rvItems.adapter = adapter
     }
