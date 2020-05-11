@@ -86,4 +86,12 @@
     <string name="notification">Notifications</string>
 
     <string name="check_internet_connection">Please check your internet connection and try again</string>
+
+    <string name="settings_recent_list">Recent news list type</string>
+    <string name="settings_view_all">View all list type</string>
+    <string name="settings_search">Search list type</string>
+    <string name="settings_notification">Notification list type</string>
+    <string name="settings_recent_list_from_post">List type in post screen</string>
+    <string name="settings_bookmark">Bookmark list type</string>
+    <string name="settings_category">Category list type</string>
 </resources>
