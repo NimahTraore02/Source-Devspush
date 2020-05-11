@@ -1,5 +1,6 @@
 package com.decouikit.news.database
 
+import android.app.Activity
 import android.content.Context
 import android.view.ViewGroup
 import com.decouikit.advertising.FacebookAds
@@ -10,6 +11,10 @@ import com.decouikit.advertising.model.AdsContract
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BottomNavigationActivity
 import com.decouikit.news.activities.common.NavigationActivity
+import com.decouikit.news.billing.GooglePlayBilling
+import com.decouikit.news.billing.model.BillingConfigItem
+import com.decouikit.news.billing.model.BillingContract
+import com.decouikit.news.billing.model.BillingEventListener
 import com.decouikit.news.network.dto.AdsType
 import com.decouikit.news.network.dto.Category
 import com.decouikit.news.network.dto.Language
@@ -199,5 +204,10 @@ object Config {
     }
 
     fun isWritingCommentEnabled() = false
+
     fun isReadingCommentEnabled() = true
+
+    fun getBillingContract(activity: Activity, billingEventListener: BillingEventListener) : BillingContract? {
+        return GooglePlayBilling(activity, BillingConfigItem(), billingEventListener)
+    }
 }

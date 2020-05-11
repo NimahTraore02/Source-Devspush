@@ -3,11 +3,11 @@ package com.decouikit.news.activities.common
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import com.decouikit.advertising.model.AdEventListener
+import com.decouikit.news.billing.model.BillingEventListener
 import com.decouikit.news.database.Config
 import com.decouikit.news.database.Preference
 import com.decouikit.news.utils.ChangeLanguageUtil
@@ -15,17 +15,20 @@ import com.decouikit.news.utils.RateMe
 import com.google.gson.Gson
 
 @SuppressLint("Registered")
-abstract class BaseActivity : AppCompatActivity(), AdEventListener {
+abstract class BaseActivity : AppCompatActivity(), AdEventListener, BillingEventListener {
 
     protected val gson by lazy { Gson() }
 
     private val advertising by lazy { Config.getAdsProvider(getAdsContainer(), this) }
+
+    private val billing by lazy { Config.getBillingContract(this, this) }
 
     protected val prefs: Preference by lazy { Preference(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(Preference(this).colorTheme)
+        advertising?.enabledAds(billing?.isItemPurchased() ?: false)
     }
 
     protected fun getLayoutDirection(): Int {
@@ -115,4 +118,10 @@ abstract class BaseActivity : AppCompatActivity(), AdEventListener {
     open fun getAdsContainer(): ViewGroup? = null
 
     open fun isRunning(): Boolean = false
+
+    override fun purchasesSuccess() {
+        advertising?.removeInterstitial()
+        advertising?.removeBanner()
+        advertising?.enabledAds(false)
+    }
 }

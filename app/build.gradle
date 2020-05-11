@@ -89,6 +89,7 @@ dependencies {
 
 
     implementation project(path: ':advertising')
+    implementation project(path: ':billing')
 }
 
 apply plugin: 'com.google.gms.google-services'
