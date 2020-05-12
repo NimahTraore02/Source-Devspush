@@ -17,12 +17,12 @@ class GoogleAds(
     private val listener: AdEventListener?
 ) : AdsContract {
 
-    private var enabledAds: Boolean = false
+    private var enabledAds: Boolean = true
     private var mRewardedVideoAd: RewardedVideoAd? = null
     private var adView: AdView? = null
 
     init {
-        MobileAds.initialize(getContext())
+        MobileAds.initialize(adsContainer?.context)
     }
 
     override fun showBanner() {

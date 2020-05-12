@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import com.decouikit.advertising.model.AdEventListener
+import com.decouikit.news.billing.model.BillingContract
 import com.decouikit.news.billing.model.BillingEventListener
 import com.decouikit.news.database.Config
 import com.decouikit.news.database.Preference
@@ -21,14 +22,13 @@ abstract class BaseActivity : AppCompatActivity(), AdEventListener, BillingEvent
 
     private val advertising by lazy { Config.getAdsProvider(getAdsContainer(), this) }
 
-    private val billing by lazy { Config.getBillingContract(this, this) }
+    public val billing by lazy { Config.getBillingContract(this, this) }
 
     protected val prefs: Preference by lazy { Preference(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(Preference(this).colorTheme)
-        advertising?.enabledAds(billing?.isItemPurchased() ?: false)
     }
 
     protected fun getLayoutDirection(): Int {
@@ -60,6 +60,7 @@ abstract class BaseActivity : AppCompatActivity(), AdEventListener, BillingEvent
 
     override fun onResume() {
         super.onResume()
+        advertising?.enabledAds(billing?.isItemPurchased() ?: false)
         RateMe.rateApp(this)
     }
 
@@ -124,4 +125,5 @@ abstract class BaseActivity : AppCompatActivity(), AdEventListener, BillingEvent
         advertising?.removeBanner()
         advertising?.enabledAds(false)
     }
+
 }

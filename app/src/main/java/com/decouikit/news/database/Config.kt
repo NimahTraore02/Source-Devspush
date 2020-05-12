@@ -182,7 +182,7 @@ object Config {
         return languages
     }
 
-    fun getAdsType(): AdsType = AdsType.NONE
+    fun getAdsType(): AdsType = AdsType.GOOGLE
 
     fun getAdsProvider(adsContainer: ViewGroup?, listener: AdEventListener): AdsContract? {
         if (getAdsType() == AdsType.NONE) {

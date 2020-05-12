@@ -16,7 +16,7 @@ class FacebookAds(
 ) : AdsContract {
 
     private var adView: AdView? = null
-    private var enabledAds: Boolean = false
+    private var enabledAds: Boolean = true
     private var mInterstitialAd: InterstitialAd? = null
     private var mRewardedVideoAd: RewardedVideoAd? = null
 

@@ -95,6 +95,7 @@ class GooglePlayBilling(
     }
 
     override fun isItemPurchased(): Boolean {
+//        return true
         return mPreference.isItemPurchesed
     }
 
