@@ -11,7 +11,7 @@ import com.decouikit.news.billing.util.Preference
 class GooglePlayBilling(
     val activity: Activity,
     val config: BillingConfigItem,
-    val listenerBilling: BillingEventListener
+    private val listenerBilling: BillingEventListener
 ) : BillingContract {
     private val TAG = GooglePlayBilling::class.qualifiedName
 
