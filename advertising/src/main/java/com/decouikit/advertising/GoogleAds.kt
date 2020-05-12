@@ -17,7 +17,10 @@ class GoogleAds(
     private val listener: AdEventListener?
 ) : AdsContract {
 
-    private var enabledAds: Boolean = true
+    companion object {
+        var enabledAds: Boolean = true
+    }
+
     private var mRewardedVideoAd: RewardedVideoAd? = null
     private var adView: AdView? = null
 

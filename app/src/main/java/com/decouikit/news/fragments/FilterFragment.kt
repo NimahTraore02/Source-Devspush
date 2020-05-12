@@ -85,19 +85,22 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     private fun initData() {
         GlobalScope.launch(context = Dispatchers.Main) {
             delay(500)
-            SyncPost.getPostsList(requireContext(), categoryId?.categoryToString(), null, ++page,
-                Config.getNumberOfItemPerPage(), object : ResultListener<List<PostItem>> {
-                    override fun onResult(value: List<PostItem>?) {
-                        if (value?.size ?: 0 > 0) {
-                            initFeaturedNews(value)
-                            initRecentNews(value)
-                            setShimmerAnimationVisibility(false)
-                        } else {
-                            setEmptyState(featuredAdapter.count == 0)
+            activity?.applicationContext?.let {
+                SyncPost.getPostsList(
+                    it, categoryId?.categoryToString(), null, ++page,
+                    Config.getNumberOfItemPerPage(), object : ResultListener<List<PostItem>> {
+                        override fun onResult(value: List<PostItem>?) {
+                            if (value?.size ?: 0 > 0) {
+                                initFeaturedNews(value)
+                                initRecentNews(value)
+                                setShimmerAnimationVisibility(false)
+                            } else {
+                                setEmptyState(featuredAdapter.count == 0)
+                            }
+                            itemView.swipeRefresh.isRefreshing = false
                         }
-                        itemView.swipeRefresh.isRefreshing = false
-                    }
-                })
+                    })
+            }
         }
     }
 

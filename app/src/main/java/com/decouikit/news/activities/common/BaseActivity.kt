@@ -60,7 +60,9 @@ abstract class BaseActivity : AppCompatActivity(), AdEventListener, BillingEvent
 
     override fun onResume() {
         super.onResume()
-        advertising?.enabledAds(billing?.isItemPurchased() ?: false)
+        if (billing?.isItemPurchased() == true) {
+            advertising?.enabledAds(false)
+        }
         RateMe.rateApp(this)
     }
 

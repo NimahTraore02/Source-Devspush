@@ -15,8 +15,11 @@ class FacebookAds(
     private val listener: AdEventListener?
 ) : AdsContract {
 
+    companion object {
+        var enabledAds: Boolean = true
+    }
+
     private var adView: AdView? = null
-    private var enabledAds: Boolean = true
     private var mInterstitialAd: InterstitialAd? = null
     private var mRewardedVideoAd: RewardedVideoAd? = null
 
