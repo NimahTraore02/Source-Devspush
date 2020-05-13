@@ -19,6 +19,7 @@ import com.decouikit.news.interfaces.OpenPostListener
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.sync.SyncPost
 import com.decouikit.news.utils.ActivityUtil
+import com.decouikit.news.utils.AdapterListTypeUtil
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.coroutines.Dispatchers
@@ -75,7 +76,8 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
         }
 
         //Creating list type
-        val adapterType = Config.getSearchAdapterConfig()
+        val adapterType =
+            AdapterListTypeUtil.getAdapterTypeFromValue(Preference(this).searchAdapterStyle)
         adapter = BaseListAdapter(arrayListOf(), adapterType)
         layoutManager = GridLayoutManager(this, adapterType.columns)
 

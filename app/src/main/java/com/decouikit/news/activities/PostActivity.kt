@@ -22,10 +22,7 @@ import com.decouikit.news.network.dto.CommentItem
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.dto.Tag
 import com.decouikit.news.network.sync.SyncTags
-import com.decouikit.news.utils.ActivityUtil
-import com.decouikit.news.utils.ImageLoadingUtil
-import com.decouikit.news.utils.NewsConstants
-import com.decouikit.news.utils.UriChromeClient
+import com.decouikit.news.utils.*
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.android.material.appbar.AppBarLayout
@@ -81,7 +78,8 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
 
     private fun initLayout() {
         //Creating list type for recent news
-        val adapterType = Config.getRecentNewsFromPostAdapterConfig()
+        val adapterType =
+            AdapterListTypeUtil.getAdapterTypeFromValue(Preference(this).recentFromPostAdapterStyle)
         adapter = BaseListAdapter(arrayListOf(), adapterType)
         rvRecentNews.layoutManager = GridLayoutManager(this, adapterType.columns)
 

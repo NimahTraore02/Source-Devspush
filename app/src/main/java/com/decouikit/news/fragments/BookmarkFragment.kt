@@ -12,8 +12,10 @@ import com.decouikit.news.adapters.BaseListAdapter
 import com.decouikit.news.adapters.BookmarkAdapter
 import com.decouikit.news.database.Config
 import com.decouikit.news.database.InMemory
+import com.decouikit.news.database.Preference
 import com.decouikit.news.interfaces.RemoveBookmarkListener
 import com.decouikit.news.network.dto.PostItem
+import com.decouikit.news.utils.AdapterListTypeUtil
 import kotlinx.android.synthetic.main.fragment_bookmark.*
 import kotlinx.android.synthetic.main.fragment_bookmark.view.*
 
@@ -46,7 +48,8 @@ class BookmarkFragment : Fragment(), View.OnClickListener, RemoveBookmarkListene
         bookmarkedList = InMemory.getBookmarks(requireContext())
 
         //Creating recent list type
-        val adapterType = Config.getBookmarkAdapterConfig()
+        val adapterType =
+            AdapterListTypeUtil.getAdapterTypeFromValue(Preference(itemView.context).bookmarkAdapterStyle)
         adapter = BookmarkAdapter(arrayListOf(), this, adapterType)
         itemView.rvItems.layoutManager = GridLayoutManager(itemView.context, adapterType.columns)
 

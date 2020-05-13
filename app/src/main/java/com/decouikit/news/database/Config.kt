@@ -17,6 +17,7 @@ import com.decouikit.news.network.dto.Category
 import com.decouikit.news.network.dto.Language
 import com.decouikit.news.network.dto.RateMeConfig
 import com.decouikit.news.network.dto.WizardItemModel
+import com.decouikit.news.utils.AdapterListTypeUtil
 
 object Config {
 
@@ -204,15 +205,15 @@ object Config {
     }
 
     fun getRecentAdapterConfig(): CommonListAdapterType {
-        return CommonListAdapterType.ADAPTER_VERSION_2
+        return CommonListAdapterType.ADAPTER_VERSION_3
     }
 
     fun getViewAllAdapterConfig(): CommonListAdapterType {
-        return CommonListAdapterType.ADAPTER_VERSION_2
+        return CommonListAdapterType.ADAPTER_VERSION_1
     }
 
     fun getSearchAdapterConfig(): CommonListAdapterType {
-        return CommonListAdapterType.ADAPTER_VERSION_2
+        return CommonListAdapterType.ADAPTER_VERSION_1
     }
 
     fun getNotificationAdapterConfig(): CommonListAdapterType {
@@ -228,6 +229,6 @@ object Config {
     }
 
     fun getCategoryAdapterConfig(): CategoryListAdapterType {
-        return CategoryListAdapterType.ADAPTER_VERSION_1
+        return CategoryListAdapterType.ADAPTER_VERSION_2
     }
 }

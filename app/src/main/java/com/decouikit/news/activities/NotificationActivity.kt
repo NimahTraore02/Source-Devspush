@@ -15,6 +15,7 @@ import com.decouikit.news.extensions.openPostActivity
 import com.decouikit.news.interfaces.OpenPostListener
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.ActivityUtil
+import com.decouikit.news.utils.AdapterListTypeUtil
 import kotlinx.android.synthetic.main.activity_notifications.*
 
 class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListener {
@@ -35,7 +36,8 @@ class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListe
             ivBack.rotation = 180f
         }
         //Creating list type
-        val adapterType = Config.getNotificationAdapterConfig()
+        val adapterType =
+            AdapterListTypeUtil.getAdapterTypeFromValue(Preference(this).notificationAdapterStyle)
         adapter = BaseListAdapter(arrayListOf(), adapterType)
         rvNotifications.layoutManager = GridLayoutManager(this, adapterType.columns)
 

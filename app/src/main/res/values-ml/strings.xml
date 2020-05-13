@@ -94,4 +94,6 @@
     <string name="settings_recent_list_from_post">List type in post screen</string>
     <string name="settings_bookmark">Bookmark list type</string>
     <string name="settings_category">Category list type</string>
+
+    <string name="settings_dialog_title">Tap to choose list type</string>
 </resources>

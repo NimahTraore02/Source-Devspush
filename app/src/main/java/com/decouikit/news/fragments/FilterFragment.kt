@@ -10,9 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.decouikit.news.R
-import com.decouikit.news.adapters.FeaturedNewsAdapter
 import com.decouikit.news.adapters.BaseListAdapter
+import com.decouikit.news.adapters.FeaturedNewsAdapter
+import com.decouikit.news.adapters.common.CommonListAdapterType
 import com.decouikit.news.database.Config
+import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.categoryToString
 import com.decouikit.news.extensions.openPostActivity
 import com.decouikit.news.extensions.viewAll
@@ -20,6 +22,7 @@ import com.decouikit.news.interfaces.OpenPostListener
 import com.decouikit.news.network.dto.CategoryType
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.sync.SyncPost
+import com.decouikit.news.utils.AdapterListTypeUtil
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.fragment_filter.view.*
@@ -70,7 +73,8 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
         featuredAdapter = FeaturedNewsAdapter(arrayListOf(), itemView.context)
 
         //Creating recent list type
-        val adapterType = Config.getRecentAdapterConfig()
+        val adapterType =
+            AdapterListTypeUtil.getAdapterTypeFromValue(Preference(itemView.context).recentAdapterStyle)
         recentAdapter = BaseListAdapter(arrayListOf(), adapterType)
         recentManager = GridLayoutManager(itemView.context, adapterType.columns)
 
@@ -78,6 +82,8 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
         itemView.rvRecentNews.layoutManager = recentManager
         itemView.rvRecentNews.adapter = recentAdapter
         itemView.rvRecentNews.setHasFixedSize(true)
+
+        setShimmerType(adapterType)
     }
 
     private fun initListeners() {
@@ -85,6 +91,28 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
         itemView.tvRecentNewsViewAll.setOnClickListener(this)
         itemView.swipeRefresh.setOnRefreshListener(this)
         itemView.nestedParent.setOnScrollChangeListener(this)
+    }
+
+    private fun setShimmerType(adapterType: CommonListAdapterType) {
+        when(adapterType) {
+            CommonListAdapterType.ADAPTER_VERSION_1 -> {
+                itemView.recentShimmer1.visibility = View.VISIBLE
+                itemView.recentShimmer2.visibility = View.GONE
+                itemView.recentShimmer3.visibility = View.GONE
+            }
+            CommonListAdapterType.ADAPTER_VERSION_2 -> {
+                itemView.recentShimmer1.visibility = View.GONE
+                itemView.recentShimmer2.visibility = View.VISIBLE
+                itemView.recentShimmer3.visibility = View.GONE
+
+            }
+            CommonListAdapterType.ADAPTER_VERSION_3 -> {
+                itemView.recentShimmer1.visibility = View.GONE
+                itemView.recentShimmer2.visibility = View.GONE
+                itemView.recentShimmer3.visibility = View.VISIBLE
+
+            }
+        }
     }
 
     private fun initData() {

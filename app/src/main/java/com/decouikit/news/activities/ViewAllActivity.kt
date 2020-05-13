@@ -9,6 +9,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
 import com.decouikit.news.adapters.BaseListAdapter
+import com.decouikit.news.adapters.common.CommonListAdapterType
 import com.decouikit.news.database.Config
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.categoryToString
@@ -19,6 +20,7 @@ import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.CategoryType
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.ActivityUtil
+import com.decouikit.news.utils.AdapterListTypeUtil
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.activity_view_all.*
 import kotlinx.coroutines.Dispatchers
@@ -94,15 +96,39 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
         }
 
         //Creating list type
-        val adapterType = Config.getViewAllAdapterConfig()
+        val adapterType =
+            AdapterListTypeUtil.getAdapterTypeFromValue(Preference(this).viewAllAdapterStyle)
         adapter = BaseListAdapter(arrayListOf(), adapterType)
         layoutManager = GridLayoutManager(this, adapterType.columns)
 
         adapter.setItemClickListener(this)
         rvItems.layoutManager = layoutManager
         rvItems.adapter = adapter
+
+        setShimmerType(adapterType)
     }
 
+    private fun setShimmerType(adapterType: CommonListAdapterType) {
+        when(adapterType) {
+            CommonListAdapterType.ADAPTER_VERSION_1 -> {
+                recentShimmer1.visibility = View.VISIBLE
+                recentShimmer2.visibility = View.GONE
+                recentShimmer3.visibility = View.GONE
+            }
+            CommonListAdapterType.ADAPTER_VERSION_2 -> {
+                recentShimmer1.visibility = View.GONE
+                recentShimmer2.visibility = View.VISIBLE
+                recentShimmer3.visibility = View.GONE
+
+            }
+            CommonListAdapterType.ADAPTER_VERSION_3 -> {
+                recentShimmer1.visibility = View.GONE
+                recentShimmer2.visibility = View.GONE
+                recentShimmer3.visibility = View.VISIBLE
+
+            }
+        }
+    }
     private fun initListeners() {
         ivBack.setOnClickListener(this)
         swipeRefresh.setOnRefreshListener(this)

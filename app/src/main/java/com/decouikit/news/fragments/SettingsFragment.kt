@@ -9,6 +9,7 @@ import android.widget.CheckBox
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.decouikit.news.R
+import com.decouikit.news.adapters.common.CommonListAdapterType
 import com.decouikit.news.database.Config
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.database.Preference
@@ -17,8 +18,7 @@ import com.decouikit.news.interfaces.ChooseLanguageDialogListener
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.sync.SyncApi
 import com.decouikit.news.notification.OneSignalNotificationOpenHandler
-import com.decouikit.news.utils.ActivityUtil
-import com.decouikit.news.utils.ChooseLanguageDialog
+import com.decouikit.news.utils.*
 import com.onesignal.OneSignal
 import kotlinx.android.synthetic.main.fragment_settings.view.*
 import kotlinx.android.synthetic.main.fragment_settings.view.tvEnableRtl
@@ -26,7 +26,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogListener {
+class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogListener,
+    OnListTypeChangeListener {
 
 
     private lateinit var itemView: View
@@ -82,6 +83,24 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
         itemView.cbNotifications.setOnClickListener(this)
         itemView.tvLanguage.setOnClickListener(this)
         itemView.cbEnableRtl.setOnClickListener(this)
+
+        itemView.tvRecentNews.setOnClickListener(this)
+        itemView.cbRecentNews.setOnClickListener(this)
+
+        itemView.tvViewAll.setOnClickListener(this)
+        itemView.cbViewAll.setOnClickListener(this)
+
+        itemView.tvSearch.setOnClickListener(this)
+        itemView.cbSearch.setOnClickListener(this)
+
+        itemView.tvNotification.setOnClickListener(this)
+        itemView.cbNotification.setOnClickListener(this)
+
+        itemView.tvRecentNewsFromPost.setOnClickListener(this)
+        itemView.cbRecentNewsFromPost.setOnClickListener(this)
+
+        itemView.tvBookmark.setOnClickListener(this)
+        itemView.cbBookmark.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
@@ -133,6 +152,30 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
                     Config.listLanguageNames().toTypedArray(), selectedIndex, this
                 )
             }
+            itemView.tvRecentNews,
+            itemView.cbRecentNews -> {
+                activity?.let { ChooseListStyleDialog.showDialog(it, ListType.RECENT_NEWS, this) }
+            }
+            itemView.tvViewAll,
+            itemView.cbViewAll -> {
+                activity?.let { ChooseListStyleDialog.showDialog(it, ListType.VIEW_ALL, this) }
+            }
+            itemView.tvSearch,
+            itemView.cbSearch -> {
+                activity?.let { ChooseListStyleDialog.showDialog(it, ListType.SEARCH, this) }
+            }
+            itemView.tvNotification,
+            itemView.cbNotification -> {
+                activity?.let { ChooseListStyleDialog.showDialog(it, ListType.NOTIFICATION, this) }
+            }
+            itemView.tvRecentNewsFromPost,
+            itemView.cbRecentNewsFromPost -> {
+                activity?.let { ChooseListStyleDialog.showDialog(it, ListType.RECENT_NEWS_FROM_POST, this) }
+            }
+            itemView.tvBookmark,
+            itemView.cbBookmark -> {
+                activity?.let { ChooseListStyleDialog.showDialog(it, ListType.BOOKMARK, this) }
+            }
         }
     }
 
@@ -159,6 +202,29 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
     private fun setTheme(theme: Int) {
         prefs.colorTheme = theme
         ActivityUtil.reload(activity, 5)
+    }
+
+    override fun onListTypeChange(adapterType: CommonListAdapterType, listType: ListType) {
+        when (listType) {
+            ListType.RECENT_NEWS -> {
+                prefs.recentAdapterStyle = adapterType.id
+            }
+            ListType.VIEW_ALL -> {
+                prefs.viewAllAdapterStyle = adapterType.id
+            }
+            ListType.SEARCH -> {
+                prefs.searchAdapterStyle = adapterType.id
+            }
+            ListType.NOTIFICATION -> {
+                prefs.notificationAdapterStyle = adapterType.id
+            }
+            ListType.RECENT_NEWS_FROM_POST -> {
+                prefs.recentFromPostAdapterStyle = adapterType.id
+            }
+            ListType.BOOKMARK -> {
+                prefs.bookmarkAdapterStyle = adapterType.id
+            }
+        }
     }
 
     companion object {
