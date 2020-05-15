@@ -3,6 +3,7 @@ package com.decouikit.news.extensions
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -64,11 +65,20 @@ fun View.openExternalApp(url: String) {
 }
 
 fun View.share(context: Context, item: PostItem) {
-    val intent = Intent(Intent.ACTION_SEND)
-    intent.type = NewsConstants.TEXT_PLAIN
-    intent.putExtra(Intent.EXTRA_TEXT, item.link)
-    intent.putExtra(Intent.EXTRA_SUBJECT, item.title.rendered)
-    context.startActivity(Intent.createChooser(intent, context.getString(R.string.share_via)))
+    if (item.link.isNotEmpty()) {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = NewsConstants.TEXT_PLAIN
+        intent.putExtra(Intent.EXTRA_TEXT, item.link)
+        intent.putExtra(Intent.EXTRA_SUBJECT, item.title.rendered)
+        if (intent.resolveActivity(context.packageManager) != null) {
+            context.startActivity(
+                Intent.createChooser(
+                    intent,
+                    context.getString(R.string.share_via)
+                )
+            )
+        }
+    }
 }
 
 fun View.validationCommon(editText: EditText, error: Int): Boolean {
