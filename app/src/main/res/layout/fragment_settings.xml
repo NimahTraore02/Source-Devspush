@@ -2,7 +2,8 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -85,10 +86,20 @@
             style="@style/TitleTextStyle"
             android:layout_width="0dp"
             android:text="@string/settings_recent_list"
+            android:layout_marginEnd="@dimen/normal_margin"
             app:layout_constraintBottom_toBottomOf="@+id/divider4"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/cbRecentNews"
+            app:layout_constraintEnd_toStartOf="@+id/ivRecentNews"
             app:layout_constraintTop_toBottomOf="@+id/divider3" />
+
+        <ImageView
+            android:id="@+id/ivRecentNews"
+            style="@style/SettingsChooserIconStyle"
+            android:contentDescription="@string/image_desc_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/divider4"
+            app:layout_constraintEnd_toStartOf="@+id/cbRecentNews"
+            app:layout_constraintTop_toBottomOf="@+id/divider3"
+            tools:src="@drawable/ic_list_type_1"/>
 
         <TextView
             android:id="@+id/cbRecentNews"
@@ -111,10 +122,20 @@
             style="@style/TitleTextStyle"
             android:layout_width="0dp"
             android:text="@string/settings_view_all"
+            android:layout_marginEnd="@dimen/normal_margin"
             app:layout_constraintBottom_toBottomOf="@+id/divider5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/cbViewAll"
+            app:layout_constraintEnd_toStartOf="@+id/ivViewAll"
             app:layout_constraintTop_toBottomOf="@+id/divider4" />
+
+        <ImageView
+            android:id="@+id/ivViewAll"
+            style="@style/SettingsChooserIconStyle"
+            android:contentDescription="@string/image_desc_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/divider5"
+            app:layout_constraintEnd_toStartOf="@+id/cbViewAll"
+            app:layout_constraintTop_toBottomOf="@+id/divider4"
+            tools:src="@drawable/ic_list_type_3"/>
 
         <TextView
             android:id="@+id/cbViewAll"
@@ -137,10 +158,20 @@
             style="@style/TitleTextStyle"
             android:layout_width="0dp"
             android:text="@string/settings_search"
+            android:layout_marginEnd="@dimen/normal_margin"
             app:layout_constraintBottom_toBottomOf="@+id/divider6"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/cbSearch"
+            app:layout_constraintEnd_toStartOf="@+id/ivSearch"
             app:layout_constraintTop_toBottomOf="@+id/divider5" />
+
+        <ImageView
+            android:id="@+id/ivSearch"
+            style="@style/SettingsChooserIconStyle"
+            android:contentDescription="@string/image_desc_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/divider6"
+            app:layout_constraintEnd_toStartOf="@+id/cbSearch"
+            app:layout_constraintTop_toBottomOf="@+id/divider5"
+            tools:src="@drawable/ic_list_type_2"/>
 
         <TextView
             android:id="@+id/cbSearch"
@@ -163,10 +194,20 @@
             style="@style/TitleTextStyle"
             android:layout_width="0dp"
             android:text="@string/settings_notification"
+            android:layout_marginEnd="@dimen/normal_margin"
             app:layout_constraintBottom_toBottomOf="@+id/divider7"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/cbNotification"
+            app:layout_constraintEnd_toStartOf="@+id/ivNotification"
             app:layout_constraintTop_toBottomOf="@+id/divider6" />
+
+        <ImageView
+            android:id="@+id/ivNotification"
+            style="@style/SettingsChooserIconStyle"
+            android:contentDescription="@string/image_desc_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/divider7"
+            app:layout_constraintEnd_toStartOf="@+id/cbNotification"
+            app:layout_constraintTop_toBottomOf="@+id/divider6"
+            tools:src="@drawable/ic_list_type_2"/>
 
         <TextView
             android:id="@+id/cbNotification"
@@ -189,10 +230,20 @@
             style="@style/TitleTextStyle"
             android:layout_width="0dp"
             android:text="@string/settings_recent_list_from_post"
+            android:layout_marginEnd="@dimen/normal_margin"
             app:layout_constraintBottom_toBottomOf="@+id/divider8"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/cbRecentNewsFromPost"
+            app:layout_constraintEnd_toStartOf="@+id/ivRecentNewsFromPost"
             app:layout_constraintTop_toBottomOf="@+id/divider7" />
+
+        <ImageView
+            android:id="@+id/ivRecentNewsFromPost"
+            style="@style/SettingsChooserIconStyle"
+            android:contentDescription="@string/image_desc_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/divider8"
+            app:layout_constraintEnd_toStartOf="@+id/cbRecentNewsFromPost"
+            app:layout_constraintTop_toBottomOf="@+id/divider7"
+            tools:src="@drawable/ic_list_type_2"/>
 
         <TextView
             android:id="@+id/cbRecentNewsFromPost"
@@ -215,10 +266,20 @@
             style="@style/TitleTextStyle"
             android:layout_width="0dp"
             android:text="@string/settings_bookmark"
+            android:layout_marginEnd="@dimen/normal_margin"
             app:layout_constraintBottom_toBottomOf="@+id/divider9"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/cbBookmark"
+            app:layout_constraintEnd_toStartOf="@+id/ivBookmark"
             app:layout_constraintTop_toBottomOf="@+id/divider8" />
+
+        <ImageView
+            android:id="@+id/ivBookmark"
+            style="@style/SettingsChooserIconStyle"
+            android:contentDescription="@string/image_desc_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/divider9"
+            app:layout_constraintEnd_toStartOf="@+id/cbBookmark"
+            app:layout_constraintTop_toBottomOf="@+id/divider8"
+            tools:src="@drawable/ic_list_type_2"/>
 
         <TextView
             android:id="@+id/cbBookmark"

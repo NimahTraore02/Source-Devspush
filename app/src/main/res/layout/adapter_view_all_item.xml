@@ -22,7 +22,7 @@
                 android:layout_width="@dimen/view_all_image_height"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:background="@color/colorPrimaryDark"
+                android:background="?attr/colorHeader"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

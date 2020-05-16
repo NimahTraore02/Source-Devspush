@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.decouikit.news.R
@@ -14,6 +16,7 @@ import com.decouikit.news.database.Config
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.initPopupDialog
+import com.decouikit.news.extensions.setIconsForListType
 import com.decouikit.news.interfaces.ChooseLanguageDialogListener
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.sync.SyncApi
@@ -51,7 +54,6 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initLayout()
-        initVisibilityForRTLRow()
         initListeners()
     }
 
@@ -59,10 +61,14 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
         itemView.cbNotifications.isChecked = prefs.isPushNotificationEnabled
         itemView.cbEnableRtl.isChecked = prefs.isRtlEnabled
 
+        initVisibilityForRTLRow()
+
         selectedIndex = Config.getLanguageIndexByCode(prefs.languageCode)
         if (Config.listLanguageNames().size > selectedIndex) {
             itemView.tvLanguage.text = Config.listLanguageNames()[selectedIndex]
         }
+
+        setListTypeIcons()
     }
 
     private fun initVisibilityForRTLRow() {
@@ -75,6 +81,15 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
             itemView.cbEnableRtl.visibility = View.VISIBLE
             itemView.divider2.visibility = View.VISIBLE
         }
+    }
+
+    private fun setListTypeIcons() {
+        itemView.ivRecentNews.setIconsForListType(AdapterListTypeUtil.getAdapterTypeFromValue(prefs.recentAdapterStyle))
+        itemView.ivViewAll.setIconsForListType(AdapterListTypeUtil.getAdapterTypeFromValue(prefs.viewAllAdapterStyle))
+        itemView.ivSearch.setIconsForListType(AdapterListTypeUtil.getAdapterTypeFromValue(prefs.searchAdapterStyle))
+        itemView.ivNotification.setIconsForListType(AdapterListTypeUtil.getAdapterTypeFromValue(prefs.notificationAdapterStyle))
+        itemView.ivRecentNewsFromPost.setIconsForListType(AdapterListTypeUtil.getAdapterTypeFromValue(prefs.recentFromPostAdapterStyle))
+        itemView.ivBookmark.setIconsForListType(AdapterListTypeUtil.getAdapterTypeFromValue(prefs.bookmarkAdapterStyle))
     }
 
     private fun initListeners() {
@@ -224,6 +239,9 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
             ListType.BOOKMARK -> {
                 prefs.bookmarkAdapterStyle = adapterType.id
             }
+        }
+        activity?.runOnUiThread {
+            setListTypeIcons()
         }
     }
 

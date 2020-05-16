@@ -38,7 +38,11 @@ class FeaturedNewsAdapter(
     }
 
     fun setData(postItems: ArrayList<PostItem>) {
-        this.postItems.addAll(postItems)
+        for (item in postItems) {
+            if (!this.postItems.contains(item)) {
+                this.postItems.add(item)
+            }
+        }
         notifyDataSetChanged()
     }
 

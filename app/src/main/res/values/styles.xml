@@ -185,4 +185,10 @@
         <item name="android:drawablePadding">@dimen/small_padding</item>
         <item name="android:gravity">end</item>
     </style>
+
+    <style name="SettingsChooserIconStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">@dimen/normal_margin</item>
+    </style>
 </resources>
