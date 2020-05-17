@@ -1,5 +1,6 @@
 package com.decouikit.news.database
 
+import android.app.Activity
 import android.content.Context
 import android.view.ViewGroup
 import com.decouikit.advertising.FacebookAds
@@ -12,12 +13,11 @@ import com.decouikit.news.activities.common.BottomNavigationActivity
 import com.decouikit.news.activities.common.NavigationActivity
 import com.decouikit.news.adapters.common.CategoryListAdapterType
 import com.decouikit.news.adapters.common.CommonListAdapterType
-import com.decouikit.news.network.dto.AdsType
-import com.decouikit.news.network.dto.Category
-import com.decouikit.news.network.dto.Language
-import com.decouikit.news.network.dto.RateMeConfig
-import com.decouikit.news.network.dto.WizardItemModel
-import com.decouikit.news.utils.AdapterListTypeUtil
+import com.decouikit.news.billing.GooglePlayBilling
+import com.decouikit.news.billing.model.BillingConfigItem
+import com.decouikit.news.billing.model.BillingContract
+import com.decouikit.news.billing.model.BillingEventListener
+import com.decouikit.news.network.dto.*
 
 object Config {
 
@@ -183,7 +183,7 @@ object Config {
         return languages
     }
 
-    fun getAdsType(): AdsType = AdsType.NONE
+    fun getAdsType(): AdsType = AdsType.GOOGLE
 
     fun getAdsProvider(adsContainer: ViewGroup?, listener: AdEventListener): AdsContract? {
         if (getAdsType() == AdsType.NONE) {
@@ -231,4 +231,15 @@ object Config {
     fun getCategoryAdapterConfig(): CategoryListAdapterType {
         return CategoryListAdapterType.ADAPTER_VERSION_2
     }
+
+    fun isWritingCommentEnabled() = false
+
+    fun isReadingCommentEnabled() = true
+
+    fun getBillingContract(activity: Activity, billingEventListener: BillingEventListener) : BillingContract? {
+        return GooglePlayBilling(activity, BillingConfigItem(), billingEventListener)
+    }
+
+    //This is only for showing or hiding button on About screen
+    fun isRemoveAdsButtonEnabled() = true
 }

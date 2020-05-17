@@ -86,6 +86,8 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
         adapter.setItemClickListener(this)
         rvRecentNews.adapter = adapter
 
+        setWritingCommentsVisibility(true)
+
         //Setting tags
         hashTagAdapter = HashTagAdapter(arrayListOf(), this)
         val layoutManager = FlexboxLayoutManager(this)
@@ -99,6 +101,14 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
         if (prefs.interstitialAdCounter == Config.promptForInterstitialCounter()) {
             prefs.interstitialAdCounter = 0
             showInterstitialAds()
+        }
+    }
+
+    fun setWritingCommentsVisibility(isVisible: Boolean) {
+        if (Config.isReadingCommentEnabled()) {
+            btnOpenComments.visibility = if (isVisible) View.VISIBLE else View.GONE
+        } else {
+            btnOpenComments.visibility = View.GONE
         }
     }
 
@@ -130,7 +140,7 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
         tvItemTitle.setHtml(postItem.title.rendered)
         tvDate.text = Date().getDateFromString(postItem.date)?.getCalendarDate()
         tvComments.visibility = postItem.getCommentVisible()
-        btnOpenComments.visibility = postItem.getCommentVisible()
+        setWritingCommentsVisibility(postItem.getCommentVisible() == View.VISIBLE)
 
         webView.settings.javaScriptEnabled = true
         webView.webChromeClient = UriChromeClient(this, this)
@@ -246,7 +256,9 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
                 v.bookmark(this, postItem, ivBookmark)
             }
             tvComments -> {
-                v.openComments(this, CommentsActivity::class.java, postItem.id)
+                if (Config.isReadingCommentEnabled()) {
+                    v.openComments(this, CommentsActivity::class.java, postItem.id)
+                }
             }
             btnOpenComments -> {
                 v.openComments(this, CommentsActivity::class.java, postItem.id)
@@ -266,7 +278,7 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     override fun showFullscreen() {
         rlRecentNews.visibility = View.GONE
         appbar.visibility = View.GONE
-        btnOpenComments.visibility = View.GONE
+        setWritingCommentsVisibility(false)
         recentTitle.visibility = View.GONE
         cardParent.visibility = View.GONE
     }
@@ -274,7 +286,7 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     override fun hideFullscreen() {
         rlRecentNews.visibility = View.VISIBLE
         appbar.visibility = View.VISIBLE
-        btnOpenComments.visibility = View.VISIBLE
+        setWritingCommentsVisibility(true)
         recentTitle.visibility = View.VISIBLE
         cardParent.visibility = View.VISIBLE
     }

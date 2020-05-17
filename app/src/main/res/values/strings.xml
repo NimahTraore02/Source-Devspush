@@ -33,6 +33,7 @@
     <string name="about_text_9">Design files (Sketch, Adobe Xd and Photo shop)</string>
     <string name="about_text_10">Code in Kotlin</string>
     <string name="about_text_button">Purchase Now</string>
+    <string name="remove_ads_button">Remove Ads</string>
     <string name="enable_push_notification">Enable push notification</string>
     <string name="testing_rtl">Testing our application with Rtl
         \n(enable)</string>

@@ -125,7 +125,6 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
                     Config.getNumberOfItemPerPage()
                 )
             }
-
             if (posts != null && posts.isNotEmpty()) {
                 initFeaturedNews(posts)
                 initRecentNews(posts)

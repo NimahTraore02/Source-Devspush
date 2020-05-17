@@ -15,6 +15,10 @@ class FacebookAds(
     private val listener: AdEventListener?
 ) : AdsContract {
 
+    companion object {
+        var enabledAds: Boolean = true
+    }
+
     private var adView: AdView? = null
     private var mInterstitialAd: InterstitialAd? = null
     private var mRewardedVideoAd: RewardedVideoAd? = null
@@ -31,6 +35,9 @@ class FacebookAds(
     }
 
     override fun showBanner() {
+        if (!enabledAds) {
+            return
+        }
         if (adsItem.bannerAdUnitId.isEmpty()) {
             return
         }
@@ -47,6 +54,9 @@ class FacebookAds(
     }
 
     override fun showInterstitial() {
+        if (!enabledAds) {
+            return
+        }
         if (adsItem.interstitialAdUnitId.isEmpty()) {
             return
         }
@@ -143,5 +153,9 @@ class FacebookAds(
 
     override fun getContainer(): ViewGroup? {
         return adsContainer
+    }
+
+    override fun enabledAds(enabled: Boolean) {
+        enabledAds = enabled
     }
 }

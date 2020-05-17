@@ -14,4 +14,5 @@ interface AdsContract {
     fun destroyRewardedVideo()
     fun getContext(): Context?
     fun getContainer(): ViewGroup?
+    fun enabledAds(enabled: Boolean)
 }
