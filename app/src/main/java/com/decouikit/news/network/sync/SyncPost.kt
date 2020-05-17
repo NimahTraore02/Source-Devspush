@@ -1,11 +1,14 @@
 package com.decouikit.news.network.sync
 
 import android.content.Context
+import android.util.Log
 import com.decouikit.news.database.Config
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.PostItem
+import retrofit2.Call
+import retrofit2.Response
 import retrofit2.awaitResponse
 
 object SyncPost {
@@ -60,7 +63,12 @@ object SyncPost {
     ): List<PostItem> {
         var items = ArrayList<PostItem>()
         val service = getService(context)
-        val response = service?.getPostsSearch(search, tags, page, perPage)?.awaitResponse()
+        var response: Response<List<PostItem>>? = null
+        try {
+            response = service?.getPostsSearch(search, tags, page, perPage)?.awaitResponse()
+        } catch (e: Exception) {
+            Log.e("SEARCH_TEST", " "+e.localizedMessage)
+        }
         if (response?.isSuccessful == true) {
             try {
                 if (!response.body().isNullOrEmpty()) {
