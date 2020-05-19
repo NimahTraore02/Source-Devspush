@@ -3,13 +3,14 @@ package com.decouikit.news.firebase
 import android.util.Log
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.getPostIdFromUrl
-import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.dto.CustomNotification
-import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.sync.SyncPost
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
@@ -17,18 +18,20 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         super.onMessageReceived(remoteMessage)
         try {
             val customNotification =
-                Gson().fromJson(remoteMessage.data["custom"], CustomNotification::class.java)
-            SyncPost.getPostById(
-                this,
-                customNotification.url.getPostIdFromUrl(),
-                object : ResultListener<PostItem> {
-                    override fun onResult(value: PostItem?) {
-                        if (value != null) {
-                            value.categoryName = InMemory.getCategoryById(value.categories[0])?.name ?: ""
-                            InMemory.addNotificationPosts(applicationContext, value)
-                        }
-                    }
-                })
+                Gson().fromJson(
+                    remoteMessage.data["custom"],
+                    CustomNotification::class.java
+                )
+            GlobalScope.launch(Dispatchers.IO) {
+                val postItem = SyncPost.getPostById(
+                    applicationContext,
+                    customNotification.url.getPostIdFromUrl()
+                )
+                postItem?.let {
+                    it.categoryName = InMemory.getCategoryById(it.categories[0])?.name ?: ""
+                    InMemory.addNotificationPosts(applicationContext, it)
+                }
+            }
         } catch (e: Exception) {
             Log.e("FirebaseService", e.localizedMessage, e)
         }

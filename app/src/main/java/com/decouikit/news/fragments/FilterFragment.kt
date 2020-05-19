@@ -10,15 +10,19 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.decouikit.news.R
+import com.decouikit.news.adapters.BaseListAdapter
 import com.decouikit.news.adapters.FeaturedNewsAdapter
-import com.decouikit.news.adapters.RecentNewsAdapter
+import com.decouikit.news.adapters.common.CommonListAdapterType
 import com.decouikit.news.database.Config
+import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.categoryToString
+import com.decouikit.news.extensions.openPostActivity
 import com.decouikit.news.extensions.viewAll
-import com.decouikit.news.interfaces.ResultListener
+import com.decouikit.news.interfaces.OpenPostListener
 import com.decouikit.news.network.dto.CategoryType
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.sync.SyncPost
+import com.decouikit.news.utils.AdapterListTypeUtil
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.fragment_filter.view.*
@@ -26,10 +30,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.jetbrains.anko.doAsync
 
 class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener,
-    NestedScrollView.OnScrollChangeListener {
+    NestedScrollView.OnScrollChangeListener, OpenPostListener {
 
     private lateinit var itemView: View
     private var categoryId: Int? = null
@@ -37,7 +40,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
 
     private lateinit var featuredAdapter: FeaturedNewsAdapter
 
-    private lateinit var recentAdapter: RecentNewsAdapter
+    private lateinit var recentAdapter: BaseListAdapter
     private var recentPostItems = arrayListOf<PostItem>()
     private lateinit var recentManager: GridLayoutManager
 
@@ -68,11 +71,19 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
 
     private fun initLayout() {
         featuredAdapter = FeaturedNewsAdapter(arrayListOf(), itemView.context)
-        recentAdapter = RecentNewsAdapter(arrayListOf())
-        recentManager = GridLayoutManager(itemView.context, 2)
+
+        //Creating recent list type
+        val adapterType =
+            AdapterListTypeUtil.getAdapterTypeFromValue(Preference(itemView.context).recentAdapterStyle)
+        recentAdapter = BaseListAdapter(arrayListOf(), adapterType)
+        recentManager = GridLayoutManager(itemView.context, adapterType.columns)
+
+        recentAdapter.setItemClickListener(this)
         itemView.rvRecentNews.layoutManager = recentManager
         itemView.rvRecentNews.adapter = recentAdapter
         itemView.rvRecentNews.setHasFixedSize(true)
+
+        setShimmerType(adapterType)
     }
 
     private fun initListeners() {
@@ -82,22 +93,46 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
         itemView.nestedParent.setOnScrollChangeListener(this)
     }
 
+    private fun setShimmerType(adapterType: CommonListAdapterType) {
+        when(adapterType) {
+            CommonListAdapterType.ADAPTER_VERSION_1 -> {
+                itemView.recentShimmer1.visibility = View.VISIBLE
+                itemView.recentShimmer2.visibility = View.GONE
+                itemView.recentShimmer3.visibility = View.GONE
+            }
+            CommonListAdapterType.ADAPTER_VERSION_2 -> {
+                itemView.recentShimmer1.visibility = View.GONE
+                itemView.recentShimmer2.visibility = View.VISIBLE
+                itemView.recentShimmer3.visibility = View.GONE
+
+            }
+            CommonListAdapterType.ADAPTER_VERSION_3 -> {
+                itemView.recentShimmer1.visibility = View.GONE
+                itemView.recentShimmer2.visibility = View.GONE
+                itemView.recentShimmer3.visibility = View.VISIBLE
+
+            }
+        }
+    }
+
     private fun initData() {
         GlobalScope.launch(context = Dispatchers.Main) {
             delay(500)
-            SyncPost.getPostsList(requireContext(), categoryId?.categoryToString(), null, ++page,
-                Config.getNumberOfItemPerPage(), object : ResultListener<List<PostItem>> {
-                    override fun onResult(value: List<PostItem>?) {
-                        if (value?.size ?: 0 > 0) {
-                            initFeaturedNews(value)
-                            initRecentNews(value)
-                            setShimmerAnimationVisibility(false)
-                        } else {
-                            setEmptyState(featuredAdapter.count == 0)
-                        }
-                        itemView.swipeRefresh.isRefreshing = false
-                    }
-                })
+            val posts = activity?.applicationContext?.let {
+                SyncPost.getPostsList(
+                    it,
+                    categoryId?.categoryToString(), null, ++page,
+                    Config.getNumberOfItemPerPage()
+                )
+            }
+            if (posts != null && posts.isNotEmpty()) {
+                initFeaturedNews(posts)
+                initRecentNews(posts)
+                setShimmerAnimationVisibility(false)
+            } else {
+                setEmptyState(true)
+            }
+            itemView.swipeRefresh.isRefreshing = false
         }
     }
 
@@ -117,6 +152,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
         featuredAdapter.setData(featuredPostItems)
         itemView.viewPager.adapter = featuredAdapter
         itemView.viewPager.offscreenPageLimit = Config.getNumberOfItemForSlider()
+        itemView.tabDots.setupWithViewPager(itemView.viewPager)
         setEmptyState(featuredAdapter.count == 0)
     }
 
@@ -139,25 +175,18 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     }
 
     private fun loadMoreRecentData() {
-        doAsync {
-
-            SyncPost.getPostsList(
-                requireContext(),
-                getCategoryId(),
-                null,
-                ++page,
-                Config.getNumberOfItemPerPage(),
-                object : ResultListener<List<PostItem>> {
-                    override fun onResult(value: List<PostItem>?) {
-                        value?.forEach { postItem ->
-                            if (!recentPostItems.contains(postItem)) {
-                                recentPostItems.add(postItem)
-                            }
-                        }
-                        recentAdapter.setData(recentPostItems)
-                        itemView.swipeRefresh.isRefreshing = false
-                    }
-                })
+        GlobalScope.launch(context = Dispatchers.Main) {
+            val posts = SyncPost.getPostsList(
+                requireContext(), getCategoryId(),
+                null, ++page, Config.getNumberOfItemPerPage()
+            )
+            posts.forEach { postItem ->
+                if (!recentPostItems.contains(postItem)) {
+                    recentPostItems.add(postItem)
+                }
+            }
+            recentAdapter.setData(recentPostItems)
+            itemView.swipeRefresh.isRefreshing = false
         }
     }
 
@@ -176,6 +205,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
 
     private fun refreshContent() {
         itemView.viewPager.removeAllViews()
+        itemView.tabDots.removeAllTabs()
         setShimmerAnimationVisibility(true)
         page = 0
         featuredAdapter.removeAllItems()
@@ -192,10 +222,10 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
                 mShimmerRecentNewsContainer.visibility = View.VISIBLE
                 mShimmerRecentNewsContainer.startShimmer()
             } else {
-                mShimmerFeaturedNewsContainer.stopShimmer()
                 mShimmerFeaturedNewsContainer.visibility = View.GONE
-                mShimmerRecentNewsContainer.stopShimmer()
+                mShimmerFeaturedNewsContainer.stopShimmer()
                 mShimmerRecentNewsContainer.visibility = View.GONE
+                mShimmerRecentNewsContainer.stopShimmer()
             }
         }
     }
@@ -226,7 +256,6 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
             if ((scrollY >= (v.getChildAt(v.childCount - 1).measuredHeight - v.measuredHeight)) &&
                 scrollY > oldScrollY
             ) {
-
                 val visibleItemCount = recentManager.childCount
                 val totalItemCount = recentManager.itemCount
                 val pastVisibleItems = recentManager.findFirstVisibleItemPosition()
@@ -256,6 +285,11 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
             itemView.tvRecentNewsViewAll.visibility = View.GONE
             itemView.rlRecentNews.visibility = View.GONE
         }
+    }
+
+
+    override fun openPost(view: View, item: PostItem) {
+        view.openPostActivity(view.context, item)
     }
 
     companion object {

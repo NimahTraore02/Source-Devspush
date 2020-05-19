@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.decouikit.news.R
 import com.decouikit.news.adapters.CategoryAdapter
+import com.decouikit.news.database.Config
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.viewAll
 import com.decouikit.news.interfaces.OnCategoryItemClickListener
@@ -18,7 +19,11 @@ class CategoryFragment : Fragment(), OnCategoryItemClickListener {
 
     private lateinit var itemView: View
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         itemView = inflater.inflate(R.layout.fragment_category, container, false)
         return itemView
     }
@@ -31,7 +36,8 @@ class CategoryFragment : Fragment(), OnCategoryItemClickListener {
 
     private fun initLayout() {
         val adapter = CategoryAdapter(InMemory.getCategoryList(requireContext()), this)
-        itemView.rvCategory.layoutManager = GridLayoutManager(itemView.context, 2)
+        itemView.rvCategory.layoutManager =
+            GridLayoutManager(itemView.context, Config.getCategoryAdapterConfig().columns)
         itemView.rvCategory.adapter = adapter
     }
 

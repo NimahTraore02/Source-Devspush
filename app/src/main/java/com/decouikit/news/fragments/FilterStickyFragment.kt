@@ -9,21 +9,27 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.decouikit.news.R
+import com.decouikit.news.adapters.BaseListAdapter
 import com.decouikit.news.adapters.FeaturedNewsAdapter
-import com.decouikit.news.adapters.RecentNewsAdapter
+import com.decouikit.news.adapters.common.CommonListAdapterType
 import com.decouikit.news.database.Config
+import com.decouikit.news.database.Preference
+import com.decouikit.news.extensions.openPostActivity
 import com.decouikit.news.extensions.viewAll
-import com.decouikit.news.interfaces.ResultListener
+import com.decouikit.news.interfaces.OpenPostListener
 import com.decouikit.news.network.dto.CategoryType
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.sync.SyncPost
+import com.decouikit.news.utils.AdapterListTypeUtil
 import com.decouikit.news.utils.NewsConstants
-import kotlinx.android.synthetic.main.fragment_filter.*
-import kotlinx.android.synthetic.main.fragment_filter.view.*
-import org.jetbrains.anko.doAsync
+import kotlinx.android.synthetic.main.fragment_filter_sticky.*
+import kotlinx.android.synthetic.main.fragment_filter_sticky.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener,
-    NestedScrollView.OnScrollChangeListener {
+    NestedScrollView.OnScrollChangeListener, OpenPostListener {
 
     private lateinit var itemView: View
     private var categoryId: Int? = null
@@ -31,7 +37,7 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
 
     private lateinit var featuredAdapter: FeaturedNewsAdapter
 
-    private lateinit var recentAdapter: RecentNewsAdapter
+    private lateinit var recentAdapter: BaseListAdapter
     private var recentPostItems = arrayListOf<PostItem>()
     private lateinit var recentManager: GridLayoutManager
 
@@ -63,12 +69,43 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
 
     private fun initLayout() {
         featuredAdapter = FeaturedNewsAdapter(arrayListOf(), itemView.context)
-        recentAdapter = RecentNewsAdapter(arrayListOf())
-        recentManager = GridLayoutManager(itemView.context, 2)
+
+        //Creating recent list type
+        val adapterType =
+            AdapterListTypeUtil.getAdapterTypeFromValue(Preference(itemView.context).recentAdapterStyle)
+        recentAdapter = BaseListAdapter(arrayListOf(), adapterType)
+        recentManager = GridLayoutManager(itemView.context, adapterType.columns)
+
+        recentAdapter.setItemClickListener(this)
         itemView.rvRecentNews.layoutManager = recentManager
         itemView.rvRecentNews.adapter = recentAdapter
         itemView.rvRecentNews.setHasFixedSize(true)
+
+
+        setShimmerType(adapterType)
         setShimmerAnimationVisibility(true)
+    }
+
+    private fun setShimmerType(adapterType: CommonListAdapterType) {
+        when(adapterType) {
+            CommonListAdapterType.ADAPTER_VERSION_1 -> {
+                itemView.recentShimmer1.visibility = View.VISIBLE
+                itemView.recentShimmer2.visibility = View.GONE
+                itemView.recentShimmer3.visibility = View.GONE
+            }
+            CommonListAdapterType.ADAPTER_VERSION_2 -> {
+                itemView.recentShimmer1.visibility = View.GONE
+                itemView.recentShimmer2.visibility = View.VISIBLE
+                itemView.recentShimmer3.visibility = View.GONE
+
+            }
+            CommonListAdapterType.ADAPTER_VERSION_3 -> {
+                itemView.recentShimmer1.visibility = View.GONE
+                itemView.recentShimmer2.visibility = View.GONE
+                itemView.recentShimmer3.visibility = View.VISIBLE
+
+            }
+        }
     }
 
     private fun initListeners() {
@@ -113,73 +150,52 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
     }
 
     private fun getFeaturedNews() {
-        doAsync {
-            SyncPost.getPostsList(
-                requireContext(),
-                categoryId.toString(),
-                true,
-                1,
-                Config.getNumberOfItemPerPage(),
-                object : ResultListener<List<PostItem>> {
-                    override fun onResult(value: List<PostItem>?) {
-                        featuresSync = true
-                        if (value != null) {
-                            if (value.isEmpty()) {
-                                hideFeaturedNews(true)
-                                checkEmptyState()
-                            } else {
-                                val featuredItems = value as ArrayList<PostItem>
-                                featuredAdapter.setData(featuredItems)
-                                itemView.viewPager.adapter = featuredAdapter
-                                itemView.viewPager.offscreenPageLimit =
-                                    Config.getNumberOfItemForSlider()
-                                checkEmptyState()
-                                hideFeaturedNews(featuredAdapter.count == 0)
-                                if (featuresSync && recentSync) {
-                                    setEmptyState(featuredAdapter.count == 0 && recentAdapter.itemCount == 0)
-                                }
-                            }
-                        } else {
-                            hideFeaturedNews(true)
-                            checkEmptyState()
-                        }
-                    }
-                }
+        GlobalScope.launch(Dispatchers.Main) {
+            val posts = SyncPost.getPostsList(
+                requireContext(), categoryId.toString(), true, 1, Config.getNumberOfItemPerPage()
             )
+            featuresSync = true
+            if (posts.isEmpty()) {
+                hideFeaturedNews(true)
+                checkEmptyState()
+            } else {
+                val featuredItems = posts as ArrayList<PostItem>
+                featuredAdapter.setData(featuredItems)
+                itemView.viewPager.adapter = featuredAdapter
+                itemView.viewPager.offscreenPageLimit =
+                    Config.getNumberOfItemForSlider()
+                checkEmptyState()
+                hideFeaturedNews(featuredAdapter.count == 0)
+                if (featuresSync && recentSync) {
+                    setEmptyState(featuredAdapter.count == 0 && recentAdapter.itemCount == 0)
+                }
+            }
         }
     }
 
     private fun getRecentNews() {
-        SyncPost.getPostsList(
-            requireContext(),
-            categoryId.toString(),
-            false,
-            ++page,
-            Config.getNumberOfItemPerPage(),
-            object : ResultListener<List<PostItem>> {
-                override fun onResult(value: List<PostItem>?) {
-                    recentSync = true
-                    if (value != null) {
-                        if (value.isNotEmpty()) {
-                            val allPostList = value as ArrayList<PostItem>
-                            for (postItem in allPostList) {
-                                if (!recentPostItems.contains(postItem)) {
-                                    recentPostItems.add(postItem)
-                                }
-                            }
-                            recentAdapter.setData(recentPostItems)
-                            hideRecentNews(recentAdapter.itemCount == 0)
-                            checkEmptyState()
-                        } else {
-                            hideRecentNews(recentAdapter.itemCount == 0)
-                            checkEmptyState()
-                        }
-                    } else {
-                        hideRecentNews(recentAdapter.itemCount == 0)
-                        checkEmptyState()
+        GlobalScope.launch(Dispatchers.Main) {
+            val posts = SyncPost.getPostsList(
+                requireContext(), categoryId.toString(),
+                false, ++page, Config.getNumberOfItemPerPage()
+            )
+            recentSync = true
+            if (posts.isNotEmpty()) {
+                val allPostList = posts as ArrayList<PostItem>
+                for (postItem in allPostList) {
+                    if (!recentPostItems.contains(postItem)) {
+                        recentPostItems.add(postItem)
                     }
                 }
-            })
+                recentAdapter.setData(recentPostItems)
+                hideRecentNews(recentAdapter.itemCount == 0)
+                checkEmptyState()
+            } else {
+                hideRecentNews(recentAdapter.itemCount == 0)
+                checkEmptyState()
+            }
+        }
+
         swipeRefresh.isRefreshing = false
         setShimmerAnimationVisibility(false)
         checkEmptyState()
@@ -257,6 +273,11 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
                 }
             }
         }
+    }
+
+
+    override fun openPost(view: View, item: PostItem) {
+        view.openPostActivity(view.context, item)
     }
 
     companion object {

@@ -17,14 +17,21 @@ class GoogleAds(
     private val listener: AdEventListener?
 ) : AdsContract {
 
+    companion object {
+        var enabledAds: Boolean = true
+    }
+
     private var mRewardedVideoAd: RewardedVideoAd? = null
     private var adView: AdView? = null
 
     init {
-        MobileAds.initialize(getContext())
+        MobileAds.initialize(adsContainer?.context)
     }
 
     override fun showBanner() {
+        if (!enabledAds) {
+            return
+        }
         if (adsItem.bannerAdUnitId.isEmpty()) {
             return
         }
@@ -47,6 +54,9 @@ class GoogleAds(
     }
 
     override fun showInterstitial() {
+        if (!enabledAds) {
+            return
+        }
         if (adsItem.interstitialAdUnitId.isEmpty()) {
             return
         }
@@ -149,5 +159,9 @@ class GoogleAds(
 
     override fun getContainer(): ViewGroup? {
         return adsContainer
+    }
+
+    override fun enabledAds(enabled: Boolean) {
+        enabledAds = enabled
     }
 }

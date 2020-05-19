@@ -70,29 +70,34 @@
                 android:layout_height="@dimen/featured_news_height"
                 android:clipToPadding="false"
                 android:overScrollMode="never"
-                android:paddingStart="@dimen/large_padding"
-                android:paddingEnd="@dimen/large_padding"
                 android:layout_marginTop="@dimen/large_padding"
                 app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabDots"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/viewPager"
+            app:tabBackground="@drawable/tab_selector"
+            app:tabGravity="center"
+            app:tabIndicatorHeight="0dp" />
 
         <TextView
             android:id="@+id/tvRecentNewsTitle"
                 style="@style/TitleTextStyle"
                 android:text="@string/recent_news"
                 android:layout_marginStart="@dimen/large_padding"
-                android:layout_marginTop="@dimen/large_padding"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewPager"
+                app:layout_constraintTop_toBottomOf="@+id/tabDots"
                 app:layout_constraintBottom_toTopOf="@+id/divider2"/>
 
         <TextView
                 android:id="@+id/tvRecentNewsViewAll"
                 style="@style/ViewAllTextStyle"
                 android:text="@string/view_all"
-                android:layout_marginTop="@dimen/large_padding"
                 android:layout_marginEnd="@dimen/large_padding"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewPager"
+            app:layout_constraintTop_toBottomOf="@+id/tabDots"
                 app:layout_constraintBottom_toTopOf="@+id/divider2" />
 
         <View
@@ -109,12 +114,33 @@
             app:layout_constraintTop_toBottomOf="@+id/tvRecentNewsViewAll" >
 
             <LinearLayout
+                android:id="@+id/recentShimmer1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <include layout="@layout/horizontal_list_shimmer_placeholder" />
+                <include layout="@layout/horizontal_list_shimmer_placeholder" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/recentShimmer2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <include layout="@layout/featured_news_shimmer_placeholder" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/recentShimmer3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingStart="@dimen/normal_padding"
                 android:paddingEnd="@dimen/normal_padding"
-                android:baselineAligned="false">
+                android:baselineAligned="false"
+                android:visibility="gone">
                 <include layout="@layout/recent_news_shimmer_placeholder"
                     android:layout_width="@dimen/zero_density"
                     android:layout_height="match_parent"

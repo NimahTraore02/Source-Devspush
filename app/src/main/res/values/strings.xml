@@ -33,6 +33,7 @@
     <string name="about_text_9">Design files (Sketch, Adobe Xd and Photo shop)</string>
     <string name="about_text_10">Code in Kotlin</string>
     <string name="about_text_button">Purchase Now</string>
+    <string name="remove_ads_button">Remove Ads</string>
     <string name="enable_push_notification">Enable push notification</string>
     <string name="testing_rtl">Testing our application with Rtl
         \n(enable)</string>
@@ -86,4 +87,14 @@
     <string name="notification">Notifications</string>
 
     <string name="check_internet_connection">Please check your internet connection and try again</string>
+
+    <string name="settings_recent_list">Recent news list type</string>
+    <string name="settings_view_all">View all list type</string>
+    <string name="settings_search">Search list type</string>
+    <string name="settings_notification">Notification list type</string>
+    <string name="settings_recent_list_from_post">List type in post screen</string>
+    <string name="settings_bookmark">Bookmark list type</string>
+    <string name="settings_category">Category list type</string>
+
+    <string name="settings_dialog_title">Tap to choose list type</string>
 </resources>

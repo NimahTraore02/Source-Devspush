@@ -2,23 +2,25 @@ package com.decouikit.news.activities
 
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
-import com.decouikit.news.adapters.ViewAllAdapter
+import com.decouikit.news.adapters.BaseListAdapter
+import com.decouikit.news.database.Config
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.openPostActivity
 import com.decouikit.news.interfaces.OpenPostListener
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.ActivityUtil
+import com.decouikit.news.utils.AdapterListTypeUtil
 import kotlinx.android.synthetic.main.activity_notifications.*
 
 class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListener {
 
-    private lateinit var adapter: ViewAllAdapter
+    private lateinit var adapter: BaseListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +35,13 @@ class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListe
         if (Preference(this).isRtlEnabled) {
             ivBack.rotation = 180f
         }
-        adapter = ViewAllAdapter(arrayListOf(), this)
-        rvNotifications.layoutManager = LinearLayoutManager(this)
+        //Creating list type
+        val adapterType =
+            AdapterListTypeUtil.getAdapterTypeFromValue(Preference(this).notificationAdapterStyle)
+        adapter = BaseListAdapter(arrayListOf(), adapterType)
+        rvNotifications.layoutManager = GridLayoutManager(this, adapterType.columns)
+
+        adapter.setItemClickListener(this)
         rvNotifications.adapter = adapter
         hideContent(true)
         //swipe to remove item listener

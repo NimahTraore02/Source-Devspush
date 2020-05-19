@@ -140,6 +140,11 @@
         <item name="android:textAlignment">viewStart</item>
     </style>
 
+    <style name="CommentsEditTextTheme">
+        <item name="colorAccent">@color/colorSubTitleText</item>
+    </style>
+
+
     <style name="RadioButtonStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -153,6 +158,7 @@
         <item name="android:editTextColor">@color/icon_gray</item>
         <item name="android:textColorHint">@color/icon_gray</item>
         <item name="android:backgroundTint">@color/icon_gray</item>
+        <item name="colorAccent">?attr/colorTitleText</item>
     </style>
 
     <style name="PostTagTextStyle">
@@ -165,5 +171,24 @@
         <item name="android:paddingBottom">@dimen/small_padding</item>
         <item name="android:layout_marginStart">@dimen/normal_margin</item>
         <item name="android:layout_marginTop">@dimen/normal_margin</item>
+    </style>
+
+    <style name="SettingsChooserTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">?attr/colorTitleText</item>
+        <item name="android:layout_marginStart">@dimen/normal_margin</item>
+        <item name="android:layout_marginEnd">@dimen/normal_margin</item>
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="android:textSize">@dimen/text_size_16sp</item>
+        <item name="android:drawableEnd">@drawable/ic_arrow_drop_down_24dp</item>
+        <item name="android:drawablePadding">@dimen/small_padding</item>
+        <item name="android:gravity">end</item>
+    </style>
+
+    <style name="SettingsChooserIconStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">@dimen/normal_margin</item>
     </style>
 </resources>

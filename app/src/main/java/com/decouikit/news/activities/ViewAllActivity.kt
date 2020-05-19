@@ -2,16 +2,17 @@ package com.decouikit.news.activities
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.widget.NestedScrollView
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
-import com.decouikit.news.adapters.ViewAllAdapter
+import com.decouikit.news.adapters.BaseListAdapter
+import com.decouikit.news.adapters.common.CommonListAdapterType
 import com.decouikit.news.database.Config
 import com.decouikit.news.database.Preference
-import com.decouikit.news.extensions.Result
 import com.decouikit.news.extensions.categoryToString
-import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.extensions.openPostActivity
 import com.decouikit.news.interfaces.OpenPostListener
 import com.decouikit.news.network.PostsService
@@ -19,19 +20,23 @@ import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.dto.CategoryType
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.utils.ActivityUtil
-import com.decouikit.news.utils.EndlessRecyclerOnScrollListener
+import com.decouikit.news.utils.AdapterListTypeUtil
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.activity_view_all.*
-import org.jetbrains.anko.doAsync
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import retrofit2.awaitResponse
 
 class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener,
-    OpenPostListener {
+    OpenPostListener, NestedScrollView.OnScrollChangeListener {
 
     private var categoryId: Int? = 0
     private var categoryName: String? = ""
     private var categoryType: CategoryType = CategoryType.ALL
     private var isDataLoading = false
-    private lateinit var adapter: ViewAllAdapter
+    private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var adapter: BaseListAdapter
     private val items = arrayListOf<PostItem>()
     private val postService by lazy {
         RetrofitClientInstance.getRetrofitInstance(this)?.create(PostsService::class.java)
@@ -67,11 +72,6 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
             }
         }
 
-        rvItems.addOnScrollListener(object : EndlessRecyclerOnScrollListener() {
-            override fun onLoadMore() {
-                loadData()
-            }
-        })
         refreshContent()
     }
 
@@ -94,14 +94,45 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
         if (Preference(this).isRtlEnabled) {
             ivBack.rotation = 180f
         }
-        adapter = ViewAllAdapter(arrayListOf(), this)
-        rvItems.layoutManager = LinearLayoutManager(this)
+
+        //Creating list type
+        val adapterType =
+            AdapterListTypeUtil.getAdapterTypeFromValue(Preference(this).viewAllAdapterStyle)
+        adapter = BaseListAdapter(arrayListOf(), adapterType)
+        layoutManager = GridLayoutManager(this, adapterType.columns)
+
+        adapter.setItemClickListener(this)
+        rvItems.layoutManager = layoutManager
         rvItems.adapter = adapter
+
+        setShimmerType(adapterType)
     }
 
+    private fun setShimmerType(adapterType: CommonListAdapterType) {
+        when(adapterType) {
+            CommonListAdapterType.ADAPTER_VERSION_1 -> {
+                recentShimmer1.visibility = View.VISIBLE
+                recentShimmer2.visibility = View.GONE
+                recentShimmer3.visibility = View.GONE
+            }
+            CommonListAdapterType.ADAPTER_VERSION_2 -> {
+                recentShimmer1.visibility = View.GONE
+                recentShimmer2.visibility = View.VISIBLE
+                recentShimmer3.visibility = View.GONE
+
+            }
+            CommonListAdapterType.ADAPTER_VERSION_3 -> {
+                recentShimmer1.visibility = View.GONE
+                recentShimmer2.visibility = View.GONE
+                recentShimmer3.visibility = View.VISIBLE
+
+            }
+        }
+    }
     private fun initListeners() {
         ivBack.setOnClickListener(this)
         swipeRefresh.setOnRefreshListener(this)
+        nestedParent.setOnScrollChangeListener(this)
     }
 
     override fun onClick(v: View) {
@@ -130,84 +161,78 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
     }
 
     private fun getPostsWithSticky(sticky: Boolean) {
-        doAsync {
-            isDataLoading = true
 
-            postService?.getPostsList(
+        isDataLoading = true
+
+        GlobalScope.launch(Dispatchers.Main) {
+            val response = postService?.getPostsList(
                 categoryId?.categoryToString(),
                 sticky,
                 ++page,
                 perPage
-            )?.enqueue(result = {
-                isDataLoading = false
-                when (it) {
-                    is Result.Success -> {
-                        if (it.response.body().isNullOrEmpty()) {
-                            hideContent(adapter.itemCount == 0)
-                        } else {
-                            val posts = it.response.body() as ArrayList<PostItem>
-                            for (postItem in posts) {
-                                //loop for getting image urls, post name is fixed from intent
-                                postItem.categoryName = categoryName.toString()
-                                items.add(postItem)
-                            }
-                            if (items.isEmpty()) {
-                                hideContent(true)
-                            } else {
-                                hideContent(false)
-                                adapter.setData(items)
-                            }
-                        }
+            )?.awaitResponse()
+
+            isDataLoading = false
+
+            if (response?.isSuccessful == true) {
+                if (response.body().isNullOrEmpty()) {
+                    hideContent(adapter.itemCount == 0)
+                } else {
+                    val posts = response.body() as ArrayList<PostItem>
+                    for (postItem in posts) {
+                        //loop for getting image urls, post name is fixed from intent
+                        postItem.categoryName = categoryName.toString()
+                        items.add(postItem)
                     }
-                    is Result.Failure -> {
+                    if (items.isEmpty()) {
                         hideContent(true)
+                    } else {
+                        hideContent(false)
+                        adapter.setData(items)
                     }
                 }
-                mShimmerViewContainer.startShimmer()
-                mShimmerViewContainer.visibility = View.GONE
-                swipeRefresh.isRefreshing = false
-            })
+            } else {
+                hideContent(adapter.itemCount == 0)
+            }
+            mShimmerViewContainer.startShimmer()
+            mShimmerViewContainer.visibility = View.GONE
+            swipeRefresh.isRefreshing = false
         }
     }
 
     private fun getAllPosts() {
-        doAsync {
+        GlobalScope.launch(Dispatchers.Main) {
             isDataLoading = true
-            postService?.getPostsList(
+            val response = postService?.getPostsList(
                 categoryId?.categoryToString(),
                 null,
                 ++page,
                 perPage
-            )
-                ?.enqueue(result = {
-                    isDataLoading = false
-                    when (it) {
-                        is Result.Success -> {
-                            if (it.response.body().isNullOrEmpty()) {
-                                hideContent(adapter.itemCount == 0)
-                            } else {
-                                val posts = it.response.body() as ArrayList<PostItem>
-                                for (postItem in posts) {
-                                    //loop for getting image urls, post name is fixed from intent
-                                    postItem.categoryName = categoryName.toString()
-                                    items.add(postItem)
-                                }
-                                if (items.isEmpty()) {
-                                    hideContent(true)
-                                } else {
-                                    hideContent(false)
-                                    adapter.setData(items)
-                                }
-                            }
-                        }
-                        is Result.Failure -> {
-                            hideContent(true)
-                        }
+            )?.awaitResponse()
+
+            if (response?.isSuccessful == true) {
+                if (response.body().isNullOrEmpty()) {
+                    hideContent(adapter.itemCount == 0)
+                } else {
+                    val posts = response.body() as ArrayList<PostItem>
+                    for (postItem in posts) {
+                        //loop for getting image urls, post name is fixed from intent
+                        postItem.categoryName = categoryName.toString()
+                        items.add(postItem)
                     }
-                    mShimmerViewContainer.startShimmer()
-                    mShimmerViewContainer.visibility = View.GONE
-                    swipeRefresh.isRefreshing = false
-                })
+                    if (items.isEmpty()) {
+                        hideContent(true)
+                    } else {
+                        hideContent(false)
+                        adapter.setData(items)
+                    }
+                }
+            } else {
+                hideContent(adapter.itemCount == 0)
+            }
+            mShimmerViewContainer.startShimmer()
+            mShimmerViewContainer.visibility = View.GONE
+            swipeRefresh.isRefreshing = false
         }
     }
 
@@ -227,5 +252,28 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
         tvTitle.visibility = View.GONE
         rvItems.visibility = View.GONE
         emptyPostsContainer.visibility = View.GONE
+    }
+
+    override fun onScrollChange(
+        v: NestedScrollView?,
+        scrollX: Int,
+        scrollY: Int,
+        oldScrollX: Int,
+        oldScrollY: Int
+    ) {
+        if (v?.getChildAt(v.childCount - 1) != null) {
+            if ((scrollY >= (v.getChildAt(v.childCount - 1).measuredHeight - v.measuredHeight)) &&
+                scrollY > oldScrollY
+            ) {
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
+                val pastVisibleItems = layoutManager.findFirstVisibleItemPosition()
+
+                if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                    swipeRefresh.isRefreshing = true
+                    loadData()
+                }
+            }
+        }
     }
 }

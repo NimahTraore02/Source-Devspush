@@ -1,27 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:fitsSystemWindows="true"
         android:paddingStart="@dimen/large_padding"
         android:paddingEnd="@dimen/large_padding">
 
-    <TextView
+        <TextView
             style="@style/TitleTextStyle"
             android:text="@string/enable_push_notification"
             app:layout_constraintBottom_toBottomOf="@+id/divider"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    <CheckBox
+        <CheckBox
             android:id="@+id/cbNotifications"
             style="@style/CheckBoxStyle"
             app:layout_constraintBottom_toBottomOf="@+id/divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    <View
+        <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="@dimen/tab_indicator_height"
@@ -29,7 +34,7 @@
             android:background="@color/colorMenuItem"
             app:layout_constraintTop_toBottomOf="@+id/cbNotifications" />
 
-    <TextView
+        <TextView
             android:id="@+id/tvEnableRtl"
             style="@style/TitleTextStyle"
             android:text="@string/testing_rtl"
@@ -37,14 +42,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider" />
 
-    <CheckBox
+        <CheckBox
             android:id="@+id/cbEnableRtl"
             style="@style/CheckBoxStyle"
             app:layout_constraintBottom_toBottomOf="@+id/divider2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider" />
 
-    <View
+        <View
             android:id="@+id/divider2"
             android:layout_width="match_parent"
             android:layout_height="@dimen/tab_indicator_height"
@@ -52,7 +57,7 @@
             android:background="@color/colorMenuItem"
             app:layout_constraintTop_toBottomOf="@+id/tvEnableRtl" />
 
-    <TextView
+        <TextView
             android:id="@+id/tvEnableLanguage"
             style="@style/TitleTextStyle"
             android:text="@string/language"
@@ -60,23 +65,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
-    <TextView
+        <TextView
             android:id="@+id/tvLanguage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:textSize="@dimen/text_size_18sp"
-            android:drawableEnd="@drawable/ic_arrow_drop_down_24dp"
-            android:drawablePadding="@dimen/small_padding"
-            android:textColor="?attr/colorTitleText"
-            android:layout_marginStart="@dimen/normal_margin"
-            android:layout_marginEnd="@dimen/normal_margin"
+            style="@style/SettingsChooserTextStyle"
             app:layout_constraintBottom_toBottomOf="@+id/divider3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
-    <View
+        <View
             android:id="@+id/divider3"
             android:layout_width="match_parent"
             android:layout_height="@dimen/tab_indicator_height"
@@ -84,26 +81,243 @@
             android:background="@color/colorMenuItem"
             app:layout_constraintTop_toBottomOf="@+id/tvEnableLanguage" />
 
-    <LinearLayout
+        <TextView
+            android:id="@+id/tvRecentNews"
+            style="@style/TitleTextStyle"
+            android:layout_width="0dp"
+            android:text="@string/settings_recent_list"
+            android:layout_marginEnd="@dimen/normal_margin"
+            app:layout_constraintBottom_toBottomOf="@+id/divider4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivRecentNews"
+            app:layout_constraintTop_toBottomOf="@+id/divider3" />
+
+        <ImageView
+            android:id="@+id/ivRecentNews"
+            style="@style/SettingsChooserIconStyle"
+            android:contentDescription="@string/image_desc_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/divider4"
+            app:layout_constraintEnd_toStartOf="@+id/cbRecentNews"
+            app:layout_constraintTop_toBottomOf="@+id/divider3"
+            tools:src="@drawable/ic_list_type_1"/>
+
+        <TextView
+            android:id="@+id/cbRecentNews"
+            style="@style/SettingsChooserTextStyle"
+            app:layout_constraintBottom_toBottomOf="@+id/divider4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintTop_toBottomOf="@+id/divider3" />
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tab_indicator_height"
+            android:layout_marginTop="@dimen/large_padding"
+            android:background="@color/colorMenuItem"
+            app:layout_constraintTop_toBottomOf="@+id/tvRecentNews" />
+
+        <TextView
+            android:id="@+id/tvViewAll"
+            style="@style/TitleTextStyle"
+            android:layout_width="0dp"
+            android:text="@string/settings_view_all"
+            android:layout_marginEnd="@dimen/normal_margin"
+            app:layout_constraintBottom_toBottomOf="@+id/divider5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivViewAll"
+            app:layout_constraintTop_toBottomOf="@+id/divider4" />
+
+        <ImageView
+            android:id="@+id/ivViewAll"
+            style="@style/SettingsChooserIconStyle"
+            android:contentDescription="@string/image_desc_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/divider5"
+            app:layout_constraintEnd_toStartOf="@+id/cbViewAll"
+            app:layout_constraintTop_toBottomOf="@+id/divider4"
+            tools:src="@drawable/ic_list_type_3"/>
+
+        <TextView
+            android:id="@+id/cbViewAll"
+            style="@style/SettingsChooserTextStyle"
+            app:layout_constraintBottom_toBottomOf="@+id/divider5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintTop_toBottomOf="@+id/divider4" />
+
+        <View
+            android:id="@+id/divider5"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tab_indicator_height"
+            android:layout_marginTop="@dimen/large_padding"
+            android:background="@color/colorMenuItem"
+            app:layout_constraintTop_toBottomOf="@+id/tvViewAll" />
+
+        <TextView
+            android:id="@+id/tvSearch"
+            style="@style/TitleTextStyle"
+            android:layout_width="0dp"
+            android:text="@string/settings_search"
+            android:layout_marginEnd="@dimen/normal_margin"
+            app:layout_constraintBottom_toBottomOf="@+id/divider6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivSearch"
+            app:layout_constraintTop_toBottomOf="@+id/divider5" />
+
+        <ImageView
+            android:id="@+id/ivSearch"
+            style="@style/SettingsChooserIconStyle"
+            android:contentDescription="@string/image_desc_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/divider6"
+            app:layout_constraintEnd_toStartOf="@+id/cbSearch"
+            app:layout_constraintTop_toBottomOf="@+id/divider5"
+            tools:src="@drawable/ic_list_type_2"/>
+
+        <TextView
+            android:id="@+id/cbSearch"
+            style="@style/SettingsChooserTextStyle"
+            app:layout_constraintBottom_toBottomOf="@+id/divider6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintTop_toBottomOf="@+id/divider5" />
+
+        <View
+            android:id="@+id/divider6"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tab_indicator_height"
+            android:layout_marginTop="@dimen/large_padding"
+            android:background="@color/colorMenuItem"
+            app:layout_constraintTop_toBottomOf="@+id/tvSearch" />
+
+        <TextView
+            android:id="@+id/tvNotification"
+            style="@style/TitleTextStyle"
+            android:layout_width="0dp"
+            android:text="@string/settings_notification"
+            android:layout_marginEnd="@dimen/normal_margin"
+            app:layout_constraintBottom_toBottomOf="@+id/divider7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivNotification"
+            app:layout_constraintTop_toBottomOf="@+id/divider6" />
+
+        <ImageView
+            android:id="@+id/ivNotification"
+            style="@style/SettingsChooserIconStyle"
+            android:contentDescription="@string/image_desc_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/divider7"
+            app:layout_constraintEnd_toStartOf="@+id/cbNotification"
+            app:layout_constraintTop_toBottomOf="@+id/divider6"
+            tools:src="@drawable/ic_list_type_2"/>
+
+        <TextView
+            android:id="@+id/cbNotification"
+            style="@style/SettingsChooserTextStyle"
+            app:layout_constraintBottom_toBottomOf="@+id/divider7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintTop_toBottomOf="@+id/divider6" />
+
+        <View
+            android:id="@+id/divider7"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tab_indicator_height"
+            android:layout_marginTop="@dimen/large_padding"
+            android:background="@color/colorMenuItem"
+            app:layout_constraintTop_toBottomOf="@+id/tvNotification" />
+
+        <TextView
+            android:id="@+id/tvRecentNewsFromPost"
+            style="@style/TitleTextStyle"
+            android:layout_width="0dp"
+            android:text="@string/settings_recent_list_from_post"
+            android:layout_marginEnd="@dimen/normal_margin"
+            app:layout_constraintBottom_toBottomOf="@+id/divider8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivRecentNewsFromPost"
+            app:layout_constraintTop_toBottomOf="@+id/divider7" />
+
+        <ImageView
+            android:id="@+id/ivRecentNewsFromPost"
+            style="@style/SettingsChooserIconStyle"
+            android:contentDescription="@string/image_desc_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/divider8"
+            app:layout_constraintEnd_toStartOf="@+id/cbRecentNewsFromPost"
+            app:layout_constraintTop_toBottomOf="@+id/divider7"
+            tools:src="@drawable/ic_list_type_2"/>
+
+        <TextView
+            android:id="@+id/cbRecentNewsFromPost"
+            style="@style/SettingsChooserTextStyle"
+            app:layout_constraintBottom_toBottomOf="@+id/divider8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintTop_toBottomOf="@+id/divider7" />
+
+        <View
+            android:id="@+id/divider8"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tab_indicator_height"
+            android:layout_marginTop="@dimen/large_padding"
+            android:background="@color/colorMenuItem"
+            app:layout_constraintTop_toBottomOf="@+id/tvRecentNewsFromPost" />
+
+        <TextView
+            android:id="@+id/tvBookmark"
+            style="@style/TitleTextStyle"
+            android:layout_width="0dp"
+            android:text="@string/settings_bookmark"
+            android:layout_marginEnd="@dimen/normal_margin"
+            app:layout_constraintBottom_toBottomOf="@+id/divider9"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivBookmark"
+            app:layout_constraintTop_toBottomOf="@+id/divider8" />
+
+        <ImageView
+            android:id="@+id/ivBookmark"
+            style="@style/SettingsChooserIconStyle"
+            android:contentDescription="@string/image_desc_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/divider9"
+            app:layout_constraintEnd_toStartOf="@+id/cbBookmark"
+            app:layout_constraintTop_toBottomOf="@+id/divider8"
+            tools:src="@drawable/ic_list_type_2"/>
+
+        <TextView
+            android:id="@+id/cbBookmark"
+            style="@style/SettingsChooserTextStyle"
+            app:layout_constraintBottom_toBottomOf="@+id/divider9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintTop_toBottomOf="@+id/divider8" />
+
+        <View
+            android:id="@+id/divider9"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tab_indicator_height"
+            android:layout_marginTop="@dimen/large_padding"
+            android:background="@color/colorMenuItem"
+            app:layout_constraintTop_toBottomOf="@+id/tvBookmark" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/normal_padding"
             android:paddingTop="@dimen/normal_padding"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider3">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider9">
 
-        <Button
+            <Button
                 android:id="@+id/btnLightMode"
                 style="@style/ButtonStyle"
                 android:layout_marginEnd="@dimen/large_padding"
                 android:layout_weight="0.5"
                 android:text="@string/light_mode" />
 
-        <Button
+            <Button
                 android:id="@+id/btnDarkMode"
                 style="@style/ButtonStyle"
                 android:layout_weight="0.5"
                 android:text="@string/dark_mode" />
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

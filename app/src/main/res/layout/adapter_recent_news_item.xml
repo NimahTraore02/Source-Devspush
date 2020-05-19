@@ -1,55 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/recent_item_height"
-        android:orientation="vertical"
-        android:layout_marginBottom="@dimen/large_padding"
-        android:layout_marginStart="@dimen/normal_padding"
-        android:layout_marginEnd="@dimen/normal_padding"
-        app:cardCornerRadius="@dimen/small_padding"
-        app:cardElevation="@dimen/small_padding">
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/itemParent"
+    android:layout_marginStart="@dimen/normal_padding"
+    android:layout_marginEnd="@dimen/normal_padding"
+    android:layout_marginBottom="@dimen/large_padding"
+    android:orientation="vertical"
+    app:cardCornerRadius="@dimen/small_padding"
+    app:cardElevation="@dimen/small_padding">
 
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/colorHeader"
-            android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorHeader"
+        android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/recent_item_image_height">
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/recent_item_image_height">
 
-            <ImageView
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
                     android:id="@+id/ivItemBg"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="?attr/colorHeader"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:contentDescription="@string/image_desc_background" />
+                    android:contentDescription="@string/image_desc_background"
+                    android:scaleType="centerCrop"/>
 
-            <TextView
-                    android:id="@+id/tvItemTag"
-                    style="@style/TagTextStyle"
-                    android:layout_marginStart="@dimen/large_padding"
-                    android:layout_marginBottom="@dimen/large_padding"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/darkerGrayFiftyTransparency"
+                    android:contentDescription="@string/image_desc_background" />
+            </FrameLayout>
+            <ImageView
+                android:id="@+id/ivBookmark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/normal_padding"
+                android:layout_marginEnd="@dimen/normal_padding"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:padding="@dimen/small_padding"
+                android:contentDescription="@string/image_desc_icon"
+                tools:background="@drawable/ic_bookmark"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-                android:id="@+id/tvItemTitle"
-                style="@style/ItemTextStyle"
-                android:layout_margin="@dimen/large_padding" />
+            android:id="@+id/tvItemTag"
+            style="@style/TagTextStyle"
+            android:textSize="@dimen/text_size_10sp"
+            android:layout_margin="@dimen/large_padding"
+            tools:text="Category Name" />
 
         <TextView
-                android:id="@+id/tvItemDate"
-                style="@style/DateTextStyle"
-                android:layout_marginStart="@dimen/large_padding"/>
+            android:id="@+id/tvItemTitle"
+            style="@style/ItemTextStyle"
+            android:layout_marginStart="@dimen/large_padding"
+            android:layout_marginEnd="@dimen/large_padding"
+            android:layout_marginBottom="@dimen/large_padding"
+            tools:text="Title Name" />
+
+        <TextView
+            android:id="@+id/tvItemDate"
+            style="@style/DateTextStyle"
+            android:layout_marginStart="@dimen/large_padding"
+            android:layout_marginBottom="@dimen/large_padding"
+            tools:text="28 January 2019" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

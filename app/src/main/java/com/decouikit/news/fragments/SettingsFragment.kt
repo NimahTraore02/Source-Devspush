@@ -6,26 +6,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.decouikit.news.R
+import com.decouikit.news.adapters.common.CommonListAdapterType
 import com.decouikit.news.database.Config
 import com.decouikit.news.database.InMemory
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.initPopupDialog
+import com.decouikit.news.extensions.setIconsForListType
 import com.decouikit.news.interfaces.ChooseLanguageDialogListener
-import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.RetrofitClientInstance
 import com.decouikit.news.network.sync.SyncApi
 import com.decouikit.news.notification.OneSignalNotificationOpenHandler
-import com.decouikit.news.utils.ActivityUtil
-import com.decouikit.news.utils.ChooseLanguageDialog
+import com.decouikit.news.utils.*
 import com.onesignal.OneSignal
-import kotlinx.android.synthetic.main.fragment_settings.*
 import kotlinx.android.synthetic.main.fragment_settings.view.*
 import kotlinx.android.synthetic.main.fragment_settings.view.tvEnableRtl
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogListener {
+class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogListener,
+    OnListTypeChangeListener {
 
 
     private lateinit var itemView: View
@@ -49,7 +54,6 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initLayout()
-        initVisibilityForRTLRow()
         initListeners()
     }
 
@@ -57,10 +61,14 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
         itemView.cbNotifications.isChecked = prefs.isPushNotificationEnabled
         itemView.cbEnableRtl.isChecked = prefs.isRtlEnabled
 
+        initVisibilityForRTLRow()
+
         selectedIndex = Config.getLanguageIndexByCode(prefs.languageCode)
         if (Config.listLanguageNames().size > selectedIndex) {
             itemView.tvLanguage.text = Config.listLanguageNames()[selectedIndex]
         }
+
+        setListTypeIcons()
     }
 
     private fun initVisibilityForRTLRow() {
@@ -75,12 +83,39 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
         }
     }
 
+    private fun setListTypeIcons() {
+        itemView.ivRecentNews.setIconsForListType(AdapterListTypeUtil.getAdapterTypeFromValue(prefs.recentAdapterStyle))
+        itemView.ivViewAll.setIconsForListType(AdapterListTypeUtil.getAdapterTypeFromValue(prefs.viewAllAdapterStyle))
+        itemView.ivSearch.setIconsForListType(AdapterListTypeUtil.getAdapterTypeFromValue(prefs.searchAdapterStyle))
+        itemView.ivNotification.setIconsForListType(AdapterListTypeUtil.getAdapterTypeFromValue(prefs.notificationAdapterStyle))
+        itemView.ivRecentNewsFromPost.setIconsForListType(AdapterListTypeUtil.getAdapterTypeFromValue(prefs.recentFromPostAdapterStyle))
+        itemView.ivBookmark.setIconsForListType(AdapterListTypeUtil.getAdapterTypeFromValue(prefs.bookmarkAdapterStyle))
+    }
+
     private fun initListeners() {
         itemView.btnLightMode.setOnClickListener(this)
         itemView.btnDarkMode.setOnClickListener(this)
         itemView.cbNotifications.setOnClickListener(this)
         itemView.tvLanguage.setOnClickListener(this)
         itemView.cbEnableRtl.setOnClickListener(this)
+
+        itemView.tvRecentNews.setOnClickListener(this)
+        itemView.cbRecentNews.setOnClickListener(this)
+
+        itemView.tvViewAll.setOnClickListener(this)
+        itemView.cbViewAll.setOnClickListener(this)
+
+        itemView.tvSearch.setOnClickListener(this)
+        itemView.cbSearch.setOnClickListener(this)
+
+        itemView.tvNotification.setOnClickListener(this)
+        itemView.cbNotification.setOnClickListener(this)
+
+        itemView.tvRecentNewsFromPost.setOnClickListener(this)
+        itemView.cbRecentNewsFromPost.setOnClickListener(this)
+
+        itemView.tvBookmark.setOnClickListener(this)
+        itemView.cbBookmark.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
@@ -132,6 +167,30 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
                     Config.listLanguageNames().toTypedArray(), selectedIndex, this
                 )
             }
+            itemView.tvRecentNews,
+            itemView.cbRecentNews -> {
+                activity?.let { ChooseListStyleDialog.showDialog(it, ListType.RECENT_NEWS, this) }
+            }
+            itemView.tvViewAll,
+            itemView.cbViewAll -> {
+                activity?.let { ChooseListStyleDialog.showDialog(it, ListType.VIEW_ALL, this) }
+            }
+            itemView.tvSearch,
+            itemView.cbSearch -> {
+                activity?.let { ChooseListStyleDialog.showDialog(it, ListType.SEARCH, this) }
+            }
+            itemView.tvNotification,
+            itemView.cbNotification -> {
+                activity?.let { ChooseListStyleDialog.showDialog(it, ListType.NOTIFICATION, this) }
+            }
+            itemView.tvRecentNewsFromPost,
+            itemView.cbRecentNewsFromPost -> {
+                activity?.let { ChooseListStyleDialog.showDialog(it, ListType.RECENT_NEWS_FROM_POST, this) }
+            }
+            itemView.tvBookmark,
+            itemView.cbBookmark -> {
+                activity?.let { ChooseListStyleDialog.showDialog(it, ListType.BOOKMARK, this) }
+            }
         }
     }
 
@@ -146,18 +205,44 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
             RetrofitClientInstance.clear()
             InMemory.clear()
             prefs.languageCode = lang.languageCode
-            SyncApi.sync(requireContext(), object : ResultListener<Boolean> {
-                override fun onResult(value: Boolean?) {
-                    progressDialog.dismiss()
-                    ActivityUtil.reload(activity, 0)
-                }
-            })
+
+            GlobalScope.launch(Dispatchers.IO) {
+                SyncApi.sync(requireContext())
+                progressDialog.dismiss()
+                ActivityUtil.reload(activity, 0)
+            }
         }
     }
 
     private fun setTheme(theme: Int) {
         prefs.colorTheme = theme
         ActivityUtil.reload(activity, 5)
+    }
+
+    override fun onListTypeChange(adapterType: CommonListAdapterType, listType: ListType) {
+        when (listType) {
+            ListType.RECENT_NEWS -> {
+                prefs.recentAdapterStyle = adapterType.id
+            }
+            ListType.VIEW_ALL -> {
+                prefs.viewAllAdapterStyle = adapterType.id
+            }
+            ListType.SEARCH -> {
+                prefs.searchAdapterStyle = adapterType.id
+            }
+            ListType.NOTIFICATION -> {
+                prefs.notificationAdapterStyle = adapterType.id
+            }
+            ListType.RECENT_NEWS_FROM_POST -> {
+                prefs.recentFromPostAdapterStyle = adapterType.id
+            }
+            ListType.BOOKMARK -> {
+                prefs.bookmarkAdapterStyle = adapterType.id
+            }
+        }
+        activity?.runOnUiThread {
+            setListTypeIcons()
+        }
     }
 
     companion object {

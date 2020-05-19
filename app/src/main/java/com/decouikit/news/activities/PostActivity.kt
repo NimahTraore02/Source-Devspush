@@ -3,44 +3,41 @@ package com.decouikit.news.activities
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
+import com.decouikit.news.adapters.BaseListAdapter
 import com.decouikit.news.adapters.HashTagAdapter
-import com.decouikit.news.adapters.ViewAllAdapter
 import com.decouikit.news.database.Config
 import com.decouikit.news.database.Preference
 import com.decouikit.news.extensions.*
 import com.decouikit.news.interfaces.OnHashTagClickListener
 import com.decouikit.news.interfaces.OpenPostListener
-import com.decouikit.news.interfaces.ResultListener
 import com.decouikit.news.network.CommentsService
 import com.decouikit.news.network.PostsService
 import com.decouikit.news.network.RetrofitClientInstance
-import com.decouikit.news.network.TagService
 import com.decouikit.news.network.dto.CommentItem
 import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.dto.Tag
 import com.decouikit.news.network.sync.SyncTags
-import com.decouikit.news.utils.ActivityUtil
-import com.decouikit.news.utils.ImageLoadingUtil
-import com.decouikit.news.utils.NewsConstants
-import com.decouikit.news.utils.UriChromeClient
+import com.decouikit.news.utils.*
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_post.*
-import org.jetbrains.anko.doAsync
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import retrofit2.awaitResponse
 import java.util.*
 import kotlin.math.abs
 
 class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     UriChromeClient.FullscreenInterface, OnHashTagClickListener {
 
-    private lateinit var adapter: ViewAllAdapter
+    private lateinit var adapter: BaseListAdapter
     private lateinit var hashTagAdapter: HashTagAdapter
 
     private var isRunning = false
@@ -80,9 +77,13 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     }
 
     private fun initLayout() {
-        //setting recent news
-        adapter = ViewAllAdapter(arrayListOf(), this)
-        rvRecentNews.layoutManager = LinearLayoutManager(this)
+        //Creating list type for recent news
+        val adapterType =
+            AdapterListTypeUtil.getAdapterTypeFromValue(Preference(this).recentFromPostAdapterStyle)
+        adapter = BaseListAdapter(arrayListOf(), adapterType)
+        rvRecentNews.layoutManager = GridLayoutManager(this, adapterType.columns)
+
+        adapter.setItemClickListener(this)
         rvRecentNews.adapter = adapter
 
         setWritingCommentsVisibility(true)
@@ -114,12 +115,11 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     private fun loadTag(post: PostItem) {
         runOnUiThread {
             post.tags.forEach { tagId ->
-                tagsService.getTagById(tagId, this, object : ResultListener<Tag> {
-                    override fun onResult(value: Tag?) {
-                        value?.let { tagList.add(it) }
-                        hashTagAdapter.setData(tagList)
-                    }
-                })
+                GlobalScope.launch(Dispatchers.Main) {
+                    val tag = tagsService.getTagById(tagId, context = applicationContext)
+                    tag?.let { tagList.add(it) }
+                    hashTagAdapter.setData(tagList)
+                }
             }
         }
     }
@@ -151,7 +151,7 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
             NewsConstants.HTML_STYLE_DARK
         }
 
-        val rtlText = if (Preference(this).isRtlEnabled) "dir=\"rtl\" lang=\"\""  else ""
+        val rtlText = if (Preference(this).isRtlEnabled) "dir=\"rtl\" lang=\"\"" else ""
 
         webView.loadDataWithBaseURL(
             null,
@@ -177,8 +177,7 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
         ivShare.setOnClickListener(this)
         btnOpenComments.setOnClickListener(this)
 
-        appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener {
-                appBarLayout, verticalOffset ->
+        appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             tvToolbarTitle.visibility =
                 if (abs(verticalOffset) - appBarLayout.totalScrollRange == 0) {
                     View.VISIBLE
@@ -208,60 +207,43 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     }
 
     private fun getRelatedNews() {
-        doAsync {
-            postsService?.getPostsList(
-                postItem.categories[0].categoryToString(),
-                null,
-                page,
-                Config.getNumberOfItemPerPage()
-            )?.enqueue(result = {
-                when (it) {
-                    is Result.Success -> {
-                        if (!it.response.body().isNullOrEmpty()) {
-                            val items = it.response.body() as ArrayList<PostItem>
-                            for (item in items) {
-                                item.categoryName = postItem.categoryName
-                                postItems.add(item)
-                            }
-                            postItems.sortBy { it.modified_gmt }
-                            adapter.setData(postItems)
-                            adapter.removeItem(postItem)
-                        }
+        GlobalScope.launch(Dispatchers.Main) {
+            val response = postsService?.getPostsList(
+                postItem.categories[0].categoryToString(), null,
+                page, Config.getNumberOfItemPerPage()
+            )?.awaitResponse()
+            if (response?.isSuccessful == true) {
+                if (!response.body().isNullOrEmpty()) {
+                    val items = response.body() as ArrayList<PostItem>
+                    for (item in items) {
+                        item.categoryName = postItem.categoryName
+                        postItems.add(item)
                     }
+                    postItems.sortBy { it.modified_gmt }
+                    adapter.setData(postItems)
+                    adapter.removeItem(postItem)
                 }
-            })
+            }
+
         }
     }
 
     private fun getNumberOfComments() {
-        doAsync {
-            commentsService?.getCommentListPostId(postItem.id)?.enqueue(result = {
-                when (it) {
-                    is Result.Success -> {
-                        if (!it.response.body().isNullOrEmpty()) {
-                            val result = it.response.body() as List<CommentItem>
-                            tvComments.text = resources.getQuantityString(
-                                R.plurals.numberOfComments, result.size, result.size
-                            )
-                            btnOpenComments.text =
-                                getString(R.string.view_all_comments, result.size)
-                        } else {
-                            tvComments.text = resources.getQuantityString(
-                                R.plurals.numberOfComments, 0, 0
-                            )
-                            btnOpenComments.text =
-                                getString(R.string.view_all_comments, 0)
-                        }
-                    }
-                    is Result.Failure -> {
-                        tvComments.text = resources.getQuantityString(
-                            R.plurals.numberOfComments, 0, 0
-                        )
-                        btnOpenComments.text =
-                            getString(R.string.view_all_comments, 0)
-                    }
+        GlobalScope.launch(Dispatchers.Main) {
+            val response = commentsService?.getCommentListPostId(postItem.id)?.awaitResponse()
+            var commentCounter = 0
+            if (response?.isSuccessful == true) {
+                if (!response.body().isNullOrEmpty()) {
+                    val result = response.body() as List<CommentItem>
+                    commentCounter = result.size
                 }
-            })
+            }
+            tvComments.text = resources.getQuantityString(
+                R.plurals.numberOfComments,
+                commentCounter,
+                commentCounter
+            )
+            btnOpenComments.text = getString(R.string.view_all_comments, commentCounter)
         }
     }
 

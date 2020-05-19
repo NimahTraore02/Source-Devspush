@@ -6,8 +6,6 @@ import android.widget.Toast
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BaseActivity
 import com.decouikit.news.database.Preference
-import com.decouikit.news.extensions.Result
-import com.decouikit.news.extensions.enqueue
 import com.decouikit.news.extensions.validationCommon
 import com.decouikit.news.extensions.validationOfEmail
 import com.decouikit.news.network.CommentsService
@@ -16,7 +14,10 @@ import com.decouikit.news.network.dto.CommentRequest
 import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.NewsConstants
 import kotlinx.android.synthetic.main.activity_post_comment.*
-import org.jetbrains.anko.doAsync
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import retrofit2.awaitResponse
 
 class PostCommentActivity : BaseActivity(), View.OnClickListener {
 
@@ -56,8 +57,8 @@ class PostCommentActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun postComment() {
-        doAsync {
-            commentsService?.saveComment(
+        GlobalScope.launch(Dispatchers.IO) {
+            val response = commentsService?.saveComment(
                 CommentRequest(
                     postId,
                     etComment.text.toString(),
@@ -65,20 +66,17 @@ class PostCommentActivity : BaseActivity(), View.OnClickListener {
                     etEmail.text.toString(),
                     ""
                 )
-            )?.enqueue(result = {
-                when (it) {
-                    is Result.Success -> {
-                        finish()
-                    }
-                    is Result.Failure -> {
-                        Toast.makeText(
-                            this@PostCommentActivity,
-                            R.string.generic_error,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            })
+            )?.awaitResponse()
+
+            if (response?.isSuccessful == true) {
+                finish()
+            } else {
+                Toast.makeText(
+                    this@PostCommentActivity,
+                    R.string.generic_error,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 

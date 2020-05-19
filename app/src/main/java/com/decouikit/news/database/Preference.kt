@@ -3,6 +3,7 @@ package com.decouikit.news.database
 import android.content.Context
 import android.content.SharedPreferences
 import com.decouikit.news.network.dto.*
+import com.decouikit.news.utils.AdapterListTypeUtil
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -136,4 +137,45 @@ class Preference(context: Context) {
         prefs.edit().putString("MEDIA", Gson().toJson(items)).apply()
     }
 
+    var recentAdapterStyle: Int
+        get() = prefs.getInt(
+            "RECENT_TYPE",
+            Config.getRecentAdapterConfig().id
+        )
+        set(value) = prefs.edit { it.putInt("RECENT_TYPE", value) }
+
+    var viewAllAdapterStyle: Int
+        get() = prefs.getInt(
+            "VIEW_ALL_TYPE",
+            Config.getViewAllAdapterConfig().id
+        )
+        set(value) = prefs.edit { it.putInt("VIEW_ALL_TYPE", value) }
+
+    var searchAdapterStyle: Int
+        get() = prefs.getInt(
+            "SEARCH_TYPE",
+            Config.getSearchAdapterConfig().id
+        )
+        set(value) = prefs.edit { it.putInt("SEARCH_TYPE", value) }
+
+    var notificationAdapterStyle: Int
+        get() = prefs.getInt(
+            "NOTIFICATION_TYPE",
+            Config.getNotificationAdapterConfig().id
+        )
+        set(value) = prefs.edit { it.putInt("NOTIFICATION_TYPE", value) }
+
+    var recentFromPostAdapterStyle: Int
+        get() = prefs.getInt(
+            "RECENT_FROM_POST_TYPE",
+            Config.getRecentNewsFromPostAdapterConfig().id
+        )
+        set(value) = prefs.edit { it.putInt("RECENT_FROM_POST_TYPE", value) }
+
+    var bookmarkAdapterStyle: Int
+        get() = prefs.getInt(
+            "BOOKMARK_TYPE",
+            Config.getBookmarkAdapterConfig().id
+        )
+        set(value) = prefs.edit { it.putInt("BOOKMARK_TYPE", value) }
 }

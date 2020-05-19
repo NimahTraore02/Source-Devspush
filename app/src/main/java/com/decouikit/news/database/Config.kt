@@ -1,5 +1,6 @@
 package com.decouikit.news.database
 
+import android.app.Activity
 import android.content.Context
 import android.view.ViewGroup
 import com.decouikit.advertising.FacebookAds
@@ -10,11 +11,13 @@ import com.decouikit.advertising.model.AdsContract
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BottomNavigationActivity
 import com.decouikit.news.activities.common.NavigationActivity
-import com.decouikit.news.network.dto.AdsType
-import com.decouikit.news.network.dto.Category
-import com.decouikit.news.network.dto.Language
-import com.decouikit.news.network.dto.RateMeConfig
-import com.decouikit.news.network.dto.WizardItemModel
+import com.decouikit.news.adapters.common.CategoryListAdapterType
+import com.decouikit.news.adapters.common.CommonListAdapterType
+import com.decouikit.news.billing.GooglePlayBilling
+import com.decouikit.news.billing.model.BillingConfigItem
+import com.decouikit.news.billing.model.BillingContract
+import com.decouikit.news.billing.model.BillingEventListener
+import com.decouikit.news.network.dto.*
 
 object Config {
 
@@ -22,7 +25,7 @@ object Config {
         val languages = mutableListOf<Language>()
         languages.add(
             Language(
-                baseUrl = "https://www.alrab7on.com//wp-json/wp/v2/",
+                baseUrl = "https://deconews.decouikit.com/wp-json/wp/v2/",
                 language = "English",
                 languageCode = "en"
             )
@@ -60,6 +63,9 @@ object Config {
     fun promptForInterstitialCounter(): Int = 1
 
     fun getNumberOfItemPerPage(): Int = 5
+
+    //It's better to have more items per page on search, because of scroll behavior at the bottom
+    fun getNumberOfSearchedItemsPerPage(): Int = 10
 
     fun getOrder(): String = "desc"
 
@@ -177,7 +183,7 @@ object Config {
         return languages
     }
 
-    fun getAdsType(): AdsType = AdsType.NONE
+    fun getAdsType(): AdsType = AdsType.GOOGLE
 
     fun getAdsProvider(adsContainer: ViewGroup?, listener: AdEventListener): AdsContract? {
         if (getAdsType() == AdsType.NONE) {
@@ -198,6 +204,42 @@ object Config {
         }
     }
 
+    fun getRecentAdapterConfig(): CommonListAdapterType {
+        return CommonListAdapterType.ADAPTER_VERSION_3
+    }
+
+    fun getViewAllAdapterConfig(): CommonListAdapterType {
+        return CommonListAdapterType.ADAPTER_VERSION_1
+    }
+
+    fun getSearchAdapterConfig(): CommonListAdapterType {
+        return CommonListAdapterType.ADAPTER_VERSION_1
+    }
+
+    fun getNotificationAdapterConfig(): CommonListAdapterType {
+        return CommonListAdapterType.ADAPTER_VERSION_1
+    }
+
+    fun getRecentNewsFromPostAdapterConfig(): CommonListAdapterType {
+        return CommonListAdapterType.ADAPTER_VERSION_1
+    }
+
+    fun getBookmarkAdapterConfig(): CommonListAdapterType {
+        return CommonListAdapterType.ADAPTER_VERSION_2
+    }
+
+    fun getCategoryAdapterConfig(): CategoryListAdapterType {
+        return CategoryListAdapterType.ADAPTER_VERSION_2
+    }
+
     fun isWritingCommentEnabled() = false
+
     fun isReadingCommentEnabled() = true
+
+    fun getBillingContract(activity: Activity, billingEventListener: BillingEventListener) : BillingContract? {
+        return GooglePlayBilling(activity, BillingConfigItem(), billingEventListener)
+    }
+
+    //This is only for showing or hiding button on About screen
+    fun isRemoveAdsButtonEnabled() = true
 }
