@@ -72,7 +72,13 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
 
         //Creating recent list type
         val adapterType =
-            AdapterListTypeUtil.getAdapterTypeFromValue(Preference(itemView.context).recentAdapterStyle)
+            AdapterListTypeUtil.getAdapterTypeFromValue(
+                if (Config.isRecentNewsListOptionVisible()) {
+                    Preference(itemView.context).recentAdapterStyle
+                } else {
+                    Config.getRecentAdapterConfig().id
+                }
+            )
         recentAdapter = BaseListAdapter(arrayListOf(), adapterType)
         recentManager = GridLayoutManager(itemView.context, adapterType.columns)
 

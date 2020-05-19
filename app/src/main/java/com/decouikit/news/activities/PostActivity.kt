@@ -79,7 +79,13 @@ class PostActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
     private fun initLayout() {
         //Creating list type for recent news
         val adapterType =
-            AdapterListTypeUtil.getAdapterTypeFromValue(Preference(this).recentFromPostAdapterStyle)
+            AdapterListTypeUtil.getAdapterTypeFromValue(
+                if (Config.isRecentListInPostOptionVisible()) {
+                    Preference(this).recentFromPostAdapterStyle
+                } else {
+                    Config.getRecentNewsFromPostAdapterConfig().id
+                }
+            )
         adapter = BaseListAdapter(arrayListOf(), adapterType)
         rvRecentNews.layoutManager = GridLayoutManager(this, adapterType.columns)
 

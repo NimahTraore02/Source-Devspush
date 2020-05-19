@@ -77,7 +77,13 @@ class SearchActivity : BaseActivity(), View.OnClickListener, OpenPostListener,
 
         //Creating list type
         val adapterType =
-            AdapterListTypeUtil.getAdapterTypeFromValue(Preference(this).searchAdapterStyle)
+            AdapterListTypeUtil.getAdapterTypeFromValue(
+                if (Config.isSearchListOptionVisible()) {
+                    Preference(this).searchAdapterStyle
+                } else {
+                    Config.getSearchAdapterConfig().id
+                }
+            )
         adapter = BaseListAdapter(arrayListOf(), adapterType)
         layoutManager = GridLayoutManager(this, adapterType.columns)
 

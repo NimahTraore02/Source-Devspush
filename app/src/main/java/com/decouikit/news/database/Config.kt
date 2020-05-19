@@ -86,8 +86,10 @@ object Config {
     fun isNotificationListOptionVisible(): Boolean = true
     fun isRecentListInPostOptionVisible(): Boolean = true
     fun isBookmarkListOptionVisible(): Boolean = true
-
-    //List types
+    /*
+    Setting list types
+    IMPORTANT! -> You can change list type here only if option for that list above is set to false
+     */
     fun getRecentAdapterConfig(): CommonListAdapterType = CommonListAdapterType.ADAPTER_VERSION_3
     fun getViewAllAdapterConfig(): CommonListAdapterType = CommonListAdapterType.ADAPTER_VERSION_1
     fun getSearchAdapterConfig(): CommonListAdapterType = CommonListAdapterType.ADAPTER_VERSION_1
