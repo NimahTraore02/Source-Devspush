@@ -77,7 +77,26 @@ object Config {
 
     fun getDefaultValueForRTL(): Boolean = false
 
-    fun isHideRTLButtonInSettings(): Boolean = true
+    //Visibility for options on Settings screen
+    fun isRtlOptionVisible(): Boolean = true
+    fun isLanguageOptionVisible(): Boolean = true
+    fun isRecentNewsListOptionVisible(): Boolean = true
+    fun isViewAllListOptionVisible(): Boolean = true
+    fun isSearchListOptionVisible(): Boolean = true
+    fun isNotificationListOptionVisible(): Boolean = true
+    fun isRecentListInPostOptionVisible(): Boolean = true
+    fun isBookmarkListOptionVisible(): Boolean = true
+
+    //List types
+    fun getRecentAdapterConfig(): CommonListAdapterType = CommonListAdapterType.ADAPTER_VERSION_3
+    fun getViewAllAdapterConfig(): CommonListAdapterType = CommonListAdapterType.ADAPTER_VERSION_1
+    fun getSearchAdapterConfig(): CommonListAdapterType = CommonListAdapterType.ADAPTER_VERSION_1
+    fun getNotificationAdapterConfig(): CommonListAdapterType = CommonListAdapterType.ADAPTER_VERSION_1
+    fun getRecentNewsFromPostAdapterConfig(): CommonListAdapterType = CommonListAdapterType.ADAPTER_VERSION_1
+    fun getBookmarkAdapterConfig(): CommonListAdapterType = CommonListAdapterType.ADAPTER_VERSION_2
+
+    //List type for Categories
+    fun getCategoryAdapterConfig(): CategoryListAdapterType = CategoryListAdapterType.ADAPTER_VERSION_2
 
     fun getFacebookUrl(): String = "https://www.facebook.com"
 
@@ -202,34 +221,6 @@ object Config {
                 testDeviceId = "D4660E67112CAF17CE018F3C95A8F64D"
              ), adsContainer, listener)
         }
-    }
-
-    fun getRecentAdapterConfig(): CommonListAdapterType {
-        return CommonListAdapterType.ADAPTER_VERSION_3
-    }
-
-    fun getViewAllAdapterConfig(): CommonListAdapterType {
-        return CommonListAdapterType.ADAPTER_VERSION_1
-    }
-
-    fun getSearchAdapterConfig(): CommonListAdapterType {
-        return CommonListAdapterType.ADAPTER_VERSION_1
-    }
-
-    fun getNotificationAdapterConfig(): CommonListAdapterType {
-        return CommonListAdapterType.ADAPTER_VERSION_1
-    }
-
-    fun getRecentNewsFromPostAdapterConfig(): CommonListAdapterType {
-        return CommonListAdapterType.ADAPTER_VERSION_1
-    }
-
-    fun getBookmarkAdapterConfig(): CommonListAdapterType {
-        return CommonListAdapterType.ADAPTER_VERSION_2
-    }
-
-    fun getCategoryAdapterConfig(): CategoryListAdapterType {
-        return CategoryListAdapterType.ADAPTER_VERSION_2
     }
 
     fun isWritingCommentEnabled() = false

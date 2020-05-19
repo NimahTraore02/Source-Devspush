@@ -10,7 +10,8 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         android:paddingStart="@dimen/large_padding"
-        android:paddingEnd="@dimen/large_padding">
+        android:paddingEnd="@dimen/large_padding"
+        android:paddingBottom="@dimen/large_padding">
 
         <TextView
             style="@style/TitleTextStyle"

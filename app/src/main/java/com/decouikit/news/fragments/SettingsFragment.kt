@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
-import android.widget.ImageView
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.decouikit.news.R
@@ -63,24 +61,75 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
 
         initVisibilityForRTLRow()
 
+        initVisibilityForLanguage()
+
         selectedIndex = Config.getLanguageIndexByCode(prefs.languageCode)
         if (Config.listLanguageNames().size > selectedIndex) {
             itemView.tvLanguage.text = Config.listLanguageNames()[selectedIndex]
         }
 
+        initVisibilityForRecentNews()
+        initVisibilityForViewAll()
+        initVisibilityForSearch()
+        initVisibilityForNotification()
+        initVisibilityForRecentNewsInPost()
+        initVisibilityForBookmark()
+
         setListTypeIcons()
     }
 
     private fun initVisibilityForRTLRow() {
-        if (Config.isHideRTLButtonInSettings()) {
-            itemView.tvEnableRtl.visibility = View.GONE
-            itemView.cbEnableRtl.visibility = View.GONE
-            itemView.divider2.visibility = View.GONE
-        } else {
-            itemView.tvEnableRtl.visibility = View.VISIBLE
-            itemView.cbEnableRtl.visibility = View.VISIBLE
-            itemView.divider2.visibility = View.VISIBLE
-        }
+        itemView.tvEnableRtl.visibility =  if (Config.isRtlOptionVisible()) View.VISIBLE else View.GONE
+        itemView.cbEnableRtl.visibility = if (Config.isRtlOptionVisible()) View.VISIBLE else View.GONE
+        itemView.divider2.visibility = if (Config.isRtlOptionVisible()) View.VISIBLE else View.GONE
+    }
+
+    private fun initVisibilityForLanguage() {
+        itemView.tvEnableLanguage.visibility =  if (Config.isLanguageOptionVisible()) View.VISIBLE else View.GONE
+        itemView.tvLanguage.visibility = if (Config.isLanguageOptionVisible()) View.VISIBLE else View.GONE
+        itemView.divider3.visibility = if (Config.isLanguageOptionVisible()) View.VISIBLE else View.GONE
+    }
+
+    private fun initVisibilityForRecentNews() {
+        itemView.tvRecentNews.visibility =  if (Config.isRecentNewsListOptionVisible()) View.VISIBLE else View.GONE
+        itemView.ivRecentNews.visibility = if (Config.isRecentNewsListOptionVisible()) View.VISIBLE else View.GONE
+        itemView.cbRecentNews.visibility = if (Config.isRecentNewsListOptionVisible()) View.VISIBLE else View.GONE
+        itemView.divider4.visibility = if (Config.isRecentNewsListOptionVisible()) View.VISIBLE else View.GONE
+    }
+
+    private fun initVisibilityForViewAll() {
+        itemView.tvViewAll.visibility =  if (Config.isViewAllListOptionVisible()) View.VISIBLE else View.GONE
+        itemView.ivViewAll.visibility = if (Config.isViewAllListOptionVisible()) View.VISIBLE else View.GONE
+        itemView.cbViewAll.visibility = if (Config.isViewAllListOptionVisible()) View.VISIBLE else View.GONE
+        itemView.divider5.visibility = if (Config.isViewAllListOptionVisible()) View.VISIBLE else View.GONE
+    }
+
+    private fun initVisibilityForSearch() {
+        itemView.tvSearch.visibility =  if (Config.isSearchListOptionVisible()) View.VISIBLE else View.GONE
+        itemView.ivSearch.visibility = if (Config.isSearchListOptionVisible()) View.VISIBLE else View.GONE
+        itemView.cbSearch.visibility = if (Config.isSearchListOptionVisible()) View.VISIBLE else View.GONE
+        itemView.divider6.visibility = if (Config.isSearchListOptionVisible()) View.VISIBLE else View.GONE
+    }
+
+    private fun initVisibilityForNotification() {
+        itemView.tvNotification.visibility =  if (Config.isNotificationListOptionVisible()) View.VISIBLE else View.GONE
+        itemView.ivNotification.visibility = if (Config.isNotificationListOptionVisible()) View.VISIBLE else View.GONE
+        itemView.cbNotification.visibility = if (Config.isNotificationListOptionVisible()) View.VISIBLE else View.GONE
+        itemView.divider7.visibility = if (Config.isNotificationListOptionVisible()) View.VISIBLE else View.GONE
+    }
+
+    private fun initVisibilityForRecentNewsInPost() {
+        itemView.tvRecentNewsFromPost.visibility =  if (Config.isRecentListInPostOptionVisible()) View.VISIBLE else View.GONE
+        itemView.ivRecentNewsFromPost.visibility = if (Config.isRecentListInPostOptionVisible()) View.VISIBLE else View.GONE
+        itemView.cbRecentNewsFromPost.visibility = if (Config.isRecentListInPostOptionVisible()) View.VISIBLE else View.GONE
+        itemView.divider8.visibility = if (Config.isRecentListInPostOptionVisible()) View.VISIBLE else View.GONE
+    }
+
+    private fun initVisibilityForBookmark() {
+        itemView.tvBookmark.visibility =  if (Config.isBookmarkListOptionVisible()) View.VISIBLE else View.GONE
+        itemView.ivBookmark.visibility = if (Config.isBookmarkListOptionVisible()) View.VISIBLE else View.GONE
+        itemView.cbBookmark.visibility = if (Config.isBookmarkListOptionVisible()) View.VISIBLE else View.GONE
+        itemView.divider9.visibility = if (Config.isBookmarkListOptionVisible()) View.VISIBLE else View.GONE
     }
 
     private fun setListTypeIcons() {
@@ -101,21 +150,27 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
 
         itemView.tvRecentNews.setOnClickListener(this)
         itemView.cbRecentNews.setOnClickListener(this)
+        itemView.ivRecentNews.setOnClickListener(this)
 
         itemView.tvViewAll.setOnClickListener(this)
         itemView.cbViewAll.setOnClickListener(this)
+        itemView.ivViewAll.setOnClickListener(this)
 
         itemView.tvSearch.setOnClickListener(this)
         itemView.cbSearch.setOnClickListener(this)
+        itemView.ivSearch.setOnClickListener(this)
 
         itemView.tvNotification.setOnClickListener(this)
         itemView.cbNotification.setOnClickListener(this)
+        itemView.ivNotification.setOnClickListener(this)
 
         itemView.tvRecentNewsFromPost.setOnClickListener(this)
         itemView.cbRecentNewsFromPost.setOnClickListener(this)
+        itemView.ivRecentNewsFromPost.setOnClickListener(this)
 
         itemView.tvBookmark.setOnClickListener(this)
         itemView.cbBookmark.setOnClickListener(this)
+        itemView.ivBookmark.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
@@ -168,26 +223,32 @@ class SettingsFragment : Fragment(), View.OnClickListener, ChooseLanguageDialogL
                 )
             }
             itemView.tvRecentNews,
+            itemView.ivRecentNews,
             itemView.cbRecentNews -> {
                 activity?.let { ChooseListStyleDialog.showDialog(it, ListType.RECENT_NEWS, this) }
             }
             itemView.tvViewAll,
+            itemView.ivViewAll,
             itemView.cbViewAll -> {
                 activity?.let { ChooseListStyleDialog.showDialog(it, ListType.VIEW_ALL, this) }
             }
             itemView.tvSearch,
+            itemView.ivSearch,
             itemView.cbSearch -> {
                 activity?.let { ChooseListStyleDialog.showDialog(it, ListType.SEARCH, this) }
             }
             itemView.tvNotification,
+            itemView.ivNotification,
             itemView.cbNotification -> {
                 activity?.let { ChooseListStyleDialog.showDialog(it, ListType.NOTIFICATION, this) }
             }
             itemView.tvRecentNewsFromPost,
+            itemView.ivRecentNewsFromPost,
             itemView.cbRecentNewsFromPost -> {
                 activity?.let { ChooseListStyleDialog.showDialog(it, ListType.RECENT_NEWS_FROM_POST, this) }
             }
             itemView.tvBookmark,
+            itemView.ivBookmark,
             itemView.cbBookmark -> {
                 activity?.let { ChooseListStyleDialog.showDialog(it, ListType.BOOKMARK, this) }
             }
