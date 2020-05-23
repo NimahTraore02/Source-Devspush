@@ -1,6 +1,7 @@
 package com.decouikit.news.fragments
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,25 +23,10 @@ import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.sync.SyncPost
 import com.decouikit.news.utils.AdapterListTypeUtil
 import com.decouikit.news.utils.NewsConstants
-import kotlinx.android.synthetic.main.fragment_filter.view.*
-import kotlinx.android.synthetic.main.fragment_filter_sticky.*
 import kotlinx.android.synthetic.main.fragment_filter_sticky.view.*
-import kotlinx.android.synthetic.main.fragment_filter_sticky.view.emptyStateContainer
-import kotlinx.android.synthetic.main.fragment_filter_sticky.view.nestedParent
-import kotlinx.android.synthetic.main.fragment_filter_sticky.view.recentShimmer1
-import kotlinx.android.synthetic.main.fragment_filter_sticky.view.recentShimmer2
-import kotlinx.android.synthetic.main.fragment_filter_sticky.view.recentShimmer3
-import kotlinx.android.synthetic.main.fragment_filter_sticky.view.rlRecentNews
-import kotlinx.android.synthetic.main.fragment_filter_sticky.view.rvRecentNews
-import kotlinx.android.synthetic.main.fragment_filter_sticky.view.swipeRefresh
-import kotlinx.android.synthetic.main.fragment_filter_sticky.view.tabDots
-import kotlinx.android.synthetic.main.fragment_filter_sticky.view.tvFeaturedNewsTitle
-import kotlinx.android.synthetic.main.fragment_filter_sticky.view.tvFeaturedNewsViewAll
-import kotlinx.android.synthetic.main.fragment_filter_sticky.view.tvRecentNewsTitle
-import kotlinx.android.synthetic.main.fragment_filter_sticky.view.tvRecentNewsViewAll
-import kotlinx.android.synthetic.main.fragment_filter_sticky.view.viewPager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener,
@@ -137,14 +123,15 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
     }
 
     override fun onRefresh() {
+        hideFeaturedNews(false)
         itemView.swipeRefresh.isRefreshing = true
+        setShimmerAnimationVisibility(true)
         refreshContent()
     }
 
     private fun refreshContent() {
         itemView.viewPager.removeAllViews()
         itemView.tabDots.removeAllTabs()
-        setShimmerAnimationVisibility(true)
         page = 0
         featuresSync = false
         recentSync = false
@@ -156,28 +143,29 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
     }
 
     private fun setShimmerAnimationVisibility(isVisible: Boolean) {
-        activity?.runOnUiThread {
             if (isVisible) {
-                mShimmerFeaturedNewsContainer.visibility = View.VISIBLE
-                mShimmerFeaturedNewsContainer.startShimmer()
-                mShimmerRecentNewsContainer.visibility = View.VISIBLE
-                mShimmerRecentNewsContainer.startShimmer()
+                itemView.mShimmerFeaturedNewsContainer.visibility = View.VISIBLE
+                itemView.mShimmerFeaturedNewsContainer.startShimmer()
+                itemView.mShimmerRecentNewsContainer.visibility = View.VISIBLE
+                itemView.mShimmerRecentNewsContainer.startShimmer()
             } else {
-                mShimmerFeaturedNewsContainer.stopShimmer()
-                mShimmerFeaturedNewsContainer.visibility = View.GONE
-                mShimmerRecentNewsContainer.stopShimmer()
-                mShimmerRecentNewsContainer.visibility = View.GONE
+                itemView.mShimmerFeaturedNewsContainer.stopShimmer()
+                itemView.mShimmerFeaturedNewsContainer.visibility = View.GONE
+                itemView.mShimmerRecentNewsContainer.stopShimmer()
+                itemView.mShimmerRecentNewsContainer.visibility = View.GONE
             }
-        }
     }
 
     private fun getFeaturedNews() {
         GlobalScope.launch(Dispatchers.Main) {
-            val posts = SyncPost.getPostsList(
-                requireContext(), categoryId.toString(), true, 1, Config.getNumberOfItemPerPage()
-            )
+            delay(500)
+            val posts = activity?.applicationContext?.let {
+                SyncPost.getPostsList(
+                    it, categoryId.toString(), true, 1, Config.getNumberOfItemPerPage()
+                )
+            }
             featuresSync = true
-            if (posts.isEmpty()) {
+            if (posts != null && posts.isEmpty()) {
                 hideFeaturedNews(true)
                 checkEmptyState()
             } else {
@@ -193,17 +181,21 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
                     setEmptyState(featuredAdapter.count == 0 && recentAdapter.itemCount == 0)
                 }
             }
+            setShimmerAnimationVisibility(false)
         }
     }
 
     private fun getRecentNews() {
         GlobalScope.launch(Dispatchers.Main) {
-            val posts = SyncPost.getPostsList(
-                requireContext(), categoryId.toString(),
-                false, ++page, Config.getNumberOfItemPerPage()
-            )
+            delay(500)
+            val posts = activity?.applicationContext?.let {
+                SyncPost.getPostsList(
+                    it, categoryId.toString(),
+                    false, ++page, Config.getNumberOfItemPerPage()
+                )
+            }
             recentSync = true
-            if (posts.isNotEmpty()) {
+            if (posts != null && posts.isNotEmpty()) {
                 val allPostList = posts as ArrayList<PostItem>
                 for (postItem in allPostList) {
                     if (!recentPostItems.contains(postItem)) {
@@ -219,8 +211,7 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
             }
         }
 
-        swipeRefresh.isRefreshing = false
-        setShimmerAnimationVisibility(false)
+        itemView.swipeRefresh.isRefreshing = false
         checkEmptyState()
     }
 
@@ -293,7 +284,7 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
                 val pastVisibleItems = recentManager.findFirstVisibleItemPosition()
 
                 if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
-                    swipeRefresh.isRefreshing = true
+                    itemView.swipeRefresh.isRefreshing = true
                     getRecentNews()
                 }
             }
