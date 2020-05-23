@@ -22,8 +22,23 @@ import com.decouikit.news.network.dto.PostItem
 import com.decouikit.news.network.sync.SyncPost
 import com.decouikit.news.utils.AdapterListTypeUtil
 import com.decouikit.news.utils.NewsConstants
+import kotlinx.android.synthetic.main.fragment_filter.view.*
 import kotlinx.android.synthetic.main.fragment_filter_sticky.*
 import kotlinx.android.synthetic.main.fragment_filter_sticky.view.*
+import kotlinx.android.synthetic.main.fragment_filter_sticky.view.emptyStateContainer
+import kotlinx.android.synthetic.main.fragment_filter_sticky.view.nestedParent
+import kotlinx.android.synthetic.main.fragment_filter_sticky.view.recentShimmer1
+import kotlinx.android.synthetic.main.fragment_filter_sticky.view.recentShimmer2
+import kotlinx.android.synthetic.main.fragment_filter_sticky.view.recentShimmer3
+import kotlinx.android.synthetic.main.fragment_filter_sticky.view.rlRecentNews
+import kotlinx.android.synthetic.main.fragment_filter_sticky.view.rvRecentNews
+import kotlinx.android.synthetic.main.fragment_filter_sticky.view.swipeRefresh
+import kotlinx.android.synthetic.main.fragment_filter_sticky.view.tabDots
+import kotlinx.android.synthetic.main.fragment_filter_sticky.view.tvFeaturedNewsTitle
+import kotlinx.android.synthetic.main.fragment_filter_sticky.view.tvFeaturedNewsViewAll
+import kotlinx.android.synthetic.main.fragment_filter_sticky.view.tvRecentNewsTitle
+import kotlinx.android.synthetic.main.fragment_filter_sticky.view.tvRecentNewsViewAll
+import kotlinx.android.synthetic.main.fragment_filter_sticky.view.viewPager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -128,6 +143,7 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
 
     private fun refreshContent() {
         itemView.viewPager.removeAllViews()
+        itemView.tabDots.removeAllTabs()
         setShimmerAnimationVisibility(true)
         page = 0
         featuresSync = false
@@ -168,7 +184,8 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
                 val featuredItems = posts as ArrayList<PostItem>
                 featuredAdapter.setData(featuredItems)
                 itemView.viewPager.adapter = featuredAdapter
-                itemView.viewPager.offscreenPageLimit =
+                itemView.viewPager.offscreenPageLimit = Config.getNumberOfItemForSlider()
+                itemView.tabDots.setupWithViewPager(itemView.viewPager)
                     Config.getNumberOfItemForSlider()
                 checkEmptyState()
                 hideFeaturedNews(featuredAdapter.count == 0)
@@ -231,10 +248,12 @@ class FilterStickyFragment : Fragment(), View.OnClickListener, SwipeRefreshLayou
             itemView.tvFeaturedNewsTitle.visibility = View.GONE
             itemView.tvFeaturedNewsViewAll.visibility = View.GONE
             itemView.viewPager.visibility = View.GONE
+            itemView.tabDots.visibility = View.GONE
         } else {
             itemView.tvFeaturedNewsTitle.visibility = View.VISIBLE
             itemView.tvFeaturedNewsViewAll.visibility = View.VISIBLE
             itemView.viewPager.visibility = View.VISIBLE
+            itemView.tabDots.visibility = View.VISIBLE
         }
     }
 
