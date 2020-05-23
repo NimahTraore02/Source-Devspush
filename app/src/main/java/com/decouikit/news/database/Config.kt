@@ -58,9 +58,9 @@ object Config {
     //if you want "All" screen at tab beginning
     fun isAllScreenEnabled(): Boolean = false
 
-    //Show interstitial after 10 opens single post
+    //Show interstitial ad after 10 opens of single post
     // if you don't want interstitial ads just put value -1
-    fun promptForInterstitialCounter(): Int = 1
+    fun promptForInterstitialCounter(): Int = 10
 
     fun getNumberOfItemPerPage(): Int = 5
 
