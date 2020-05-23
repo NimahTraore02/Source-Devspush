@@ -225,7 +225,7 @@ object Config {
         }
     }
 
-    fun isWritingCommentEnabled() = false
+    fun isWritingCommentEnabled() = true
 
     fun isReadingCommentEnabled() = true
 
