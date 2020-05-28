@@ -10,6 +10,25 @@
     <color name="colorRed">#CB0000</color>
     <color name="colorBlue">#3980FF</color>
     <color name="darkerGrayFiftyTransparency">#40000000</color>
+    <color name="darkerGrayTransparency">#80000000</color>
     <color name="shimmer_background">#dddddd</color>
     <color name="icon_gray">#AAB2B7</color>
+
+
+    <color name="colorMediumPurple">#8E81E5</color>
+    <color name="colorMediumPurpleClicked">#5c4cc7</color>
+
+    <color name="colorFlower">#BD7EEC </color>
+
+    <color name="colorCelery">#93C851</color>
+
+    <color name="colorPorsche">#E5A863 </color>
+
+    <color name="colorDeepBlush">#E5819F</color>
+
+    <color name="colorScooter">#2ABDCE </color>
+
+    <color name="colorBlueTheme">#007CDC</color>
+
+    <color name="colorOrange">#FD8345</color>
 </resources>

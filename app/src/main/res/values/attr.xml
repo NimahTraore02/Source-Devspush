@@ -5,4 +5,8 @@
     <attr name="colorButtonText" format="reference"/>
     <attr name="colorButtonPressed" format="reference"/>
     <attr name="postBg" format="reference"/>
+    <attr name="colorRegularText" format="reference"/>
+    <attr name="colorIcon" format="reference"/>
+    <attr name="colorItemText" format="reference"/>
+    <attr name="colorButton" format="reference"/>
 </resources>

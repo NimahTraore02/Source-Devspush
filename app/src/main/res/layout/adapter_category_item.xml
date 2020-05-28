@@ -1,35 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/category_item_height"
-        app:cardCornerRadius="@dimen/small_padding"
-        app:cardElevation="@dimen/small_padding"
-        android:layout_marginTop="@dimen/normal_padding"
-        android:layout_marginBottom="@dimen/normal_padding"
-        android:layout_marginStart="@dimen/normal_padding"
-        android:layout_marginEnd="@dimen/normal_padding">
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/category_item_height"
+    android:layout_marginStart="@dimen/normal_padding"
+    android:layout_marginTop="@dimen/normal_padding"
+    android:layout_marginEnd="@dimen/normal_padding"
+    android:layout_marginBottom="@dimen/normal_padding"
+    app:cardCornerRadius="@dimen/small_padding"
+    app:cardElevation="@dimen/small_padding">
 
-    <LinearLayout
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+<!--        <ImageView-->
+<!--            android:id="@+id/ivBg"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:scaleType="fitXY"-->
+<!--            tools:background="@tools:sample/backgrounds/scenic"/>-->
+
+<!--        <ImageView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="@color/darkerGrayTransparency"/>-->
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="?attr/colorHeader"
             android:gravity="center"
+            android:background="?attr/colorHeader"
+            android:orientation="vertical"
             android:padding="@dimen/extra_large_padding">
 
-        <TextView
+            <TextView
                 android:id="@+id/tvCategoryName"
                 style="@style/TitleTextStyle"
                 android:layout_width="match_parent"
-                android:textAlignment="center"
                 android:gravity="center"
-                android:textSize="@dimen/text_size_16sp"/>
+                android:textAlignment="center"
+                android:textSize="@dimen/text_size_16sp"
+                tools:text="Category title" />
 
-        <TextView
+            <TextView
                 android:id="@+id/tvCategoryPostsNumber"
                 style="@style/ViewAllTextStyle"
-                android:layout_marginTop="@dimen/large_padding"/>
-    </LinearLayout>
+                android:layout_marginTop="@dimen/large_padding"
+                tools:text="100000 posts" />
+        </LinearLayout>
+    </FrameLayout>
 </androidx.cardview.widget.CardView>
