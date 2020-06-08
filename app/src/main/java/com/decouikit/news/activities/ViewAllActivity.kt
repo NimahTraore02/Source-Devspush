@@ -97,7 +97,13 @@ class ViewAllActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout
 
         //Creating list type
         val adapterType =
-            AdapterListTypeUtil.getAdapterTypeFromValue(Preference(this).viewAllAdapterStyle)
+            AdapterListTypeUtil.getAdapterTypeFromValue(
+                if (Config.isViewAllListOptionVisible()) {
+                    Preference(this).viewAllAdapterStyle
+                } else {
+                    Config.getViewAllAdapterConfig().id
+                }
+            )
         adapter = BaseListAdapter(arrayListOf(), adapterType)
         layoutManager = GridLayoutManager(this, adapterType.columns)
 

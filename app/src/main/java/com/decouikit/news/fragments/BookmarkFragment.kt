@@ -49,7 +49,13 @@ class BookmarkFragment : Fragment(), View.OnClickListener, RemoveBookmarkListene
 
         //Creating recent list type
         val adapterType =
-            AdapterListTypeUtil.getAdapterTypeFromValue(Preference(itemView.context).bookmarkAdapterStyle)
+            AdapterListTypeUtil.getAdapterTypeFromValue(
+                if (Config.isBookmarkListOptionVisible()) {
+                    Preference(itemView.context).bookmarkAdapterStyle
+                } else {
+                    Config.getBookmarkAdapterConfig().id
+                }
+            )
         adapter = BookmarkAdapter(arrayListOf(), this, adapterType)
         itemView.rvItems.layoutManager = GridLayoutManager(itemView.context, adapterType.columns)
 

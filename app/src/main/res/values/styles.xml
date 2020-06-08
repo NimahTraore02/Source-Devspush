@@ -11,9 +11,13 @@
         <item name="colorButtonText">@color/colorPrimaryDark</item>
         <item name="colorButtonPressed">@color/colorMenuItem</item>
         <item name="postBg">@color/colorPrimaryDarkBg</item>
+        <item name="colorRegularText">@color/colorSubTitleText</item>
+        <item name="colorIcon">@color/icon_gray</item>
+        <item name="colorItemText">@color/colorWhite</item>
+        <item name="colorButton">@color/colorWhite</item>
     </style>
+
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimaryDarkBg</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimaryDark</item>
@@ -23,7 +27,30 @@
         <item name="colorButtonText">@color/colorWhite</item>
         <item name="colorButtonPressed">@color/colorPrimaryDarkBg</item>
         <item name="postBg">@color/colorLightBg</item>
+        <item name="colorRegularText">@color/colorSubTitleText</item>
+        <item name="colorIcon">@color/icon_gray</item>
+        <item name="colorItemText">@color/colorPrimaryDark</item>
+        <item name="colorButton">@color/colorPrimaryDark</item>
     </style>
+
+    <style name="PurpleAppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorMediumPurple</item>
+        <item name="colorPrimaryDark">@color/colorMediumPurple</item>
+        <item name="colorAccent">@color/colorMediumPurple</item>
+        <item name="colorHeader">@color/colorMediumPurple</item>
+        <item name="android:windowBackground">@color/colorLightBg</item>
+        <item name="colorTitleText">@color/colorMediumPurpleClicked</item>
+        <item name="colorButtonText">@color/colorWhite</item>
+        <item name="colorButtonPressed">@color/colorMediumPurpleClicked</item>
+        <item name="postBg">@color/colorLightBg</item>
+        <item name="colorRegularText">@color/colorLightBg</item>
+        <item name="colorIcon">@color/colorLightBg</item>
+        <item name="colorItemText">@color/colorLightBg</item>
+        <item name="colorButton">@color/colorMediumPurple</item>
+    </style>
+
+
+
     <style name="SplashTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimaryDarkBg</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -34,7 +61,7 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="ToolbarIconColor" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="android:textColorSecondary">@color/colorSubTitleText</item>
+        <item name="android:textColorSecondary">?attr/colorRegularText</item>
     </style>
 
     <style name="ToolbarTitleStyle" parent="Theme.AppCompat.DayNight.NoActionBar">
@@ -68,7 +95,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/text_size_14sp</item>
-        <item name="android:textColor">@color/colorSubTitleText</item>
+        <item name="android:textColor">?attr/colorRegularText</item>
         <item name="android:textAlignment">viewStart</item>
         <item name="android:fontFamily">@font/roboto</item>
     </style>
@@ -93,7 +120,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/text_size_14sp</item>
-        <item name="android:textColor">?attr/colorTitleText</item>
+        <item name="android:textColor">?attr/colorItemText</item>
         <item name="android:fontFamily">@font/roboto</item>
         <item name="android:ellipsize">end</item>
         <item name="android:textAlignment">viewStart</item>
@@ -131,8 +158,8 @@
         <item name="android:layout_height">@dimen/title_height</item>
         <item name="android:background">@drawable/rounded_edit_text</item>
         <item name="android:elevation">@dimen/small_padding</item>
-        <item name="android:textColor">@color/colorSubTitleText</item>
-        <item name="android:textColorHint">@color/colorSubTitleText</item>
+        <item name="android:textColor">?attr/colorRegularText</item>
+        <item name="android:textColorHint">?attr/colorRegularText</item>
         <item name="android:fontFamily">@font/roboto</item>
         <item name="android:paddingStart">@dimen/large_padding</item>
         <item name="android:paddingEnd">@dimen/large_padding</item>

@@ -74,7 +74,13 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
 
         //Creating recent list type
         val adapterType =
-            AdapterListTypeUtil.getAdapterTypeFromValue(Preference(itemView.context).recentAdapterStyle)
+            AdapterListTypeUtil.getAdapterTypeFromValue(
+                if (Config.isRecentNewsListOptionVisible()) {
+                    Preference(itemView.context).recentAdapterStyle
+                } else {
+                    Config.getRecentAdapterConfig().id
+                }
+            )
         recentAdapter = BaseListAdapter(arrayListOf(), adapterType)
         recentManager = GridLayoutManager(itemView.context, adapterType.columns)
 
@@ -94,7 +100,7 @@ class FilterFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRe
     }
 
     private fun setShimmerType(adapterType: CommonListAdapterType) {
-        when(adapterType) {
+        when (adapterType) {
             CommonListAdapterType.ADAPTER_VERSION_1 -> {
                 itemView.recentShimmer1.visibility = View.VISIBLE
                 itemView.recentShimmer2.visibility = View.GONE

@@ -58,9 +58,9 @@ object Config {
     //if you want "All" screen at tab beginning
     fun isAllScreenEnabled(): Boolean = false
 
-    //Show interstitial after 10 opens single post
+    //Show interstitial ad after 10 opens of single post
     // if you don't want interstitial ads just put value -1
-    fun promptForInterstitialCounter(): Int = 1
+    fun promptForInterstitialCounter(): Int = 10
 
     fun getNumberOfItemPerPage(): Int = 5
 
@@ -77,7 +77,28 @@ object Config {
 
     fun getDefaultValueForRTL(): Boolean = false
 
-    fun isHideRTLButtonInSettings(): Boolean = true
+    //Visibility for options on Settings screen
+    fun isRtlOptionVisible(): Boolean = true
+    fun isLanguageOptionVisible(): Boolean = true
+    fun isRecentNewsListOptionVisible(): Boolean = true
+    fun isViewAllListOptionVisible(): Boolean = true
+    fun isSearchListOptionVisible(): Boolean = true
+    fun isNotificationListOptionVisible(): Boolean = true
+    fun isRecentListInPostOptionVisible(): Boolean = true
+    fun isBookmarkListOptionVisible(): Boolean = true
+    /*
+    Setting list types
+    IMPORTANT! -> You can change list type here only if option for that list above is set to false
+     */
+    fun getRecentAdapterConfig(): CommonListAdapterType = CommonListAdapterType.ADAPTER_VERSION_3
+    fun getViewAllAdapterConfig(): CommonListAdapterType = CommonListAdapterType.ADAPTER_VERSION_1
+    fun getSearchAdapterConfig(): CommonListAdapterType = CommonListAdapterType.ADAPTER_VERSION_1
+    fun getNotificationAdapterConfig(): CommonListAdapterType = CommonListAdapterType.ADAPTER_VERSION_1
+    fun getRecentNewsFromPostAdapterConfig(): CommonListAdapterType = CommonListAdapterType.ADAPTER_VERSION_1
+    fun getBookmarkAdapterConfig(): CommonListAdapterType = CommonListAdapterType.ADAPTER_VERSION_2
+
+    //List type for Categories
+    fun getCategoryAdapterConfig(): CategoryListAdapterType = CategoryListAdapterType.ADAPTER_VERSION_2
 
     fun getFacebookUrl(): String = "https://www.facebook.com"
 
@@ -204,35 +225,7 @@ object Config {
         }
     }
 
-    fun getRecentAdapterConfig(): CommonListAdapterType {
-        return CommonListAdapterType.ADAPTER_VERSION_3
-    }
-
-    fun getViewAllAdapterConfig(): CommonListAdapterType {
-        return CommonListAdapterType.ADAPTER_VERSION_1
-    }
-
-    fun getSearchAdapterConfig(): CommonListAdapterType {
-        return CommonListAdapterType.ADAPTER_VERSION_1
-    }
-
-    fun getNotificationAdapterConfig(): CommonListAdapterType {
-        return CommonListAdapterType.ADAPTER_VERSION_1
-    }
-
-    fun getRecentNewsFromPostAdapterConfig(): CommonListAdapterType {
-        return CommonListAdapterType.ADAPTER_VERSION_1
-    }
-
-    fun getBookmarkAdapterConfig(): CommonListAdapterType {
-        return CommonListAdapterType.ADAPTER_VERSION_2
-    }
-
-    fun getCategoryAdapterConfig(): CategoryListAdapterType {
-        return CategoryListAdapterType.ADAPTER_VERSION_2
-    }
-
-    fun isWritingCommentEnabled() = false
+    fun isWritingCommentEnabled() = true
 
     fun isReadingCommentEnabled() = true
 

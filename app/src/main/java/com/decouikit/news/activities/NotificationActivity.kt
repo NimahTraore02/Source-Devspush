@@ -37,7 +37,13 @@ class NotificationActivity : BaseActivity(), View.OnClickListener, OpenPostListe
         }
         //Creating list type
         val adapterType =
-            AdapterListTypeUtil.getAdapterTypeFromValue(Preference(this).notificationAdapterStyle)
+            AdapterListTypeUtil.getAdapterTypeFromValue(
+                if (Config.isNotificationListOptionVisible()) {
+                    Preference(this).notificationAdapterStyle
+                } else {
+                    Config.getNotificationAdapterConfig().id
+                }
+            )
         adapter = BaseListAdapter(arrayListOf(), adapterType)
         rvNotifications.layoutManager = GridLayoutManager(this, adapterType.columns)
 
