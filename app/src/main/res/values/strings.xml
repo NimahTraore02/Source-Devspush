@@ -47,6 +47,7 @@
     <string name="comments_title">Comments</string>
     <string name="view_all_comments">View all comments (%d)</string>
     <string name="write_comment">Write a Comment</string>
+    <string name="send">Send</string>
     <string name="hint_name">Your Name</string>
     <string name="hint_email">Your Email Address</string>
     <string name="hint_comment">Your Comment</string>
