@@ -11,6 +11,7 @@ import com.decouikit.advertising.model.AdsContract
 import com.decouikit.news.R
 import com.decouikit.news.activities.common.BottomNavigationActivity
 import com.decouikit.news.activities.common.NavigationActivity
+import com.decouikit.news.activities.common.SideMenuWithBottomNavigationActivity
 import com.decouikit.news.adapters.common.CategoryListAdapterType
 import com.decouikit.news.adapters.common.CommonListAdapterType
 import com.decouikit.news.billing.GooglePlayBilling
@@ -49,14 +50,14 @@ object Config {
 
     fun getDarkTheme(): Int = R.style.AppThemeDark
 
-    fun getDefaultNavigationStyle(): Class<*> = bottomNavigationStyle()
+    fun getDefaultNavigationStyle(): Class<*> = SideMenuWithBottomNavigationActivity::class.java
 
     fun bottomNavigationStyle(): Class<*> = BottomNavigationActivity::class.java
 
     fun drawerNavigationStyle(): Class<*> = NavigationActivity::class.java
 
     //if you want "All" screen at tab beginning
-    fun isAllScreenEnabled(): Boolean = false
+    fun isAllScreenEnabled(): Boolean = true
 
     //Show interstitial ad after 10 opens of single post
     // if you don't want interstitial ads just put value -1

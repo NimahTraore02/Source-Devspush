@@ -1,9 +1,12 @@
 package com.decouikit.news.extensions
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.decouikit.news.activities.PostActivity
+import com.decouikit.news.activities.ViewAllActivity
 import com.decouikit.news.activities.WizardActivity
 import com.decouikit.news.database.Config
 import com.decouikit.news.database.Preference
@@ -37,4 +40,12 @@ fun Activity.hideSoftKeyboard() {
     inputMethodManager.hideSoftInputFromWindow(
         this.currentFocus?.windowToken, 0
     )
+}
+
+fun Activity.viewAll(context: Context, categoryId: Int?, categoryName: String, categoryType: Int? = 0) {
+    val intent = Intent(context, ViewAllActivity::class.java)
+    intent.putExtra(NewsConstants.CATEGORY_ID, categoryId)
+    intent.putExtra(NewsConstants.CATEGORY_NAME, categoryName)
+    intent.putExtra(NewsConstants.CATEGORY_FEATURES, categoryType)
+    context.startActivity(intent)
 }

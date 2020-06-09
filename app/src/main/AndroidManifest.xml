@@ -51,6 +51,11 @@
         <activity
                 android:name=".activities.common.NavigationActivity"
                 android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".activities.common.SideMenuWithBottomNavigationActivity"
+            android:configChanges="orientation|screenSize" />
+
         <activity
                 android:name=".activities.common.BottomNavigationActivity"
                 android:configChanges="orientation|screenSize" />

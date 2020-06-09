@@ -8,34 +8,42 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.decouikit.news.R
 import com.decouikit.news.activities.NewsApplication
 import com.decouikit.news.activities.NotificationActivity
 import com.decouikit.news.activities.SearchActivity
+import com.decouikit.news.adapters.CategoryAdapter
 import com.decouikit.news.database.Config
+import com.decouikit.news.database.InMemory
 import com.decouikit.news.extensions.openExternalApp
 import com.decouikit.news.extensions.replaceFragment
 import com.decouikit.news.extensions.showNetworkMessage
+import com.decouikit.news.extensions.viewAll
 import com.decouikit.news.fragments.*
 import com.decouikit.news.interfaces.HomeFragmentListener
+import com.decouikit.news.interfaces.OnCategoryItemClickListener
+import com.decouikit.news.network.dto.Category
 import com.decouikit.news.network.receiver.ConnectionStateMonitor
 import com.decouikit.news.utils.ActivityUtil
 import com.decouikit.news.utils.NewsConstants
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_bottom_navigation.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.appBar
+import kotlinx.android.synthetic.main.activity_side_menu_with_bottom_navigation.*
+import kotlinx.android.synthetic.main.app_bar_main_with_side_menu_and_bottom_navigation.*
 
 
 class SideMenuWithBottomNavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener,
-    HomeFragmentListener, View.OnClickListener {
+    HomeFragmentListener, View.OnClickListener,
+    BottomNavigationView.OnNavigationItemSelectedListener, OnCategoryItemClickListener {
 
     private lateinit var toolbar: Toolbar
     private lateinit var menuItem: Menu
@@ -44,12 +52,11 @@ class SideMenuWithBottomNavigationActivity : BaseActivity(), NavigationView.OnNa
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_side_menu_with_bottom_navigation)
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false) //hide default app title in toolbar
         val drawerLayout: DrawerLayout = findViewById(R.id.parent)
-        val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
             this,
             drawerLayout,
@@ -60,7 +67,8 @@ class SideMenuWithBottomNavigationActivity : BaseActivity(), NavigationView.OnNa
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         setSocialNetworksIconVisibility()
-        navView.setNavigationItemSelectedListener(this)
+        setSideMenu()
+        navigation?.setOnNavigationItemSelectedListener(this)
         ActivityUtil.setLayoutDirection(this, getLayoutDirection(), R.id.parent)
         loadFragment(intent.getIntExtra(NewsConstants.FRAGMENT_POSITION, -1))
 
@@ -68,6 +76,13 @@ class SideMenuWithBottomNavigationActivity : BaseActivity(), NavigationView.OnNa
             getString(R.string.check_internet_connection), Snackbar.LENGTH_LONG)
 
         checkInternetConnection()
+    }
+
+    private fun setSideMenu() {
+        val categories = ArrayList(InMemory.getCategoryList(this))
+        val adapter = CategoryAdapter(categories, this)
+        rvContainer.layoutManager = LinearLayoutManager(this)
+        rvContainer.adapter = adapter
     }
 
     private fun checkInternetConnection() {
@@ -220,5 +235,9 @@ class SideMenuWithBottomNavigationActivity : BaseActivity(), NavigationView.OnNa
         } else {
             llSocialNetwork.visibility = View.VISIBLE
         }
+    }
+
+    override fun onCategoryItemClick(item: Category) {
+        viewAll(this, item.id, item.name)
     }
 }
