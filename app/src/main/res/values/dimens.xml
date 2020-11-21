@@ -47,7 +47,6 @@
     <dimen name="text_size_20sp">20sp</dimen>
     <dimen name="text_size_36sp">36sp</dimen>
 
-
     <dimen name="elevation_small">4dp</dimen>
     <dimen name="elevation_normal">8dp</dimen>
     <dimen name="elevation_large">12dp</dimen>
