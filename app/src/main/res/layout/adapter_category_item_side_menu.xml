@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/normal_padding"
+    android:layout_marginTop="@dimen/normal_padding"
+    android:layout_marginEnd="@dimen/normal_padding"
+    android:layout_marginBottom="@dimen/normal_padding"
+    app:cardCornerRadius="@dimen/small_padding"
+    app:cardElevation="@dimen/small_padding">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="?attr/colorHeader"
+            android:orientation="vertical"
+            android:padding="@dimen/extra_large_padding">
+            <TextView
+                android:id="@+id/tvCategoryName"
+                style="@style/TitleTextStyle"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textSize="@dimen/text_size_16sp"
+                tools:text="Category title" />
+        </LinearLayout>
+    </FrameLayout>
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/normal_padding">
+
+    <ImageView
+            android:id="@+id/checkmark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/checkmark"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:contentDescription="@string/image_desc_icon" />
+
+    <TextView
+            android:id="@+id/tvTitle"
+            style="@style/ViewAllTextStyle"
+            android:textColor="?attr/colorTitleText"
+            android:text="@string/about_text_2"
+            android:textAlignment="viewStart"
+            android:layout_width="@dimen/zero_density"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/checkmark"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/normal_padding"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

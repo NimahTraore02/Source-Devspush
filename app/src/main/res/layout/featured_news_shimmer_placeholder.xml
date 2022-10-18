@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/featuredParent"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/featured_news_height"
+    app:cardCornerRadius="@dimen/normal_padding"
+    app:cardElevation="@dimen/zero_density"
+    app:cardUseCompatPadding="true"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/shimmer_background">
+
+        <View
+            android:layout_width="@dimen/shimmer_tag_size"
+            android:layout_height="@dimen/large_padding"
+            android:background="?attr/colorHeader"
+            android:layout_marginStart="@dimen/large_padding"
+            android:layout_marginTop="@dimen/large_padding"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/tvItemTitleShimmer"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/shimmer_title_height"
+            android:background="?attr/colorHeader"
+            android:layout_margin="@dimen/large_padding"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/tvItemDateShimmer"/>
+
+
+        <View
+            android:id="@+id/tvItemDateShimmer"
+            android:layout_width="@dimen/shimmer_text_width"
+            android:layout_height="@dimen/large_padding"
+            android:background="?attr/colorHeader"
+            android:layout_margin="@dimen/large_padding"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

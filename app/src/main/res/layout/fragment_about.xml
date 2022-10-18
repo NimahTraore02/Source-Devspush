@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/normal_padding">
+
+        <ImageView
+                android:id="@+id/ivLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/extra_larger_margin"
+                android:background="@drawable/news_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/image_desc_background"/>
+
+        <TextView
+                android:id="@+id/tvTitle"
+                style="@style/TitleTextStyle"
+                android:layout_marginTop="@dimen/extra_large_padding"
+                android:text="@string/navigation_title"
+                android:textSize="@dimen/text_size_20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivLogo" />
+
+        <TextView
+                android:id="@+id/tvDesc"
+                style="@style/ViewAllTextStyle"
+                android:layout_marginTop="@dimen/normal_padding"
+                android:text="@string/about_text_1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+
+        <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/small_padding"
+                app:cardElevation="@dimen/small_padding"
+                app:cardUseCompatPadding="true"
+                android:layout_marginStart="@dimen/normal_padding"
+                android:layout_marginEnd="@dimen/normal_padding"
+                android:layout_marginTop="@dimen/extra_large_padding"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvDesc">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="?attr/colorHeader"
+                    android:padding="@dimen/normal_padding">
+
+                <TextView
+                        style="@style/TitleTextStyle"
+                        android:text="@string/about_text_2"
+                        android:textSize="@dimen/text_size_16sp"
+                        android:layout_margin="@dimen/normal_padding"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvAbout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <Button
+                android:id="@+id/btnPurchase"
+                style="@style/ButtonStyle"
+                android:text="@string/about_text_button"
+                android:layout_margin="@dimen/normal_padding"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView"/>
+
+        <Button
+            android:id="@+id/btnRemoveAds"
+            style="@style/ButtonStyle"
+            android:text="@string/remove_ads_button"
+            android:layout_margin="@dimen/normal_padding"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnPurchase"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
